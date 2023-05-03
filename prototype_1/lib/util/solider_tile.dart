@@ -7,7 +7,7 @@ class SoldierTile extends StatelessWidget {
   final String soldierRank;
   final String soldierAttendance;
   final String soldierIcon;
-  final tileColor;
+  final Color tileColor;
 
   const SoldierTile(
       {super.key,

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "70295185588",
+    "project_id": "blades-of-olympus",
+    "storage_bucket": "blades-of-olympus.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:70295185588:android:b11f031a88506259f4cfe1",
+        "android_client_info": {
+          "package_name": "com.bladesofolympus.prototype_1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "70295185588-q9bgj8tah2hokrvp2lmuccovfccenhrv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuMMB27HPMqsEVFVn_SgFkwuMyEwR2l_E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "70295185588-q9bgj8tah2hokrvp2lmuccovfccenhrv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
