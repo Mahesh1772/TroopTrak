@@ -25,6 +25,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.1"
+  charcode:
+    dependency: transitive
+    description:
+      name: charcode
+      sha256: fb98c0f6d12c920a02ee2d998da788bca066ca5f148492b7085ee23372b12306
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.3.1"
   clock:
     dependency: transitive
     description:
@@ -41,6 +49,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.17.0"
+  convert:
+    dependency: transitive
+    description:
+      name: convert
+      sha256: "3fa83bc417e26f1d55814443a603747d48e3cdf55b2f4fea27dea8e9224dcefd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.1"
   crypto:
     dependency: transitive
     description:
@@ -94,6 +110,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
+  flutter_svg:
+    dependency: "direct main"
+    description:
+      name: flutter_svg
+      sha256: "105da7851fc14143135db5a160001fc5d34fa92c3d2933a273228c237c78e34e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.12.4+2"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -179,6 +203,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.2"
+  path_drawing:
+    dependency: transitive
+    description:
+      name: path_drawing
+      sha256: b3dd74e2210b2b71be3d3098b956dbab853ee43a86918b4bc20c9b9bd49f03f3
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.1+1"
+  path_parsing:
+    dependency: transitive
+    description:
+      name: path_parsing
+      sha256: "4e613c811d25f1533c0d05eb2755e21410247b8a13ac7f6cd23c0cecb2ff683d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.4"
   path_provider:
     dependency: transitive
     description:
@@ -227,6 +267,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.6"
+  petitparser:
+    dependency: transitive
+    description:
+      name: petitparser
+      sha256: fe07f9345bf03ff0c881d1f5494e20cc40206780ca5dea86aab8037cb49af5f2
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.0"
   platform:
     dependency: transitive
     description:
@@ -336,6 +384,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
+  xml:
+    dependency: transitive
+    description:
+      name: xml
+      sha256: a11fbb305f75dd200c96d3fd13f9fdb4bc8d8dcdb5331f6ba15c57acb950ef09
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.7.0"
 sdks:
   dart: ">=2.19.6 <3.0.0"
   flutter: ">=3.3.0"

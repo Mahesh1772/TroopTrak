@@ -31,6 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
   google_fonts: ^2.1.0 
+  flutter_svg: ^0.12.1
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -63,6 +64,17 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
       - lib/assets/user.png
+      - lib/assets/army-ranks/1sg.png
+      - lib/assets/army-ranks/2sg.png
+      - lib/assets/army-ranks/3sg.png
+      - lib/assets/army-ranks/ssg.png
+      - lib/assets/army-ranks/msg.png
+      - lib/assets/army-ranks/lcp.png
+      - lib/assets/army-ranks/cpl.png
+      - lib/assets/army-ranks/cfc.png
+      - lib/assets/army-ranks/soldier.png
+      - lib/assets/army-ranks/men.png
+    
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

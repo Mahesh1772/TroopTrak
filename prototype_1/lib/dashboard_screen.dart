@@ -1,8 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:prototype_1/text_style.dart';
+import 'package:prototype_1/util/solider_tile.dart';
 
 class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({super.key});
+  DashboardScreen({super.key});
+
+  List unitSoldiers = [
+    //[ soldierName, soldierRank, tileColour, soldierAttendance, soldierIcon]
+
+    [
+      "Sivagnanam Maheshwaran",
+      "lib/assets/army-ranks/3sg.png",
+      Colors.blue,
+      "IN CAMP",
+      "lib/assets/army-ranks/soldier.png"
+    ],
+    [
+      "Aakash Ramaswamy",
+      "lib/assets/army-ranks/3sg.png",
+      Colors.lightBlue,
+      "NOT IN CAMP",
+      "lib/assets/army-ranks/soldier.png"
+    ],
+    [
+      "Nikhil Babu",
+      "lib/assets/army-ranks/cfc.png",
+      Colors.blueGrey,
+      "IN CAMP",
+      "lib/assets/army-ranks/men.png"
+    ],
+    [
+      "John Doe",
+      "lib/assets/army-ranks/lcp.png",
+      Colors.blueAccent,
+      "NOT IN CAMP",
+      "lib/assets/army-ranks/men.png"
+    ],
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +67,27 @@ class DashboardScreen extends StatelessWidget {
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.0),
-              child: StyledText('Welcome,\nAakash 👋', 32),
+              child: StyledText('Welcome,\nAakash! 👋', 32),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Expanded(
+              child: GridView.builder(
+                itemCount: unitSoldiers.length,
+                padding: const EdgeInsets.all(12),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2, childAspectRatio: 1 / 1.5),
+                itemBuilder: (context, index) {
+                  return SoldierTile(
+                    soldierName: unitSoldiers[index][0],
+                    soldierRank: unitSoldiers[index][1],
+                    tileColor: unitSoldiers[index][2],
+                    soldierAttendance: unitSoldiers[index][3],
+                    soldierIcon: unitSoldiers[index][4],
+                  );
+                },
+              ),
             ),
           ],
         ),

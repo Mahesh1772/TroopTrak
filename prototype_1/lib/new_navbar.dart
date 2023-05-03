@@ -15,11 +15,11 @@ class GNavMainScreen extends StatefulWidget {
 
 class _GNavMainScreen extends State<GNavMainScreen> {
   int selectedIndex = 0;
-  static const List<Widget> _widgetOptions = <Widget>[
+  static final List<Widget> _widgetOptions = <Widget>[
     DashboardScreen(),
-    StyledText('Conduct Tracker', 25),
-    StyledText('Parade State', 25),
-    StyledText('Guard Duty', 25),
+    const StyledText('Conduct Tracker', 25),
+    const StyledText('Parade State', 25),
+    const StyledText('Guard Duty', 25),
   ];
   void itemTapped(int index) {
     setState(() {
