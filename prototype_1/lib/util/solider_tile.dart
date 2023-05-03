@@ -35,7 +35,7 @@ class SoldierTile extends StatelessWidget {
                   height: 40,
                   padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
-                    color: tileColor[100],
+                    color: tileColor,
                     borderRadius: const BorderRadius.only(
                         topRight: Radius.circular(12),
                         bottomLeft: Radius.circular(12)),

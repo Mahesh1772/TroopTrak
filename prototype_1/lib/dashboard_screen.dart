@@ -9,30 +9,37 @@ class DashboardScreen extends StatelessWidget {
     //[ soldierName, soldierRank, tileColour, soldierAttendance, soldierIcon]
 
     [
+      "Wei John Koh",
+      "lib/assets/army-ranks/3sg.png",
+      Colors.brown.shade800,
+      "IN CAMP",
+      "lib/assets/army-ranks/soldier.png"
+    ],
+    [
       "Sivagnanam Maheshwaran",
       "lib/assets/army-ranks/3sg.png",
-      Colors.blue,
+      Colors.indigo.shade800,
       "IN CAMP",
       "lib/assets/army-ranks/soldier.png"
     ],
     [
       "Aakash Ramaswamy",
       "lib/assets/army-ranks/3sg.png",
-      Colors.lightBlue,
+      Colors.indigo.shade400,
       "NOT IN CAMP",
       "lib/assets/army-ranks/soldier.png"
     ],
     [
       "Nikhil Babu",
       "lib/assets/army-ranks/cfc.png",
-      Colors.blueGrey,
+      Colors.teal.shade800,
       "IN CAMP",
       "lib/assets/army-ranks/men.png"
     ],
     [
       "John Doe",
       "lib/assets/army-ranks/lcp.png",
-      Colors.blueAccent,
+      Colors.teal.shade400,
       "NOT IN CAMP",
       "lib/assets/army-ranks/men.png"
     ],
