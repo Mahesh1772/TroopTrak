@@ -36,7 +36,7 @@ class _GNavMainScreen extends State<GNavMainScreen> {
           child: _widgetOptions.elementAt(selectedIndex),
         ),
         bottomNavigationBar: Container(
-          color: Colors.black,
+          color: const Color.fromARGB(255, 11, 13, 17),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15),
             child: GNav(
@@ -44,7 +44,7 @@ class _GNavMainScreen extends State<GNavMainScreen> {
                   itemTapped(value);
                 },
                 gap: 7,
-                backgroundColor: Colors.black,
+                backgroundColor: const Color.fromARGB(255, 11, 13, 17),
                 color: Colors.deepPurple.shade300,
                 activeColor: Colors.white,
                 tabBackgroundGradient: LinearGradient(
