@@ -31,18 +31,10 @@ class MainScreen extends StatefulWidget {
 class _MainScreen extends State<MainScreen> {
   int selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
-    StyledText(
-      'Home',
-    ),
-    StyledText(
-      'Conduct Tracker',
-    ),
-    StyledText(
-      'Parade State',
-    ),
-    StyledText(
-      'Guard Duty',
-    ),
+    StyledText('Home', 20),
+    StyledText('Conduct Tracker', 20),
+    StyledText('Parade State', 20),
+    StyledText('Guard Duty', 20),
   ];
 
   void itemTapped(int index) {
