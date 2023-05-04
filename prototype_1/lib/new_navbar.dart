@@ -3,6 +3,8 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/text_style.dart';
 import 'package:prototype_1/dashboard_screen.dart';
+import 'package:prototype_1/nominalroll_screen.dart';
+import 'package:prototype_1/attendence_screen.dart';
 
 class GNavMainScreen extends StatefulWidget {
   const GNavMainScreen({super.key});
@@ -17,8 +19,9 @@ class _GNavMainScreen extends State<GNavMainScreen> {
   int selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[
     DashboardScreen(),
-    //NominalRollScreen(),
-    const StyledText('Conduct Tracker', 25),
+    //const NominalRollScreen(),
+     HomePage(),
+    //const StyledText('Conduct Tracker', 25),
     const StyledText('Parade State', 25),
     const StyledText('Guard Duty', 25),
   ];

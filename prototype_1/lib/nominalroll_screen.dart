@@ -1,3 +1,4 @@
+/*
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:prototype_1/text_style.dart';
@@ -12,19 +13,16 @@ class NominalRollScreen extends StatefulWidget {
   }
 }
 
-var temp = contact.phones.elementAt(0);
-
 class _NominalRollScreen extends State<NominalRollScreen> {
   List<Contact> contacts = [];
 
   @override
   void initState() {
     super.initState();
-    _askPermissions(null);
-    //getAllContacts();
+    getAllContacts();
   }
 
-  /*
+  
   getAllContacts() async{
     List<Contact> _contacts = await ContactsService.getContacts(withThumbnails: false);
     setState(() {
@@ -47,72 +45,153 @@ class _NominalRollScreen extends State<NominalRollScreen> {
               itemCount: contacts.length,
               itemBuilder: (context, index) {
                 Contact contact = contacts[index];
-                temp = contact.phones.elementAt(0);
                 return ListTile(
                   title: Text((contact.displayName).toString()),
-                  subtitle: Text(
-                    contact.phones.elementAt(0)
-                    ),
-                ),
+                  subtitle: contact.phones.elementAt(0)
+                );
               },
               )
           ],
         ),
       ),
     );
-  }*/
-  Future<void> _askPermissions(String routeName) async {
-    PermissionStatus permissionStatus = await _getContactPermission();
-    if (permissionStatus == PermissionStatus.granted) {
-      if (routeName != null) {
-        Navigator.of(context).pushNamed(routeName);
-      }
+  }
+}*/
+
+import 'dart:math';
+
+import 'package:contacts_service/contacts_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+//void main() {
+//  runApp(const MyApp());
+//}
+
+class NominalRollScreen extends StatelessWidget {
+  const NominalRollScreen({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return ScreenUtilInit(
+      builder: ((context, child) => MaterialApp(
+            title: 'Flutter Demo',
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+            ),
+            home: const HomeScreen(),
+            themeMode: ThemeMode.dark,
+            darkTheme: ThemeData.dark(),
+          )),
+    );
+  }
+}
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  List<Contact> contacts = [];
+
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    getContactPermission();
+  }
+
+  void getContactPermission() async {
+    if (await Permission.contacts.isGranted) {
+      fetchContacts();
     } else {
-      _handleInvalidPermissions(permissionStatus);
+      await Permission.contacts.request();
     }
   }
 
-  Future<PermissionStatus> _getContactPermission() async {
-    PermissionStatus permission = await Permission.contacts.status;
-    if (permission != PermissionStatus.granted &&
-        permission != PermissionStatus.permanentlyDenied) {
-      PermissionStatus permissionStatus = await Permission.contacts.request();
-      return permissionStatus;
-    } else {
-      return permission;
-    }
-  }
+  void fetchContacts() async {
+    contacts = await ContactsService.getContacts();
 
-  void _handleInvalidPermissions(PermissionStatus permissionStatus) {
-    if (permissionStatus == PermissionStatus.denied) {
-      const snackBar =  SnackBar(content: Text('Access to contact data denied'));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    } else if (permissionStatus == PermissionStatus.permanentlyDenied) {
-      const snackBar =
-          SnackBar(content: Text('Contact data not available on device'));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Contacts Plugin Example')),
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            ElevatedButton(
-              child: const Text('Contacts list'),
-              onPressed: () => _askPermissions('/contactsList'),
-            ),
-            ElevatedButton(
-              child: const Text('Native Contacts picker'),
-              onPressed: () => _askPermissions('/nativeContactPicker'),
-            ),
-          ],
-        ),
+      appBar: AppBar(
+        title: const Text("Contacts"),
       ),
+      body: isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : ListView.builder(
+              itemCount: contacts.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  leading: Container(
+                    height: 30.h,
+                    width: 30.h,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          blurRadius: 7,
+                          color: Colors.white.withOpacity(0.1),
+                          offset: const Offset(-3, -3),
+                        ),
+                        BoxShadow(
+                          blurRadius: 7,
+                          color: Colors.black.withOpacity(0.7),
+                          offset: const Offset(3, 3),
+                        ),
+                      ],
+                      borderRadius: BorderRadius.circular(6.r),
+                      color: const Color(0xff262626),
+                    ),
+                    child: Text(
+                      contacts[index].givenName![0],
+                      style: TextStyle(
+                        fontSize: 23.sp,
+                        color: Colors.primaries[
+                            Random().nextInt(Colors.primaries.length)],
+                        fontFamily: "Poppins",
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  title: Text(
+                    contacts[index].givenName!,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      color: Colors.cyanAccent,
+                      fontFamily: "Poppins",
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  subtitle: Text(
+                    contacts[index].phones![0].value!,
+                    style: TextStyle(
+                      fontSize: 11.sp,
+                      color: const Color(0xffC4c4c4),
+                      fontFamily: "Poppins",
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  horizontalTitleGap: 12.w,
+                );
+              },
+            ),
     );
   }
 }
