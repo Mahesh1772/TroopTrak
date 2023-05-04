@@ -17,6 +17,7 @@ class _GNavMainScreen extends State<GNavMainScreen> {
   int selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[
     DashboardScreen(),
+    //NominalRollScreen(),
     const StyledText('Conduct Tracker', 25),
     const StyledText('Parade State', 25),
     const StyledText('Guard Duty', 25),
