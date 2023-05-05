@@ -19,10 +19,10 @@ class _GNavMainScreen extends State<GNavMainScreen> {
   int selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[
     DashboardScreen(),
-    //const NominalRollScreen(),
-     HomePage(),
+    const NominalRollScreen(),
+    const HomePage(),
     //const StyledText('Conduct Tracker', 25),
-    const StyledText('Parade State', 25),
+    //const StyledText('Parade State', 25),
     const StyledText('Guard Duty', 25),
   ];
   void itemTapped(int index) {
