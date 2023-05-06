@@ -2,34 +2,36 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class SignIn extends StatefulWidget {
-  final VoidCallback showRegisterPage;
-  const SignIn({Key? key, required this.showRegisterPage}) : super(key: key);
+class RegisterPage extends StatefulWidget {
+  final VoidCallback showLoginPage;
+  const RegisterPage({Key? key, required this.showLoginPage}) : super(key: key);
 
   @override
-  State<SignIn> createState() => _SignInState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _SignInState extends State<SignIn> {
-
+class _RegisterPageState extends State<RegisterPage> {
   //Placeholders for the email and password input by user
   final _emailId = TextEditingController();
   final _password = TextEditingController();
+  final _confirmedpassword = TextEditingController();
 
-  Future isSignedIn() async {
-    //print('tap detected');
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: _emailId.text.trim(), 
-      password: _password.text.trim(),
+  Future signUp() async {
+    if (_confirmedpassword.text.trim() == _password.text.trim()) {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailId.text.trim(),
+        password: _password.text.trim(),
       );
+    }
   }
 
   @override
   void dispose() {
-     _emailId.dispose();
-     _password.dispose();
-     super.dispose();
-   }
+    _emailId.dispose();
+    _password.dispose();
+    _confirmedpassword.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,9 @@ class _SignInState extends State<SignIn> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 120,),
+                const SizedBox(
+                  height: 120,
+                ),
                 const Icon(
                   Icons.military_tech_outlined,
                   size: 175,
@@ -51,16 +55,16 @@ class _SignInState extends State<SignIn> {
                 const SizedBox(height: 80),
                 //welcome text
                 Text(
-                  'Welcome to camp!',
+                  'Congrats on Graduation!',
                   style: GoogleFonts.kanit(
-                    fontSize: 35,
+                    fontSize: 30,
                     fontWeight: FontWeight.bold,
                     color: Colors.purple.shade300,
                   ),
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  'Time to get back!',
+                  'Make your life easier, Register',
                   style: GoogleFonts.kanit(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -104,7 +108,30 @@ class _SignInState extends State<SignIn> {
                         controller: _password,
                         obscureText: true,
                         decoration: const InputDecoration(
-                            border: InputBorder.none, hintText: 'Enter Password'),
+                            border: InputBorder.none,
+                            hintText: 'Enter Password'),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                // confirm password
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: TextField(
+                        controller: _confirmedpassword,
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Confirm Your Password'),
                       ),
                     ),
                   ),
@@ -114,7 +141,7 @@ class _SignInState extends State<SignIn> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: GestureDetector(
-                    onTap: isSignedIn,
+                    onTap: signUp,
                     child: Container(
                       padding: const EdgeInsets.all(25),
                       decoration: BoxDecoration(
@@ -131,7 +158,7 @@ class _SignInState extends State<SignIn> {
                       ),
                       child: const Center(
                         child: Text(
-                          'Sign In',
+                          'Sign Up',
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -143,12 +170,12 @@ class _SignInState extends State<SignIn> {
                   ),
                 ),
                 const SizedBox(height: 35),
-        
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'No account?',
+                      'Alr have an account?',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.indigo.shade300,
@@ -158,9 +185,9 @@ class _SignInState extends State<SignIn> {
                       width: 10,
                     ),
                     GestureDetector(
-                      onTap: widget.showRegisterPage,
+                      onTap: widget.showLoginPage,
                       child: const Text(
-                        'Create one here!',
+                        'Login here',
                         style: TextStyle(
                           color: Colors.tealAccent,
                           fontWeight: FontWeight.bold,
