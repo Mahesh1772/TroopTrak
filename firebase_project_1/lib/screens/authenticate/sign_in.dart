@@ -10,44 +10,6 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  /*
-  //Instance of AuthService class from auth.dart
-  final AuthService _auth = AuthService();
-  
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.purple.shade100,
-      appBar: AppBar(
-        backgroundColor: Colors.deepPurple,
-        elevation: 0.0,
-        title: const Text('Sign in!'),
-      ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(
-          vertical: 20,
-          horizontal: 50,
-        ),
-        child: ElevatedButton(
-          child: const Text('Sign in Anonymously'),
-          onPressed: () async {
-            //On button press, the signInAnon function is called,
-            // and the code waits for a value to return. 
-            // Which is then stored in result
-            dynamic result = await _auth.signInAnon();
-            if (result == null) {
-              print('Error Signing in');
-            }
-            else {
-              print('Sign in successful');
-              print(result);
-            }
-          },
-        ),
-      ),
-    );
-  }*/
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,8 +19,11 @@ class _SignInState extends State<SignIn> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.military_tech_outlined, size: 175,
-              color: Colors.deepPurpleAccent,),
+              const Icon(
+                Icons.military_tech_outlined,
+                size: 175,
+                color: Colors.deepPurpleAccent,
+              ),
               const SizedBox(height: 80),
               //welcome text
               Text(
@@ -72,7 +37,7 @@ class _SignInState extends State<SignIn> {
               const SizedBox(height: 10),
               Text(
                 'Time to get back!',
-                style:  GoogleFonts.kanit(
+                style: GoogleFonts.kanit(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Colors.purple.shade400,
@@ -125,7 +90,15 @@ class _SignInState extends State<SignIn> {
                 child: Container(
                   padding: const EdgeInsets.all(25),
                   decoration: BoxDecoration(
-                    color: Colors.deepPurple,
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.deepPurple.shade400,
+                        Colors.deepPurple.shade700,
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    //color: Colors.deepPurple,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: const Center(
@@ -152,7 +125,9 @@ class _SignInState extends State<SignIn> {
                       color: Colors.teal,
                     ),
                   ),
-                  SizedBox(width: 10,),
+                  SizedBox(
+                    width: 10,
+                  ),
                   Text(
                     'Create one here!',
                     style: TextStyle(
