@@ -1,5 +1,6 @@
-import 'package:firebase_project_1/services/auth.dart';
-import 'package:flutter/foundation.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:firebase_core/firebase_core.dart';
+//import 'package:firebase_project_1/screens/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -11,6 +12,25 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+
+  //Placeholders for the email and password input by user
+  final _emailId = TextEditingController();
+  final _password = TextEditingController();
+
+  Future isSignedIn() async {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: _emailId.text.trim(), 
+      password: _password.text.trim(),
+      );
+  }
+
+  @override
+  void dispose() {
+     _emailId.dispose();
+     _password.dispose();
+     super.dispose();
+   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,10 +77,11 @@ class _SignInState extends State<SignIn> {
                       border: Border.all(color: Colors.white),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Padding(
-                      padding: EdgeInsets.only(left: 20),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20),
                       child: TextField(
-                        decoration: InputDecoration(
+                        controller: _emailId,
+                        decoration: const InputDecoration(
                             border: InputBorder.none,
                             hintText: 'Email@example.com'),
                       ),
@@ -77,11 +98,12 @@ class _SignInState extends State<SignIn> {
                       border: Border.all(color: Colors.white),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Padding(
-                      padding: EdgeInsets.only(left: 20),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20),
                       child: TextField(
+                        controller: _password,
                         obscureText: true,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             border: InputBorder.none, hintText: 'Enter Password'),
                       ),
                     ),
@@ -91,27 +113,30 @@ class _SignInState extends State<SignIn> {
                 // sign in
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Container(
-                    padding: const EdgeInsets.all(25),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.deepPurple.shade400,
-                          Colors.deepPurple.shade700,
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
+                  child: GestureDetector(
+                    onTap: isSignedIn,
+                    child: Container(
+                      padding: const EdgeInsets.all(25),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.deepPurple.shade400,
+                            Colors.deepPurple.shade700,
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        //color: Colors.deepPurple,
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      //color: Colors.deepPurple,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'Sign In',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                      child: const Center(
+                        child: Text(
+                          'Sign In',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
                         ),
                       ),
                     ),

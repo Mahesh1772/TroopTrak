@@ -1,5 +1,29 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_project_1/screens/authenticate/authenticate.dart';
+import 'package:firebase_project_1/screens/home/home.dart';
+import 'package:flutter/material.dart';
 
+class AuthService extends StatelessWidget {
+  const AuthService({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context , snapshot) {
+          if (snapshot.hasData) {
+            return const Home();
+          }
+          else {
+            return const Authenticate();
+          }
+        },
+      ),
+    );
+  }
+}
+/*
 class AuthService {
 
   //this creates a Firebase instance/object to communicate with backend
@@ -31,4 +55,4 @@ class AuthService {
 
   //sign out
 
-}
+}*/

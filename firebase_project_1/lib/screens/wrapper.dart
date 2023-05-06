@@ -1,5 +1,5 @@
 import 'package:firebase_project_1/screens/authenticate/authenticate.dart';
-import 'package:firebase_project_1/screens/home/home.dart';
+import 'package:firebase_project_1/services/auth.dart';
 import 'package:flutter/material.dart';
 
 class Wrapper extends StatelessWidget {
@@ -9,6 +9,6 @@ class Wrapper extends StatelessWidget {
   Widget build(BuildContext context) {
 
     //return Home is logged in, Else return authentication page
-    return const Authenticate();
+    return const AuthService();
   }
 }
