@@ -1,6 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:firebase_core/firebase_core.dart';
-//import 'package:firebase_project_1/screens/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -18,6 +16,7 @@ class _SignInState extends State<SignIn> {
   final _password = TextEditingController();
 
   Future isSignedIn() async {
+    print('tap detected');
     await FirebaseAuth.instance.signInWithEmailAndPassword(
       email: _emailId.text.trim(), 
       password: _password.text.trim(),
@@ -35,7 +34,7 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     return Scaffold(
       //resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.black54,
+      backgroundColor: const Color.fromARGB(255, 45, 60, 68),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Center(
@@ -146,18 +145,18 @@ class _SignInState extends State<SignIn> {
         
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     Text(
                       'No account?',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Colors.teal,
+                        color: Colors.indigo.shade300,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
-                    Text(
+                    const Text(
                       'Create one here!',
                       style: TextStyle(
                         color: Colors.tealAccent,
