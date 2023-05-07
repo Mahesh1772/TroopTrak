@@ -1,53 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/text_style.dart';
-import 'package:prototype_1/util/solider_tile.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 class DashboardScreen extends StatelessWidget {
-  DashboardScreen({super.key});
-
-  List unitSoldiers = [
-    //[ soldierName, soldierRank, tileColour, soldierAttendance, soldierIcon]
-
-    [
-      "Wei John Koh",
-      "lib/assets/army-ranks/3sg.png",
-      Colors.brown.shade800,
-      "IN CAMP",
-      "lib/assets/army-ranks/soldier.png"
-    ],
-    [
-      "Sivagnanam Maheshwaran",
-      "lib/assets/army-ranks/3sg.png",
-      Colors.indigo.shade800,
-      "IN CAMP",
-      "lib/assets/army-ranks/soldier.png"
-    ],
-    [
-      "Aakash Ramaswamy",
-      "lib/assets/army-ranks/3sg.png",
-      Colors.indigo.shade400,
-      "NOT IN CAMP",
-      "lib/assets/army-ranks/soldier.png"
-    ],
-    [
-      "Nikhil Babu",
-      "lib/assets/army-ranks/cfc.png",
-      Colors.teal.shade800,
-      "IN CAMP",
-      "lib/assets/army-ranks/men.png"
-    ],
-    [
-      "John Doe",
-      "lib/assets/army-ranks/lcp.png",
-      Colors.teal.shade400,
-      "NOT IN CAMP",
-      "lib/assets/army-ranks/men.png"
-    ],
-  ];
+  const DashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
       body: SafeArea(
@@ -78,23 +39,49 @@ class DashboardScreen extends StatelessWidget {
               child: StyledText('Welcome,\nAakash! 👋', 32),
             ),
             const SizedBox(
-              height: 10,
+              height: 20,
             ),
-            Expanded(
-              child: GridView.builder(
-                itemCount: unitSoldiers.length,
-                padding: const EdgeInsets.all(12),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, childAspectRatio: 1 / 1.5),
-                itemBuilder: (context, index) {
-                  return SoldierTile(
-                    soldierName: unitSoldiers[index][0],
-                    soldierRank: unitSoldiers[index][1],
-                    tileColor: unitSoldiers[index][2],
-                    soldierAttendance: unitSoldiers[index][3],
-                    soldierIcon: unitSoldiers[index][4],
-                  );
-                },
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 34, 37, 46),
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      //bottom right shadow
+                      BoxShadow(
+                        color: Colors.grey.shade600,
+                        offset: const Offset(5, 5),
+                      )
+                    ]),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CircularPercentIndicator(
+                      animation: true,
+                      animationDuration: 1000,
+                      radius: 40,
+                      lineWidth: 15,
+                      percent: 0.8,
+                      progressColor: Colors.deepPurple,
+                      backgroundColor: Colors.deepPurple.shade200,
+                      circularStrokeCap: CircularStrokeCap.round,
+                      center: const Icon(
+                        Icons.people_outline,
+                        size: 40,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      'Strength In-Camp: 80%',
+                      style: GoogleFonts.poppins(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
