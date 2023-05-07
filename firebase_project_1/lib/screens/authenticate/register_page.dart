@@ -25,6 +25,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final _bloodgroup = TextEditingController();
   final _dob = TextEditingController();
   final _ord = TextEditingController();
+  final _attendence = TextEditingController();
 
   Future signUp() async {
     if (_confirmedpassword.text.trim() == _password.text.trim()) {
@@ -51,6 +52,7 @@ class _RegisterPageState extends State<RegisterPage> {
       'bloodgroup': _bloodgroup.text.trim(),
       'dob': _dob.text.trim(),
       'ord': _ord.text.trim(),
+      'attendence': _attendence.text.trim(),
     });
   }
 
@@ -68,6 +70,7 @@ class _RegisterPageState extends State<RegisterPage> {
     _bloodgroup.dispose();
     _dob.dispose();
     _ord.dispose();
+    _attendence.dispose();
     super.dispose();
   }
 
@@ -298,6 +301,28 @@ class _RegisterPageState extends State<RegisterPage> {
                         decoration: const InputDecoration(
                             border: InputBorder.none,
                             hintText: 'Your favourite ORD date'),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+
+                // Attendence to create the percentage indicator
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: TextField(
+                        controller: _attendence,
+                        decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Attendence: Inside or Out'),
                       ),
                     ),
                   ),
