@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_project_1/screens/authenticate/forgot_password_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -11,7 +12,6 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-
   //Placeholders for the email and password input by user
   final _emailId = TextEditingController();
   final _password = TextEditingController();
@@ -19,17 +19,17 @@ class _SignInState extends State<SignIn> {
   Future isSignedIn() async {
     //print('tap detected');
     await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: _emailId.text.trim(), 
+      email: _emailId.text.trim(),
       password: _password.text.trim(),
-      );
+    );
   }
 
   @override
   void dispose() {
-     _emailId.dispose();
-     _password.dispose();
-     super.dispose();
-   }
+    _emailId.dispose();
+    _password.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,9 @@ class _SignInState extends State<SignIn> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 120,),
+                const SizedBox(
+                  height: 120,
+                ),
                 const Icon(
                   Icons.military_tech_outlined,
                   size: 175,
@@ -68,6 +70,7 @@ class _SignInState extends State<SignIn> {
                   ),
                 ),
                 const SizedBox(height: 50),
+
                 // email
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -89,6 +92,7 @@ class _SignInState extends State<SignIn> {
                   ),
                 ),
                 const SizedBox(height: 10),
+
                 // password
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -104,12 +108,43 @@ class _SignInState extends State<SignIn> {
                         controller: _password,
                         obscureText: true,
                         decoration: const InputDecoration(
-                            border: InputBorder.none, hintText: 'Enter Password'),
+                            border: InputBorder.none,
+                            hintText: 'Enter Password'),
                       ),
                     ),
                   ),
                 ),
                 const SizedBox(height: 10),
+                
+                //Forgot Password button
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const ForgotPassword();
+                              },
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          'Forgot Password? Aiyaa',
+                          style: TextStyle(
+                            color: Colors.amber,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10),
+
                 // sign in
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -143,7 +178,7 @@ class _SignInState extends State<SignIn> {
                   ),
                 ),
                 const SizedBox(height: 35),
-        
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
