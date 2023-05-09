@@ -1,4 +1,3 @@
-import 'package:firebase_project_1/screens/authenticate/authenticate.dart';
 import 'package:firebase_project_1/services/auth.dart';
 import 'package:flutter/material.dart';
 
