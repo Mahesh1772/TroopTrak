@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "C:/src/flutter/bin/cache/artifacts/engine/windows-x64/cpp_client_wrapper/include",
+                "C:/Users/Aak242/AppData/Local/Pub/Cache/hosted/pub.dev/permission_handler_windows-0.1.2/windows/include",
+                "C:/src/flutter/bin/cache/artifacts/engine/windows-x64-release/"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "windowsSdkVersion": "10.0.18362.0",
+            "compilerPath": "cl.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-msvc-x64"
+        }
+    ],
+    "version": 4
+}

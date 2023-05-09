@@ -27,61 +27,44 @@ class SoldierTile extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => SoliderDetailedScreen(
-                soldierRank: soldierRank,
-                soldierName: soldierName,
-                soldierAttendance: soldierAttendance,
-                soldierIcon: soldierIcon,
-              ),
-            ),
+                builder: (context) => SoldierDetailedScreen(
+                    soldierIcon: soldierIcon,
+                    soldierName: soldierName,
+                    soldierRank: soldierRank,
+                    soldierAttendance: soldierAttendance)),
           );
         },
-        child: InkWell(
-        onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SoliderDetailedScreen(
-                  soldierAttendance: soldierAttendance,
-                  soldierIcon: soldierIcon,
-                  soldierName: soldierName,
-                  soldierRank: soldierRank,
-                ),
-              ),);
-        },
         child: Container(
-            decoration: BoxDecoration(
-                color: tileColor, borderRadius: BorderRadius.circular(12)),
-            child: Column(
-              children: [
-                //rank insignia
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                      width: 40,
-                      height: 40,
-                      padding: const EdgeInsets.all(5),
-                      decoration: const BoxDecoration(
-                        color: Color.fromARGB(79, 255, 255, 255),
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(12),
-                            bottomLeft: Radius.circular(12)),
-                      ),
-                      child: Image.asset(
-                        soldierRank,
-                        width: 30,
-                      ),
+          decoration: BoxDecoration(
+              color: tileColor, borderRadius: BorderRadius.circular(12)),
+          child: Column(
+            children: [
+              //rank insignia
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    width: 40,
+                    height: 40,
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: tileColor,
+                      borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(12),
+                          bottomLeft: Radius.circular(12)),
                     ),
-                  ],
-                ),
+                    child: Image.asset(
+                      soldierRank,
+                      width: 30,
+                    ),
+                  ),
+                ],
+              ),
 
               //soldier icon
               Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 24.0,
-                  vertical: 12.0,
-                ),
+                    horizontal: 24.0, vertical: 12.0),
                 child: Image.asset(
                   soldierIcon,
                   width: 90,
@@ -91,16 +74,15 @@ class SoldierTile extends StatelessWidget {
               //name
 
               Center(
-                child: Text(
-                  soldierName,
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.poppins(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+                  child: Text(
+                soldierName,
+                textAlign: TextAlign.center,
+                style: GoogleFonts.poppins(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
-              ),
+              )),
 
               StyledText(soldierAttendance, 14)
             ],
