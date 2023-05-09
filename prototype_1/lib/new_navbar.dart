@@ -70,7 +70,7 @@ class _GNavMainScreen extends State<GNavMainScreen> {
                           color: Colors.white, fontWeight: FontWeight.bold)),
                   GButton(
                       icon: Icons.perm_contact_calendar_rounded,
-                      text: 'Parade State',
+                      text: 'Nominal Roll',
                       textStyle: GoogleFonts.poppins(
                           color: Colors.white, fontWeight: FontWeight.bold)),
                   GButton(

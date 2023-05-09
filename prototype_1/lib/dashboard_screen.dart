@@ -1,7 +1,8 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:prototype_1/text_style.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:prototype_1/text_style.dart';
 import 'package:prototype_1/constants.dart';
 import 'package:prototype_1/util/current_strength_chart.dart';
 import 'package:intl/intl.dart';
@@ -10,7 +11,7 @@ class DashboardScreen extends StatelessWidget {
   DashboardScreen({super.key});
 
   List unitSoldiers = [
-    //[ soldierName, soldierRank, tileColour, soldierAttendance, soldierIcon]
+    //[ soldierName, soldierRank, tileColour, soldierAttendance, soldierIcon, rationType, dateOfBirth]
 
     [
       "Wei John Koh",
