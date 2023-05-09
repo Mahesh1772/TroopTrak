@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "70295185588",
-    "project_id": "blades-of-olympus",
-    "storage_bucket": "blades-of-olympus.appspot.com"
+    "project_number": "281065592471",
+    "project_id": "nstrackerapp",
+    "storage_bucket": "nstrackerapp.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:70295185588:android:b11f031a88506259f4cfe1",
+        "mobilesdk_app_id": "1:281065592471:android:51ea96f8ef7c7e06a3bbd2",
         "android_client_info": {
           "package_name": "com.bladesofolympus.prototype_1"
         }
       },
       "oauth_client": [
         {
-          "client_id": "70295185588-q9bgj8tah2hokrvp2lmuccovfccenhrv.apps.googleusercontent.com",
+          "client_id": "281065592471-c6nn6ik0tcq189uo475ojtdcu981nd13.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCuMMB27HPMqsEVFVn_SgFkwuMyEwR2l_E"
+          "current_key": "AIzaSyAPksvuWDjGCym1WoQyQZrjMqn4cYYuigE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "70295185588-q9bgj8tah2hokrvp2lmuccovfccenhrv.apps.googleusercontent.com",
+              "client_id": "281065592471-c6nn6ik0tcq189uo475ojtdcu981nd13.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

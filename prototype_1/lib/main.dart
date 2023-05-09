@@ -3,10 +3,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/text_style.dart';
 import 'package:prototype_1/new_navbar.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:prototype_1/firebase_options.dart';
 
-Future main() async{
+Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/text_style.dart';
+import 'package:prototype_1/util/soldier_detailed_screen.dart';
 
 class SoldierTile extends StatelessWidget {
   final String soldierName;
@@ -21,58 +22,72 @@ class SoldierTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(12.0),
-      child: Container(
-        decoration: BoxDecoration(
-            color: tileColor, borderRadius: BorderRadius.circular(12)),
-        child: Column(
-          children: [
-            //rank insignia
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Container(
-                  width: 40,
-                  height: 40,
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: tileColor,
-                    borderRadius: const BorderRadius.only(
-                        topRight: Radius.circular(12),
-                        bottomLeft: Radius.circular(12)),
-                  ),
-                  child: Image.asset(
-                    soldierRank,
-                    width: 30,
-                  ),
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SoldierDetailedScreen(
+                  soldierAttendance: soldierAttendance,
+                  soldierIcon: soldierIcon,
+                  soldierName: soldierName,
+                  soldierRank: soldierRank,
                 ),
-              ],
-            ),
-
-            //soldier icon
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-              child: Image.asset(
-                soldierIcon,
-                width: 90,
+              ));
+        },
+        child: Container(
+          decoration: BoxDecoration(
+              color: tileColor, borderRadius: BorderRadius.circular(12)),
+          child: Column(
+            children: [
+              //rank insignia
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    width: 40,
+                    height: 40,
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: tileColor,
+                      borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(12),
+                          bottomLeft: Radius.circular(12)),
+                    ),
+                    child: Image.asset(
+                      soldierRank,
+                      width: 30,
+                    ),
+                  ),
+                ],
               ),
-            ),
 
-            //name
-
-            Center(
-                child: Text(
-              soldierName,
-              textAlign: TextAlign.center,
-              style: GoogleFonts.poppins(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+              //soldier icon
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 24.0, vertical: 12.0),
+                child: Image.asset(
+                  soldierIcon,
+                  width: 90,
+                ),
               ),
-            )),
 
-            StyledText(soldierAttendance, 14)
-          ],
+              //name
+
+              Center(
+                  child: Text(
+                soldierName,
+                textAlign: TextAlign.center,
+                style: GoogleFonts.poppins(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              )),
+
+              StyledText(soldierAttendance, 14)
+            ],
+          ),
         ),
       ),
     );
