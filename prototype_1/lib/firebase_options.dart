@@ -66,7 +66,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '281065592471',
     projectId: 'nstrackerapp',
     storageBucket: 'nstrackerapp.appspot.com',
-    iosClientId: '281065592471-vj47j3smfthgqpu61ok3dpsi6qfv7o9a.apps.googleusercontent.com',
+    iosClientId:
+        '281065592471-vj47j3smfthgqpu61ok3dpsi6qfv7o9a.apps.googleusercontent.com',
     iosBundleId: 'com.example.prototype1',
   );
 
@@ -76,7 +77,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '281065592471',
     projectId: 'nstrackerapp',
     storageBucket: 'nstrackerapp.appspot.com',
-    iosClientId: '281065592471-vj47j3smfthgqpu61ok3dpsi6qfv7o9a.apps.googleusercontent.com',
+    iosClientId:
+        '281065592471-vj47j3smfthgqpu61ok3dpsi6qfv7o9a.apps.googleusercontent.com',
     iosBundleId: 'com.example.prototype1',
   );
 }

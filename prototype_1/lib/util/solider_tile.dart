@@ -35,8 +35,13 @@ class SoldierTile extends StatelessWidget {
           );
         },
         child: Container(
-          decoration: BoxDecoration(
-              color: tileColor, borderRadius: BorderRadius.circular(12)),
+          decoration: BoxDecoration(boxShadow: const [
+            BoxShadow(
+                blurRadius: 2.0,
+                spreadRadius: 2.0,
+                offset: Offset(10, 10),
+                color: Colors.black54)
+          ], color: tileColor, borderRadius: BorderRadius.circular(12)),
           child: Column(
             children: [
               //rank insignia

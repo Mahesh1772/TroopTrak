@@ -3,7 +3,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/text_style.dart';
 import 'package:prototype_1/dashboard_screen.dart';
-import 'package:prototype_1/nominalroll_screen.dart';
+import 'package:prototype_1/nominal_roll_screen_new.dart';
 
 class GNavMainScreen extends StatefulWidget {
   const GNavMainScreen({super.key});

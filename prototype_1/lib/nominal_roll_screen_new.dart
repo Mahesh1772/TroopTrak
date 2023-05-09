@@ -5,8 +5,8 @@ import 'package:prototype_1/text_style.dart';
 import 'package:prototype_1/constants.dart';
 import 'package:prototype_1/util/solider_tile.dart';
 
-class DashboardScreen extends StatelessWidget {
-  DashboardScreen({super.key});
+class NominalRollNewScreen extends StatelessWidget {
+  NominalRollNewScreen({super.key});
 
   List unitSoldiers = [
     //[ soldierName, soldierRank, tileColour, soldierAttendance, soldierIcon, rationType, dateOfBirth]
@@ -51,59 +51,57 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: backgroundColor,
-        body: SingleChildScrollView(
-          child: SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      backgroundColor: const Color.fromARGB(255, 21, 25, 34),
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 24.0),
-                      child: StyledText('Nominal Roll', 20),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Image.asset(
-                        'lib/assets/user.png',
-                        width: 50,
-                      ),
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 24.0),
-                  child: StyledText('Our Family of Soliders:', 32),
+                  child: StyledText('Nominal Roll', 20),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Expanded(
-                  child: GridView.builder(
-                    itemCount: unitSoldiers.length,
-                    padding: const EdgeInsets.all(12),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2, childAspectRatio: 1 / 1.5),
-                    itemBuilder: (context, index) {
-                      return SoldierTile(
-                        soldierName: unitSoldiers[index][0],
-                        soldierRank: unitSoldiers[index][1],
-                        tileColor: unitSoldiers[index][2],
-                        soldierAttendance: unitSoldiers[index][3],
-                        soldierIcon: unitSoldiers[index][4],
-                      );
-                    },
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Image.asset(
+                    'lib/assets/user.png',
+                    width: 50,
                   ),
-                ),
+                )
               ],
             ),
-          ),
-        ));
+            const SizedBox(
+              height: 10,
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.0),
+              child: StyledText('Our Family of Soldiers:', 32),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Expanded(
+              child: GridView.builder(
+                itemCount: unitSoldiers.length,
+                padding: const EdgeInsets.all(12),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2, childAspectRatio: 1 / 1.5),
+                itemBuilder: (context, index) {
+                  return SoldierTile(
+                    soldierName: unitSoldiers[index][0],
+                    soldierRank: unitSoldiers[index][1],
+                    tileColor: unitSoldiers[index][2],
+                    soldierAttendance: unitSoldiers[index][3],
+                    soldierIcon: unitSoldiers[index][4],
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
