@@ -39,6 +39,7 @@ dependencies:
   cloud_firestore: ^4.6.0
   firebase_core : ^2.11.0
   google_fonts: ^4.0.4
+  liquid_pull_to_refresh: ^3.0.1
 
 
 dev_dependencies:

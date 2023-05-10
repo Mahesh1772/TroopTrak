@@ -7,7 +7,7 @@ class ReadData extends StatelessWidget {
   final String docIDs;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build (BuildContext context) {
     // get the collection
     CollectionReference users = FirebaseFirestore.instance.collection('Users');
 
@@ -21,9 +21,9 @@ class ReadData extends StatelessWidget {
           //to a variable called "data" of Type Map
           Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
           //Returning the value for key called name
-          return Text('Name: ${data['rationType']}');
+          return Text('name: ${data['name']}');
         }
-        return Text('Loading......');
+        return const Text('Loading......');
       },
     );
   }

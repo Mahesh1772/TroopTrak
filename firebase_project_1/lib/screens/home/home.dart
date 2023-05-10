@@ -19,26 +19,71 @@ class _HomeState extends State<Home> {
 
   // DocumentReference<Map<String, dynamic>>(Users/8bu245T440NIuQnJhm81)
   // This is the sample output, to get IDs we just do .id
-  Future getDocIDs() async {
+  /*Future getDocIDs() async {
     await FirebaseFirestore.instance.collection('Users').get().then(
           (snapshot) => snapshot.docs.forEach(
+            // for(document in snapshot.docs)
             (document) {
-              print(document.reference);
-              documentIDs.add(document.reference.id);
+              {
+                print(document.reference);
+                documentIDs.add(document.reference.id);
+              }
+              ;
             },
           ),
         );
+  }*/
+
+  Future getDocIDs() async {
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .get()
+        .then((snapshot) => {
+              snapshot.docs.forEach((document) {
+                print(document.reference);
+                documentIDs.add(document.reference.id);
+              })
+            });
+
+    setState(() {});
   }
 
   @override
   void initState() {
     getDocIDs();
     super.initState();
+    documentIDs = [];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.deepPurple,
+        title: Center(
+          child: Text(
+            textAlign: TextAlign.center,
+            'Display dashboard',
+            style: TextStyle(
+              fontSize: 30,
+              color: Colors.tealAccent.shade400,
+            ),
+          ),
+        ),
+        actions: [
+          GestureDetector(
+            onTap: () {
+              FirebaseAuth.instance.signOut();
+            },
+            child: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              child: Icon(
+                Icons.logout_sharp,
+              ),
+            ),
+          )
+        ],
+      ),
       backgroundColor: Colors.deepPurple.shade200,
       body: Center(
         child: Column(
@@ -46,31 +91,30 @@ class _HomeState extends State<Home> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              'Display dashboard',
-              style: TextStyle(fontSize: 30, color: Colors.indigo.shade800),
-            ),
-            MaterialButton(
-              onPressed: () {
-                FirebaseAuth.instance.signOut();
-              },
-              color: Colors.deepPurpleAccent,
-              child: const Text('Sign Out'),
-            ),
-
             // This has a FutureBuilder as it needs
             // to wait for executiion of getDocIDs function to finish execution
-            Expanded(child: FutureBuilder(
-              builder: (context, index) {
-                future:
-                getDocIDs();
-                return ListView.builder(
-                  itemCount: documentIDs.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: ReadData(docIDs: documentIDs[index]),
-                    );
-                  },
+            /*Expanded(
+              child: FutureBuilder<Object>(
+                builder: (context, index) {
+                  future:
+                  getDocIDs();
+                  return ListView.builder(
+                    itemCount: documentIDs.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: ReadData(docIDs: documentIDs[index]),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),*/
+            Expanded(
+                child: ListView.builder(
+              itemCount: documentIDs.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: ReadData(docIDs: documentIDs[index]),
                 );
               },
             )),
