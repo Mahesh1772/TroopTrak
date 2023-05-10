@@ -19,24 +19,11 @@ class _HomeState extends State<Home> {
 
   // DocumentReference<Map<String, dynamic>>(Users/8bu245T440NIuQnJhm81)
   // This is the sample output, to get IDs we just do .id
-  /*Future getDocIDs() async {
-    await FirebaseFirestore.instance.collection('Users').get().then(
-          (snapshot) => snapshot.docs.forEach(
-            // for(document in snapshot.docs)
-            (document) {
-              {
-                print(document.reference);
-                documentIDs.add(document.reference.id);
-              }
-              ;
-            },
-          ),
-        );
-  }*/
 
   Future getDocIDs() async {
     await FirebaseFirestore.instance
         .collection('Users')
+        .orderBy('rank', descending: false)
         .get()
         .then((snapshot) => {
               snapshot.docs.forEach((document) {
@@ -93,31 +80,30 @@ class _HomeState extends State<Home> {
           children: [
             // This has a FutureBuilder as it needs
             // to wait for executiion of getDocIDs function to finish execution
-            /*Expanded(
-              child: FutureBuilder<Object>(
-                builder: (context, index) {
-                  future:
-                  getDocIDs();
-                  return ListView.builder(
-                    itemCount: documentIDs.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: ReadData(docIDs: documentIDs[index]),
-                      );
-                    },
-                  );
-                },
-              ),
-            ),*/
             Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
                 child: ListView.builder(
-              itemCount: documentIDs.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: ReadData(docIDs: documentIDs[index]),
-                );
-              },
-            )),
+                  itemCount: documentIDs.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListTile(
+                        shape: BeveledRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          side: const BorderSide(
+                            width: 2,
+                            color: Colors.indigo,
+                          ),
+                        ),
+                        title: ReadData(docIDs: documentIDs[index]),
+                        tileColor: Colors.indigo.shade300,
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
           ],
         ),
       ),

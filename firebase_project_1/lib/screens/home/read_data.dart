@@ -7,21 +7,26 @@ class ReadData extends StatelessWidget {
   final String docIDs;
 
   @override
-  Widget build (BuildContext context) {
+  Widget build(BuildContext context) {
     // get the collection
     CollectionReference users = FirebaseFirestore.instance.collection('Users');
 
     return FutureBuilder<DocumentSnapshot>(
       future: users.doc(docIDs).get(),
       builder: (context, snapshot) {
-
         //IF connection with the firebase is ensured, then we execute
         if (snapshot.connectionState == ConnectionState.done) {
-          //We are trying to map the key and values pairs 
+          //We are trying to map the key and values pairs
           //to a variable called "data" of Type Map
-          Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+          Map<String, dynamic> data =
+              snapshot.data!.data() as Map<String, dynamic>;
           //Returning the value for key called name
-          return Text('name: ${data['name']}');
+          return Text(
+              '${data['name']},' +
+              ' ' +
+              'Rank:' +
+              ' ' +
+              '${data['rank']}');
         }
         return const Text('Loading......');
       },
