@@ -68,7 +68,7 @@ class _GNavMainScreen extends State<GNavMainScreen> {
                   ),
                   GButton(
                       icon: Icons.track_changes_rounded,
-                      text: 'Conduct Tracker',
+                      text: 'Nominal Roll',
                       textStyle: GoogleFonts.poppins(
                           color: Colors.white, fontWeight: FontWeight.bold)),
                   GButton(
