@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/text_style.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/constants.dart';
 import 'package:prototype_1/util/current_strength_chart.dart';
 import 'package:intl/intl.dart';
