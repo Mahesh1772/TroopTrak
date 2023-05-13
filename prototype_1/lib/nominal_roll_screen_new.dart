@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:prototype_1/text_style.dart';
-import 'package:prototype_1/constants.dart';
 import 'package:prototype_1/util/solider_tile.dart';
 
 class NominalRollNewScreen extends StatelessWidget {
