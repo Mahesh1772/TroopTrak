@@ -31,10 +31,11 @@ class AppHome extends StatelessWidget {
         leading: const Icon(Icons.ondemand_video_rounded),
       ),
       floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: const Icon(
-            Icons.add_shopping_cart_outlined,
-          )),
+        onPressed: () {},
+        child: const Icon(
+          Icons.add_shopping_cart_outlined,
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: ListView(
