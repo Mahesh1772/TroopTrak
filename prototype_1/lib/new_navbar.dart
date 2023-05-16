@@ -17,12 +17,20 @@ class GNavMainScreen extends StatefulWidget {
 class _GNavMainScreen extends State<GNavMainScreen> {
   int selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[
-    DashboardScreen(),
+    const DashboardScreen(),
     NominalRollNewScreen(),
-    const StyledText('Parade State', 25),
+    const StyledText(
+      'Parade State',
+      25,
+      fontWeight: FontWeight.w500,
+    ),
     //const StyledText('Conduct Tracker', 25),
     //const StyledText('Parade State', 25),
-    const StyledText('Guard Duty', 25),
+    const StyledText(
+      'Guard Duty',
+      25,
+      fontWeight: FontWeight.w500,
+    ),
   ];
   void itemTapped(int index) {
     setState(() {

@@ -89,7 +89,11 @@ class SoldierTile extends StatelessWidget {
                 ),
               )),
 
-              StyledText(soldierAttendance, 14)
+              StyledText(
+                soldierAttendance,
+                14,
+                fontWeight: FontWeight.w500,
+              )
             ],
           ),
         ),

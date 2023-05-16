@@ -1,54 +1,18 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:prototype_1/sign_in_assets/authenticate/authenticate.dart';
+import 'package:prototype_1/sign_in_assets/authenticate/sign_in.dart';
+import 'package:prototype_1/sign_in_assets/home/wrapper.dart';
 import 'package:prototype_1/text_style.dart';
 import 'package:prototype_1/constants.dart';
 import 'package:prototype_1/util/current_strength_chart.dart';
 import 'package:intl/intl.dart';
 
 class DashboardScreen extends StatelessWidget {
-  DashboardScreen({super.key});
-
-  List unitSoldiers = [
-    //[ soldierName, soldierRank, tileColour, soldierAttendance, soldierIcon, rationType, dateOfBirth]
-
-    [
-      "Wei John Koh",
-      "lib/assets/army-ranks/3sg.png",
-      Colors.brown.shade800,
-      "IN CAMP",
-      "lib/assets/army-ranks/soldier.png"
-    ],
-    [
-      "Sivagnanam Maheshwaran",
-      "lib/assets/army-ranks/3sg.png",
-      Colors.indigo.shade800,
-      "IN CAMP",
-      "lib/assets/army-ranks/soldier.png"
-    ],
-    [
-      "Aakash Ramaswamy",
-      "lib/assets/army-ranks/3sg.png",
-      Colors.indigo.shade400,
-      "NOT IN CAMP",
-      "lib/assets/army-ranks/soldier.png"
-    ],
-    [
-      "Nikhil Babu",
-      "lib/assets/army-ranks/cfc.png",
-      Colors.teal.shade800,
-      "IN CAMP",
-      "lib/assets/army-ranks/men.png"
-    ],
-    [
-      "John Doe",
-      "lib/assets/army-ranks/lcp.png",
-      Colors.teal.shade400,
-      "NOT IN CAMP",
-      "lib/assets/army-ranks/men.png"
-    ],
-  ];
+  const DashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +28,41 @@ class DashboardScreen extends StatelessWidget {
                 children: [
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 24.0),
-                    child: StyledText('Dashboard', 20),
+                    child: StyledText(
+                      'Dashboard',
+                      20,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 100.0),
+                    child: InkWell(
+                      onTap: () {
+                        FirebaseAuth.instance.signOut();
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          boxShadow: const [
+                            BoxShadow(
+                                color: Colors.black54,
+                                offset: Offset(10.0, 10.0),
+                                blurRadius: 2.0,
+                                spreadRadius: 2.0),
+                          ],
+                          color: Colors.deepPurple.shade400,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.all(defaultPadding),
+                          child: Icon(
+                            Icons.exit_to_app_rounded,
+                            color: Colors.white,
+                            size: 35,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(12.0),
@@ -80,7 +78,11 @@ class DashboardScreen extends StatelessWidget {
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24.0),
-                child: StyledText('Welcome,\nAakash! 👋', 32),
+                child: StyledText(
+                  'Welcome,\nAakash! 👋',
+                  32,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(
                 height: 20,
