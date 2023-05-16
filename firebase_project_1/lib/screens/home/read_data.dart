@@ -19,24 +19,24 @@ class ReadData extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           //We are trying to map the key and values pairs
           //to a variable called "data" of Type Map
-          Map<String, dynamic> data =
-              snapshot.data!.data() as Map<String, dynamic>;
+          //Map<String, dynamic> data =
+              //snapshot.data!.data() as Map<String, dynamic>;
 
           //User data = User.fromJson(snapshot.data!.data() as Map<String, dynamic>);
 
-          //User data = snapshot.data!.data() as User;
+          User data = snapshot.data as User;
           
           //Map<String, dynamic> data = User.fromJson(snapshot.data!.data())
 
           //Returning the value for key called name
           return Text(
-              '${data['rationType']},' +
-              //'${data.rationType}, ' +
+              //'${data['rationType']},' +
+              '${data.rationType}, ' +
               ' ' +
               'Rank:' +
               ' ' +
-              '${data['rank']}');
-              //'${data.rank}');
+              //'${data['rank']}');
+              '${data.rank}');
         }
         return const Text('Loading......');
       },
