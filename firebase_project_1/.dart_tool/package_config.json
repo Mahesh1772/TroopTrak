@@ -38,6 +38,12 @@
       "languageVersion": "2.18"
     },
     {
+      "name": "cloud_firestore_odm",
+      "rootUri": "file:///C:/Users/bsiva/AppData/Local/Pub/Cache/hosted/pub.dev/cloud_firestore_odm-1.0.0-dev.58",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
       "name": "cloud_firestore_platform_interface",
       "rootUri": "file:///C:/Users/bsiva/AppData/Local/Pub/Cache/hosted/pub.dev/cloud_firestore_platform_interface-5.14.0",
       "packageUri": "lib/",
@@ -168,6 +174,12 @@
       "rootUri": "file:///C:/Users/bsiva/AppData/Local/Pub/Cache/hosted/pub.dev/js-0.6.5",
       "packageUri": "lib/",
       "languageVersion": "2.16"
+    },
+    {
+      "name": "json_annotation",
+      "rootUri": "file:///C:/Users/bsiva/AppData/Local/Pub/Cache/hosted/pub.dev/json_annotation-4.8.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
     },
     {
       "name": "lints",
@@ -332,7 +344,7 @@
       "languageVersion": "2.19"
     }
   ],
-  "generated": "2023-05-16T01:34:32.167062Z",
+  "generated": "2023-05-16T07:21:50.976062Z",
   "generator": "pub",
   "generatorVersion": "2.19.6"
 }

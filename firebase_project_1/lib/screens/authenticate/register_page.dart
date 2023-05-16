@@ -27,6 +27,8 @@ class _RegisterPageState extends State<RegisterPage> {
   final _ord = TextEditingController();
   final _attendence = TextEditingController();
 
+  var db = FirebaseFirestore.instance;
+
   Future signUp() async {
     if (_confirmedpassword.text.trim() == _password.text.trim()) {
       //creating user
@@ -41,7 +43,20 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future addUserDetails() async {
-    await FirebaseFirestore.instance.collection('Users').add({
+    await db.collection('Users').doc(_name.text.trim()).set({
+      //User map formatting
+      'rank': _rank.text.trim(),
+      //'name': _name.text.trim(),
+      'appointment': _appointment.text.trim(),
+      'rationType': _rationType.text.trim(),
+      'status': _status.text.trim(),
+      'mobileNumber': _mobileNumber.text.trim(),
+      'bloodgroup': _bloodgroup.text.trim(),
+      'dob': _dob.text.trim(),
+      'ord': _ord.text.trim(),
+      'attendence': _attendence.text.trim(),
+    });
+    /*await db.collection('Users').add({
       //User map formatting
       'rank': _rank.text.trim(),
       'name': _name.text.trim(),
@@ -53,7 +68,7 @@ class _RegisterPageState extends State<RegisterPage> {
       'dob': _dob.text.trim(),
       'ord': _ord.text.trim(),
       'attendence': _attendence.text.trim(),
-    });
+    });*/
   }
 
   @override

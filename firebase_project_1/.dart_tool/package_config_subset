@@ -22,6 +22,10 @@ cloud_firestore
 2.18
 file:///C:/Users/bsiva/AppData/Local/Pub/Cache/hosted/pub.dev/cloud_firestore-4.7.0/
 file:///C:/Users/bsiva/AppData/Local/Pub/Cache/hosted/pub.dev/cloud_firestore-4.7.0/lib/
+cloud_firestore_odm
+2.18
+file:///C:/Users/bsiva/AppData/Local/Pub/Cache/hosted/pub.dev/cloud_firestore_odm-1.0.0-dev.58/
+file:///C:/Users/bsiva/AppData/Local/Pub/Cache/hosted/pub.dev/cloud_firestore_odm-1.0.0-dev.58/lib/
 cloud_firestore_platform_interface
 2.18
 file:///C:/Users/bsiva/AppData/Local/Pub/Cache/hosted/pub.dev/cloud_firestore_platform_interface-5.14.0/
@@ -98,6 +102,10 @@ js
 2.16
 file:///C:/Users/bsiva/AppData/Local/Pub/Cache/hosted/pub.dev/js-0.6.5/
 file:///C:/Users/bsiva/AppData/Local/Pub/Cache/hosted/pub.dev/js-0.6.5/lib/
+json_annotation
+2.19
+file:///C:/Users/bsiva/AppData/Local/Pub/Cache/hosted/pub.dev/json_annotation-4.8.1/
+file:///C:/Users/bsiva/AppData/Local/Pub/Cache/hosted/pub.dev/json_annotation-4.8.1/lib/
 lints
 2.17
 file:///C:/Users/bsiva/AppData/Local/Pub/Cache/hosted/pub.dev/lints-2.0.1/
