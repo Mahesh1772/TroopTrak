@@ -13,7 +13,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
 
-  bool animate = false;
+  var animate = false;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Stack(
           children: [
             const Positioned(
-              top: animate ? 0 : -30,
+              top: animate==true ? 0 : -30,
               left: 0,
               child: Image(
                 image: AssetImage(SplashTopIcon),
