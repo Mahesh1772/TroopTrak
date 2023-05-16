@@ -1,0 +1,15 @@
+flutter_native_splash:
+  android: true
+  ios: true
+  color:  "#f7f6f1"
+  color_dark:  "#272727"
+  image: assets/images/books.png
+  image_dark: assets/images/books.png
+
+  android_13:
+    image: assets/images/books.png
+    icon_background_color: "#f7f6f1"
+    image_dark: assets/images/books.png
+    icon_background_color_dark: "#272727"
+
+  web: false
