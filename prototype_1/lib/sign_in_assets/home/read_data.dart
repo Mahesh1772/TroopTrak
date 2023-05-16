@@ -21,12 +21,7 @@ class ReadData extends StatelessWidget {
           Map<String, dynamic> data =
               snapshot.data!.data() as Map<String, dynamic>;
           //Returning the value for key called name
-          return Text(
-              '${data['name']},' +
-              ' ' +
-              'Rank:' +
-              ' ' +
-              '${data['rank']}');
+          return Text('${data['name']}, Rank: ${data['rank']}');
         }
         return const Text('Loading......');
       },

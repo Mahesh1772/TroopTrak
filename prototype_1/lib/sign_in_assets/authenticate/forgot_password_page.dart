@@ -26,7 +26,7 @@ class _ForgotPassword extends State<ForgotPassword> {
       showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
+          return const AlertDialog(
             content: Text(
               'Reset link has been sent to your Email account!',
             ),
