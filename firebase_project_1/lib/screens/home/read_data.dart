@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_project_1/user_model/user_model.dart';
 import 'package:flutter/material.dart';
 
 class ReadData extends StatelessWidget {
@@ -20,15 +21,26 @@ class ReadData extends StatelessWidget {
           //to a variable called "data" of Type Map
           Map<String, dynamic> data =
               snapshot.data!.data() as Map<String, dynamic>;
-          //Returning the value for key called name
+
+          //if (snapshot.hasData) {
+          //User data = User.fromJson(snapshot.data!.data() as User);
+
           return Text(
-              '${data['name']},' +
-              ' ' +
-              'Rank:' +
-              ' ' +
-              '${data['rank']}');
+            '${data['rationType']},' +
+                //'${data.rationType}, ' +
+                ' ' +
+                'Rank:' +
+                ' ' +
+                '${data['rank']}',
+          );
+
+          //'${data.rank}');
+          //}
         }
         return const Text('Loading......');
+        //Map<String, dynamic> data = User.fromJson(snapshot.data!.data())
+
+        //Returning the value for key called name
       },
     );
   }
