@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_project_1/screens/home/read_data.dart';
+import 'package:firebase_project_1/screens/home/update_profile.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -106,6 +108,13 @@ class _HomeState extends State<Home> {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          const UpdateProfile();
+        } ,
+        backgroundColor: Colors.tealAccent,
+        child: const Icon(Icons.edit),
       ),
     );
   }

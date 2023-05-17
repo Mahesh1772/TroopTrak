@@ -42,6 +42,7 @@ dependencies:
   liquid_pull_to_refresh: ^3.0.1
   json_annotation: ^4.8.1
   cloud_firestore_odm: ^1.0.0-dev.58
+  get: ^4.6.5
 
 
 dev_dependencies:
