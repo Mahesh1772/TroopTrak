@@ -22,26 +22,15 @@ class ReadData extends StatelessWidget {
           Map<String, dynamic> data =
               snapshot.data!.data() as Map<String, dynamic>;
 
-          //if (snapshot.hasData) {
-          //User data = User.fromJson(snapshot.data!.data() as User);
-
-           //User data =
-          //User.fromJson(snapshot.data().hasData as Map<String, dynamic>);
-          //User userModelData = data as User;
-          print(data);
-
           return Text(
-            docIDs + ': '
-            '${data['name']},' +
+            docIDs +
+                ': ' +
                 //'${data.rationType}, ' +
                 ' ' +
                 'Rank:' +
                 ' ' +
                 '${data['rank']}',
           );
-
-          //'${data.rank}');
-          //}
         }
         return const Text('Loading......');
         //Map<String, dynamic> data = User.fromJson(snapshot.data!.data())

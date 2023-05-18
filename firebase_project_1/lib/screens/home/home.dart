@@ -44,6 +44,11 @@ class _HomeState extends State<Home> {
     documentIDs = [];
   }
 
+  void reset() {
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (BuildContext context) => super.widget));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,6 +110,13 @@ class _HomeState extends State<Home> {
                   },
                 ),
               ),
+            ),
+            ElevatedButton(
+              onPressed: reset,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.purple,
+              ),
+              child: const Text('Refresh'),
             ),
           ],
         ),

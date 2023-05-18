@@ -10,16 +10,16 @@ class UpdateProfile extends StatefulWidget {
   State<UpdateProfile> createState() => _UpdateProfile();
 }
 
-final _rank = TextEditingController();
-final _name = TextEditingController();
-final _appointment = TextEditingController();
-final _rationType = TextEditingController();
-final _status = TextEditingController();
-final _mobileNumber = TextEditingController();
-final _bloodgroup = TextEditingController();
-final _dob = TextEditingController();
-final _ord = TextEditingController();
-final _attendence = TextEditingController();
+var _rank = TextEditingController();
+var _name = TextEditingController();
+var _appointment = TextEditingController();
+var _rationType = TextEditingController();
+var _status = TextEditingController();
+var _mobileNumber = TextEditingController();
+var _bloodgroup = TextEditingController();
+var _dob = TextEditingController();
+var _ord = TextEditingController();
+var _attendence = TextEditingController();
 
 class _UpdateProfile extends State<UpdateProfile> {
   var db = FirebaseFirestore.instance;
@@ -27,7 +27,7 @@ class _UpdateProfile extends State<UpdateProfile> {
   Future adduser() async {
     //Adding user details
     addUserDetails();
-
+    resetControllers();
     Navigator.pop(context);
   }
 
@@ -45,22 +45,23 @@ class _UpdateProfile extends State<UpdateProfile> {
       'ord': _ord.text.trim(),
       'attendence': _attendence.text.trim(),
     });
-    /*await db.collection('Users').add({
-      //User map formatting
-      'rank': _rank.text.trim(),
-      'name': _name.text.trim(),
-      'appointment': _appointment.text.trim(),
-      'rationType': _rationType.text.trim(),
-      'status': _status.text.trim(),
-      'mobileNumber': _mobileNumber.text.trim(),
-      'bloodgroup': _bloodgroup.text.trim(),
-      'dob': _dob.text.trim(),
-      'ord': _ord.text.trim(),
-      'attendence': _attendence.text.trim(),
-    });*/
   }
 
-  @override
+  void resetControllers() {
+    _rank.clear();
+    _name.clear();
+    _appointment.clear();
+    _rationType.clear();
+    _status.clear();
+    _mobileNumber.clear();
+    _bloodgroup.clear();
+    _dob.clear();
+    _ord.clear();
+    _attendence.clear();
+    super.dispose();
+  }
+
+  /*@override
   void dispose() {
     _rank.dispose();
     _name.dispose();
@@ -73,7 +74,7 @@ class _UpdateProfile extends State<UpdateProfile> {
     _ord.dispose();
     _attendence.dispose();
     super.dispose();
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
