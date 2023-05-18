@@ -3,13 +3,51 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:prototype_1/sign_in_assets/authenticate/authenticate.dart';
-import 'package:prototype_1/sign_in_assets/authenticate/sign_in.dart';
-import 'package:prototype_1/sign_in_assets/home/wrapper.dart';
 import 'package:prototype_1/text_style.dart';
 import 'package:prototype_1/constants.dart';
 import 'package:prototype_1/util/current_strength_chart.dart';
 import 'package:intl/intl.dart';
+import 'package:prototype_1/util/dashboard_soldier_tile.dart';
+
+List unitSoldiers = [
+  //[ soldierName, soldierRank, tileColour, soldierAttendance, soldierIcon, rationType, dateOfBirth]
+
+  [
+    "Wei John Koh",
+    "lib/assets/army-ranks/3sg.png",
+    Colors.brown.shade800,
+    "IN CAMP",
+    "lib/assets/army-ranks/soldier.png"
+  ],
+  [
+    "Sivagnanam Maheshwaran",
+    "lib/assets/army-ranks/3sg.png",
+    Colors.indigo.shade800,
+    "IN CAMP",
+    "lib/assets/army-ranks/soldier.png"
+  ],
+  [
+    "Aakash Ramaswamy",
+    "lib/assets/army-ranks/3sg.png",
+    Colors.indigo.shade400,
+    "NOT IN CAMP",
+    "lib/assets/army-ranks/soldier.png"
+  ],
+  [
+    "Nikhil Babu",
+    "lib/assets/army-ranks/cfc.png",
+    Colors.teal.shade800,
+    "IN CAMP",
+    "lib/assets/army-ranks/men.png"
+  ],
+  [
+    "John Doe",
+    "lib/assets/army-ranks/lcp.png",
+    Colors.teal.shade400,
+    "NOT IN CAMP",
+    "lib/assets/army-ranks/men.png"
+  ],
+];
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -204,50 +242,74 @@ class CurrentStrengthBreakdownTile extends StatelessWidget {
           Radius.circular(defaultPadding),
         ),
       ),
-      child: Row(
-        children: [
-          SizedBox(
-            height: 20,
-            width: 20,
-            child: Image.asset(
-              imgSrc,
-              color: imgColor,
-            ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: GoogleFonts.poppins(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text(
-                    "$currentNumOfSoldiers In Camp",
-                    style: GoogleFonts.poppins(
-                      color: Colors.white.withOpacity(0.45),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
+      child: ExpansionTile(
+        title: Row(
+          children: [
+            SizedBox(
+              height: 20,
+              width: 20,
+              child: Image.asset(
+                imgSrc,
+                color: imgColor,
               ),
             ),
-          ),
-          Text(
-            "$currentNumOfSoldiers / $totalNumOfSoldiers",
-            style: GoogleFonts.poppins(
-                fontSize: 24, fontWeight: FontWeight.w500, color: Colors.white),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: GoogleFonts.poppins(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      "$currentNumOfSoldiers In Camp",
+                      style: GoogleFonts.poppins(
+                        color: Colors.white.withOpacity(0.45),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Text(
+              "$currentNumOfSoldiers / $totalNumOfSoldiers",
+              style: GoogleFonts.poppins(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white),
+            ),
+          ],
+        ),
+        collapsedIconColor: Colors.white,
+        children: [
+          Container(
+            height: 220,
+            child: ListView.builder(
+              itemCount: unitSoldiers.length,
+              padding: const EdgeInsets.all(12),
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                return DashboardSoldierTile(
+                  soldierName: unitSoldiers[index][0],
+                  soldierRank: unitSoldiers[index][1],
+                  tileColor: unitSoldiers[index][2],
+                  soldierAttendance: unitSoldiers[index][3],
+                  soldierIcon: unitSoldiers[index][4],
+                );
+              },
+            ),
           ),
         ],
       ),
