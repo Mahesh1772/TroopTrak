@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:prototype_1/sign_in_assets/authenticate/authenticate.dart';
-import 'package:prototype_1/new_navbar.dart';
+import 'package:prototype_1/util/new_navbar.dart';
 import 'package:flutter/material.dart';
 
 class AuthService extends StatelessWidget {

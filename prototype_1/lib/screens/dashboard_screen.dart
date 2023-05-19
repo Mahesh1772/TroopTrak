@@ -3,8 +3,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:prototype_1/text_style.dart';
-import 'package:prototype_1/constants.dart';
+import 'package:prototype_1/util/text_style.dart';
+import 'package:prototype_1/util/constants.dart';
 import 'package:prototype_1/util/current_strength_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:prototype_1/util/dashboard_soldier_tile.dart';

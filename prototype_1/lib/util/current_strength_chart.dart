@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:prototype_1/constants.dart';
+import 'package:prototype_1/util/constants.dart';
 
 class CurrentStrengthChart extends StatelessWidget {
   CurrentStrengthChart({

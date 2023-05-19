@@ -1,10 +1,10 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:prototype_1/add_new_soldier_screen.dart';
+import 'package:prototype_1/screens/add_new_soldier_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:prototype_1/constants.dart';
-import 'package:prototype_1/text_style.dart';
+import 'package:prototype_1/util/constants.dart';
+import 'package:prototype_1/util/text_style.dart';
 import 'package:prototype_1/util/solider_tile.dart';
 
 class NominalRollNewScreen extends StatelessWidget {
