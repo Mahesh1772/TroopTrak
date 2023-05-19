@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:prototype_1/text_style.dart';
 import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AddNewSoldierPage extends StatefulWidget {
   const AddNewSoldierPage({super.key});
@@ -17,18 +18,21 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
   final _mobilenumber = TextEditingController();
   String dob = 'Date of birth:';
   String ord = "ORD:";
-  var rationTypes = [
-    "Choose your ration type...",
+  final _rationTypes = [
+    "Select your ration type...",
     "NM",
     "M",
     "VI",
     "VC",
     "SD NM",
-    "SD M"
+    "SD M",
+    "SD VI",
+    "SD VC"
   ];
-  String? selectedItem = "Choose your ration type...";
-  var ranks = [
+  String? _selectedItem = "Select your ration type...";
+  final _ranks = [
     "Select your rank...",
+    "REC",
     "PTE",
     "LCP",
     "CPL",
@@ -57,10 +61,10 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
     "MG",
     "LG",
   ];
-  String? selectedRank = "Select your rank...";
+  String? _selectedRank = "Select your rank...";
 
-  var bloodTypes = [
-    "Choose your blood type...",
+  final _bloodTypes = [
+    "Select your blood type...",
     "O-",
     "O+",
     "B-",
@@ -71,7 +75,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
     "AB+",
     "Unknown"
   ];
-  String? selectedBloodType = "Choose your blood type...";
+  String? _selectedBloodType = "Select your blood type...";
 
   void _showDatePicker() {
     showDatePicker(
@@ -103,11 +107,34 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
     });
   }
 
+  Future addUserDetails() async {
+    await FirebaseFirestore.instance.collection('Users').add({
+      //User map formatting
+      'rank': _selectedRank,
+      'name': _name.text.trim(),
+      'company': _company.text.trim(),
+      'platoon': _platoon.text.trim(),
+      'section': _section.text.trim(),
+      'rationType': _selectedItem,
+      'mobileNumber': _mobilenumber.text.trim(),
+      'bloodgroup': _selectedBloodType,
+      'dob': dob..trim(),
+      'ord': ord.trim(),
+    });
+  }
+
+  @override
+  void dispose() {
+    _name.dispose();
+    _company.dispose();
+    _platoon.dispose();
+    _section.dispose();
+    _mobilenumber.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
-        child: StyledText(item, 20, fontWeight: FontWeight.w500));
-
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
@@ -119,7 +146,9 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
           color: Colors.white,
           size: 40,
         ),
-        onPressed: () {},
+        onPressed: () {
+          addUserDetails();
+        },
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(12),
@@ -176,7 +205,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                       decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintStyle: TextStyle(color: Colors.white),
-                          hintText: 'Enter your Name (as per NRIC)'),
+                          hintText: 'Name (as per NRIC):'),
                     ),
                   ),
                 ),
@@ -224,15 +253,15 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                           border: Border.all(color: Colors.white),
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: DropdownButton<String>(
+                        child: DropdownButtonFormField<String>(
                           dropdownColor: Colors.black54,
-                          value: selectedItem,
+                          value: _selectedItem,
                           icon: const Icon(
                             Icons.arrow_downward_sharp,
                             color: Colors.white,
                           ),
                           style: const TextStyle(color: Colors.black54),
-                          items: rationTypes
+                          items: _rationTypes
                               .map(
                                 (item) => DropdownMenuItem<String>(
                                   value: item,
@@ -247,7 +276,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                               )
                               .toList(),
                           onChanged: (item) =>
-                              setState(() => selectedItem = item),
+                              setState(() => _selectedItem = item),
                         ),
                       ),
                     ),
@@ -269,14 +298,14 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                         padding: const EdgeInsets.only(right: 4.0),
                         child: DropdownButton<String>(
                           dropdownColor: Colors.black54,
-                          value: selectedRank,
+                          value: _selectedRank,
                           icon: Image.asset(
                             "lib/assets/army-ranks/3sg.png",
                             width: 20,
                             color: Colors.white,
                           ),
                           style: const TextStyle(color: Colors.black54),
-                          items: ranks
+                          items: _ranks
                               .map(
                                 (item) => DropdownMenuItem<String>(
                                   value: item,
@@ -294,7 +323,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                               )
                               .toList(),
                           onChanged: (item) =>
-                              setState(() => selectedRank = item),
+                              setState(() => _selectedRank = item),
                         ),
                       ),
                     ),
@@ -309,13 +338,13 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                         ),
                         child: DropdownButton<String>(
                           dropdownColor: Colors.black54,
-                          value: selectedBloodType,
+                          value: _selectedBloodType,
                           icon: const Icon(
                             Icons.water_drop_sharp,
                             color: Colors.red,
                           ),
                           style: const TextStyle(color: Colors.black54),
-                          items: bloodTypes
+                          items: _bloodTypes
                               .map(
                                 (item) => DropdownMenuItem<String>(
                                   value: item,
@@ -330,7 +359,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                               )
                               .toList(),
                           onChanged: (item) =>
-                              setState(() => selectedBloodType = item),
+                              setState(() => _selectedBloodType = item),
                         ),
                       ),
                     ),
@@ -398,7 +427,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                       decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintStyle: TextStyle(color: Colors.white),
-                          hintText: 'Section'),
+                          hintText: 'Section / Det'),
                     ),
                   ),
                 ),
@@ -458,7 +487,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                               decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 hintStyle: TextStyle(color: Colors.white),
-                                hintText: 'Mobile number',
+                                hintText: 'Mobile Number',
                               ),
                             ),
                           ),
