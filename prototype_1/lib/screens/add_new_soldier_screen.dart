@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:prototype_1/text_style.dart';
+import 'package:prototype_1/util/text_style.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -134,7 +134,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(context) {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
@@ -253,7 +253,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                           border: Border.all(color: Colors.white),
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: DropdownButtonFormField<String>(
+                        child: DropdownButton<String>(
                           dropdownColor: Colors.black54,
                           value: _selectedItem,
                           icon: const Icon(

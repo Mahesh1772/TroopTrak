@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:prototype_1/text_style.dart';
-import 'package:prototype_1/util/soldier_detailed_screen.dart';
+import 'package:prototype_1/util/text_style.dart';
+import 'package:prototype_1/screens/soldier_detailed_screen.dart';
 
 class DashboardSoldierTile extends StatelessWidget {
   final String soldierName;
