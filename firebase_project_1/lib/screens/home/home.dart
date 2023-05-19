@@ -19,13 +19,16 @@ class _HomeState extends State<Home> {
   //which have access to each their own personal information
   List<String> documentIDs = [];
 
+  // New list to hold the new updated list on search
+  List<String> updated_documentIDs = [];
+
   // DocumentReference<Map<String, dynamic>>(Users/8bu245T440NIuQnJhm81)
   // This is the sample output, to get IDs we just do .id
 
   Future getDocIDs() async {
     await FirebaseFirestore.instance
         .collection('Users')
-        .orderBy('rank', descending: false)
+        //.orderBy('rank', descending: false)
         .get()
         .then((snapshot) => {
               snapshot.docs.forEach((document) {
@@ -33,7 +36,8 @@ class _HomeState extends State<Home> {
                 documentIDs.add(document.reference.id);
               })
             });
-
+    documentIDs.sort();
+    updated_documentIDs = documentIDs;
     setState(() {});
   }
 
@@ -47,6 +51,16 @@ class _HomeState extends State<Home> {
   void reset() {
     Navigator.pushReplacement(context,
         MaterialPageRoute(builder: (BuildContext context) => super.widget));
+  }
+
+  void updateList(String value) {
+    // This will be used to make the new list with searched word
+    setState(() {
+      updated_documentIDs = documentIDs
+          .where(
+              (element) => element.toLowerCase().contains(value.toLowerCase()))
+          .toList();
+    });
   }
 
   @override
@@ -85,13 +99,29 @@ class _HomeState extends State<Home> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: TextField(
+                onChanged: (value) => updateList(value),
+                decoration: InputDecoration(
+                  hintText: 'Search Name',
+                  prefixIcon: Icon(Icons.search_sharp),
+                  prefixIconColor: Colors.indigo.shade900,
+                  fillColor: Colors.amber,
+                  filled: true,
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide.none),
+                ),
+              ),
+            ),
             // This has a FutureBuilder as it needs
             // to wait for executiion of getDocIDs function to finish execution
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: ListView.builder(
-                  itemCount: documentIDs.length,
+                  itemCount: updated_documentIDs.length,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -103,7 +133,7 @@ class _HomeState extends State<Home> {
                             color: Colors.indigo,
                           ),
                         ),
-                        title: ReadData(docIDs: documentIDs[index]),
+                        title: ReadData(docIDs: updated_documentIDs[index]),
                         tileColor: Colors.indigo.shade300,
                       ),
                     );
