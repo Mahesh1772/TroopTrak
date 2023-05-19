@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_project_1/user_model/user_model.dart';
 import 'package:flutter/material.dart';
 
 class ReadData extends StatelessWidget {
@@ -17,6 +16,7 @@ class ReadData extends StatelessWidget {
       builder: (context, snapshot) {
         //IF connection with the firebase is ensured, then we execute
         if (snapshot.connectionState == ConnectionState.done) {
+
           //We are trying to map the key and values pairs
           //to a variable called "data" of Type Map
           Map<String, dynamic> data =
@@ -25,7 +25,6 @@ class ReadData extends StatelessWidget {
           return Text(
             docIDs +
                 ': ' +
-                //'${data.rationType}, ' +
                 ' ' +
                 'Rank:' +
                 ' ' +
@@ -33,7 +32,6 @@ class ReadData extends StatelessWidget {
           );
         }
         return const Text('Loading......');
-        //Map<String, dynamic> data = User.fromJson(snapshot.data!.data())
 
         //Returning the value for key called name
       },
