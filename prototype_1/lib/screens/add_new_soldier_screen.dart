@@ -135,27 +135,32 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
 
   @override
   Widget build(context) {
+    bool keyboardIsOpened = MediaQuery.of(context).viewInsets.bottom != 0.0;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton.extended(
-        label: const Center(
-          child: StyledText("ADD NEW SOLDIER", 24, fontWeight: FontWeight.bold),
-        ),
-        icon: const Icon(
-          Icons.group_add_rounded,
-          color: Colors.white,
-          size: 40,
-        ),
-        onPressed: () {
-          addUserDetails();
-        },
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(12),
-          ),
-        ),
-        backgroundColor: Colors.deepPurple,
-      ),
+      floatingActionButton: keyboardIsOpened
+          ? null
+          : FloatingActionButton.extended(
+              label: const Center(
+                child: StyledText("ADD NEW SOLDIER", 24,
+                    fontWeight: FontWeight.bold),
+              ),
+              icon: const Icon(
+                Icons.group_add_rounded,
+                color: Colors.white,
+                size: 40,
+              ),
+              onPressed: () {
+                addUserDetails();
+              },
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(12),
+                ),
+              ),
+              backgroundColor: Colors.deepPurple,
+            ),
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
       body: SingleChildScrollView(
         child: SafeArea(
