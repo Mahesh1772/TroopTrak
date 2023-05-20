@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:prototype_1/util/text_style.dart';
 import 'package:intl/intl.dart';
@@ -133,7 +134,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
     super.dispose();
   }
 
-  @override
+@override
   Widget build(context) {
     bool keyboardIsOpened = MediaQuery.of(context).viewInsets.bottom != 0.0;
     return Scaffold(
@@ -248,7 +249,8 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                           color: Colors.white,
                         ),
                       ),
-                    ),
+
+),
                     //Ration type dropdown menu
                     Padding(
                       padding: const EdgeInsets.only(left: 10.0),
@@ -337,7 +339,8 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                       padding: const EdgeInsets.only(left: 15.0),
                       child: Container(
                         decoration: BoxDecoration(
-                          color: Colors.black54,
+
+color: Colors.black54,
                           border: Border.all(color: Colors.white),
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -437,7 +440,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                   ),
                 ),
 
-                const SizedBox(
+const SizedBox(
                   height: 20,
                 ),
 
