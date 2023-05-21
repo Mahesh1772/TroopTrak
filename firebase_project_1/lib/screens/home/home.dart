@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_project_1/screens/home/edit_user.dart';
 import 'package:firebase_project_1/screens/home/read_custom_user_id.dart';
 import 'package:firebase_project_1/screens/home/add_new_soldier_screen.dart';
 import 'package:firebase_project_1/screens/home/update_profile.dart';
@@ -144,7 +145,7 @@ class _HomeState extends State<Home> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const AddNewSoldierPage(),
+                              builder: (context) => const EditUserDetails(),
                             ),
                           );
                         },
