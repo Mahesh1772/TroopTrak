@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_project_1/screens/home/read_data.dart';
+import 'package:firebase_project_1/screens/home/add_new_soldier_screen.dart';
 import 'package:firebase_project_1/screens/home/update_profile.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -105,7 +105,7 @@ class _HomeState extends State<Home> {
                 onChanged: (value) => updateList(value),
                 decoration: InputDecoration(
                   hintText: 'Search Name',
-                  prefixIcon: Icon(Icons.search_sharp),
+                  prefixIcon: const Icon(Icons.search_sharp),
                   prefixIconColor: Colors.indigo.shade900,
                   fillColor: Colors.amber,
                   filled: true,
@@ -125,16 +125,26 @@ class _HomeState extends State<Home> {
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: ListTile(
-                        shape: BeveledRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          side: const BorderSide(
-                            width: 2,
-                            color: Colors.indigo,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AddNewSoldierPage(),
+                            ),
+                          );
+                        },
+                        child: ListTile(
+                          shape: BeveledRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: const BorderSide(
+                              width: 2,
+                              color: Colors.indigo,
+                            ),
                           ),
+                          title: ReadData(docIDs: updated_documentIDs[index]),
+                          tileColor: Colors.indigo.shade300,
                         ),
-                        title: ReadData(docIDs: updated_documentIDs[index]),
-                        tileColor: Colors.indigo.shade300,
                       ),
                     );
                   },

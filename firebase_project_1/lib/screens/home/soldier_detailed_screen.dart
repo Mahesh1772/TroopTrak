@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:prototype_1/util/soldier_detailed_screen_info_template.dart';
-import 'package:prototype_1/util/text_style.dart';
+import 'package:firebase_project_1/util/text_style.dart';
+import 'package:firebase_project_1/util/soldier_detailed_screen_info_template.dart';
 import 'package:recase/recase.dart';
 
 class SoldierDetailedScreen extends StatelessWidget {
   const SoldierDetailedScreen(
       {super.key,
-      required this.soldierIcon,
       required this.soldierName,
       required this.soldierRank,
-      required this.tileColor,
-      required this.soldierAttendance,
       required this.company,
       required this.platoon,
       required this.section,
@@ -24,9 +21,6 @@ class SoldierDetailedScreen extends StatelessWidget {
 
   final String soldierName;
   final String soldierRank;
-  final String soldierAttendance;
-  final String soldierIcon;
-  final Color tileColor;
   final String company;
   final String platoon;
   final String section;

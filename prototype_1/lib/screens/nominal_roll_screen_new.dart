@@ -11,45 +11,89 @@ class NominalRollNewScreen extends StatelessWidget {
   NominalRollNewScreen({super.key});
 
   List unitSoldiers = [
-    //[ soldierName, soldierRank, tileColour, soldierAttendance, soldierIcon, rationType, dateOfBirth]
+    //[ soldierName, soldierRank, tileColour, soldierAttendance, soldierIcon, soldierAppointment, companyName, platoonName, sectionNumber, dateOfBirth, rationType, bloodType, enlistmentDate, ordDate]
 
     [
       "Wei John Koh",
       "lib/assets/army-ranks/3sg.png",
       Colors.brown.shade800,
       "IN CAMP",
-      "lib/assets/army-ranks/soldier.png"
+      "lib/assets/army-ranks/soldier.png",
+      "section commander",
+      "Alpha",
+      "4",
+      "3",
+      "04 May 2001",
+      "VC",
+      "AB+",
+      "11 Aug 2020",
+      "10 Aug 2022",
     ],
     [
       "Sivagnanam Maheshwaran",
       "lib/assets/army-ranks/3sg.png",
       Colors.indigo.shade800,
       "IN CAMP",
-      "lib/assets/army-ranks/soldier.png"
+      "lib/assets/army-ranks/soldier.png",
+      "LOGISTICS SPECIALIST",
+      "Bravo",
+      "1",
+      "2",
+      "05 Apr 2001",
+      "VI",
+      "AB+",
+      "11 Aug 2019",
+      "10 Aug 2021",
     ],
     [
       "Aakash Ramaswamy",
       "lib/assets/army-ranks/3sg.png",
       Colors.indigo.shade400,
       "NOT IN CAMP",
-      "lib/assets/army-ranks/soldier.png"
+      "lib/assets/army-ranks/soldier.png",
+      "MARKSMAN TEAM COMMANDER",
+      "Charlie",
+      "HQ",
+      "MM",
+      "02 Apr 2002",
+      "VI",
+      "O+",
+      "11 Aug 2020",
+      "10 Aug 2022",
     ],
     [
       "Nikhil Babu",
       "lib/assets/army-ranks/cfc.png",
       Colors.teal.shade800,
       "IN CAMP",
-      "lib/assets/army-ranks/men.png"
+      "lib/assets/army-ranks/men.png",
+      "section 2IC",
+      "Bn HQ",
+      "2",
+      "4",
+      "03 Sept 2000",
+      "M",
+      "B+",
+      "10 Aug 2020",
+      "09 Aug 2022",
     ],
     [
       "John Doe",
       "lib/assets/army-ranks/lcp.png",
       Colors.teal.shade400,
       "NOT IN CAMP",
-      "lib/assets/army-ranks/men.png"
+      "lib/assets/army-ranks/men.png",
+      "1st MATADOR / LAW GUNNER",
+      "Support",
+      "3",
+      "3",
+      "04 Jul 2003",
+      "NM",
+      "A+",
+      "11 Jul 2021",
+      "10 Jul 2023",
     ],
   ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -146,6 +190,15 @@ class NominalRollNewScreen extends StatelessWidget {
                     tileColor: unitSoldiers[index][2],
                     soldierAttendance: unitSoldiers[index][3],
                     soldierIcon: unitSoldiers[index][4],
+                    soldierAppointment: unitSoldiers[index][5],
+                    company: unitSoldiers[index][6],
+                    platoon: unitSoldiers[index][7],
+                    section: unitSoldiers[index][8],
+                    dateOfBirth: unitSoldiers[index][9],
+                    rationType: unitSoldiers[index][10],
+                    bloodType: unitSoldiers[index][11],
+                    enlistmentDate: unitSoldiers[index][12],
+                    ordDate: unitSoldiers[index][13],
                   );
                 },
               ),

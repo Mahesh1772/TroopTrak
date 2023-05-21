@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/util/text_style.dart';
 import 'package:prototype_1/screens/soldier_detailed_screen.dart';
 
@@ -9,6 +8,15 @@ class DashboardSoldierTile extends StatelessWidget {
   final String soldierAttendance;
   final String soldierIcon;
   final Color tileColor;
+  final String company;
+  final String platoon;
+  final String section;
+  final String soldierAppointment;
+  final String dateOfBirth;
+  final String rationType;
+  final String bloodType;
+  final String enlistmentDate;
+  final String ordDate;
 
   const DashboardSoldierTile(
       {super.key,
@@ -16,7 +24,16 @@ class DashboardSoldierTile extends StatelessWidget {
       required this.soldierName,
       required this.soldierRank,
       required this.tileColor,
-      required this.soldierAttendance});
+      required this.soldierAttendance,
+      required this.company,
+      required this.platoon,
+      required this.section,
+      required this.soldierAppointment,
+      required this.dateOfBirth,
+      required this.rationType,
+      required this.bloodType,
+      required this.enlistmentDate,
+      required this.ordDate});
 
   @override
   Widget build(BuildContext context) {
@@ -28,15 +45,26 @@ class DashboardSoldierTile extends StatelessWidget {
             context,
             MaterialPageRoute(
                 builder: (context) => SoldierDetailedScreen(
-                    soldierIcon: soldierIcon,
-                    soldierName: soldierName,
-                    soldierRank: soldierRank,
-                    soldierAttendance: soldierAttendance)),
+                      soldierIcon: soldierIcon,
+                      soldierName: soldierName,
+                      soldierRank: soldierRank,
+                      soldierAttendance: soldierAttendance,
+                      company: company,
+                      platoon: platoon,
+                      section: section,
+                      dateOfBirth: dateOfBirth,
+                      enlistmentDate: enlistmentDate,
+                      ordDate: ordDate,
+                      soldierAppointment: soldierAppointment,
+                      rationType: rationType,
+                      bloodType: bloodType,
+                      tileColor: tileColor,
+                    )),
           );
         },
         child: Container(
           width: 200,
-          padding: EdgeInsets.all(12),
+          padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(boxShadow: const [
             BoxShadow(
                 blurRadius: 2.0,

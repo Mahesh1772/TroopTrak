@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:prototype_1/util/text_style.dart';
+import 'package:firebase_project_1/util/text_style.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -164,11 +164,11 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
           ? null
           : FloatingActionButton.extended(
               label: const Center(
-                child: StyledText("ADD NEW SOLDIER", 24,
+                child: StyledText("UPDATE SOLDIER DETAILS", 22,
                     fontWeight: FontWeight.bold),
               ),
               icon: const Icon(
-                Icons.group_add_rounded,
+                Icons.edit_note_rounded,
                 color: Colors.white,
                 size: 40,
               ),
@@ -228,10 +228,12 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                     padding: const EdgeInsets.only(left: 20),
                     child: TextField(
                       controller: _name,
+                      style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintStyle: TextStyle(color: Colors.white),
-                          hintText: 'Name (as per NRIC):'),
+                        border: InputBorder.none,
+                        hintStyle: TextStyle(color: Colors.white),
+                        hintText: 'Name (as per NRIC):',
+                      ),
                     ),
                   ),
                 ),
@@ -320,42 +322,36 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                         border: Border.all(color: Colors.white),
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 4.0),
-                        child: DropdownButton<String>(
-                          dropdownColor: Colors.black54,
-                          value: _selectedRank,
-                          icon: Image.asset(
-                            "lib/assets/army-ranks/3sg.png",
-                            width: 20,
-                            color: Colors.white,
-                          ),
-                          style: const TextStyle(color: Colors.black54),
-                          items: _ranks
-                              .map(
-                                (item) => DropdownMenuItem<String>(
-                                  value: item,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(6.0),
-                                    child: Text(
-                                      item,
-                                      style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.white),
-                                    ),
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                          onChanged: (item) =>
-                              setState(() => _selectedRank = item),
+                      child: DropdownButton<String>(
+                        dropdownColor: Colors.black54,
+                        value: _selectedRank,
+                        icon: const Icon(
+                          Icons.arrow_downward_sharp,
+                          color: Colors.white,
                         ),
+                        style: const TextStyle(color: Colors.black54),
+                        items: _ranks
+                            .map(
+                              (item) => DropdownMenuItem<String>(
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.white),
+                                ),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (item) =>
+                            setState(() => _selectedRank = item),
                       ),
                     ),
+
                     //Blood type dropdown menu
                     Padding(
-                      padding: const EdgeInsets.only(left: 15.0),
+                      padding: const EdgeInsets.only(left: 20.0),
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.black54,
@@ -405,6 +401,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                     padding: const EdgeInsets.only(left: 20),
                     child: TextField(
                       controller: _company,
+                      style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintStyle: TextStyle(color: Colors.white),
@@ -427,6 +424,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                     padding: const EdgeInsets.only(left: 20),
                     child: TextField(
                       controller: _platoon,
+                      style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintStyle: TextStyle(color: Colors.white),
@@ -450,6 +448,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                     padding: const EdgeInsets.only(left: 20),
                     child: TextField(
                       controller: _section,
+                      style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintStyle: TextStyle(color: Colors.white),
@@ -473,6 +472,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                     padding: const EdgeInsets.only(left: 20),
                     child: TextField(
                       controller: _appointment,
+                      style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintStyle: TextStyle(color: Colors.white),
