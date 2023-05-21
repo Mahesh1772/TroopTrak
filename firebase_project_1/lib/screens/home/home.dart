@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_project_1/screens/home/read_data.dart';
+import 'package:firebase_project_1/screens/home/read_custom_user_id.dart';
 import 'package:firebase_project_1/screens/home/add_new_soldier_screen.dart';
 import 'package:firebase_project_1/screens/home/update_profile.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_project_1/screens/home/read_user_rank.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -21,6 +22,9 @@ class _HomeState extends State<Home> {
 
   // New list to hold the new updated list on search
   List<String> updated_documentIDs = [];
+
+  // Test data to store rank
+  String rankOfUser = '';
 
   // DocumentReference<Map<String, dynamic>>(Users/8bu245T440NIuQnJhm81)
   // This is the sample output, to get IDs we just do .id
@@ -61,6 +65,16 @@ class _HomeState extends State<Home> {
               (element) => element.toLowerCase().contains(value.toLowerCase()))
           .toList();
     });
+  }
+
+  Future createUserModel(docIDs) async {
+    //CollectionReference users = FirebaseFirestore.instance.collection('Users');
+    //await users.doc(docIDs).get();
+    final DocumentSnapshot documentSnapshot =
+        await FirebaseFirestore.instance.collection('Users').doc(docIDs).get();
+    Map<String, dynamic> values =
+        documentSnapshot.data() as Map<String, dynamic>;
+    return values;
   }
 
   @override
@@ -130,7 +144,7 @@ class _HomeState extends State<Home> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => AddNewSoldierPage(),
+                              builder: (context) => const AddNewSoldierPage(),
                             ),
                           );
                         },
@@ -142,7 +156,10 @@ class _HomeState extends State<Home> {
                               color: Colors.indigo,
                             ),
                           ),
-                          title: ReadData(docIDs: updated_documentIDs[index]),
+                          title:
+                              ReadUserName(docIDs: updated_documentIDs[index]),
+                          subtitle:
+                              ReadUserRank(docIDs: updated_documentIDs[index]),
                           tileColor: Colors.indigo.shade300,
                         ),
                       ),

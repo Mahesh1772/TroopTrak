@@ -52,4 +52,6 @@ class User {
       'attendence'  :  attendence,
     };
   }
+
+  List<Map> listOfUsers = [];
 }

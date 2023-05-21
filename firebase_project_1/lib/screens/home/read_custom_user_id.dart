@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_project_1/user_model/user_model.dart';
 
-class ReadData extends StatelessWidget {
-  const ReadData({required this.docIDs, super.key});
+class ReadUserName extends StatelessWidget {
+  const ReadUserName({required this.docIDs, super.key});
 
   final String docIDs;
 
@@ -23,13 +24,9 @@ class ReadData extends StatelessWidget {
               snapshot.data!.data() as Map<String, dynamic>;
 
           return Text(
-            docIDs +
-                ': ' +
-                ' ' +
-                'Rank:' +
-                ' ' +
-                '${data['rank']}',
+            docIDs 
           );
+          //return data;
         }
         return const Text('Loading......');
 
