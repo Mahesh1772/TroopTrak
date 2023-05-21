@@ -43,6 +43,8 @@ dependencies:
   json_annotation: ^4.8.1
   cloud_firestore_odm: ^1.0.0-dev.58
   get: ^4.6.5
+  recase: ^4.1.0
+  intl: ^0.18.1
 
 
 dev_dependencies:
