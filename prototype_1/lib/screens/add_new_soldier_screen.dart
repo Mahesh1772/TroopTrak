@@ -11,6 +11,8 @@ class AddNewSoldierPage extends StatefulWidget {
 }
 
 class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
+  var db = FirebaseFirestore.instance;
+
   final _name = TextEditingController();
   final _company = TextEditingController();
   final _platoon = TextEditingController();
@@ -126,10 +128,10 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
   }
 
   Future addUserDetails() async {
-    await FirebaseFirestore.instance.collection('Users').add({
+    await db.collection('Users').doc(_name.text.trim()).set({
       //User map formatting
       'rank': _selectedRank,
-      'name': _name.text.trim(),
+      //'name': _name.text.trim(),
       'company': _company.text.trim(),
       'platoon': _platoon.text.trim(),
       'section': _section.text.trim(),
@@ -174,6 +176,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
               ),
               onPressed: () {
                 addUserDetails();
+                Navigator.pop(context);
               },
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
@@ -227,6 +230,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 20),
                     child: TextField(
+                      style: TextStyle(color: Colors.pink.shade200),
                       controller: _name,
                       decoration: const InputDecoration(
                           border: InputBorder.none,
@@ -404,6 +408,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 20),
                     child: TextField(
+                      style: TextStyle(color: Colors.pink.shade200),
                       controller: _company,
                       decoration: const InputDecoration(
                           border: InputBorder.none,
@@ -426,6 +431,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 20),
                     child: TextField(
+                      style: TextStyle(color: Colors.pink.shade200),
                       controller: _platoon,
                       decoration: const InputDecoration(
                           border: InputBorder.none,
@@ -449,6 +455,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 20),
                     child: TextField(
+                      style: TextStyle(color: Colors.pink.shade200),
                       controller: _section,
                       decoration: const InputDecoration(
                           border: InputBorder.none,
@@ -549,6 +556,31 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                         child: const Icon(
                           Icons.date_range_rounded,
                           color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.black54,
+                          border: Border.all(color: Colors.white),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: SizedBox(
+                            width: 175.0,
+                            child: TextField(
+                              style: TextStyle(color: Colors.pink.shade200),
+                              controller: _mobilenumber,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintStyle: TextStyle(color: Colors.white),
+                                hintText: 'Mobile Number',
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ),
