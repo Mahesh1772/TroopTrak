@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class UpdateProfile extends StatefulWidget {
-  UpdateProfile({super.key});
+  const UpdateProfile({super.key});
 
   @override
   State<UpdateProfile> createState() => _UpdateProfile();
@@ -61,21 +61,6 @@ class _UpdateProfile extends State<UpdateProfile> {
     super.dispose();
   }
 
-  /*@override
-  void dispose() {
-    _rank.dispose();
-    _name.dispose();
-    _appointment.dispose();
-    _rationType.dispose();
-    _status.dispose();
-    _mobileNumber.dispose();
-    _bloodgroup.dispose();
-    _dob.dispose();
-    _ord.dispose();
-    _attendence.dispose();
-    super.dispose();
-  }*/
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,8 +95,11 @@ class _UpdateProfile extends State<UpdateProfile> {
                     child: TextField(
                       controller: _rank,
                       decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Enter your Rank'),
+                        border: OutlineInputBorder(),
+                        labelText: 'Rank',
+                        hintText: 'Enter your Rank',
+                        suffixIcon: Icon(Icons.leaderboard_outlined),
+                      ),
                     ),
                   ),
                 ),
@@ -131,8 +119,11 @@ class _UpdateProfile extends State<UpdateProfile> {
                     child: TextField(
                       controller: _name,
                       decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Enter Name as in NRIC'),
+                        border: OutlineInputBorder(),
+                        labelText: 'Full Name',
+                        hintText: 'Enter Name as in NRIC',
+                        suffixIcon: Icon(Icons.nature_people_outlined),
+                      ),
                     ),
                   ),
                 ),
@@ -153,8 +144,10 @@ class _UpdateProfile extends State<UpdateProfile> {
                     child: TextField(
                       controller: _appointment,
                       decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Your Appointment'),
+                        border: OutlineInputBorder(),
+                        labelText: 'Appointment',
+                        hintText: 'Your Appointment',
+                      ),
                     ),
                   ),
                 ),
@@ -175,7 +168,8 @@ class _UpdateProfile extends State<UpdateProfile> {
                     child: TextField(
                       controller: _rationType,
                       decoration: const InputDecoration(
-                          border: InputBorder.none,
+                          border: OutlineInputBorder(),
+                          labelText: 'Ration Type',
                           hintText: 'Your Ration type'),
                     ),
                   ),
@@ -197,7 +191,8 @@ class _UpdateProfile extends State<UpdateProfile> {
                     child: TextField(
                       controller: _status,
                       decoration: const InputDecoration(
-                          border: InputBorder.none,
+                          border: OutlineInputBorder(),
+                          labelText: 'Status',
                           hintText: 'Enter Any statuses'),
                     ),
                   ),
@@ -219,7 +214,8 @@ class _UpdateProfile extends State<UpdateProfile> {
                     child: TextField(
                       controller: _mobileNumber,
                       decoration: const InputDecoration(
-                          border: InputBorder.none,
+                          border: OutlineInputBorder(),
+                          labelText: 'Mobile Number',
                           hintText: 'Your Mobile Number'),
                     ),
                   ),
@@ -241,7 +237,8 @@ class _UpdateProfile extends State<UpdateProfile> {
                     child: TextField(
                       controller: _bloodgroup,
                       decoration: const InputDecoration(
-                          border: InputBorder.none,
+                          border: OutlineInputBorder(),
+                          labelText: 'Blood group',
                           hintText: 'Your blood group'),
                     ),
                   ),
@@ -263,7 +260,9 @@ class _UpdateProfile extends State<UpdateProfile> {
                     child: TextField(
                       controller: _dob,
                       decoration: const InputDecoration(
-                          border: InputBorder.none, hintText: 'Date of Birth'),
+                          border: OutlineInputBorder(),
+                          labelText: 'DOB',
+                          hintText: 'Date of Birth'),
                     ),
                   ),
                 ),
@@ -284,7 +283,8 @@ class _UpdateProfile extends State<UpdateProfile> {
                     child: TextField(
                       controller: _ord,
                       decoration: const InputDecoration(
-                          border: InputBorder.none,
+                          border: OutlineInputBorder(),
+                          labelText: 'ORD',
                           hintText: 'Your favourite ORD date'),
                     ),
                   ),
@@ -306,7 +306,8 @@ class _UpdateProfile extends State<UpdateProfile> {
                     child: TextField(
                       controller: _attendence,
                       decoration: const InputDecoration(
-                          border: InputBorder.none,
+                          border: OutlineInputBorder(),
+                          labelText: 'Attendence',
                           hintText: 'Attendence: Inside or Out'),
                     ),
                   ),
