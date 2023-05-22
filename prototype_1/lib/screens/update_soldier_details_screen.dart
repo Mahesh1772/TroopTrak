@@ -211,15 +211,15 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                 // Populating the controllers with pre-existing value
                 //_name = TextEditingController(text: docIDs);
                 dob = data['dob'];
-                //_selectedRank = data['rank']!;
-                //_appointment = TextEditingController(text: data['appointment']);
-                //_selectedItem = data['rationType']!;
-                //_section = TextEditingController(text: data['section']);
-                //_platoon = TextEditingController(text: data['platoon']);
-                //_company = TextEditingController(text: data['company']);
-                //_mobilenumber =
-                    //TextEditingController(text: data['mobileNumber']);
-                //_selectedBloodType = data['bloodgroup']!;
+                _selectedRank = data['rank']!;
+                _appointment = TextEditingController(text: data['appointment']);
+                _selectedItem = data['rationType']!;
+                _section = TextEditingController(text: data['section']);
+                _platoon = TextEditingController(text: data['platoon']);
+                _company = TextEditingController(text: data['company']);
+                _mobilenumber =
+                    TextEditingController(text: data['mobileNumber']);
+                _selectedBloodType = data['bloodgroup']!;
                 ord = data['ord'];
 
                 return Padding(
@@ -385,8 +385,8 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                     ),
                                   )
                                   .toList(),
-                              onChanged: (String? item) =>
-                                  setState(() => _selectedRank = item as String),
+                              onChanged: (String? item) => setState(
+                                  () => _selectedRank = item as String),
                             ),
                           ),
 
