@@ -34,7 +34,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
     "SD VI",
     "SD VC"
   ];
-  String? _selectedItem = "Select your ration type...";
+  String? _selectedItem;
 
   final _ranks = [
     "Select your rank...",
@@ -67,7 +67,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
     "MG",
     "LG",
   ];
-  String? _selectedRank = "Select your rank...";
+  String? _selectedRank;
 
   final _bloodTypes = [
     "Select your blood type...",
@@ -81,7 +81,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
     "AB+",
     "Unknown"
   ];
-  String? _selectedBloodType = "Select your blood type...";
+  String? _selectedBloodType;
 
   void _showDatePicker() {
     showDatePicker(
@@ -131,7 +131,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
   Future updateUserDetails() async {
     addUserDetails();
     Navigator.pop(context);
-  } 
+  }
 
   Future addUserDetails() async {
     await FirebaseFirestore.instance
@@ -211,15 +211,15 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                 // Populating the controllers with pre-existing value
                 _name = TextEditingController(text: docIDs);
                 dob = data['dob'];
-                _selectedRank = data['rank']!;
+                //_selectedRank = data['rank']!;
                 _appointment = TextEditingController(text: data['appointment']);
-                _selectedItem = data['rationType']!;
+                //_selectedItem = data['rationType']!;
                 _section = TextEditingController(text: data['section']);
                 _platoon = TextEditingController(text: data['platoon']);
                 _company = TextEditingController(text: data['company']);
                 _mobilenumber =
                     TextEditingController(text: data['mobileNumber']);
-                _selectedBloodType = data['bloodgroup']!;
+                //_selectedBloodType = data['bloodgroup']!;
                 ord = data['ord'];
 
                 return Padding(
@@ -313,14 +313,16 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                           Padding(
                             padding: const EdgeInsets.only(left: 10.0),
                             child: Container(
+                              width: 225,
                               decoration: BoxDecoration(
                                 color: Colors.black54,
                                 border: Border.all(color: Colors.white),
                                 borderRadius: BorderRadius.circular(12),
                               ),
-                              child: DropdownButton<String>(
+                              child: DropdownButtonFormField<String>(
+                                alignment: Alignment.center,
                                 dropdownColor: Colors.black54,
-                                value: _selectedItem,
+                                value: _selectedItem ?? data['rationType']!,
                                 icon: const Icon(
                                   Icons.arrow_downward_sharp,
                                   color: Colors.white,
@@ -354,14 +356,16 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                         children: [
                           //Rank dropdown menu
                           Container(
+                            width: 160,
                             decoration: BoxDecoration(
                               color: Colors.black54,
                               border: Border.all(color: Colors.white),
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: DropdownButton<String>(
+                            child: DropdownButtonFormField<String>(
+                              alignment: Alignment.center,
                               dropdownColor: Colors.black54,
-                              value: _selectedRank,
+                              value: _selectedRank ?? data['rank']!,
                               icon: const Icon(
                                 Icons.arrow_downward_sharp,
                                 color: Colors.white,
@@ -390,14 +394,17 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                           Padding(
                             padding: const EdgeInsets.only(left: 20.0),
                             child: Container(
+                              width: 205,
                               decoration: BoxDecoration(
                                 color: Colors.black54,
                                 border: Border.all(color: Colors.white),
                                 borderRadius: BorderRadius.circular(12),
                               ),
-                              child: DropdownButton<String>(
+                              child: DropdownButtonFormField<String>(
                                 dropdownColor: Colors.black54,
-                                value: _selectedBloodType,
+                                alignment: Alignment.center,
+                                value:
+                                    _selectedBloodType ?? data['bloodgroup']!,
                                 icon: const Icon(
                                   Icons.water_drop_sharp,
                                   color: Colors.red,
