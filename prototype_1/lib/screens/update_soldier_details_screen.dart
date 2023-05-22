@@ -19,9 +19,9 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
   var _section = TextEditingController();
   var _appointment = TextEditingController();
   var _mobilenumber = TextEditingController();
-  String dob = 'Date of birth:';
-  String ord = "ORD:";
-  String enlistment = "Enlistment Date:";
+  String? dob = 'Date of birth:';
+  String? ord = "ORD:";
+  String? enlistment = "Enlistment Date:";
 
   final _rationTypes = [
     "Select your ration type...",
@@ -148,9 +148,9 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
       'rationType': _selectedItem,
       'mobileNumber': _mobilenumber.text.trim(),
       'bloodgroup': _selectedBloodType,
-      'dob': dob.trim(),
-      'enlistment': enlistment.trim(),
-      'ord': ord.trim(),
+      'dob': dob,
+      'enlistment': enlistment,
+      'ord': ord,
     });
   }
 
@@ -209,18 +209,18 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                     snapshot.data!.data() as Map<String, dynamic>;
 
                 // Populating the controllers with pre-existing value
-                //_name = TextEditingController(text: docIDs);
-                dob = data['dob'];
+                _name = TextEditingController(text: docIDs);
+                //dob = data['dob'];
                 //_selectedRank = data['rank']!;
-                //_appointment = TextEditingController(text: data['appointment']);
+                _appointment = TextEditingController(text: data['appointment']);
                 //_selectedItem = data['rationType']!;
-                //_section = TextEditingController(text: data['section']);
-                //_platoon = TextEditingController(text: data['platoon']);
-                //_company = TextEditingController(text: data['company']);
-                //_mobilenumber =
-                    //TextEditingController(text: data['mobileNumber']);
+                _section = TextEditingController(text: data['section']);
+                _platoon = TextEditingController(text: data['platoon']);
+                _company = TextEditingController(text: data['company']);
+                _mobilenumber =
+                    TextEditingController(text: data['mobileNumber']);
                 //_selectedBloodType = data['bloodgroup']!;
-                ord = data['ord'];
+                //ord = data['ord'];
 
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -291,7 +291,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 15, vertical: 15),
                               child: Text(
-                                dob,
+                                dob ?? data['dob'],
                                 style: const TextStyle(
                                     color: Colors.white, fontSize: 16),
                               ),
@@ -313,7 +313,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                           Padding(
                             padding: const EdgeInsets.only(left: 10.0),
                             child: Container(
-                              width: 225,
+                              width: 215,
                               decoration: BoxDecoration(
                                 color: Colors.black54,
                                 border: Border.all(color: Colors.white),
@@ -385,8 +385,8 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                     ),
                                   )
                                   .toList(),
-                              onChanged: (String? item) =>
-                                  setState(() => _selectedRank = item as String),
+                              onChanged: (String? item) => setState(
+                                  () => _selectedRank = item as String),
                             ),
                           ),
 
@@ -544,7 +544,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 15, vertical: 15),
                                 child: Text(
-                                  enlistment,
+                                  enlistment ?? data['enlistment'],
                                   style: const TextStyle(
                                       color: Colors.white, fontSize: 16),
                                 ),
@@ -577,7 +577,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 15, vertical: 15),
                                 child: Text(
-                                  ord,
+                                  ord ?? data['ord'],
                                   style: const TextStyle(
                                       color: Colors.white, fontSize: 16),
                                 ),
