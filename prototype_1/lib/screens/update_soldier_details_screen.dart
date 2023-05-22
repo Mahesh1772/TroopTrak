@@ -3,14 +3,15 @@ import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class AddNewSoldierPage extends StatefulWidget {
-  const AddNewSoldierPage({super.key});
+class UpdateSoldierDetailsPage extends StatefulWidget {
+  const UpdateSoldierDetailsPage({super.key});
 
   @override
-  State<AddNewSoldierPage> createState() => _AddNewSoldierPageState();
+  State<UpdateSoldierDetailsPage> createState() =>
+      _UpdateSoldierDetailsPageState();
 }
 
-class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
+class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
   final _name = TextEditingController();
   final _company = TextEditingController();
   final _platoon = TextEditingController();
@@ -164,11 +165,11 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
           ? null
           : FloatingActionButton.extended(
               label: const Center(
-                child: StyledText("ADD NEW SOLDIER", 24,
+                child: StyledText("UPDATE SOLDIER DETAILS", 22,
                     fontWeight: FontWeight.bold),
               ),
               icon: const Icon(
-                Icons.group_add_rounded,
+                Icons.edit_note_rounded,
                 color: Colors.white,
                 size: 40,
               ),
@@ -205,12 +206,12 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                   height: 20,
                 ),
                 const StyledText(
-                  "Let's get things set up  ✍️",
+                  "Change details  ✍️",
                   30,
                   fontWeight: FontWeight.bold,
                 ),
                 const StyledText(
-                  "Fill in the details of the new soldier you wish to add",
+                  "Update the details of an existing soldier.",
                   14,
                   fontWeight: FontWeight.w300,
                 ),

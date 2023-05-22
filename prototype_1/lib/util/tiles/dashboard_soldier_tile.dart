@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:prototype_1/util/text_style.dart';
+import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/screens/soldier_detailed_screen.dart';
 
 class DashboardSoldierTile extends StatelessWidget {

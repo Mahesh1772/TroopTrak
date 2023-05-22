@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:prototype_1/util/text_style.dart';
+import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/screens/dashboard_screen.dart';
 import 'package:prototype_1/screens/nominal_roll_screen_new.dart';
 

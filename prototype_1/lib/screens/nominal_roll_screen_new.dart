@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:prototype_1/screens/add_new_soldier_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:prototype_1/util/constants.dart';
-import 'package:prototype_1/util/text_style.dart';
-import 'package:prototype_1/util/solider_tile.dart';
+import 'package:prototype_1/util/text_styles/text_style.dart';
+import 'package:prototype_1/util/tiles/solider_tile.dart';
 
 class NominalRollNewScreen extends StatelessWidget {
   NominalRollNewScreen({super.key});
 
   List unitSoldiers = [
-    //[ soldierName, soldierRank, tileColour, soldierAttendance, soldierIcon, soldierAppointment, companyName, platoonName, sectionNumber, dateOfBirth, rationType, bloodType, enlistmentDate, ordDate]
+    //[ soldierName, soldierRank, tileColour, soldierAttendance, soldierIcon, soldierAppointment, companyName, platoonName, sectionNumber, dateOfBirth, rationType, bloodType, enlistmentDate, ordDate, soldierStatuses]
 
     [
       "Wei John Koh",
@@ -67,7 +67,7 @@ class NominalRollNewScreen extends StatelessWidget {
       Colors.teal.shade800,
       "IN CAMP",
       "lib/assets/army-ranks/men.png",
-      "section 2IC",
+      "Section 2IC",
       "Bn HQ",
       "2",
       "4",
@@ -83,7 +83,7 @@ class NominalRollNewScreen extends StatelessWidget {
       Colors.teal.shade400,
       "NOT IN CAMP",
       "lib/assets/army-ranks/men.png",
-      "1st MATADOR / LAW GUNNER",
+      "1st MATADOR GUNNER",
       "Support",
       "3",
       "3",
