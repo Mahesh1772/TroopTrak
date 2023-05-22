@@ -27,85 +27,97 @@ class StatusesTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(30.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Icon(
-                Icons.medical_information_rounded,
-                color: Colors.white,
-                size: 30,
-              ),
-              const SizedBox(
-                width: 20,
-              ),
-              Text(
-                "Active Statuses",
-                maxLines: 2,
-                style: GoogleFonts.poppins(
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: Colors.deepPurple,
+        child: const Icon(
+          Icons.add_circle_rounded,
+          color: Colors.white,
+          size: 40,
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(30.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Icon(
+                  Icons.medical_information_rounded,
                   color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
-                  letterSpacing: 1.5,
+                  size: 30,
                 ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 250,
-            child: ListView.builder(
-              itemCount: soldierStatuses.length,
-              padding: const EdgeInsets.all(12),
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return SoldierStatusTile(
-                    statusType: soldierStatuses[index][0],
-                    statusName: soldierStatuses[index][1],
-                    startDate: soldierStatuses[index][2],
-                    endDate: soldierStatuses[index][3]);
-              },
+                const SizedBox(
+                  width: 20,
+                ),
+                Text(
+                  "Active Statuses",
+                  maxLines: 2,
+                  style: GoogleFonts.poppins(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 1.5,
+                  ),
+                ),
+              ],
             ),
-          ),
-          Row(
-            children: [
-              const Icon(
-                Icons.av_timer_rounded,
-                color: Colors.white,
-                size: 30,
+            SizedBox(
+              height: 250,
+              child: ListView.builder(
+                itemCount: soldierStatuses.length,
+                padding: const EdgeInsets.all(12),
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  return SoldierStatusTile(
+                      statusType: soldierStatuses[index][0],
+                      statusName: soldierStatuses[index][1],
+                      startDate: soldierStatuses[index][2],
+                      endDate: soldierStatuses[index][3]);
+                },
               ),
-              const SizedBox(
-                width: 20,
-              ),
-              Text(
-                "Past Statuses",
-                maxLines: 2,
-                style: GoogleFonts.poppins(
+            ),
+            Row(
+              children: [
+                const Icon(
+                  Icons.av_timer_rounded,
                   color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
-                  letterSpacing: 1.5,
+                  size: 30,
                 ),
-              ),
-            ],
-          ),
-          Expanded(
-            child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemCount: pastStatuses.length,
-              itemBuilder: (context, index) {
-                return PastSoldierStatusTile(
-                    statusType: pastStatuses[index][0],
-                    statusName: pastStatuses[index][1],
-                    startDate: pastStatuses[index][2],
-                    endDate: pastStatuses[index][3]);
-              },
+                const SizedBox(
+                  width: 20,
+                ),
+                Text(
+                  "Past Statuses",
+                  maxLines: 2,
+                  style: GoogleFonts.poppins(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 1.5,
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
+            Expanded(
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: pastStatuses.length,
+                itemBuilder: (context, index) {
+                  return PastSoldierStatusTile(
+                      statusType: pastStatuses[index][0],
+                      statusName: pastStatuses[index][1],
+                      startDate: pastStatuses[index][2],
+                      endDate: pastStatuses[index][3]);
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
