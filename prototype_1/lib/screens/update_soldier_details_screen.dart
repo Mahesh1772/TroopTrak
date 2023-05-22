@@ -197,12 +197,12 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
       body: SingleChildScrollView(
         child: SafeArea(
           child: FutureBuilder(
-            future: FirebaseFirestore.instance
-                .collection('Users')
-                .doc(docIDs)
-                .get(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
+              future: FirebaseFirestore.instance
+                  .collection('Users')
+                  .doc(docIDs)
+                  .get(),
+              builder: (context, snapshot) {
+                //if (snapshot.connectionState == ConnectionState.done) {
                 //We are trying to map the key and values pairs
                 //to a variable called "data" of Type Map
                 Map<String, dynamic> data =
@@ -606,9 +606,10 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                   ),
                 );
               }
-              return const Text('Loading......');
-            },
-          ),
+
+              //return const Text('Loading......');
+              //},
+              ),
         ),
       ),
     );
