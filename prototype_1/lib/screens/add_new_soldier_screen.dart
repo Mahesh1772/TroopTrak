@@ -126,10 +126,10 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
   }
 
   Future addUserDetails() async {
-    await FirebaseFirestore.instance.collection('Users').add({
+    await FirebaseFirestore.instance.collection('Users').doc(_name.text.trim()).set({
       //User map formatting
       'rank': _selectedRank,
-      'name': _name.text.trim(),
+      //'name': _name.text.trim(),
       'company': _company.text.trim(),
       'platoon': _platoon.text.trim(),
       'section': _section.text.trim(),
@@ -174,6 +174,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
               ),
               onPressed: () {
                 addUserDetails();
+                Navigator.pop(context);
               },
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
