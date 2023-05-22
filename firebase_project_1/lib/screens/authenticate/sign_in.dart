@@ -15,7 +15,6 @@ class _SignInState extends State<SignIn> {
   //Placeholders for the email and password input by user
   final _emailId = TextEditingController();
   final _password = TextEditingController();
-  var user ;
 
   Future isSignedIn() async {
     //print('tap detected');
@@ -23,11 +22,6 @@ class _SignInState extends State<SignIn> {
       email: _emailId.text.trim(),
       password: _password.text.trim(),
     );
-    user = userCredential.user;
-  }
-
-  String readCurrentUser() {
-    return user.uid;
   }
 
   @override
