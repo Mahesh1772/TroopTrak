@@ -209,16 +209,16 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                     snapshot.data!.data() as Map<String, dynamic>;
 
                 // Populating the controllers with pre-existing value
-                _name = TextEditingController(text: docIDs);
+                //_name = TextEditingController(text: docIDs);
                 dob = data['dob'];
                 //_selectedRank = data['rank']!;
-                _appointment = TextEditingController(text: data['appointment']);
+                //_appointment = TextEditingController(text: data['appointment']);
                 //_selectedItem = data['rationType']!;
-                _section = TextEditingController(text: data['section']);
-                _platoon = TextEditingController(text: data['platoon']);
-                _company = TextEditingController(text: data['company']);
-                _mobilenumber =
-                    TextEditingController(text: data['mobileNumber']);
+                //_section = TextEditingController(text: data['section']);
+                //_platoon = TextEditingController(text: data['platoon']);
+                //_company = TextEditingController(text: data['company']);
+                //_mobilenumber =
+                    //TextEditingController(text: data['mobileNumber']);
                 //_selectedBloodType = data['bloodgroup']!;
                 ord = data['ord'];
 
@@ -385,8 +385,8 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                     ),
                                   )
                                   .toList(),
-                              onChanged: (item) =>
-                                  setState(() => _selectedRank = item),
+                              onChanged: (String? item) =>
+                                  setState(() => _selectedRank = item as String),
                             ),
                           ),
 
