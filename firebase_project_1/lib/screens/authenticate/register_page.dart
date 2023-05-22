@@ -32,11 +32,12 @@ class _RegisterPageState extends State<RegisterPage> {
   Future signUp() async {
     if (_confirmedpassword.text.trim() == _password.text.trim()) {
       //creating user
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      UserCredential result = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailId.text.trim(),
         password: _password.text.trim(),
       );
-
+      User user = result.user!;
+      user.updateDisplayName(_name.text.trim());
       //Adding user details
       addUserDetails();
     }
