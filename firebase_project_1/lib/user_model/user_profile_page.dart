@@ -10,6 +10,7 @@ class UpdateUser extends StatefulWidget {
 }
 
 var fname = FirebaseAuth.instance.currentUser!.displayName.toString();
+var id = FirebaseAuth.instance.currentUser!;
 var _rank = TextEditingController();
 var _name = TextEditingController();
 var _appointment = TextEditingController();
@@ -44,6 +45,16 @@ class _UpdateUserState extends State<UpdateUser> {
       'ord': _ord.text.trim(),
       'attendence': _attendence.text.trim(),
     });
+  }
+
+  Future deleteUserAccount() async{
+    deleteCurrentUser();
+    id.delete();
+    Navigator.pop(context);
+  }
+
+  Future deleteCurrentUser() async {
+    db.collection("Users").doc(_name.text.trim()).delete();
   }
 
   void resetControllers() {
@@ -332,7 +343,7 @@ class _UpdateUserState extends State<UpdateUser> {
                       ),
                       const SizedBox(height: 10),
     
-                      // sign in
+                      // Update User
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 25.0),
                         child: GestureDetector(
@@ -354,6 +365,39 @@ class _UpdateUserState extends State<UpdateUser> {
                             child: const Center(
                               child: Text(
                                 'Update Profile',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                        child: GestureDetector(
+                          onTap: deleteUserAccount,
+                          child: Container(
+                            padding: const EdgeInsets.all(25),
+                            decoration: BoxDecoration(
+                              gradient: const LinearGradient(
+                                colors: [
+                                  Color.fromARGB(255, 228, 113, 113),
+                                  Color.fromARGB(255, 157, 4, 4),
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              //color: Colors.deepPurple,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Center(
+                              child: Text(
+                                'Delete User',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,

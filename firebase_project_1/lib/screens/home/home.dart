@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_project_1/screens/home/edit_user.dart';
 import 'package:firebase_project_1/screens/home/read_custom_user_id.dart';
-import 'package:firebase_project_1/screens/home/add_new_soldier_screen.dart';
 import 'package:firebase_project_1/screens/home/update_profile.dart';
 import 'package:firebase_project_1/user_model/user_profile_page.dart';
 import 'package:flutter/material.dart';
