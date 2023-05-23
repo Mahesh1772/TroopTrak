@@ -1,19 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_project_1/user_model/user_model.dart';
 
-class ReadUserName extends StatelessWidget {
-  const ReadUserName({required this.docIDs, super.key});
+class ReadUserStatus extends StatelessWidget {
+  const ReadUserStatus({required this.docIDs,required this.statusID, super.key,});
 
   final String docIDs;
+  final String statusID;
 
   @override
   Widget build(BuildContext context) {
     // get the collection
-    CollectionReference users = FirebaseFirestore.instance.collection('Users');
+    CollectionReference users = FirebaseFirestore.instance.collection('Users').doc(docIDs).collection('Statuses');
 
     return FutureBuilder<DocumentSnapshot>(
-      future: users.doc(docIDs).get(),
+      future: FirebaseFirestore.instance.collection('Users').doc(docIDs).collection('Statuses').doc(statusID).get(),
       builder: (context, snapshot) {
         //IF connection with the firebase is ensured, then we execute
         if (snapshot.connectionState == ConnectionState.done) {
@@ -24,7 +24,7 @@ class ReadUserName extends StatelessWidget {
               snapshot.data!.data() as Map<String, dynamic>;
 
           return Text(
-            docIDs 
+            'Status ' + '${data['Status']}' 
           );
           //return data;
         }
