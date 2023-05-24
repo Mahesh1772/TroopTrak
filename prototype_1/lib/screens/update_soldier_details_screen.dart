@@ -88,13 +88,13 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
   void _showDatePicker() {
     showDatePicker(
       context: context,
-      initialDate: DateFormat("yyyy-MM-dd").parse(dob),
+      initialDate: DateFormat("d MMM yyyy").parse(dob),
       firstDate: DateTime(1960),
       lastDate: DateTime.now(),
     ).then((value) {
       setState(() {
         if (value != null) {
-          dob = DateFormat('yyyy-MM-dd').format(value);
+          dob = DateFormat('d MMM yyyy').format(value);
         }
         addUserDetails();
       });
@@ -104,13 +104,13 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
   void _ordDatePicker() {
     showDatePicker(
       context: context,
-      initialDate: DateFormat("yyyy-MM-dd").parse(ord),
+      initialDate: DateFormat("d MMM yyyy").parse(ord),
       firstDate: DateTime(1960),
       lastDate: DateTime(2030),
     ).then((value) {
       setState(() {
         if (value != null) {
-          ord = DateFormat('yyyy-MM-dd').format(value);
+          ord = DateFormat('d MMM yyyy').format(value);
         }
         addUserDetails();
       });
@@ -120,13 +120,13 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
   void _enlistmentDatePicker() {
     showDatePicker(
       context: context,
-      initialDate: DateFormat("yyyy-MM-dd").parse(enlistment),
+      initialDate: DateFormat("d MMM yyyy").parse(enlistment),
       firstDate: DateTime(1960),
       lastDate: DateTime(2030),
     ).then((value) {
       setState(() {
         if (value != null) {
-          enlistment = DateFormat('yyyy-MM-dd').format(value);
+          enlistment = DateFormat('d MMM yyyy').format(value);
         }
         addUserDetails();
       });
