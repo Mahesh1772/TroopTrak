@@ -22,9 +22,9 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
   var _section = TextEditingController();
   var _appointment = TextEditingController();
   var _mobilenumber = TextEditingController();
-  DateTime? _dob;
-  DateTime? _enlistment;
-  DateTime? _ord;
+  String? _dob;
+  String? _enlistment;
+  String? _ord;
 
   final _rationTypes = [
     "Select your ration type...",
@@ -284,11 +284,11 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                 firstDate: DateTime(1900),
                                 lastDate: DateTime.now(),
                                 initialDate:
-                                    _dob ?? inputFormat.parse(data['dob']),
+                                   inputFormat.parse(data['dob']),
                                 autovalidateMode: AutovalidateMode.always,
                                 onDateSelected: ((DateTime value) {
                                   setState(() {
-                                    _dob = value;
+                                    _dob = value.toString();
                                   });
                                 }),
                               ),
@@ -576,12 +576,12 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                 ),
                                 firstDate: DateTime(1960),
                                 lastDate: DateTime.now(),
-                                initialDate: _enlistment ??
+                                initialDate:
                                     inputFormat.parse(data['enlistment']),
                                 autovalidateMode: AutovalidateMode.always,
                                 onDateSelected: ((DateTime value) {
                                   setState(() {
-                                    _dob = value;
+                                    _dob = value.toString();
                                   });
                                 }),
                               ),
@@ -619,11 +619,11 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                 firstDate: DateTime(1960),
                                 lastDate: DateTime.now(),
                                 initialDate:
-                                    _ord ?? inputFormat.parse(data['ord']),
+                                    inputFormat.parse(data['ord']),
                                 autovalidateMode: AutovalidateMode.always,
                                 onDateSelected: ((DateTime value) {
                                   setState(() {
-                                    _ord = value;
+                                    _ord = value.toString();
                                   });
                                 }),
                               ),
