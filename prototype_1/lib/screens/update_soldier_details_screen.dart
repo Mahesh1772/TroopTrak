@@ -14,6 +14,11 @@ class UpdateSoldierDetailsPage extends StatefulWidget {
 }
 
 class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
+  Future deleteCurrentUser() async {
+    FirebaseFirestore.instance.collection("Users").doc(docIDs).delete();
+    Navigator.pop(context);
+  }
+
   final docIDs = 'Lee Kuan Yew';
   var _name = TextEditingController();
   var _company = TextEditingController();
@@ -680,7 +685,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 25.0),
                             child: GestureDetector(
-                              onTap: () {},
+                              onTap: deleteCurrentUser,
                               child: Container(
                                 padding: const EdgeInsets.all(16),
                                 decoration: BoxDecoration(
