@@ -21,9 +21,9 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
   var _section = TextEditingController();
   var _appointment = TextEditingController();
   var _mobilenumber = TextEditingController();
-  String? dob = 'Date of birth:';
-  String? ord = "ORD:";
-  String enlistment = "Enlistment Date:";
+  String dob = 'Date of birth:';
+  String ord = "ORD:";
+  String enlistment = 'Enlistment';
 
   final _rationTypes = [
     "Select your ration type...",
@@ -36,7 +36,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
     "SD VI",
     "SD VC"
   ];
-  String? _selectedItem;
+  String? _selectedItem = 'dddd';
 
   final _ranks = [
     "Select your rank...",
@@ -69,7 +69,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
     "MG",
     "LG",
   ];
-  String? _selectedRank;
+  String? _selectedRank = 'dddd';
 
   final _bloodTypes = [
     "Select your blood type...",
@@ -83,19 +83,20 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
     "AB+",
     "Unknown"
   ];
-  String? _selectedBloodType;
+  String? _selectedBloodType = 'dddd';
 
   void _showDatePicker() {
     showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: DateFormat("yyyy-MM-dd").parse(dob),
       firstDate: DateTime(1960),
       lastDate: DateTime.now(),
     ).then((value) {
       setState(() {
         if (value != null) {
-          dob = DateFormat.yMMMd().format(value).toString();
+          dob = DateFormat('yyyy-MM-dd').format(value);
         }
+        addUserDetails();
       });
     });
   }
@@ -103,14 +104,15 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
   void _ordDatePicker() {
     showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: DateFormat("yyyy-MM-dd").parse(ord),
       firstDate: DateTime(1960),
       lastDate: DateTime(2030),
     ).then((value) {
       setState(() {
         if (value != null) {
-          ord = DateFormat.yMMMd().format(value).toString();
+          ord = DateFormat('yyyy-MM-dd').format(value);
         }
+        addUserDetails();
       });
     });
   }
@@ -118,20 +120,22 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
   void _enlistmentDatePicker() {
     showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: DateFormat("yyyy-MM-dd").parse(enlistment),
       firstDate: DateTime(1960),
       lastDate: DateTime(2030),
     ).then((value) {
       setState(() {
         if (value != null) {
-          enlistment = DateFormat.yMMMd().format(value).toString();
+          enlistment = DateFormat('yyyy-MM-dd').format(value);
         }
+        addUserDetails();
       });
     });
   }
 
   Future updateUserDetails() async {
     addUserDetails();
+    print(_selectedBloodType);
     Navigator.pop(context);
   }
 
@@ -148,10 +152,10 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
       'section': _section.text.trim(),
       'appointment': _appointment.text.trim(),
       'rationType': _selectedItem,
-      'mobileNumber': _mobilenumber.text.trim(),
       'bloodgroup': _selectedBloodType,
       'dob': dob,
       'ord': ord,
+      'enlistment': enlistment,
     });
   }
 
@@ -172,13 +176,13 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
       body: SingleChildScrollView(
         child: SafeArea(
-          child: FutureBuilder(
-            future: FirebaseFirestore.instance
+          child: StreamBuilder(
+            stream: FirebaseFirestore.instance
                 .collection('Users')
                 .doc(docIDs)
-                .get(),
+                .snapshots(),
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasData) {
                 //We are trying to map the key and values pairs
                 //to a variable called "data" of Type Map
                 Map<String, dynamic> data =
@@ -186,17 +190,18 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
 
                 // Populating the controllers with pre-existing value
                 _name = TextEditingController(text: docIDs);
-                //_dob = TextEditingController(text: data['dob']);
-                //_selectedRank = data['rank']!;
+                dob = data['dob'];
+                _selectedRank = data['rank'];
                 _appointment = TextEditingController(text: data['appointment']);
-                //_selectedItem = data['rationType']!;
+                _selectedItem = data['rationType'];
                 _section = TextEditingController(text: data['section']);
                 _platoon = TextEditingController(text: data['platoon']);
                 _company = TextEditingController(text: data['company']);
                 _mobilenumber =
                     TextEditingController(text: data['mobileNumber']);
-                //_selectedBloodType = data['bloodgroup']!;
-                //_ord = TextEditingController(text: data['ord']);
+                _selectedBloodType = data['bloodgroup'];
+                ord = data['ord'];
+                enlistment = data['enlistment'];
 
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -275,7 +280,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 15, vertical: 15),
                               child: Text(
-                                dob ?? data['dob'],
+                                dob,
                                 style: const TextStyle(
                                     color: Colors.white, fontSize: 16),
                               ),
@@ -308,7 +313,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                               child: DropdownButtonFormField<String>(
                                 alignment: Alignment.center,
                                 dropdownColor: Colors.black54,
-                                value: _selectedItem ?? data['rationType']!,
+                                value: _selectedItem,
                                 icon: const Icon(
                                   Icons.arrow_downward_sharp,
                                   color: Colors.white,
@@ -330,7 +335,10 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                     )
                                     .toList(),
                                 onChanged: (item) =>
-                                    setState(() => _selectedItem = item),
+                                    setState(() {
+                                      _selectedItem = item;
+                                      addUserDetails();
+                                    }),
                               ),
                             ),
                           ),
@@ -375,7 +383,10 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                   )
                                   .toList(),
                               onChanged: (String? item) async => setState(
-                                  () => _selectedRank = item as String),
+                                  () {
+                                    _selectedRank = item;
+                                    addUserDetails();
+                                  }),
                             ),
                           ),
 
@@ -416,7 +427,10 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                     )
                                     .toList(),
                                 onChanged: (item) async =>
-                                    setState(() => _selectedBloodType = item),
+                                    setState(() {
+                                      _selectedBloodType = item;
+                                      addUserDetails();
+                                    }),
                               ),
                             ),
                           ),
@@ -594,7 +608,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 15, vertical: 15),
                                 child: Text(
-                                  ord ?? data['ord'],
+                                  ord,
                                   style: const TextStyle(
                                       color: Colors.white, fontSize: 16),
                                 ),
