@@ -1,5 +1,8 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
+import 'package:date_field/date_field.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -19,9 +22,9 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
   var _section = TextEditingController();
   var _appointment = TextEditingController();
   var _mobilenumber = TextEditingController();
-  String? dob = 'Date of birth:';
-  String? ord = "ORD:";
-  String? enlistment = "Enlistment Date:";
+  DateTime? _dob;
+  DateTime? _enlistment;
+  DateTime? _ord;
 
   final _rationTypes = [
     "Select your ration type...",
@@ -83,50 +86,41 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
   ];
   String? _selectedBloodType;
 
-  void _showDatePicker() {
-    showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1960),
-      lastDate: DateTime.now(),
-    ).then((value) {
-      setState(() {
-        if (value != null) {
-          dob = DateFormat.yMMMd().format(value).toString();
-        }
-      });
-    });
-  }
+  // void _showDatePicker() async {
+  //   DateTime? pickedDate = await showDatePicker(
+  //       context: context,
+  //       initialDate: DateTime.now(),
+  //       firstDate: DateTime(1960),
+  //       lastDate: DateTime.now());
 
-  void _ordDatePicker() {
-    showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1960),
-      lastDate: DateTime(2030),
-    ).then((value) {
-      setState(() {
-        if (value != null) {
-          ord = DateFormat.yMMMd().format(value).toString();
-        }
-      });
-    });
-  }
+  //   setState(() {
+  //     _enlistment = DateFormat.yMMMd().format(pickedDate!).toString();
+  //   });
+  // }
 
-  void _enlistmentDatePicker() {
-    showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1960),
-      lastDate: DateTime(2030),
-    ).then((value) {
-      setState(() {
-        if (value != null) {
-          enlistment = DateFormat.yMMMd().format(value).toString();
-        }
-      });
-    });
-  }
+  // void _ordDatePicker() async {
+  //   DateTime? pickedDate = await showDatePicker(
+  //       context: context,
+  //       initialDate: DateTime.now(),
+  //       firstDate: DateTime(1960),
+  //       lastDate: DateTime(2100));
+
+  //   setState(() {
+  //     _enlistment = DateFormat.yMMMd().format(pickedDate!).toString();
+  //   });
+  // }
+
+  // void _enlistmentDatePicker() async {
+  //   DateTime? pickedDate = await showDatePicker(
+  //       context: context,
+  //       initialDate: DateTime.now(),
+  //       firstDate: DateTime(1960),
+  //       lastDate: DateTime(2100));
+
+  //   setState(() {
+  //     _enlistment = DateFormat.yMMMd().format(pickedDate!).toString();
+  //   });
+  // }
 
   Future updateUserDetails() async {
     addUserDetails();
@@ -140,7 +134,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
         .update({
       //User map formatting
       'rank': _selectedRank,
-      //'name': _name.text.trim(),
+      'name': _name.text.trim(),
       'company': _company.text.trim(),
       'platoon': _platoon.text.trim(),
       'section': _section.text.trim(),
@@ -148,61 +142,37 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
       'rationType': _selectedItem,
       'mobileNumber': _mobilenumber.text.trim(),
       'bloodgroup': _selectedBloodType,
-      'dob': dob,
-      'enlistment': enlistment,
-      'ord': ord,
+      'dob': _dob,
+      'enlistment': _enlistment,
+      'ord': _ord,
     });
   }
 
-  @override
-  void dispose() {
-    _name.dispose();
-    _company.dispose();
-    _platoon.dispose();
-    _section.dispose();
-    _mobilenumber.dispose();
-    _appointment.dispose();
+  void resetControllers() {
+    _name.clear();
+    _company.clear();
+    _platoon.clear();
+    _section.clear();
+    _appointment.clear();
+    _mobilenumber.clear();
     super.dispose();
   }
 
   @override
   Widget build(context) {
-    bool keyboardIsOpened = MediaQuery.of(context).viewInsets.bottom != 0.0;
+    DateFormat inputFormat = DateFormat.yMMMd();
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: keyboardIsOpened
-          ? null
-          : FloatingActionButton.extended(
-              label: const Center(
-                child: StyledText("UPDATE SOLDIER DETAILS", 22,
-                    fontWeight: FontWeight.bold),
-              ),
-              icon: const Icon(
-                Icons.edit_note_rounded,
-                color: Colors.white,
-                size: 40,
-              ),
-              onPressed: () {
-                updateUserDetails();
-              },
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(12),
-                ),
-              ),
-              backgroundColor: Colors.deepPurple,
-            ),
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
       body: SingleChildScrollView(
         child: SafeArea(
           child: FutureBuilder(
-              future: FirebaseFirestore.instance
-                  .collection('Users')
-                  .doc(docIDs)
-                  .get(),
-              builder: (context, snapshot) {
-                //if (snapshot.connectionState == ConnectionState.done) {
+            future: FirebaseFirestore.instance
+                .collection('Users')
+                .doc(docIDs)
+                .get(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
                 //We are trying to map the key and values pairs
                 //to a variable called "data" of Type Map
                 Map<String, dynamic> data =
@@ -210,7 +180,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
 
                 // Populating the controllers with pre-existing value
                 _name = TextEditingController(text: docIDs);
-                //dob = data['dob'];
+                //_dob = TextEditingController(text: data['dob']);
                 //_selectedRank = data['rank']!;
                 _appointment = TextEditingController(text: data['appointment']);
                 //_selectedItem = data['rationType']!;
@@ -220,7 +190,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                 _mobilenumber =
                     TextEditingController(text: data['mobileNumber']);
                 //_selectedBloodType = data['bloodgroup']!;
-                //ord = data['ord'];
+                //_ord = TextEditingController(text: data['ord']);
 
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -251,9 +221,11 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                         14,
                         fontWeight: FontWeight.w300,
                       ),
+
                       const SizedBox(
                         height: 20,
                       ),
+
                       //Name of soldier textfield
                       Container(
                         decoration: BoxDecoration(
@@ -264,19 +236,25 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 20),
                           child: TextField(
-                            controller: TextEditingController(text: docIDs),
-                            style: const TextStyle(color: Colors.white),
-                            decoration: const InputDecoration(
+                            style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            controller: _name,
+                            decoration: InputDecoration(
                               border: InputBorder.none,
-                              hintStyle: TextStyle(color: Colors.white),
-                              hintText: 'Name (as per NRIC):',
+                              labelText: 'Enter Name (as in NRIC):',
+                              labelStyle: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
+                      const SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -287,33 +265,42 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                               border: Border.all(color: Colors.white),
                               borderRadius: BorderRadius.circular(12),
                             ),
+                            width: 160,
+                            height: 50,
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 15, vertical: 15),
-                              child: Text(
-                                dob ?? data['dob'],
-                                style: const TextStyle(
-                                    color: Colors.white, fontSize: 16),
+                              child: DateTimeFormField(
+                                decoration: InputDecoration(
+                                  icon: const Icon(
+                                    Icons.cake,
+                                  ),
+                                  iconColor: Colors.white,
+                                  labelStyle:
+                                      GoogleFonts.poppins(color: Colors.white),
+                                  labelText: 'Date of Birth:',
+                                  border: const OutlineInputBorder(),
+                                ),
+                                firstDate: DateTime(1900),
+                                lastDate: DateTime.now(),
+                                initialDate:
+                                    _dob ?? inputFormat.parse(data['dob']),
+                                autovalidateMode: AutovalidateMode.always,
+                                onDateSelected: ((DateTime value) {
+                                  setState(() {
+                                    _dob = value;
+                                  });
+                                }),
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: InkWell(
-                              onTap: () {
-                                _showDatePicker();
-                              },
-                              child: const Icon(
-                                Icons.date_range_rounded,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
+
                           //Ration type dropdown menu
                           Padding(
                             padding: const EdgeInsets.only(left: 10.0),
                             child: Container(
                               width: 215,
+                              height: 50,
                               decoration: BoxDecoration(
                                 color: Colors.black54,
                                 border: Border.all(color: Colors.white),
@@ -332,8 +319,9 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                     .map(
                                       (item) => DropdownMenuItem<String>(
                                         value: item,
-                                        child: Text(
+                                        child: AutoSizeText(
                                           item,
+                                          maxLines: 1,
                                           style: const TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w400,
@@ -357,6 +345,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                           //Rank dropdown menu
                           Container(
                             width: 160,
+                            height: 50,
                             decoration: BoxDecoration(
                               color: Colors.black54,
                               border: Border.all(color: Colors.white),
@@ -375,8 +364,9 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                   .map(
                                     (item) => DropdownMenuItem<String>(
                                       value: item,
-                                      child: Text(
+                                      child: AutoSizeText(
                                         item,
+                                        maxLines: 1,
                                         style: const TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.w400,
@@ -385,7 +375,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                     ),
                                   )
                                   .toList(),
-                              onChanged: (String? item) => setState(
+                              onChanged: (String? item) async => setState(
                                   () => _selectedRank = item as String),
                             ),
                           ),
@@ -395,6 +385,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                             padding: const EdgeInsets.only(left: 20.0),
                             child: Container(
                               width: 205,
+                              height: 50,
                               decoration: BoxDecoration(
                                 color: Colors.black54,
                                 border: Border.all(color: Colors.white),
@@ -414,8 +405,9 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                     .map(
                                       (item) => DropdownMenuItem<String>(
                                         value: item,
-                                        child: Text(
+                                        child: AutoSizeText(
                                           item,
+                                          maxLines: 1,
                                           style: const TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w400,
@@ -424,16 +416,18 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                       ),
                                     )
                                     .toList(),
-                                onChanged: (item) =>
+                                onChanged: (item) async =>
                                     setState(() => _selectedBloodType = item),
                               ),
                             ),
                           ),
                         ],
                       ),
+
                       const SizedBox(
                         height: 20,
                       ),
+
                       //Company textfield
                       Container(
                         decoration: BoxDecoration(
@@ -445,17 +439,24 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                           padding: const EdgeInsets.only(left: 20),
                           child: TextField(
                             controller: _company,
-                            style: const TextStyle(color: Colors.white),
-                            decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintStyle: TextStyle(color: Colors.white),
-                                hintText: 'Company:'),
+                            style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              labelText: 'Company:',
+                              labelStyle: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
+                      const SizedBox(height: 10),
 
                       //Platoon textfield
                       Container(
@@ -468,18 +469,24 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                           padding: const EdgeInsets.only(left: 20),
                           child: TextField(
                             controller: _platoon,
-                            style: const TextStyle(color: Colors.white),
-                            decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintStyle: TextStyle(color: Colors.white),
-                                hintText: 'Platoon:'),
+                            style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              labelText: 'Platoon:',
+                              labelStyle: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-
-                      const SizedBox(
-                        height: 20,
-                      ),
+                      const SizedBox(height: 10),
 
                       //Section textfield
                       Container(
@@ -492,18 +499,24 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                           padding: const EdgeInsets.only(left: 20),
                           child: TextField(
                             controller: _section,
-                            style: const TextStyle(color: Colors.white),
-                            decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintStyle: TextStyle(color: Colors.white),
-                                hintText: 'Section / Det:'),
+                            style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              labelText: 'Section:',
+                              labelStyle: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-
-                      const SizedBox(
-                        height: 20,
-                      ),
+                      const SizedBox(height: 10),
 
                       //Soldier Appointment text field
                       Container(
@@ -516,83 +529,103 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                           padding: const EdgeInsets.only(left: 20),
                           child: TextField(
                             controller: _appointment,
-                            style: const TextStyle(color: Colors.white),
-                            decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintStyle: TextStyle(color: Colors.white),
-                                hintText: 'Appointment in unit:'),
+                            style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              labelText: 'Appointment (in unit):',
+                              labelStyle: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-
-                      const SizedBox(
-                        height: 20,
-                      ),
+                      const SizedBox(height: 10),
 
                       //Enlistment Date picker
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          SizedBox(
-                            width: 150,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.black54,
-                                border: Border.all(color: Colors.white),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 15),
-                                child: Text(
-                                  enlistment ?? data['enlistment'],
-                                  style: const TextStyle(
-                                      color: Colors.white, fontSize: 16),
-                                ),
-                              ),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.black54,
+                              border: Border.all(color: Colors.white),
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: InkWell(
-                              onTap: () {
-                                _enlistmentDatePicker();
-                              },
-                              child: const Icon(
-                                Icons.date_range_rounded,
-                                color: Colors.white,
+                            width: 185,
+                            height: 50,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 15),
+                              child: DateTimeFormField(
+                                decoration: InputDecoration(
+                                  icon: const Icon(
+                                    Icons.military_tech_rounded,
+                                  ),
+                                  iconColor: Colors.white,
+                                  labelStyle:
+                                      GoogleFonts.poppins(color: Colors.white),
+                                  labelText: 'Enlistment:',
+                                  border: const OutlineInputBorder(),
+                                ),
+                                firstDate: DateTime(1960),
+                                lastDate: DateTime.now(),
+                                initialDate: _enlistment ??
+                                    inputFormat.parse(data['enlistment']),
+                                autovalidateMode: AutovalidateMode.always,
+                                onDateSelected: ((DateTime value) {
+                                  setState(() {
+                                    _dob = value;
+                                  });
+                                }),
                               ),
                             ),
                           ),
 
-                          //ORD picker
-                          SizedBox(
-                            width: 150,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.black54,
-                                border: Border.all(color: Colors.white),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 15),
-                                child: Text(
-                                  ord ?? data['ord'],
-                                  style: const TextStyle(
-                                      color: Colors.white, fontSize: 16),
-                                ),
-                              ),
-                            ),
+                          const SizedBox(
+                            width: 10,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: InkWell(
-                              onTap: () {
-                                _ordDatePicker();
-                              },
-                              child: const Icon(
-                                Icons.date_range_rounded,
-                                color: Colors.white,
+
+                          //ORD picker
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.black54,
+                              border: Border.all(color: Colors.white),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            width: 185,
+                            height: 50,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 15),
+                              child: DateTimeFormField(
+                                decoration: InputDecoration(
+                                  icon: const Icon(
+                                    Icons.edit_document,
+                                  ),
+                                  iconColor: Colors.white,
+                                  labelStyle: GoogleFonts.poppins(
+                                    color: Colors.white,
+                                  ),
+                                  labelText: 'ORD:',
+                                  border: const OutlineInputBorder(),
+                                ),
+                                firstDate: DateTime(1960),
+                                lastDate: DateTime.now(),
+                                initialDate:
+                                    _ord ?? inputFormat.parse(data['ord']),
+                                autovalidateMode: AutovalidateMode.always,
+                                onDateSelected: ((DateTime value) {
+                                  setState(() {
+                                    _ord = value;
+                                  });
+                                }),
                               ),
                             ),
                           ),
@@ -600,16 +633,60 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                       ),
 
                       const SizedBox(
-                        height: 20,
+                        height: 30,
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                        child: GestureDetector(
+                          onTap: updateUserDetails,
+                          child: Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.deepPurple.shade400,
+                                  Colors.deepPurple.shade700,
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              //color: Colors.deepPurple,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Center(
+                              child: Row(
+                                children: [
+                                  const Icon(
+                                    Icons.edit_note_rounded,
+                                    color: Colors.white,
+                                    size: 30,
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  AutoSizeText(
+                                    'UPDATE SOLDIER DETAILS',
+                                    style: GoogleFonts.poppins(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
                 );
               }
 
-              //return const Text('Loading......');
-              //},
-              ),
+              return const Text('Loading......');
+            },
+          ),
         ),
       ),
     );
