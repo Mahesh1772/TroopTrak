@@ -1,14 +1,71 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:prototype_1/screens/add_new_soldier_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:prototype_1/screens/soldier_detailed_screen.dart';
 import 'package:prototype_1/util/constants.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/util/tiles/solider_tile.dart';
 
-class NominalRollNewScreen extends StatelessWidget {
-  NominalRollNewScreen({super.key});
+class NominalRollNewScreen extends StatefulWidget {
+  const NominalRollNewScreen({super.key});
+
+  @override
+  State<NominalRollNewScreen> createState() => _NominalRollNewScreenState();
+}
+
+class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
+  final user = FirebaseAuth.instance.currentUser!;
+
+  // The list of all document IDs,
+  //which have access to each their own personal information
+  List<String> documentIDs = [];
+
+  // New list to hold the new updated list on search
+  List<String> updated_documentIDs = [];
+
+  // Test data to store rank
+  String rankOfUser = '';
+
+  Future getDocIDs() async {
+    await FirebaseFirestore.instance
+        .collection('Users')
+        //.orderBy('rank', descending: false)
+        .get()
+        .then((snapshot) => {
+              snapshot.docs.forEach((document) {
+                print(document.reference.id);
+                documentIDs.add(document.reference.id);
+              })
+            });
+    documentIDs.sort();
+    updated_documentIDs = documentIDs;
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    getDocIDs();
+    super.initState();
+    documentIDs = [];
+  }
+
+  void reset() {
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (BuildContext context) => super.widget));
+  }
+
+  void updateList(String value) {
+    // This will be used to make the new list with searched word
+    setState(() {
+      updated_documentIDs = documentIDs
+          .where(
+              (element) => element.toLowerCase().contains(value.toLowerCase()))
+          .toList();
+    });
+  }
 
   List unitSoldiers = [
     //[ soldierName, soldierRank, tileColour, soldierAttendance, soldierIcon, soldierAppointment, companyName, platoonName, sectionNumber, dateOfBirth, rationType, bloodType, enlistmentDate, ordDate, soldierStatuses]
@@ -94,6 +151,7 @@ class NominalRollNewScreen extends StatelessWidget {
       "10 Jul 2023",
     ],
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -154,11 +212,34 @@ class NominalRollNewScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Image.asset(
-                    'lib/assets/user.png',
-                    width: 50,
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SoldierDetailedScreen(
+                                  soldierName: unitSoldiers[1][0],
+                                  soldierRank: unitSoldiers[1][1],
+                                  tileColor: unitSoldiers[1][2],
+                                  soldierAttendance: unitSoldiers[1][3],
+                                  soldierIcon: unitSoldiers[1][4],
+                                  soldierAppointment: unitSoldiers[1][5],
+                                  company: unitSoldiers[1][6],
+                                  platoon: unitSoldiers[1][7],
+                                  section: unitSoldiers[1][8],
+                                  dateOfBirth: unitSoldiers[1][9],
+                                  rationType: unitSoldiers[1][10],
+                                  bloodType: unitSoldiers[1][11],
+                                  enlistmentDate: unitSoldiers[1][12],
+                                  ordDate: unitSoldiers[1][13],
+                                )));
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Image.asset(
+                      'lib/assets/user.png',
+                      width: 50,
+                    ),
                   ),
                 ),
               ],

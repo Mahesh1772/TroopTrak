@@ -38,10 +38,23 @@ class SoldierStatusTile extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(
-              tileIcon,
-              color: Colors.white,
-              size: 60,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Icon(
+                  tileIcon,
+                  color: Colors.white,
+                  size: 60,
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: const Icon(
+                    Icons.delete_rounded,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                ),
+              ],
             ),
             const SizedBox(
               height: 10,

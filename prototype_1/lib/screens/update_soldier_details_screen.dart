@@ -135,7 +135,6 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
 
   Future updateUserDetails() async {
     addUserDetails();
-    print(_selectedBloodType);
     Navigator.pop(context);
   }
 
@@ -334,11 +333,10 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                       ),
                                     )
                                     .toList(),
-                                onChanged: (item) =>
-                                    setState(() {
-                                      _selectedItem = item;
-                                      addUserDetails();
-                                    }),
+                                onChanged: (item) => setState(() {
+                                  _selectedItem = item;
+                                  addUserDetails();
+                                }),
                               ),
                             ),
                           ),
@@ -382,11 +380,10 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                     ),
                                   )
                                   .toList(),
-                              onChanged: (String? item) async => setState(
-                                  () {
-                                    _selectedRank = item;
-                                    addUserDetails();
-                                  }),
+                              onChanged: (String? item) async => setState(() {
+                                _selectedRank = item;
+                                addUserDetails();
+                              }),
                             ),
                           ),
 
@@ -426,11 +423,10 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                       ),
                                     )
                                     .toList(),
-                                onChanged: (item) async =>
-                                    setState(() {
-                                      _selectedBloodType = item;
-                                      addUserDetails();
-                                    }),
+                                onChanged: (item) async => setState(() {
+                                  _selectedBloodType = item;
+                                  addUserDetails();
+                                }),
                               ),
                             ),
                           ),
@@ -634,48 +630,97 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                         height: 30,
                       ),
 
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                        child: GestureDetector(
-                          onTap: updateUserDetails,
-                          child: Container(
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Colors.deepPurple.shade400,
-                                  Colors.deepPurple.shade700,
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              //color: Colors.deepPurple,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Center(
-                              child: Row(
-                                children: [
-                                  const Icon(
-                                    Icons.edit_note_rounded,
-                                    color: Colors.white,
-                                    size: 30,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5.0),
+                            child: GestureDetector(
+                              onTap: updateUserDetails,
+                              child: Container(
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Colors.deepPurple.shade400,
+                                      Colors.deepPurple.shade700,
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
                                   ),
-                                  const SizedBox(
-                                    width: 10,
+                                  //color: Colors.deepPurple,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Center(
+                                  child: Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.edit_note_rounded,
+                                        color: Colors.white,
+                                        size: 30,
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      AutoSizeText(
+                                        'UPDATE DETAILS',
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 10,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  AutoSizeText(
-                                    'UPDATE SOLDIER DETAILS',
-                                    style: GoogleFonts.poppins(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 25.0),
+                            child: GestureDetector(
+                              onTap: () {},
+                              child: Container(
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  gradient: const LinearGradient(
+                                    colors: [
+                                      Colors.red,
+                                      Color.fromARGB(255, 202, 65, 55)
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                                  //color: Colors.deepPurple,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Center(
+                                  child: Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.delete_forever_rounded,
+                                        color: Colors.white,
+                                        size: 30,
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      AutoSizeText(
+                                        'DELETE DETAILS',
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 10,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

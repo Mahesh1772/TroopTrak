@@ -74,28 +74,15 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Icon(
-                                  Icons.arrow_back_sharp,
-                                  color: Colors.white,
-                                  size: 25,
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {},
-                                child: const Icon(
-                                  Icons.more_vert,
-                                  color: Colors.white,
-                                  size: 25,
-                                ),
-                              ),
-                            ],
+                          InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Icon(
+                              Icons.arrow_back_sharp,
+                              color: Colors.white,
+                              size: 25,
+                            ),
                           ),
                           const SizedBox(
                             height: 20,
@@ -188,36 +175,34 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
                 const SizedBox(
                   height: 10,
                 ),
-                Container(
-                  child: TabBar(
-                    labelStyle: GoogleFonts.poppins(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: 1.5,
-                    ),
-                    controller: tabController,
-                    tabs: const [
-                      Tab(
-                        text: "BASIC INFO",
-                        icon: Icon(
-                          Icons.info,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Tab(
-                        text: "STATUSES",
-                        icon: Icon(
-                          Icons.warning_rounded,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
+                TabBar(
+                  labelStyle: GoogleFonts.poppins(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 1.5,
                   ),
+                  controller: tabController,
+                  tabs: const [
+                    Tab(
+                      text: "BASIC INFO",
+                      icon: Icon(
+                        Icons.info,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Tab(
+                      text: "STATUSES",
+                      icon: Icon(
+                        Icons.warning_rounded,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
                 ),
                 SizedBox(
                   width: double.maxFinite,
-                  height: 600,
+                  height: 650,
                   child: TabBarView(
                     controller: tabController,
                     children: [

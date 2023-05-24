@@ -20,11 +20,16 @@ var pastStatuses = [
   ["Medical Appointment", "National Skin Centre", "5 Apr 2021", "5 Apr 2021"],
 ];
 
-class StatusesTab extends StatelessWidget {
+class StatusesTab extends StatefulWidget {
   const StatusesTab({
     super.key,
   });
 
+  @override
+  State<StatusesTab> createState() => _StatusesTabState();
+}
+
+class _StatusesTabState extends State<StatusesTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

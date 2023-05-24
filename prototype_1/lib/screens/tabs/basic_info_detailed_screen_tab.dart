@@ -81,8 +81,29 @@ class BasicInfoTab extends StatelessWidget {
             ),
           ),
           const SizedBox(
-            height: 50,
-          )
+            height: 10,
+          ),
+          Center(
+            child: TextButton(
+              onPressed: () {
+                Navigator.pop(
+                  context,
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 30.0, vertical: 16.0),
+                decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    gradient: const LinearGradient(
+                      colors: [Colors.red, Color.fromARGB(255, 237, 131, 124)],
+                    ),
+                    borderRadius: BorderRadius.circular(50.0)),
+                child: const StyledText("DELETE SOLDIER DETAILS", 18,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
         ],
       ),
     );

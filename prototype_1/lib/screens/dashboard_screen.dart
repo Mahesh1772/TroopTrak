@@ -3,6 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:prototype_1/screens/soldier_detailed_screen.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/util/constants.dart';
 import 'package:prototype_1/util/charts/current_strength_chart.dart';
@@ -94,9 +95,14 @@ List unitSoldiers = [
   ],
 ];
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
 
+  @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -147,13 +153,36 @@ class DashboardScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Image.asset(
-                      'lib/assets/user.png',
-                      width: 50,
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SoldierDetailedScreen(
+                                    soldierName: unitSoldiers[1][0],
+                                    soldierRank: unitSoldiers[1][1],
+                                    tileColor: unitSoldiers[1][2],
+                                    soldierAttendance: unitSoldiers[1][3],
+                                    soldierIcon: unitSoldiers[1][4],
+                                    soldierAppointment: unitSoldiers[1][5],
+                                    company: unitSoldiers[1][6],
+                                    platoon: unitSoldiers[1][7],
+                                    section: unitSoldiers[1][8],
+                                    dateOfBirth: unitSoldiers[1][9],
+                                    rationType: unitSoldiers[1][10],
+                                    bloodType: unitSoldiers[1][11],
+                                    enlistmentDate: unitSoldiers[1][12],
+                                    ordDate: unitSoldiers[1][13],
+                                  )));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Image.asset(
+                        'lib/assets/user.png',
+                        width: 50,
+                      ),
                     ),
-                  )
+                  ),
                 ],
               ),
               const SizedBox(

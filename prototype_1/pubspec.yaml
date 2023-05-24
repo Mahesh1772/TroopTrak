@@ -51,6 +51,7 @@ dependencies:
   auto_size_text: ^3.0.0
   datetime_picker_formfield_new: ^2.1.0
   date_field: ^3.0.3
+  flutter_slidable: ^3.0.0
 
 dev_dependencies:
   flutter_test:
