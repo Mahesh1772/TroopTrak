@@ -97,7 +97,8 @@ class _HomeState extends State<Home> {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute (builder: (context) =>  UpdateUser()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => UpdateUser()));
             },
             child: const Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.0),

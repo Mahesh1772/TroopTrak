@@ -100,13 +100,13 @@ class _EditUserDetails extends State<EditUserDetails> {
         children: [
           SingleChildScrollView(
             child: SafeArea(
-              child: FutureBuilder(
-                future: FirebaseFirestore.instance
+              child: StreamBuilder(
+                stream: FirebaseFirestore.instance
                     .collection('Users')
                     .doc(docIDs)
-                    .get(),
+                    .snapshots(),
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.hasData) {
                     //We are trying to map the key and values pairs
                     //to a variable called "data" of Type Map
                     Map<String, dynamic> data =
