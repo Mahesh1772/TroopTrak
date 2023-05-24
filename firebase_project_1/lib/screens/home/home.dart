@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_project_1/screens/home/edit_user.dart';
-import 'package:firebase_project_1/screens/home/read_custom_user_id.dart';
-import 'package:firebase_project_1/screens/home/add_new_soldier_screen.dart';
+import 'package:firebase_project_1/screens/home/read_items/read_custom_user_id.dart';
 import 'package:firebase_project_1/screens/home/update_profile.dart';
+import 'package:firebase_project_1/user_model/user_profile_page.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_project_1/screens/home/read_user_rank.dart';
+import 'package:firebase_project_1/screens/home/read_items/read_user_rank.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -37,7 +37,7 @@ class _HomeState extends State<Home> {
         .get()
         .then((snapshot) => {
               snapshot.docs.forEach((document) {
-                print(document.reference);
+                print(document.reference.id);
                 documentIDs.add(document.reference.id);
               })
             });
@@ -68,16 +68,6 @@ class _HomeState extends State<Home> {
     });
   }
 
-  Future createUserModel(docIDs) async {
-    //CollectionReference users = FirebaseFirestore.instance.collection('Users');
-    //await users.doc(docIDs).get();
-    final DocumentSnapshot documentSnapshot =
-        await FirebaseFirestore.instance.collection('Users').doc(docIDs).get();
-    Map<String, dynamic> values =
-        documentSnapshot.data() as Map<String, dynamic>;
-    return values;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,7 +76,7 @@ class _HomeState extends State<Home> {
         title: Center(
           child: Text(
             textAlign: TextAlign.center,
-            'Display dashboard',
+            'Dashboard check',
             style: TextStyle(
               fontSize: 30,
               color: Colors.tealAccent.shade400,
@@ -104,7 +94,19 @@ class _HomeState extends State<Home> {
                 Icons.logout_sharp,
               ),
             ),
-          )
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => UpdateUser()));
+            },
+            child: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              child: Icon(
+                Icons.verified_user_outlined,
+              ),
+            ),
+          ),
         ],
       ),
       backgroundColor: Colors.deepPurple.shade200,

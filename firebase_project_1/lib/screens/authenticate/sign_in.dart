@@ -18,7 +18,7 @@ class _SignInState extends State<SignIn> {
 
   Future isSignedIn() async {
     //print('tap detected');
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
+    UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
       email: _emailId.text.trim(),
       password: _password.text.trim(),
     );
