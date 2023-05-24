@@ -2,7 +2,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
-import 'package:date_field/date_field.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -22,9 +21,9 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
   var _section = TextEditingController();
   var _appointment = TextEditingController();
   var _mobilenumber = TextEditingController();
-  String? _dob;
-  String? _enlistment;
-  String? _ord;
+  String? dob = 'Date of birth:';
+  String? ord = "ORD:";
+  String enlistment = "Enlistment Date:";
 
   final _rationTypes = [
     "Select your ration type...",
@@ -86,41 +85,50 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
   ];
   String? _selectedBloodType;
 
-  // void _showDatePicker() async {
-  //   DateTime? pickedDate = await showDatePicker(
-  //       context: context,
-  //       initialDate: DateTime.now(),
-  //       firstDate: DateTime(1960),
-  //       lastDate: DateTime.now());
+  void _showDatePicker() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1960),
+      lastDate: DateTime.now(),
+    ).then((value) {
+      setState(() {
+        if (value != null) {
+          dob = DateFormat.yMMMd().format(value).toString();
+        }
+      });
+    });
+  }
 
-  //   setState(() {
-  //     _enlistment = DateFormat.yMMMd().format(pickedDate!).toString();
-  //   });
-  // }
+  void _ordDatePicker() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1960),
+      lastDate: DateTime(2030),
+    ).then((value) {
+      setState(() {
+        if (value != null) {
+          ord = DateFormat.yMMMd().format(value).toString();
+        }
+      });
+    });
+  }
 
-  // void _ordDatePicker() async {
-  //   DateTime? pickedDate = await showDatePicker(
-  //       context: context,
-  //       initialDate: DateTime.now(),
-  //       firstDate: DateTime(1960),
-  //       lastDate: DateTime(2100));
-
-  //   setState(() {
-  //     _enlistment = DateFormat.yMMMd().format(pickedDate!).toString();
-  //   });
-  // }
-
-  // void _enlistmentDatePicker() async {
-  //   DateTime? pickedDate = await showDatePicker(
-  //       context: context,
-  //       initialDate: DateTime.now(),
-  //       firstDate: DateTime(1960),
-  //       lastDate: DateTime(2100));
-
-  //   setState(() {
-  //     _enlistment = DateFormat.yMMMd().format(pickedDate!).toString();
-  //   });
-  // }
+  void _enlistmentDatePicker() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1960),
+      lastDate: DateTime(2030),
+    ).then((value) {
+      setState(() {
+        if (value != null) {
+          enlistment = DateFormat.yMMMd().format(value).toString();
+        }
+      });
+    });
+  }
 
   Future updateUserDetails() async {
     addUserDetails();
@@ -142,9 +150,8 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
       'rationType': _selectedItem,
       'mobileNumber': _mobilenumber.text.trim(),
       'bloodgroup': _selectedBloodType,
-      'dob': _dob,
-      'enlistment': _enlistment,
-      'ord': _ord,
+      'dob': dob,
+      'ord': ord,
     });
   }
 
@@ -160,7 +167,6 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
 
   @override
   Widget build(context) {
-    DateFormat inputFormat = DateFormat.yMMMd();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
@@ -265,32 +271,25 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                               border: Border.all(color: Colors.white),
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            width: 160,
-                            height: 50,
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 15, vertical: 15),
-                              child: DateTimeFormField(
-                                decoration: InputDecoration(
-                                  icon: const Icon(
-                                    Icons.cake,
-                                  ),
-                                  iconColor: Colors.white,
-                                  labelStyle:
-                                      GoogleFonts.poppins(color: Colors.white),
-                                  labelText: 'Date of Birth:',
-                                  border: const OutlineInputBorder(),
-                                ),
-                                firstDate: DateTime(1900),
-                                lastDate: DateTime.now(),
-                                initialDate:
-                                   inputFormat.parse(data['dob']),
-                                autovalidateMode: AutovalidateMode.always,
-                                onDateSelected: ((DateTime value) {
-                                  setState(() {
-                                    _dob = value.toString();
-                                  });
-                                }),
+                              child: Text(
+                                dob ?? data['dob'],
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 16),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: InkWell(
+                              onTap: () {
+                                _showDatePicker();
+                              },
+                              child: const Icon(
+                                Icons.date_range_rounded,
+                                color: Colors.white,
                               ),
                             ),
                           ),
@@ -299,7 +298,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                           Padding(
                             padding: const EdgeInsets.only(left: 10.0),
                             child: Container(
-                              width: 215,
+                              width: 205,
                               height: 50,
                               decoration: BoxDecoration(
                                 color: Colors.black54,
@@ -456,7 +455,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 20),
 
                       //Platoon textfield
                       Container(
@@ -486,7 +485,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 20),
 
                       //Section textfield
                       Container(
@@ -516,7 +515,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 20),
 
                       //Soldier Appointment text field
                       Container(
@@ -546,86 +545,71 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 20),
 
                       //Enlistment Date picker
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.black54,
-                              border: Border.all(color: Colors.white),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            width: 185,
-                            height: 50,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 15),
-                              child: DateTimeFormField(
-                                decoration: InputDecoration(
-                                  icon: const Icon(
-                                    Icons.military_tech_rounded,
-                                  ),
-                                  iconColor: Colors.white,
-                                  labelStyle:
-                                      GoogleFonts.poppins(color: Colors.white),
-                                  labelText: 'Enlistment:',
-                                  border: const OutlineInputBorder(),
+                          SizedBox(
+                            width: 150,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.black54,
+                                border: Border.all(color: Colors.white),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 15),
+                                child: Text(
+                                  enlistment,
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 16),
                                 ),
-                                firstDate: DateTime(1960),
-                                lastDate: DateTime.now(),
-                                initialDate:
-                                    inputFormat.parse(data['enlistment']),
-                                autovalidateMode: AutovalidateMode.always,
-                                onDateSelected: ((DateTime value) {
-                                  setState(() {
-                                    _dob = value.toString();
-                                  });
-                                }),
                               ),
                             ),
                           ),
-
-                          const SizedBox(
-                            width: 10,
-                          ),
-
-                          //ORD picker
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.black54,
-                              border: Border.all(color: Colors.white),
-                              borderRadius: BorderRadius.circular(12),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: InkWell(
+                              onTap: () {
+                                _enlistmentDatePicker();
+                              },
+                              child: const Icon(
+                                Icons.date_range_rounded,
+                                color: Colors.white,
+                              ),
                             ),
-                            width: 185,
-                            height: 50,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 15),
-                              child: DateTimeFormField(
-                                decoration: InputDecoration(
-                                  icon: const Icon(
-                                    Icons.edit_document,
-                                  ),
-                                  iconColor: Colors.white,
-                                  labelStyle: GoogleFonts.poppins(
-                                    color: Colors.white,
-                                  ),
-                                  labelText: 'ORD:',
-                                  border: const OutlineInputBorder(),
+                          ),
+                          //ORD picker
+                          SizedBox(
+                            width: 150,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.black54,
+                                border: Border.all(color: Colors.white),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 15),
+                                child: Text(
+                                  ord ?? data['ord'],
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 16),
                                 ),
-                                firstDate: DateTime(1960),
-                                lastDate: DateTime.now(),
-                                initialDate:
-                                    inputFormat.parse(data['ord']),
-                                autovalidateMode: AutovalidateMode.always,
-                                onDateSelected: ((DateTime value) {
-                                  setState(() {
-                                    _ord = value.toString();
-                                  });
-                                }),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: InkWell(
+                              onTap: () {
+                                _ordDatePicker();
+                              },
+                              child: const Icon(
+                                Icons.date_range_rounded,
+                                color: Colors.white,
                               ),
                             ),
                           ),
