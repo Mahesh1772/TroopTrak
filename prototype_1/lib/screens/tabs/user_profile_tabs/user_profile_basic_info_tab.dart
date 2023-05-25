@@ -1,10 +1,30 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:prototype_1/screens/update_soldier_details_screen.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/util/text_styles/soldier_detailed_screen_info_template.dart';
 
-class UserProfileBasicInfoTab extends StatelessWidget {
+var fname = FirebaseAuth.instance.currentUser!.displayName.toString();
+var id = FirebaseAuth.instance.currentUser!;
+List profile = [
+  "Sivagnanam Maheshwaran",
+  "lib/assets/army-ranks/3sg.png",
+  Colors.indigo.shade800,
+  "IN CAMP",
+  "lib/assets/army-ranks/soldier.png",
+  "LOGISTICS SPECIALIST",
+  "Bravo",
+  "1",
+  "2",
+  "05 Apr 2001",
+  "VI",
+  "AB+",
+  "11 Aug 2019",
+  "10 Aug 2021",
+];
+
+class UserProfileBasicInfoTab extends StatefulWidget {
   final String dateOfBirth;
   final String rationType;
   final String bloodType;
@@ -18,6 +38,22 @@ class UserProfileBasicInfoTab extends StatelessWidget {
       required this.bloodType,
       required this.enlistmentDate,
       required this.ordDate});
+
+  @override
+  State<UserProfileBasicInfoTab> createState() =>
+      _UserProfileBasicInfoTabState();
+}
+
+class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab> {
+  Future deleteUserAccount() async {
+    deleteCurrentUser();
+    id.delete();
+    Navigator.pop(context);
+  }
+
+  Future deleteCurrentUser() async {
+    FirebaseFirestore.instance.collection("Users").doc(fname).delete();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,27 +77,27 @@ class UserProfileBasicInfoTab extends StatelessWidget {
               children: [
                 SoldierDetailedInfoTemplate(
                   title: "Date Of Birth",
-                  content: dateOfBirth.toUpperCase(),
+                  content: profile[9].toUpperCase(),
                   icon: Icons.cake_rounded,
                 ),
                 SoldierDetailedInfoTemplate(
                   title: "Ration Type:",
-                  content: rationType.toUpperCase(),
+                  content: profile[10].toUpperCase(),
                   icon: Icons.food_bank_rounded,
                 ),
                 SoldierDetailedInfoTemplate(
                   title: "Blood Type:",
-                  content: bloodType.toUpperCase(),
+                  content: profile[11].toUpperCase(),
                   icon: Icons.bloodtype_rounded,
                 ),
                 SoldierDetailedInfoTemplate(
                   title: "Enlistment Date:",
-                  content: enlistmentDate.toUpperCase(),
+                  content: profile[12].toUpperCase(),
                   icon: Icons.date_range_rounded,
                 ),
                 SoldierDetailedInfoTemplate(
                   title: "ORD:",
-                  content: ordDate.toUpperCase(),
+                  content: profile[13].toUpperCase(),
                   icon: Icons.military_tech_rounded,
                 ),
                 const SizedBox(
@@ -73,7 +109,6 @@ class UserProfileBasicInfoTab extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          // Populating the controllers with pre-existing values
                           builder: (context) => UpdateSoldierDetailsPage(
                               name: TextEditingController(text: docIDs),
                               company:
@@ -105,8 +140,20 @@ class UserProfileBasicInfoTab extends StatelessWidget {
                             ],
                           ),
                           borderRadius: BorderRadius.circular(50.0)),
-                      child: const StyledText("EDIT SOLDIER DETAILS", 18,
-                          fontWeight: FontWeight.bold),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: const [
+                          Icon(
+                            Icons.edit_document,
+                            color: Colors.white,
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          StyledText("EDIT SOLDIER DETAILS", 18,
+                              fontWeight: FontWeight.bold),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -115,11 +162,7 @@ class UserProfileBasicInfoTab extends StatelessWidget {
                 ),
                 Center(
                   child: TextButton(
-                    onPressed: () {
-                      Navigator.pop(
-                        context,
-                      );
-                    },
+                    onPressed: deleteUserAccount,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 30.0, vertical: 16.0),
@@ -132,15 +175,26 @@ class UserProfileBasicInfoTab extends StatelessWidget {
                             ],
                           ),
                           borderRadius: BorderRadius.circular(50.0)),
-                      child: const StyledText("DELETE SOLDIER DETAILS", 18,
-                          fontWeight: FontWeight.bold),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: const [
+                          Icon(
+                            Icons.delete,
+                            color: Colors.white,
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          StyledText("DELETE SOLDIER DETAILS", 18,
+                              fontWeight: FontWeight.bold),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ],
             );
           }
-
           return const Text('Loading......');
         },
       ),

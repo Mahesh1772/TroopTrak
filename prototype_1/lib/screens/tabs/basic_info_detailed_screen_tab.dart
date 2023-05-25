@@ -139,8 +139,20 @@ class _BasicInfoTabState extends State<BasicInfoTab> {
                             ],
                           ),
                           borderRadius: BorderRadius.circular(50.0)),
-                      child: const StyledText("EDIT SOLDIER DETAILS", 18,
-                          fontWeight: FontWeight.bold),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: const [
+                          Icon(
+                            Icons.edit_document,
+                            color: Colors.white,
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          StyledText("EDIT SOLDIER DETAILS", 18,
+                              fontWeight: FontWeight.bold),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -162,8 +174,20 @@ class _BasicInfoTabState extends State<BasicInfoTab> {
                             ],
                           ),
                           borderRadius: BorderRadius.circular(50.0)),
-                      child: const StyledText("DELETE SOLDIER DETAILS", 18,
-                          fontWeight: FontWeight.bold),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: const [
+                          Icon(
+                            Icons.delete,
+                            color: Colors.white,
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          StyledText("DELETE SOLDIER DETAILS", 18,
+                              fontWeight: FontWeight.bold),
+                        ],
+                      ),
                     ),
                   ),
                 ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/util/tiles/current_status_detailed_screen_tile.dart';
 import 'package:prototype_1/util/tiles/past_status_detailed_screen_tile.dart';
 
@@ -34,15 +35,6 @@ class _UserProfileStatusesTabState extends State<UserProfileStatusesTab> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: Colors.deepPurple,
-        child: const Icon(
-          Icons.add_circle_rounded,
-          color: Colors.white,
-          size: 40,
-        ),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(30.0),
         child: Column(
@@ -119,6 +111,42 @@ class _UserProfileStatusesTabState extends State<UserProfileStatusesTab> {
                       startDate: pastStatuses[index][2],
                       endDate: pastStatuses[index][3]);
                 },
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Center(
+              child: TextButton(
+                onPressed: () {},
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 40.0, vertical: 16.0),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      gradient: const LinearGradient(
+                        colors: [
+                          Color.fromARGB(255, 72, 30, 229),
+                          Color.fromARGB(255, 130, 60, 229),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(50.0)),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      Icon(
+                        Icons.note_add,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      StyledText("ADD NEW STATUS", 18,
+                          fontWeight: FontWeight.bold),
+                    ],
+                  ),
+                ),
               ),
             ),
           ],

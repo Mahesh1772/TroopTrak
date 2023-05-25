@@ -281,9 +281,9 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 15, vertical: 15),
-                              child: Text(
+                              child: AutoSizeText(
                                 widget.dob,
-                                style: const TextStyle(
+                                style: GoogleFonts.poppins(
                                     color: Colors.white, fontSize: 16),
                               ),
                             ),
@@ -305,7 +305,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                           Padding(
                             padding: const EdgeInsets.only(left: 10.0),
                             child: Container(
-                              width: 205,
+                              width: 220,
                               height: 50,
                               decoration: BoxDecoration(
                                 color: Colors.black54,
@@ -328,7 +328,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                         child: AutoSizeText(
                                           item,
                                           maxLines: 1,
-                                          style: const TextStyle(
+                                          style: GoogleFonts.poppins(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w400,
                                               color: Colors.white),
@@ -351,50 +351,52 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                       Row(
                         children: [
                           //Rank dropdown menu
-                          Container(
-                            width: 160,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: Colors.black54,
-                              border: Border.all(color: Colors.white),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: DropdownButtonFormField<String>(
-                              alignment: Alignment.center,
-                              dropdownColor: Colors.black54,
-                              value: widget.selectedRank ?? data['rank']!,
-                              icon: const Icon(
-                                Icons.arrow_downward_sharp,
-                                color: Colors.white,
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: Container(
+                              width: 165,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color: Colors.black54,
+                                border: Border.all(color: Colors.white),
+                                borderRadius: BorderRadius.circular(12),
                               ),
-                              style: const TextStyle(color: Colors.black54),
-                              items: _ranks
-                                  .map(
-                                    (item) => DropdownMenuItem<String>(
-                                      value: item,
-                                      child: AutoSizeText(
-                                        item,
-                                        maxLines: 1,
-                                        style: const TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.white),
+                              child: DropdownButtonFormField<String>(
+                                alignment: Alignment.center,
+                                dropdownColor: Colors.black54,
+                                value: widget.selectedRank ?? data['rank']!,
+                                icon: const Icon(
+                                  Icons.arrow_downward_sharp,
+                                  color: Colors.white,
+                                ),
+                                style: const TextStyle(color: Colors.black54),
+                                items: _ranks
+                                    .map(
+                                      (item) => DropdownMenuItem<String>(
+                                        value: item,
+                                        child: AutoSizeText(
+                                          item,
+                                          maxLines: 1,
+                                          style: GoogleFonts.poppins(
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.white),
+                                        ),
                                       ),
-                                    ),
-                                  )
-                                  .toList(),
-                              onChanged: (String? item) async => setState(() {
-                                widget.selectedRank = item;
-                                addUserDetails();
-                              }),
+                                    )
+                                    .toList(),
+                                onChanged: (String? item) async => setState(() {
+                                  widget.selectedRank = item;
+                                  addUserDetails();
+                                }),
+                              ),
                             ),
                           ),
 
                           //Blood type dropdown menu
                           Padding(
-                            padding: const EdgeInsets.only(left: 20.0),
+                            padding: const EdgeInsets.only(left: 8.0),
                             child: Container(
-                              width: 205,
+                              width: 200,
                               height: 50,
                               decoration: BoxDecoration(
                                 color: Colors.black54,
@@ -418,8 +420,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                         child: AutoSizeText(
                                           item,
                                           maxLines: 1,
-                                          style: const TextStyle(
-                                              fontSize: 16,
+                                          style: GoogleFonts.poppins(
                                               fontWeight: FontWeight.w400,
                                               color: Colors.white),
                                         ),
@@ -564,7 +565,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                       Row(
                         children: [
                           SizedBox(
-                            width: 150,
+                            width: 140,
                             child: Container(
                               decoration: BoxDecoration(
                                 color: Colors.black54,
@@ -574,9 +575,9 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 15, vertical: 15),
-                                child: Text(
+                                child: AutoSizeText(
                                   widget.enlistment,
-                                  style: const TextStyle(
+                                  style: GoogleFonts.poppins(
                                       color: Colors.white, fontSize: 16),
                                 ),
                               ),
@@ -594,9 +595,13 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                               ),
                             ),
                           ),
+
+                          const SizedBox(
+                            width: 20,
+                          ),
                           //ORD picker
                           SizedBox(
-                            width: 150,
+                            width: 140,
                             child: Container(
                               decoration: BoxDecoration(
                                 color: Colors.black54,
@@ -606,9 +611,9 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 15, vertical: 15),
-                                child: Text(
+                                child: AutoSizeText(
                                   widget.ord,
-                                  style: const TextStyle(
+                                  style: GoogleFonts.poppins(
                                       color: Colors.white, fontSize: 16),
                                 ),
                               ),
