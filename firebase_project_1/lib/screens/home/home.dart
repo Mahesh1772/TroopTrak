@@ -25,8 +25,8 @@ class _HomeState extends State<Home> {
   List<String> updated_documentIDs = [];
 
   // Test data to store rank
-  String rankOfUser = '';
-
+  List <Map<String, dynamic>> userDetails = [];
+  List <List> soldierTiles = [];
   // DocumentReference<Map<String, dynamic>>(Users/8bu245T440NIuQnJhm81)
   // This is the sample output, to get IDs we just do .id
 
@@ -39,6 +39,8 @@ class _HomeState extends State<Home> {
               snapshot.docs.forEach((document) {
                 //print(document.reference.id);
                 documentIDs.add(document.reference.id);
+                userDetails.add(document.data());
+                //print(document.data());
               })
             });
     documentIDs.sort();
@@ -67,6 +69,14 @@ class _HomeState extends State<Home> {
           .toList();
     });
   }
+
+  //void populateList () {
+  //  for (var j = 0; j < userDetails.length; j++) {
+  //    for (var i = 0; i < 2; i++) {
+  //      soldierTiles[j][i] = soldierTiles[j]['rank'];
+  //    }
+  //  }
+  //}
 
   @override
   Widget build(BuildContext context) {
