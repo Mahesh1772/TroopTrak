@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_project_1/screens/home/read_items/read_status.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +26,8 @@ List<String> documentIDs = [];
 var snap;
 
 class _EditUserDetails extends State<EditUserDetails> {
+
+  //Method to get a single soldiers Statuses
   Future getDocIDs() async {
     await FirebaseFirestore.instance
         .collection('Users')
@@ -32,7 +36,7 @@ class _EditUserDetails extends State<EditUserDetails> {
         .get()
         .then((value) {
       value.docs.forEach((element) {
-        //print(element.data());
+        print(element.data());
         documentIDs.add(element.reference.id);
       });
     });
@@ -40,6 +44,34 @@ class _EditUserDetails extends State<EditUserDetails> {
     print(documentIDs);
     setState(() {});
   }
+
+  //Fully working method to get all the statusIDs
+  // of all the soldiers from firestore, can be used in tracking attendence
+  /*
+  Future getDocIDs() async {
+    await FirebaseFirestore.instance
+        .collection('Users')
+        //.orderBy('rank', descending: false)
+        .get()
+        .then((snapshot) => {
+              snapshot.docs.forEach((document) {
+                FirebaseFirestore.instance
+                    .collection('Users')
+                    .doc(document.id)
+                    .collection('Statuses')
+                    .get()
+                    .then((value) {
+                  value.docs.forEach((element) {
+                    print(element.reference.id);
+                    documentIDs.add(element.reference.id);
+                  });
+                });
+              })
+            });
+    documentIDs.sort();
+    setState(() {});
+  }
+  */
 
   @override
   void initState() {

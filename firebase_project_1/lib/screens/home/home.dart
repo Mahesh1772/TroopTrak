@@ -37,7 +37,7 @@ class _HomeState extends State<Home> {
         .get()
         .then((snapshot) => {
               snapshot.docs.forEach((document) {
-                print(document.reference.id);
+                //print(document.reference.id);
                 documentIDs.add(document.reference.id);
               })
             });
