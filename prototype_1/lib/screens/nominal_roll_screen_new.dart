@@ -26,8 +26,8 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
   // New list to hold the new updated list on search
   List<String> updatedDocumentIDs = [];
 
-  // Test data to store rank
-  String rankOfUser = '';
+  // List to store all user data
+  List<Map> userDetails = [];
 
   Future getDocIDs() async {
     await FirebaseFirestore.instance
@@ -36,11 +36,11 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
         .get()
         .then((snapshot) => {
               snapshot.docs.forEach((document) {
-                print(document.reference.id);
                 documentIDs.add(document.reference.id);
+                userDetails.add(document.data());
               })
             });
-    documentIDs.sort();
+    //documentIDs.sort();
     updatedDocumentIDs = documentIDs;
     setState(() {});
   }
@@ -68,7 +68,8 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
   }
 
   List unitSoldiers = [
-    //[ soldierName, soldierRank, tileColour, soldierAttendance, soldierIcon, soldierAppointment, companyName, platoonName, sectionNumber, dateOfBirth, rationType, bloodType, enlistmentDate, ordDate, soldierStatuses]
+    //[ soldierName, soldierRank, tileColour, soldierAttendance, soldierIcon, soldierAppointment, companyName,
+    //platoonName, sectionNumber, dateOfBirth, rationType, bloodType, enlistmentDate, ordDate]
 
     [
       "Wei John Koh",
