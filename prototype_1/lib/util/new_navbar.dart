@@ -18,7 +18,7 @@ class _GNavMainScreen extends State<GNavMainScreen> {
   int selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[
     const DashboardScreen(),
-    NominalRollNewScreen(),
+    const NominalRollNewScreen(),
     const StyledText(
       'Parade State',
       25,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
-import 'package:recase/recase.dart';
 
 late Color? tileColor;
 late IconData? tileIcon;

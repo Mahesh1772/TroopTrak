@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:prototype_1/screens/add_new_soldier_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:prototype_1/screens/soldier_detailed_screen.dart';
+import 'package:prototype_1/screens/user_profile_screen.dart';
 import 'package:prototype_1/util/constants.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/util/tiles/solider_tile.dart';
@@ -24,7 +24,7 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
   List<String> documentIDs = [];
 
   // New list to hold the new updated list on search
-  List<String> updated_documentIDs = [];
+  List<String> updatedDocumentIDs = [];
 
   // Test data to store rank
   String rankOfUser = '';
@@ -41,7 +41,7 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
               })
             });
     documentIDs.sort();
-    updated_documentIDs = documentIDs;
+    updatedDocumentIDs = documentIDs;
     setState(() {});
   }
 
@@ -60,7 +60,7 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
   void updateList(String value) {
     // This will be used to make the new list with searched word
     setState(() {
-      updated_documentIDs = documentIDs
+      updatedDocumentIDs = documentIDs
           .where(
               (element) => element.toLowerCase().contains(value.toLowerCase()))
           .toList();
@@ -160,7 +160,18 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const AddNewSoldierPage(),
+                builder: (context) => AddNewSoldierPage(
+                    name: TextEditingController(),
+                    company: TextEditingController(),
+                    platoon: TextEditingController(),
+                    section: TextEditingController(),
+                    appointment: TextEditingController(),
+                    dob: "Date of Birth:",
+                    ord: "ORD:",
+                    enlistment: "Enlistment:",
+                    selectedItem: "Select your ration type...",
+                    selectedRank: "Select your rank...",
+                    selectedBloodType: "Select your blood type..."),
               ),
             );
           },
@@ -217,7 +228,7 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => SoldierDetailedScreen(
+                            builder: (context) => UserProfileScreen(
                                   soldierName: unitSoldiers[1][0],
                                   soldierRank: unitSoldiers[1][1],
                                   tileColor: unitSoldiers[1][2],

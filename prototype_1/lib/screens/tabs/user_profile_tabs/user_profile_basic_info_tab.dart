@@ -2,17 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:prototype_1/screens/update_soldier_details_screen.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
+import 'package:prototype_1/util/text_styles/soldier_detailed_screen_info_template.dart';
 
-import '../../util/text_styles/soldier_detailed_screen_info_template.dart';
-
-class BasicInfoTab extends StatelessWidget {
+class UserProfileBasicInfoTab extends StatelessWidget {
   final String dateOfBirth;
   final String rationType;
   final String bloodType;
   final String enlistmentDate;
   final String ordDate;
 
-  const BasicInfoTab(
+  const UserProfileBasicInfoTab(
       {super.key,
       required this.dateOfBirth,
       required this.rationType,

@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,7 +8,31 @@ import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UpdateSoldierDetailsPage extends StatefulWidget {
-  const UpdateSoldierDetailsPage({super.key});
+  UpdateSoldierDetailsPage(
+      {super.key,
+      required this.name,
+      required this.company,
+      required this.platoon,
+      required this.section,
+      required this.appointment,
+      required this.dob,
+      required this.ord,
+      required this.enlistment,
+      required this.selectedItem,
+      required this.selectedRank,
+      required this.selectedBloodType});
+
+  late TextEditingController name;
+  late TextEditingController company;
+  late TextEditingController platoon;
+  late TextEditingController section;
+  late TextEditingController appointment;
+  late String dob;
+  late String ord;
+  late String enlistment;
+  late String? selectedItem;
+  late String? selectedRank;
+  late String? selectedBloodType;
 
   @override
   State<UpdateSoldierDetailsPage> createState() =>
@@ -15,15 +41,6 @@ class UpdateSoldierDetailsPage extends StatefulWidget {
 
 class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
   final docIDs = 'Lee Kuan Yew';
-  var _name = TextEditingController();
-  var _company = TextEditingController();
-  var _platoon = TextEditingController();
-  var _section = TextEditingController();
-  var _appointment = TextEditingController();
-  var _mobilenumber = TextEditingController();
-  String dob = 'Date of birth:';
-  String ord = "ORD:";
-  String enlistment = 'Enlistment';
 
   final _rationTypes = [
     "Select your ration type...",
@@ -36,7 +53,6 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
     "SD VI",
     "SD VC"
   ];
-  String? _selectedItem = 'dddd';
 
   final _ranks = [
     "Select your rank...",
@@ -69,7 +85,6 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
     "MG",
     "LG",
   ];
-  String? _selectedRank = 'dddd';
 
   final _bloodTypes = [
     "Select your blood type...",
@@ -83,18 +98,17 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
     "AB+",
     "Unknown"
   ];
-  String? _selectedBloodType = 'dddd';
 
   void _showDatePicker() {
     showDatePicker(
       context: context,
-      initialDate: DateFormat("d MMM yyyy").parse(dob),
+      initialDate: DateFormat("d MMM yyyy").parse(widget.dob),
       firstDate: DateTime(1960),
       lastDate: DateTime.now(),
     ).then((value) {
       setState(() {
         if (value != null) {
-          dob = DateFormat('d MMM yyyy').format(value);
+          widget.dob = DateFormat('d MMM yyyy').format(value);
         }
         addUserDetails();
       });
@@ -104,13 +118,13 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
   void _ordDatePicker() {
     showDatePicker(
       context: context,
-      initialDate: DateFormat("d MMM yyyy").parse(ord),
+      initialDate: DateFormat("d MMM yyyy").parse(widget.ord),
       firstDate: DateTime(1960),
       lastDate: DateTime(2030),
     ).then((value) {
       setState(() {
         if (value != null) {
-          ord = DateFormat('d MMM yyyy').format(value);
+          widget.ord = DateFormat('d MMM yyyy').format(value);
         }
         addUserDetails();
       });
@@ -120,13 +134,13 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
   void _enlistmentDatePicker() {
     showDatePicker(
       context: context,
-      initialDate: DateFormat("d MMM yyyy").parse(enlistment),
+      initialDate: DateFormat("d MMM yyyy").parse(widget.enlistment),
       firstDate: DateTime(1960),
       lastDate: DateTime(2030),
     ).then((value) {
       setState(() {
         if (value != null) {
-          enlistment = DateFormat('d MMM yyyy').format(value);
+          widget.enlistment = DateFormat('d MMM yyyy').format(value);
         }
         addUserDetails();
       });
@@ -141,30 +155,29 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
   Future addUserDetails() async {
     await FirebaseFirestore.instance
         .collection('Users')
-        .doc(_name.text.trim())
+        .doc(widget.name.text.trim())
         .update({
       //User map formatting
-      'rank': _selectedRank,
-      'name': _name.text.trim(),
-      'company': _company.text.trim(),
-      'platoon': _platoon.text.trim(),
-      'section': _section.text.trim(),
-      'appointment': _appointment.text.trim(),
-      'rationType': _selectedItem,
-      'bloodgroup': _selectedBloodType,
-      'dob': dob,
-      'ord': ord,
-      'enlistment': enlistment,
+      'rank': widget.selectedRank,
+      'name': widget.name.text.trim(),
+      'company': widget.company.text.trim(),
+      'platoon': widget.platoon.text.trim(),
+      'section': widget.section.text.trim(),
+      'appointment': widget.appointment.text.trim(),
+      'rationType': widget.selectedItem,
+      'bloodgroup': widget.selectedBloodType,
+      'dob': widget.dob,
+      'ord': widget.ord,
+      'enlistment': widget.enlistment,
     });
   }
 
   void resetControllers() {
-    _name.clear();
-    _company.clear();
-    _platoon.clear();
-    _section.clear();
-    _appointment.clear();
-    _mobilenumber.clear();
+    widget.name.clear();
+    widget.company.clear();
+    widget.platoon.clear();
+    widget.section.clear();
+    widget.appointment.clear();
     super.dispose();
   }
 
@@ -186,21 +199,6 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                 //to a variable called "data" of Type Map
                 Map<String, dynamic> data =
                     snapshot.data!.data() as Map<String, dynamic>;
-
-                // Populating the controllers with pre-existing value
-                _name = TextEditingController(text: docIDs);
-                dob = data['dob'];
-                _selectedRank = data['rank'];
-                _appointment = TextEditingController(text: data['appointment']);
-                _selectedItem = data['rationType'];
-                _section = TextEditingController(text: data['section']);
-                _platoon = TextEditingController(text: data['platoon']);
-                _company = TextEditingController(text: data['company']);
-                _mobilenumber =
-                    TextEditingController(text: data['mobileNumber']);
-                _selectedBloodType = data['bloodgroup'];
-                ord = data['ord'];
-                enlistment = data['enlistment'];
 
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -251,7 +249,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
                             ),
-                            controller: _name,
+                            controller: widget.name,
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               labelText: 'Enter Name (as in NRIC):',
@@ -279,7 +277,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 15, vertical: 15),
                               child: Text(
-                                dob,
+                                widget.dob,
                                 style: const TextStyle(
                                     color: Colors.white, fontSize: 16),
                               ),
@@ -312,7 +310,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                               child: DropdownButtonFormField<String>(
                                 alignment: Alignment.center,
                                 dropdownColor: Colors.black54,
-                                value: _selectedItem,
+                                value: widget.selectedItem,
                                 icon: const Icon(
                                   Icons.arrow_downward_sharp,
                                   color: Colors.white,
@@ -334,7 +332,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                     )
                                     .toList(),
                                 onChanged: (item) => setState(() {
-                                  _selectedItem = item;
+                                  widget.selectedItem = item;
                                   addUserDetails();
                                 }),
                               ),
@@ -359,7 +357,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                             child: DropdownButtonFormField<String>(
                               alignment: Alignment.center,
                               dropdownColor: Colors.black54,
-                              value: _selectedRank ?? data['rank']!,
+                              value: widget.selectedRank ?? data['rank']!,
                               icon: const Icon(
                                 Icons.arrow_downward_sharp,
                                 color: Colors.white,
@@ -381,7 +379,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                   )
                                   .toList(),
                               onChanged: (String? item) async => setState(() {
-                                _selectedRank = item;
+                                widget.selectedRank = item;
                                 addUserDetails();
                               }),
                             ),
@@ -401,8 +399,8 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                               child: DropdownButtonFormField<String>(
                                 dropdownColor: Colors.black54,
                                 alignment: Alignment.center,
-                                value:
-                                    _selectedBloodType ?? data['bloodgroup']!,
+                                value: widget.selectedBloodType ??
+                                    data['bloodgroup']!,
                                 icon: const Icon(
                                   Icons.water_drop_sharp,
                                   color: Colors.red,
@@ -424,7 +422,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                     )
                                     .toList(),
                                 onChanged: (item) async => setState(() {
-                                  _selectedBloodType = item;
+                                  widget.selectedBloodType = item;
                                   addUserDetails();
                                 }),
                               ),
@@ -447,7 +445,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 20),
                           child: TextField(
-                            controller: _company,
+                            controller: widget.company,
                             style: GoogleFonts.poppins(
                               color: Colors.white,
                               fontSize: 16,
@@ -477,7 +475,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 20),
                           child: TextField(
-                            controller: _platoon,
+                            controller: widget.platoon,
                             style: GoogleFonts.poppins(
                               color: Colors.white,
                               fontSize: 16,
@@ -507,7 +505,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 20),
                           child: TextField(
-                            controller: _section,
+                            controller: widget.section,
                             style: GoogleFonts.poppins(
                               color: Colors.white,
                               fontSize: 16,
@@ -537,7 +535,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 20),
                           child: TextField(
-                            controller: _appointment,
+                            controller: widget.appointment,
                             style: GoogleFonts.poppins(
                               color: Colors.white,
                               fontSize: 16,
@@ -572,7 +570,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 15, vertical: 15),
                                 child: Text(
-                                  enlistment,
+                                  widget.enlistment,
                                   style: const TextStyle(
                                       color: Colors.white, fontSize: 16),
                                 ),
@@ -604,7 +602,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 15, vertical: 15),
                                 child: Text(
-                                  ord,
+                                  widget.ord,
                                   style: const TextStyle(
                                       color: Colors.white, fontSize: 16),
                                 ),
