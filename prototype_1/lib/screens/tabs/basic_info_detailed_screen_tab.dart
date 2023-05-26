@@ -25,19 +25,7 @@ List profile = [
 ];
 
 class BasicInfoTab extends StatefulWidget {
-  const BasicInfoTab(
-      {super.key,
-      required this.dateOfBirth,
-      required this.rationType,
-      required this.bloodType,
-      required this.enlistmentDate,
-      required this.ordDate});
-
-  final String dateOfBirth;
-  final String rationType;
-  final String bloodType;
-  final String enlistmentDate;
-  final String ordDate;
+  const BasicInfoTab({super.key});
 
   @override
   State<BasicInfoTab> createState() => _BasicInfoTabState();

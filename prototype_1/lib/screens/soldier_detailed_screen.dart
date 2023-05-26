@@ -205,17 +205,12 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
                   height: 650,
                   child: TabBarView(
                     controller: tabController,
-                    children: [
+                    children: const [
                       //Basic Info tab
-                      BasicInfoTab(
-                          dateOfBirth: widget.dateOfBirth,
-                          rationType: widget.rationType,
-                          bloodType: widget.bloodType,
-                          enlistmentDate: widget.enlistmentDate,
-                          ordDate: widget.ordDate),
+                      BasicInfoTab(),
 
                       //Statuses tab
-                      const StatusesTab(),
+                      StatusesTab(),
                     ],
                   ),
                 )

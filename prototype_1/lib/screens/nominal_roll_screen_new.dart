@@ -8,6 +8,7 @@ import 'package:prototype_1/screens/user_profile_screen.dart';
 import 'package:prototype_1/util/constants.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/util/tiles/solider_tile.dart';
+import 'package:intl/intl.dart';
 
 class NominalRollNewScreen extends StatefulWidget {
   const NominalRollNewScreen({super.key});
@@ -167,9 +168,9 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                     platoon: TextEditingController(),
                     section: TextEditingController(),
                     appointment: TextEditingController(),
-                    dob: "Date of Birth:",
-                    ord: "ORD:",
-                    enlistment: "Enlistment:",
+                    dob: DateFormat('d MMM yyyy').format(DateTime.now()),
+                    ord: DateFormat('d MMM yyyy').format(DateTime.now()),
+                    enlistment: DateFormat('d MMM yyyy').format(DateTime.now()),
                     selectedItem: "Select your ration type...",
                     selectedRank: "Select your rank...",
                     selectedBloodType: "Select your blood type..."),

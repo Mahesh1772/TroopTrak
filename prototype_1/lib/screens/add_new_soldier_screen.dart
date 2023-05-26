@@ -99,7 +99,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
   void _showDatePicker() {
     showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: DateFormat("d MMM yyyy").parse(widget.dob),
       firstDate: DateTime(1960),
       lastDate: DateTime.now(),
     ).then((value) {
@@ -115,7 +115,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
   void _ordDatePicker() {
     showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: DateFormat("d MMM yyyy").parse(widget.ord),
       firstDate: DateTime(1960),
       lastDate: DateTime(2030),
     ).then((value) {
@@ -131,7 +131,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
   void _enlistmentDatePicker() {
     showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: DateFormat("d MMM yyyy").parse(widget.enlistment),
       firstDate: DateTime(1960),
       lastDate: DateTime(2030),
     ).then((value) {
