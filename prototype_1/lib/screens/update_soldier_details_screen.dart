@@ -40,6 +40,7 @@ class UpdateSoldierDetailsPage extends StatefulWidget {
 }
 
 class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
+
   Future deleteCurrentUser() async {
     FirebaseFirestore.instance.collection("Users").doc(docIDs).delete();
     Navigator.pop(context);

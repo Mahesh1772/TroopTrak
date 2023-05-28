@@ -1,5 +1,4 @@
 // ignore_for_file: must_be_immutable
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -103,6 +102,9 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+
+  String fname = FirebaseAuth.instance.currentUser!.displayName.toString();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -188,10 +190,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
               const SizedBox(
                 height: 10,
               ),
-              const Padding(
+              Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24.0),
                 child: StyledText(
-                  'Welcome,\nAakash! 👋',
+                  'Welcome,\n$fname! 👋',
                   32,
                   fontWeight: FontWeight.bold,
                 ),

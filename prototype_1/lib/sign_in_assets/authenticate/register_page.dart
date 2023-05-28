@@ -4,6 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:email_validator/email_validator.dart';
+//import 'package:flutter_icon_snackbar/widgets/icon_snackbar.dart';
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 
 class RegisterPage extends StatefulWidget {
   final VoidCallback showLoginPage;
@@ -14,6 +17,49 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  final _formKey = GlobalKey<FormState>();
+
+  bool _isNumeric(String str) {
+    final numericRegex = RegExp(r'^-?(([0-9]*)|(([0-9]*)\.([0-9]*)))$');
+    return numericRegex.hasMatch(str);
+  }
+
+  String? validateEmail(String val) {
+    if (val.isEmpty) {
+      return "Email can not be empty";
+    } else if (!EmailValidator.validate(val, true)) {
+      return "Invalid Email Address";
+    }
+    return '';
+  }
+
+  bool _isvalidaEmail(String val) {
+    if (val.isEmpty) {
+      return false;
+    } else if (!EmailValidator.validate(val, true)) {
+      return false;
+    }
+    return true;
+  }
+
+  String? validatePassword(String val) {
+    if (val.isEmpty) {
+      return "Password can not be empty";
+    } else if (val.length < 8) {
+      return "Password should be atleast 8 charecters long";
+    }
+    return '';
+  }
+
+  bool _isvalidPassword(String val) {
+    if (val.isEmpty) {
+      return false;
+    } else if (val.length < 8) {
+      return false;
+    }
+    return true;
+  }
+
   //Placeholders for the email and password input by user
   final _name = TextEditingController();
   final _appointment = TextEditingController();
@@ -151,10 +197,10 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future addUserDetails() async {
-    await FirebaseFirestore.instance.collection('Users').add({
+    await FirebaseFirestore.instance.collection('Users').doc(_name.text.trim()).set({
       //User map formatting
       'rank': selectedRank,
-      'name': _name.text.trim(),
+      //'name': _name.text.trim(),
       'company': _company.text.trim(),
       'platoon': _platoon.text.trim(),
       'section': _section.text.trim(),
@@ -188,133 +234,198 @@ class _RegisterPageState extends State<RegisterPage> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(
-                    height: 20,
-                  ),
+            child: Form(
+              key: _formKey,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      height: 20,
+                    ),
 
-                  //welcome text
-                  Text(
-                    'Sign Up!',
-                    style: GoogleFonts.poppins(
-                      fontSize: 30,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.purple.shade300,
-                    ),
-                  ),
-                  const SizedBox(height: 5),
-                  Text(
-                    'Make your life easier, Register',
-                    style: GoogleFonts.poppins(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.purple.shade400,
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-
-                  // name
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.black54,
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: TextField(
-                        style: GoogleFonts.poppins(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        controller: _name,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          labelText: 'Enter Name (as in NRIC):',
-                          labelStyle: GoogleFonts.poppins(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
+                    //welcome text
+                    Text(
+                      'Sign Up!',
+                      style: GoogleFonts.poppins(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.purple.shade300,
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-
-                  // Appointment
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.black54,
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: TextField(
-                        controller: _appointment,
-                        style: GoogleFonts.poppins(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          labelText: 'Appointment (in unit):',
-                          labelStyle: GoogleFonts.poppins(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
+                    const SizedBox(height: 5),
+                    Text(
+                      'Make your life easier, Register',
+                      style: GoogleFonts.poppins(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.purple.shade400,
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
+                    const SizedBox(height: 30),
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      //Date of birth date picker
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.black54,
-                          border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 15),
-                          child: Text(
-                            dob,
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 16),
-                          ),
-                        ),
+                    // name
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black54,
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InkWell(
-                          onTap: () {
-                            _showDatePicker();
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value == '') {
+                              return 'You must have a name right';
+                            } else if (_isNumeric(value!)) {
+                              return 'Your name got number meh';
+                            } else {
+                              return null;
+                            }
                           },
-                          child: const Icon(
-                            Icons.date_range_rounded,
+                          keyboardType: TextInputType.name,
+                          style: GoogleFonts.poppins(
                             color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          controller: _name,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            labelText: 'Enter Name (as in NRIC):',
+                            labelStyle: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
                       ),
+                    ),
+                    const SizedBox(height: 10),
 
-                      //Ration type dropdown menu
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10.0),
-                        child: Container(
-                          width: 182,
+                    // Appointment
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black54,
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value == '') {
+                              return 'Appointment Missing';
+                            }
+                            return null;
+                          },
+                          controller: _appointment,
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            labelText: 'Appointment (in unit):',
+                            labelStyle: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        //Date of birth date picker
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.black54,
+                            border: Border.all(color: Colors.white),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 15),
+                            child: Text(
+                              dob,
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 16),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: InkWell(
+                            onTap: () {
+                              _showDatePicker();
+                            },
+                            child: const Icon(
+                              Icons.date_range_rounded,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+
+                        //Ration type dropdown menu
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10.0),
+                          child: Container(
+                            width: 182,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              color: Colors.black54,
+                              border: Border.all(color: Colors.white),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: DropdownButtonFormField<String>(
+                              alignment: Alignment.center,
+                              dropdownColor: Colors.black54,
+                              value: selectedItem,
+                              icon: const Icon(
+                                Icons.arrow_downward_sharp,
+                                color: Colors.white,
+                              ),
+                              style: const TextStyle(color: Colors.black54),
+                              items: _rationTypes
+                                  .map(
+                                    (item) => DropdownMenuItem<String>(
+                                      value: item,
+                                      child: AutoSizeText(
+                                        item,
+                                        maxLines: 1,
+                                        style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.white),
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                              onChanged: (item) => setState(() {
+                                selectedItem = item;
+                                addUserDetails();
+                              }),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+
+                    Row(
+                      children: [
+                        //Rank dropdown menu
+                        Container(
+                          width: 160,
                           height: 50,
                           decoration: BoxDecoration(
                             color: Colors.black54,
@@ -324,13 +435,13 @@ class _RegisterPageState extends State<RegisterPage> {
                           child: DropdownButtonFormField<String>(
                             alignment: Alignment.center,
                             dropdownColor: Colors.black54,
-                            value: selectedItem,
+                            value: selectedRank,
                             icon: const Icon(
                               Icons.arrow_downward_sharp,
                               color: Colors.white,
                             ),
                             style: const TextStyle(color: Colors.black54),
-                            items: _rationTypes
+                            items: _ranks
                                 .map(
                                   (item) => DropdownMenuItem<String>(
                                     value: item,
@@ -345,419 +456,421 @@ class _RegisterPageState extends State<RegisterPage> {
                                   ),
                                 )
                                 .toList(),
-                            onChanged: (item) => setState(() {
-                              selectedItem = item;
+                            onChanged: (String? item) async => setState(() {
+                              selectedRank = item;
                               addUserDetails();
                             }),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
 
-                  Row(
-                    children: [
-                      //Rank dropdown menu
-                      Container(
-                        width: 160,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: Colors.black54,
-                          border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: DropdownButtonFormField<String>(
-                          alignment: Alignment.center,
-                          dropdownColor: Colors.black54,
-                          value: selectedRank,
-                          icon: const Icon(
-                            Icons.arrow_downward_sharp,
-                            color: Colors.white,
-                          ),
-                          style: const TextStyle(color: Colors.black54),
-                          items: _ranks
-                              .map(
-                                (item) => DropdownMenuItem<String>(
-                                  value: item,
-                                  child: AutoSizeText(
-                                    item,
-                                    maxLines: 1,
-                                    style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.white),
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                          onChanged: (String? item) async => setState(() {
-                            selectedRank = item;
-                            addUserDetails();
-                          }),
-                        ),
-                      ),
-
-                      //Blood type dropdown menu
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20.0),
-                        child: Container(
-                          width: 180,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: Colors.black54,
-                            border: Border.all(color: Colors.white),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: DropdownButtonFormField<String>(
-                            dropdownColor: Colors.black54,
-                            alignment: Alignment.center,
-                            value: selectedBloodType,
-                            icon: const Icon(
-                              Icons.water_drop_sharp,
-                              color: Colors.red,
+                        //Blood type dropdown menu
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20.0),
+                          child: Container(
+                            width: 180,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              color: Colors.black54,
+                              border: Border.all(color: Colors.white),
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                            style: const TextStyle(color: Colors.black54),
-                            items: _bloodTypes
-                                .map(
-                                  (item) => DropdownMenuItem<String>(
-                                    value: item,
-                                    child: AutoSizeText(
-                                      item,
-                                      maxLines: 1,
-                                      style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.white),
+                            child: DropdownButtonFormField<String>(
+                              dropdownColor: Colors.black54,
+                              alignment: Alignment.center,
+                              value: selectedBloodType,
+                              icon: const Icon(
+                                Icons.water_drop_sharp,
+                                color: Colors.red,
+                              ),
+                              style: const TextStyle(color: Colors.black54),
+                              items: _bloodTypes
+                                  .map(
+                                    (item) => DropdownMenuItem<String>(
+                                      value: item,
+                                      child: AutoSizeText(
+                                        item,
+                                        maxLines: 1,
+                                        style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.white),
+                                      ),
                                     ),
-                                  ),
-                                )
-                                .toList(),
-                            onChanged: (item) async => setState(() {
-                              selectedBloodType = item;
-                              addUserDetails();
-                            }),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  //Company textfield
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.black54,
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: TextField(
-                        controller: _company,
-                        style: GoogleFonts.poppins(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          labelText: 'Company:',
-                          labelStyle: GoogleFonts.poppins(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-
-                  //Platoon textfield
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.black54,
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: TextField(
-                        controller: _platoon,
-                        style: GoogleFonts.poppins(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          labelText: 'Platoon:',
-                          labelStyle: GoogleFonts.poppins(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-
-                  //Section textfield
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.black54,
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: TextField(
-                        controller: _section,
-                        style: GoogleFonts.poppins(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          labelText: 'Section:',
-                          labelStyle: GoogleFonts.poppins(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-
-                  //Enlistment Date picker
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: 150,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.black54,
-                            border: Border.all(color: Colors.white),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 15),
-                            child: Text(
-                              enlistment,
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 16),
+                                  )
+                                  .toList(),
+                              onChanged: (item) async => setState(() {
+                                selectedBloodType = item;
+                                addUserDetails();
+                              }),
                             ),
                           ),
                         ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    //Company textfield
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black54,
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InkWell(
-                          onTap: () {
-                            _enlistmentDatePicker();
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value == '') {
+                              return 'Company Name Missing';
+                            }
+                            return null;
                           },
-                          child: const Icon(
-                            Icons.date_range_rounded,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      //ORD picker
-                      SizedBox(
-                        width: 130,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.black54,
-                            border: Border.all(color: Colors.white),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 15),
-                            child: Text(
-                              ord,
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 16),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InkWell(
-                          onTap: () {
-                            _ordDatePicker();
-                          },
-                          child: const Icon(
-                            Icons.date_range_rounded,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  // email
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.black54,
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: TextField(
-                        controller: _emailId,
-                        style: GoogleFonts.poppins(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          labelText: 'Email: (example - Email@example.com)',
-                          labelStyle: GoogleFonts.poppins(
+                          controller: _company,
+                          style: GoogleFonts.poppins(
                             color: Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                           ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-
-                  //Password
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.black54,
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: TextField(
-                        obscureText: true,
-                        controller: _password,
-                        style: GoogleFonts.poppins(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          labelText: 'Enter password:',
-                          labelStyle: GoogleFonts.poppins(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-
-                  // confirm password
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.black54,
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: TextField(
-                        obscureText: true,
-                        controller: _confirmedpassword,
-                        style: GoogleFonts.poppins(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          labelText: 'Confirm password:',
-                          labelStyle: GoogleFonts.poppins(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-
-                  // sign in
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: GestureDetector(
-                      onTap: signUp,
-                      child: Container(
-                        padding: const EdgeInsets.all(25),
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              Colors.deepPurple.shade400,
-                              Colors.deepPurple.shade700,
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                          //color: Colors.deepPurple,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'Sign Up',
-                            style: TextStyle(
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            labelText: 'Company:',
+                            labelStyle: GoogleFonts.poppins(
                               color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 15),
+                    const SizedBox(height: 10),
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Alr have an account?',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.indigo.shade300,
-                        ),
+                    //Platoon textfield
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black54,
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      GestureDetector(
-                        onTap: widget.showLoginPage,
-                        child: const Text(
-                          'Login here',
-                          style: TextStyle(
-                            color: Colors.tealAccent,
-                            fontWeight: FontWeight.bold,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value == '') {
+                              return 'Platoon Information Missing';
+                            }
+                            return null;
+                          },
+                          controller: _platoon,
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            labelText: 'Platoon:',
+                            labelStyle: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                ],
+                    ),
+                    const SizedBox(height: 10),
+
+                    //Section textfield
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black54,
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value == '') {
+                              return 'Section Information Missing';
+                            }
+                            return null;
+                          },
+                          controller: _section,
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            labelText: 'Section/Detail:',
+                            labelStyle: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+
+                    //Enlistment Date picker
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 150,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.black54,
+                              border: Border.all(color: Colors.white),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 15),
+                              child: Text(
+                                enlistment,
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 16),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: InkWell(
+                            onTap: () {
+                              _enlistmentDatePicker();
+                            },
+                            child: const Icon(
+                              Icons.date_range_rounded,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        //ORD picker
+                        SizedBox(
+                          width: 130,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.black54,
+                              border: Border.all(color: Colors.white),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 15),
+                              child: Text(
+                                ord,
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 16),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: InkWell(
+                            onTap: () {
+                              _ordDatePicker();
+                            },
+                            child: const Icon(
+                              Icons.date_range_rounded,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    // email
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black54,
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: TextFormField(
+                          validator: (value) {
+                            if (_isvalidaEmail(value!) == false) {
+                              return validateEmail(value);
+                            } else {
+                              return null;
+                            }
+                          },
+                          keyboardType: TextInputType.emailAddress,
+                          controller: _emailId,
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            labelText: 'Email: (example - Email@example.com)',
+                            labelStyle: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+
+                    //Password
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black54,
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: TextFormField(
+                          validator: (value) {
+                            if (_isvalidPassword(value!) == false) {
+                              return validatePassword(value);
+                            } else {
+                              return null;
+                            }
+                          },
+                          obscureText: true,
+                          controller: _password,
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            labelText: 'Enter password:',
+                            labelStyle: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+
+                    // confirm password
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black54,
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: TextFormField(
+                          validator: (value) {
+                            if (_isvalidPassword(value!) == false) {
+                              return validatePassword(value);
+                            } else if (_password.text.trim() ==
+                                _confirmedpassword.text.trim()) {
+                              return null;
+                            } else {
+                              return 'Make sure both Passwords match';
+                            }
+                          },
+                          obscureText: true,
+                          controller: _confirmedpassword,
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            labelText: 'Confirm password:',
+                            labelStyle: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+
+                    // sign in
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          if (_formKey.currentState!.validate()) {
+                            signUp();
+                          }
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(25),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.deepPurple.shade400,
+                                Colors.deepPurple.shade700,
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            //color: Colors.deepPurple,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              'Sign Up',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Alr have an account?',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.indigo.shade300,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        GestureDetector(
+                          onTap: widget.showLoginPage,
+                          child: const Text(
+                            'Login here',
+                            style: TextStyle(
+                              color: Colors.tealAccent,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
