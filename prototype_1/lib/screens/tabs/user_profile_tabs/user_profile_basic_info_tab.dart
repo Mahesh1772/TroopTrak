@@ -150,7 +150,7 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab> {
                           SizedBox(
                             width: 20,
                           ),
-                          StyledText("EDIT SOLDIER DETAILS", 18,
+                          StyledText("EDIT USER PROFILE", 18,
                               fontWeight: FontWeight.bold),
                         ],
                       ),
@@ -185,7 +185,7 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab> {
                           SizedBox(
                             width: 20,
                           ),
-                          StyledText("DELETE SOLDIER DETAILS", 18,
+                          StyledText("DELETE USER PROFILE", 18,
                               fontWeight: FontWeight.bold),
                         ],
                       ),

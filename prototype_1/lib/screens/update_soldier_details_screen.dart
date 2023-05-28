@@ -305,7 +305,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                           Padding(
                             padding: const EdgeInsets.only(left: 10.0),
                             child: Container(
-                              width: 220,
+                              width: 215,
                               height: 50,
                               decoration: BoxDecoration(
                                 color: Colors.black54,
