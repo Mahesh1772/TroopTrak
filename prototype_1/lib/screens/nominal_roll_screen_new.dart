@@ -191,12 +191,12 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                   padding: EdgeInsets.symmetric(horizontal: 24.0),
                   child: StyledText(
                     'Nominal Roll',
-                    20,
+                    30,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 90.0),
+                  padding: const EdgeInsets.only(left: 25.0),
                   child: InkWell(
                     onTap: () {
                       FirebaseAuth.instance.signOut();
@@ -264,7 +264,7 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
               padding: EdgeInsets.symmetric(horizontal: 24.0),
               child: StyledText(
                 'Our Family of Soldiers:',
-                32,
+                20,
                 fontWeight: FontWeight.bold,
               ),
             ),
