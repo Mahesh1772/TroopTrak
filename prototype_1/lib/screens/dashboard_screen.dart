@@ -102,7 +102,6 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-
   String fname = FirebaseAuth.instance.currentUser!.displayName.toString();
 
   @override
@@ -164,9 +163,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               builder: (context) => SoldierDetailedScreen(
                                     soldierName: unitSoldiers[1][0],
                                     soldierRank: unitSoldiers[1][1],
-                                    tileColor: unitSoldiers[1][2],
-                                    soldierAttendance: unitSoldiers[1][3],
-                                    soldierIcon: unitSoldiers[1][4],
                                     soldierAppointment: unitSoldiers[1][5],
                                     company: unitSoldiers[1][6],
                                     platoon: unitSoldiers[1][7],
@@ -381,9 +377,6 @@ class CurrentStrengthBreakdownTile extends StatelessWidget {
                 return DashboardSoldierTile(
                   soldierName: unitSoldiers[index][0],
                   soldierRank: unitSoldiers[index][1],
-                  tileColor: unitSoldiers[index][2],
-                  soldierAttendance: unitSoldiers[index][3],
-                  soldierIcon: unitSoldiers[index][4],
                   soldierAppointment: unitSoldiers[index][5],
                   company: unitSoldiers[index][6],
                   platoon: unitSoldiers[index][7],

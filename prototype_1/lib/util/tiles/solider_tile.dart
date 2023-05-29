@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/screens/soldier_detailed_screen.dart';
+import 'dart:math' as math;
 
 class SoldierTile extends StatelessWidget {
   final String soldierName;
   final String soldierRank;
-  final String soldierAttendance;
-  final String soldierIcon;
-  final Color tileColor;
   final String company;
   final String platoon;
   final String section;
@@ -21,11 +19,8 @@ class SoldierTile extends StatelessWidget {
 
   const SoldierTile({
     super.key,
-    required this.soldierIcon,
     required this.soldierName,
     required this.soldierRank,
-    required this.tileColor,
-    required this.soldierAttendance,
     required this.company,
     required this.platoon,
     required this.section,
@@ -39,6 +34,16 @@ class SoldierTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List colors = [
+      Colors.brown.shade800,
+      Colors.indigo.shade800,
+      Colors.indigo.shade400,
+      Colors.teal.shade800,
+      Colors.teal.shade400,
+    ];
+
+    int index = math.Random().nextInt(4);
+
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: InkWell(
@@ -47,10 +52,8 @@ class SoldierTile extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => SoldierDetailedScreen(
-                soldierIcon: soldierIcon,
                 soldierName: soldierName,
                 soldierRank: soldierRank,
-                soldierAttendance: soldierAttendance,
                 company: company,
                 platoon: platoon,
                 section: section,
@@ -60,7 +63,6 @@ class SoldierTile extends StatelessWidget {
                 soldierAppointment: soldierAppointment,
                 rationType: rationType,
                 bloodType: bloodType,
-                tileColor: tileColor,
               ),
             ),
           );
@@ -72,7 +74,7 @@ class SoldierTile extends StatelessWidget {
                 spreadRadius: 2.0,
                 offset: Offset(10, 10),
                 color: Colors.black54)
-          ], color: tileColor, borderRadius: BorderRadius.circular(12)),
+          ], color: colors[index], borderRadius: BorderRadius.circular(12)),
           child: Column(
             children: [
               //rank insignia
@@ -84,7 +86,7 @@ class SoldierTile extends StatelessWidget {
                     height: 40,
                     padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
-                      color: tileColor,
+                      color: Colors.transparent.withOpacity(0.4),
                       borderRadius: const BorderRadius.only(
                           topRight: Radius.circular(12),
                           bottomLeft: Radius.circular(12)),
@@ -102,7 +104,7 @@ class SoldierTile extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 24.0, vertical: 12.0),
                 child: Image.asset(
-                  soldierIcon,
+                  "lib/assets/army-ranks/soldier.png",
                   width: 90,
                 ),
               ),
@@ -120,8 +122,8 @@ class SoldierTile extends StatelessWidget {
                 ),
               )),
 
-              StyledText(
-                soldierAttendance,
+              const StyledText(
+                "IN CAMP",
                 14,
                 fontWeight: FontWeight.w500,
               )

@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/screens/soldier_detailed_screen.dart';
+import 'dart:math' as math;
 
 class DashboardSoldierTile extends StatelessWidget {
   final String soldierName;
   final String soldierRank;
-  final String soldierAttendance;
-  final String soldierIcon;
-  final Color tileColor;
   final String company;
   final String platoon;
   final String section;
@@ -20,11 +18,8 @@ class DashboardSoldierTile extends StatelessWidget {
 
   const DashboardSoldierTile(
       {super.key,
-      required this.soldierIcon,
       required this.soldierName,
       required this.soldierRank,
-      required this.tileColor,
-      required this.soldierAttendance,
       required this.company,
       required this.platoon,
       required this.section,
@@ -37,6 +32,15 @@ class DashboardSoldierTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List colors = [
+      Colors.brown.shade800,
+      Colors.indigo.shade800,
+      Colors.indigo.shade400,
+      Colors.teal.shade800,
+      Colors.teal.shade400,
+    ];
+
+    int index = math.Random().nextInt(4);
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: InkWell(
@@ -45,10 +49,8 @@ class DashboardSoldierTile extends StatelessWidget {
             context,
             MaterialPageRoute(
                 builder: (context) => SoldierDetailedScreen(
-                      soldierIcon: soldierIcon,
                       soldierName: soldierName,
                       soldierRank: soldierRank,
-                      soldierAttendance: soldierAttendance,
                       company: company,
                       platoon: platoon,
                       section: section,
@@ -58,7 +60,6 @@ class DashboardSoldierTile extends StatelessWidget {
                       soldierAppointment: soldierAppointment,
                       rationType: rationType,
                       bloodType: bloodType,
-                      tileColor: tileColor,
                     )),
           );
         },
@@ -71,7 +72,7 @@ class DashboardSoldierTile extends StatelessWidget {
                 spreadRadius: 2.0,
                 offset: Offset(10, 10),
                 color: Colors.black54)
-          ], color: tileColor, borderRadius: BorderRadius.circular(12)),
+          ], color: colors[index], borderRadius: BorderRadius.circular(12)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -80,7 +81,7 @@ class DashboardSoldierTile extends StatelessWidget {
                 children: [
                   //soldier icon
                   Image.asset(
-                    soldierIcon,
+                    "lib/assets/army-ranks/soldier.png",
                     width: 60,
                   ),
 

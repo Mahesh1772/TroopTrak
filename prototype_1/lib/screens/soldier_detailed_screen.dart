@@ -7,11 +7,8 @@ import 'package:recase/recase.dart';
 class SoldierDetailedScreen extends StatefulWidget {
   const SoldierDetailedScreen({
     super.key,
-    required this.soldierIcon,
     required this.soldierName,
     required this.soldierRank,
-    required this.tileColor,
-    required this.soldierAttendance,
     required this.company,
     required this.platoon,
     required this.section,
@@ -25,9 +22,6 @@ class SoldierDetailedScreen extends StatefulWidget {
 
   final String soldierName;
   final String soldierRank;
-  final String soldierAttendance;
-  final String soldierIcon;
-  final Color tileColor;
   final String company;
   final String platoon;
   final String section;
