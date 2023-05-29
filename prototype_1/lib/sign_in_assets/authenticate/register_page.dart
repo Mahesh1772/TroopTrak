@@ -19,6 +19,7 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
+  bool isProperPassword = false;
 
   bool _isNumeric(String str) {
     final numericRegex = RegExp(r'^-?(([0-9]*)|(([0-9]*)\.([0-9]*)))$');
@@ -257,7 +258,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     const SizedBox(
                       height: 20,
                     ),
-
+          
                     //welcome text
                     Text(
                       'Sign Up!',
@@ -277,7 +278,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     const SizedBox(height: 30),
-
+          
                     // name
                     Container(
                       decoration: BoxDecoration(
@@ -317,7 +318,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     const SizedBox(height: 10),
-
+          
                     // Appointment
                     Container(
                       decoration: BoxDecoration(
@@ -353,7 +354,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     const SizedBox(height: 10),
-
+          
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -386,7 +387,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                           ),
                         ),
-
+          
                         //Ration type dropdown menu
                         Padding(
                           padding: const EdgeInsets.only(left: 10.0),
@@ -431,7 +432,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ],
                     ),
                     const SizedBox(height: 10),
-
+          
                     Row(
                       children: [
                         //Rank dropdown menu
@@ -472,7 +473,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             }),
                           ),
                         ),
-
+          
                         //Blood type dropdown menu
                         Padding(
                           padding: const EdgeInsets.only(left: 20.0),
@@ -516,9 +517,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ],
                     ),
-
+          
                     const SizedBox(height: 10),
-
+          
                     //Company textfield
                     Container(
                       decoration: BoxDecoration(
@@ -554,7 +555,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     const SizedBox(height: 10),
-
+          
                     //Platoon textfield
                     Container(
                       decoration: BoxDecoration(
@@ -590,7 +591,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     const SizedBox(height: 10),
-
+          
                     //Section textfield
                     Container(
                       decoration: BoxDecoration(
@@ -626,7 +627,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     const SizedBox(height: 10),
-
+          
                     //Enlistment Date picker
                     Row(
                       children: [
@@ -695,9 +696,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ],
                     ),
-
+          
                     const SizedBox(height: 10),
-
+          
                     // email
                     Container(
                       decoration: BoxDecoration(
@@ -735,7 +736,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     const SizedBox(height: 10),
-
+          
                     //Password
                     Container(
                       decoration: BoxDecoration(
@@ -749,7 +750,10 @@ class _RegisterPageState extends State<RegisterPage> {
                           validator: (value) {
                             if (_isvalidPassword(value!) == false) {
                               return validatePassword(value);
-                            } else {
+                            } else if (isProperPassword == false) {
+                              return 'Password needs to be stronger';
+                            } 
+                            else {
                               return null;
                             }
                           },
@@ -773,7 +777,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     const SizedBox(height: 10),
-
+          
                     FlutterPwValidator(
                         controller: _password,
                         minLength: 8,
@@ -792,10 +796,17 @@ class _RegisterPageState extends State<RegisterPage> {
                               snackBarStyle: const SnackBarStyle(
                                   showIconFirst: true) // this one
                               );
+                              setState(() {
+                                isProperPassword = true;
+                              });
                         },
-                        onFail: () {}),
+                        onFail: () {
+                          setState(() {
+                            isProperPassword = false;
+                          });
+                        }),
                     const SizedBox(height: 30),
-
+          
                     // confirm password
                     Container(
                       decoration: BoxDecoration(
@@ -836,7 +847,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     const SizedBox(height: 10),
-
+          
                     // sign in
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -892,7 +903,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     const SizedBox(height: 15),
-
+          
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -918,6 +929,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 20,)
                   ],
                 ),
               ),

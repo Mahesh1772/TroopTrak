@@ -4,7 +4,6 @@ import 'package:prototype_1/sign_in_assets/authenticate/forgot_password_page.dar
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:animated_snack_bar/animated_snack_bar.dart';
 
 class SignIn extends StatefulWidget {
   final VoidCallback showRegisterPage;
@@ -15,6 +14,9 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  late var width = MediaQuery.of(context).size.width;
+  late var height = MediaQuery.of(context).size.height;
+
   //Placeholders for the email and password input by user
   final _emailId = TextEditingController();
   final _password = TextEditingController();
@@ -107,11 +109,11 @@ class _SignInState extends State<SignIn> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SizedBox(
-                    height: 120,
+                    height: 80,
                   ),
                   const Icon(
                     Icons.military_tech_outlined,
-                    size: 175,
+                    size: 150,
                     color: Colors.deepPurpleAccent,
                   ),
                   const SizedBox(height: 80),
