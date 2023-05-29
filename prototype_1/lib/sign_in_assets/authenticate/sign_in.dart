@@ -18,6 +18,7 @@ class _SignInState extends State<SignIn> {
   //Placeholders for the email and password input by user
   final _emailId = TextEditingController();
   final _password = TextEditingController();
+  String errorName = '';
 
   Future isSignedIn() async {
     //print('tap detected');
@@ -26,44 +27,23 @@ class _SignInState extends State<SignIn> {
         email: _emailId.text.trim(),
         password: _password.text.trim(),
       );
+      IconSnackBar.show(
+          duration: Duration(seconds: 4),
+          direction: DismissDirection.horizontal,
+          context: context,
+          snackBarType: SnackBarType.save,
+          label: 'Login Successful',
+          snackBarStyle: const SnackBarStyle(showIconFirst: true) // this one
+          );
     } on FirebaseAuthException catch (e) {
+      errorName = e.message!;
+      print(errorName);
       IconSnackBar.show(
           context: context,
           snackBarType: SnackBarType.fail,
           label: 'Wrong Email/Password or Both',
           snackBarStyle: const SnackBarStyle(showIconFirst: true) // this one
           );
-      /*AnimatedSnackBar(
-        duration: const Duration(seconds: 5),
-        builder: ((context) {
-          return SafeArea(
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              color: Colors.redAccent,
-              height: 50,
-              width: 1000,
-              child: Expanded(
-                child: Row(
-                  children: const [
-                    Icon(Icons.dangerous_outlined),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Text(
-                      'Wrong Email/Password or Both',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        }),
-      ).show(context);*/
     }
   }
 
@@ -256,6 +236,15 @@ class _SignInState extends State<SignIn> {
                       onTap: () {
                         if (_formKey.currentState!.validate()) {
                           isSignedIn();
+                        } else {
+                          IconSnackBar.show(
+                              direction: DismissDirection.horizontal,
+                              context: context,
+                              snackBarType: SnackBarType.alert,
+                              label: 'Fill in all the fields',
+                              snackBarStyle: const SnackBarStyle(
+                                  showIconFirst: true) // this one
+                              );
                         }
                       },
                       child: Container(

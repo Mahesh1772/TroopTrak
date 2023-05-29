@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:email_validator/email_validator.dart';
-//import 'package:flutter_icon_snackbar/widgets/icon_snackbar.dart';
-import 'package:animated_snack_bar/animated_snack_bar.dart';
+import 'package:flutter_icon_snackbar/widgets/icon_snackbar.dart';
+import 'package:recase/recase.dart';
+//import 'package:animated_snack_bar/animated_snack_bar.dart';
 
 class RegisterPage extends StatefulWidget {
   final VoidCallback showLoginPage;
@@ -134,7 +135,7 @@ class _RegisterPageState extends State<RegisterPage> {
   late String? selectedBloodType = "Select blood type...";
 
   Future signUp() async {
-    if (_confirmedpassword.text.trim() == _password.text.trim()) {
+    if (_confirmedpassword.text.trim() == _password.text.trim() && (_name.text.titleCase.trim() == '' || _isNumeric(_name.text.titleCase.trim()) == false)) {
       //creating user
       UserCredential result =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -146,6 +147,7 @@ class _RegisterPageState extends State<RegisterPage> {
       //Adding user details
       addUserDetails();
     }
+    FirebaseAuth.instance.signOut();
   }
 
   void _showDatePicker() {
@@ -197,7 +199,10 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future addUserDetails() async {
-    await FirebaseFirestore.instance.collection('Users').doc(_name.text.trim()).set({
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(_name.text.titleCase.trim())
+        .set({
       //User map formatting
       'rank': selectedRank,
       //'name': _name.text.trim(),
@@ -812,7 +817,25 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: GestureDetector(
                         onTap: () {
                           if (_formKey.currentState!.validate()) {
+                            IconSnackBar.show(
+                                duration: Duration(seconds: 4),
+                                direction: DismissDirection.horizontal,
+                                context: context,
+                                snackBarType: SnackBarType.save,
+                                label: 'User Profile created',
+                                snackBarStyle: const SnackBarStyle(
+                                    showIconFirst: true) // this one
+                                );
                             signUp();
+                          } else {
+                            IconSnackBar.show(
+                                direction: DismissDirection.horizontal,
+                                context: context,
+                                snackBarType: SnackBarType.alert,
+                                label: 'Details missing',
+                                snackBarStyle: const SnackBarStyle(
+                                    showIconFirst: true) // this one
+                                );
                           }
                         },
                         child: Container(

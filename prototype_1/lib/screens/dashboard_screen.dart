@@ -129,6 +129,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     padding: const EdgeInsets.only(left: 100.0),
                     child: InkWell(
                       onTap: () {
+                        //print(fname);
                         FirebaseAuth.instance.signOut();
                       },
                       child: Container(
