@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter_icon_snackbar/widgets/icon_snackbar.dart';
 import 'package:recase/recase.dart';
-//import 'package:animated_snack_bar/animated_snack_bar.dart';
+import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 
 class RegisterPage extends StatefulWidget {
   final VoidCallback showLoginPage;
@@ -773,6 +773,28 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     const SizedBox(height: 10),
+
+                    FlutterPwValidator(
+                        controller: _password,
+                        minLength: 8,
+                        uppercaseCharCount: 1,
+                        lowercaseCharCount: 3,
+                        numericCharCount: 1,
+                        specialCharCount: 1,
+                        width: 400,
+                        height: 150,
+                        onSuccess: () {
+                          IconSnackBar.show(
+                              direction: DismissDirection.horizontal,
+                              context: context,
+                              snackBarType: SnackBarType.save,
+                              label: 'Password Approved',
+                              snackBarStyle: const SnackBarStyle(
+                                  showIconFirst: true) // this one
+                              );
+                        },
+                        onFail: () {}),
+                    const SizedBox(height: 30),
 
                     // confirm password
                     Container(
