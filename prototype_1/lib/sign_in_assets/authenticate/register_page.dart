@@ -172,7 +172,6 @@ class _RegisterPageState extends State<RegisterPage> {
         if (value != null) {
           dob = DateFormat('d MMM yyyy').format(value);
         }
-        addUserDetails();
       });
     });
   }
@@ -188,7 +187,6 @@ class _RegisterPageState extends State<RegisterPage> {
         if (value != null) {
           ord = DateFormat('d MMM yyyy').format(value);
         }
-        addUserDetails();
       });
     });
   }
@@ -204,7 +202,6 @@ class _RegisterPageState extends State<RegisterPage> {
         if (value != null) {
           enlistment = DateFormat('d MMM yyyy').format(value);
         }
-        addUserDetails();
       });
     });
   }
@@ -216,7 +213,6 @@ class _RegisterPageState extends State<RegisterPage> {
         .set({
       //User map formatting
       'rank': selectedRank,
-      //'name': _name.text.trim(),
       'company': _company.text.trim(),
       'platoon': _platoon.text.trim(),
       'section': _section.text.trim(),
@@ -428,7 +424,6 @@ class _RegisterPageState extends State<RegisterPage> {
                                   .toList(),
                               onChanged: (item) => setState(() {
                                 selectedItem = item;
-                                addUserDetails();
                               }),
                             ),
                           ),
@@ -474,7 +469,6 @@ class _RegisterPageState extends State<RegisterPage> {
                                 .toList(),
                             onChanged: (String? item) async => setState(() {
                               selectedRank = item;
-                              addUserDetails();
                             }),
                           ),
                         ),
@@ -516,7 +510,6 @@ class _RegisterPageState extends State<RegisterPage> {
                                   .toList(),
                               onChanged: (item) async => setState(() {
                                 selectedBloodType = item;
-                                addUserDetails();
                               }),
                             ),
                           ),
