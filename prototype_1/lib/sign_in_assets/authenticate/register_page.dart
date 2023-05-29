@@ -19,6 +19,7 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
+  bool isProperPassword = false;
 
   bool _isNumeric(String str) {
     final numericRegex = RegExp(r'^-?(([0-9]*)|(([0-9]*)\.([0-9]*)))$');
@@ -749,7 +750,10 @@ class _RegisterPageState extends State<RegisterPage> {
                           validator: (value) {
                             if (_isvalidPassword(value!) == false) {
                               return validatePassword(value);
-                            } else {
+                            } else if (isProperPassword == false) {
+                              return 'Password needs to be stronger';
+                            } 
+                            else {
                               return null;
                             }
                           },
@@ -792,8 +796,15 @@ class _RegisterPageState extends State<RegisterPage> {
                               snackBarStyle: const SnackBarStyle(
                                   showIconFirst: true) // this one
                               );
+                              setState(() {
+                                isProperPassword = true;
+                              });
                         },
-                        onFail: () {}),
+                        onFail: () {
+                          setState(() {
+                            isProperPassword = false;
+                          });
+                        }),
                     const SizedBox(height: 30),
 
                     // confirm password
