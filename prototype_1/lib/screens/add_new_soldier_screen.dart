@@ -107,7 +107,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
         if (value != null) {
           widget.dob = DateFormat('d MMM yyyy').format(value);
         }
-        addUserDetails();
+        //addUserDetails();
       });
     });
   }
@@ -123,7 +123,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
         if (value != null) {
           widget.ord = DateFormat('d MMM yyyy').format(value);
         }
-        addUserDetails();
+        //addUserDetails();
       });
     });
   }
@@ -139,7 +139,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
         if (value != null) {
           widget.enlistment = DateFormat('d MMM yyyy').format(value);
         }
-        addUserDetails();
+        //addUserDetails();
       });
     });
   }
@@ -148,7 +148,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
     await FirebaseFirestore.instance
         .collection('Users')
         .doc(widget.name.text.trim())
-        .update({
+        .set({
       //User map formatting
       'rank': widget.selectedRank,
       'name': widget.name.text.trim(),
@@ -162,6 +162,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
       'ord': widget.ord,
       'enlistment': widget.enlistment,
     });
+    Navigator.pop(context);
   }
 
   @override
@@ -314,7 +315,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                               .toList(),
                           onChanged: (item) => setState(() {
                             widget.selectedItem = item;
-                            addUserDetails();
+                            //addUserDetails();
                           }),
                         ),
                       ),
@@ -361,7 +362,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                             .toList(),
                         onChanged: (String? item) async => setState(() {
                           widget.selectedRank = item;
-                          addUserDetails();
+                          //addUserDetails();
                         }),
                       ),
                     ),
@@ -403,7 +404,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                               .toList(),
                           onChanged: (item) async => setState(() {
                             widget.selectedBloodType = item;
-                            addUserDetails();
+                            //addUserDetails();
                           }),
                         ),
                       ),

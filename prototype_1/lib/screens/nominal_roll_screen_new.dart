@@ -1,5 +1,5 @@
 // ignore_for_file: must_be_immutable
-
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:prototype_1/screens/add_new_soldier_screen.dart';
@@ -53,7 +53,8 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
     documentIDs = [];
   }
 
-  void reset() {
+  Future<void> reset() async {
+    await Future.delayed(Duration(seconds: 2));
     Navigator.pushReplacement(context,
         MaterialPageRoute(builder: (BuildContext context) => super.widget));
   }
@@ -68,230 +69,166 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
     });
   }
 
-  List unitSoldiers = [
-    //[ soldierName, soldierRank, tileColour, soldierAttendance, soldierIcon, soldierAppointment, companyName,
-    //platoonName, sectionNumber, dateOfBirth, rationType, bloodType, enlistmentDate, ordDate]
-
-    [
-      "Wei John Koh",
-      "lib/assets/army-ranks/3sg.png",
-      Colors.brown.shade800,
-      "IN CAMP",
-      "lib/assets/army-ranks/soldier.png",
-      "section commander",
-      "Alpha",
-      "4",
-      "3",
-      "04 May 2001",
-      "VC",
-      "AB+",
-      "11 Aug 2020",
-      "10 Aug 2022",
-    ],
-    [
-      "Sivagnanam Maheshwaran",
-      "lib/assets/army-ranks/3sg.png",
-      Colors.indigo.shade800,
-      "IN CAMP",
-      "lib/assets/army-ranks/soldier.png",
-      "LOGISTICS SPECIALIST",
-      "Bravo",
-      "1",
-      "2",
-      "05 Apr 2001",
-      "VI",
-      "AB+",
-      "11 Aug 2019",
-      "10 Aug 2021",
-    ],
-    [
-      "Aakash Ramaswamy",
-      "lib/assets/army-ranks/3sg.png",
-      Colors.indigo.shade400,
-      "NOT IN CAMP",
-      "lib/assets/army-ranks/soldier.png",
-      "MARKSMAN TEAM COMMANDER",
-      "Charlie",
-      "HQ",
-      "MM",
-      "02 Apr 2002",
-      "VI",
-      "O+",
-      "11 Aug 2020",
-      "10 Aug 2022",
-    ],
-    [
-      "Nikhil Babu",
-      "lib/assets/army-ranks/cfc.png",
-      Colors.teal.shade800,
-      "IN CAMP",
-      "lib/assets/army-ranks/men.png",
-      "Section 2IC",
-      "Bn HQ",
-      "2",
-      "4",
-      "03 Sept 2000",
-      "M",
-      "B+",
-      "10 Aug 2020",
-      "09 Aug 2022",
-    ],
-    [
-      "John Doe",
-      "lib/assets/army-ranks/lcp.png",
-      Colors.teal.shade400,
-      "NOT IN CAMP",
-      "lib/assets/army-ranks/men.png",
-      "1st MATADOR GUNNER",
-      "Support",
-      "3",
-      "3",
-      "04 Jul 2003",
-      "NM",
-      "A+",
-      "11 Jul 2021",
-      "10 Jul 2023",
-    ],
-  ];
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
+    return MaterialApp(
+      home: Scaffold(
+        floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => AddNewSoldierPage(
-                    name: TextEditingController(),
-                    company: TextEditingController(),
-                    platoon: TextEditingController(),
-                    section: TextEditingController(),
-                    appointment: TextEditingController(),
-                    dob: DateFormat('d MMM yyyy').format(DateTime.now()),
-                    ord: DateFormat('d MMM yyyy').format(DateTime.now()),
-                    enlistment: DateFormat('d MMM yyyy').format(DateTime.now()),
-                    selectedItem: "Select your ration type...",
-                    selectedRank: "Select your rank...",
-                    selectedBloodType: "Select your blood type..."),
+                  name: TextEditingController(),
+                  company: TextEditingController(),
+                  platoon: TextEditingController(),
+                  section: TextEditingController(),
+                  appointment: TextEditingController(),
+                  dob: DateFormat('d MMM yyyy').format(DateTime.now()),
+                  ord: DateFormat('d MMM yyyy').format(DateTime.now()),
+                  enlistment: DateFormat('d MMM yyyy').format(DateTime.now()),
+                  selectedItem: "Select your ration type...",
+                  selectedRank: "Select your rank...",
+                  selectedBloodType: "Select your blood type...",
+                ),
               ),
             );
           },
           backgroundColor: Colors.deepPurple,
-          child: const Icon(Icons.add)),
-      backgroundColor: const Color.fromARGB(255, 21, 25, 34),
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: const Icon(Icons.add),
+        ),
+        backgroundColor: const Color.fromARGB(255, 21, 25, 34),
+        body: LiquidPullToRefresh(
+          onRefresh: reset,
+          color: Colors.deepPurple,
+          height: 250,
+          animSpeedFactor: 5,
+          showChildOpacityTransition: false,
+          springAnimationDurationInMilliseconds: 250,
+          borderWidth: 7,
+          backgroundColor: Colors.deepPurple.shade200,
+          child: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24.0),
-                  child: StyledText(
-                    'Nominal Roll',
-                    30,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 25.0),
-                  child: InkWell(
-                    onTap: () {
-                      FirebaseAuth.instance.signOut();
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        boxShadow: const [
-                          BoxShadow(
-                              color: Colors.black54,
-                              offset: Offset(10.0, 10.0),
-                              blurRadius: 2.0,
-                              spreadRadius: 2.0),
-                        ],
-                        color: Colors.deepPurple.shade400,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(10)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 24.0),
+                      child: StyledText(
+                        'Nominal Roll',
+                        30,
+                        fontWeight: FontWeight.w500,
                       ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(defaultPadding),
-                        child: Icon(
-                          Icons.exit_to_app_rounded,
-                          color: Colors.white,
-                          size: 35,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 25.0),
+                      child: InkWell(
+                        onTap: () {
+                          //display();
+                          FirebaseAuth.instance.signOut();
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            boxShadow: const [
+                              BoxShadow(
+                                  color: Colors.black54,
+                                  offset: Offset(10.0, 10.0),
+                                  blurRadius: 2.0,
+                                  spreadRadius: 2.0),
+                            ],
+                            color: Colors.deepPurple.shade400,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10)),
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.all(defaultPadding),
+                            child: Icon(
+                              Icons.exit_to_app_rounded,
+                              color: Colors.white,
+                              size: 35,
+                            ),
+                          ),
                         ),
                       ),
                     ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UserProfileScreen(
+                                      soldierName:
+                                          documentIDs[0], //unitSoldiers[
+                                      soldierRank:
+                                          "lib/assets/army-ranks/3sg.png", //
+                                      soldierAppointment: userDetails[0]
+                                          ['appointment'],
+                                      company: userDetails[0]['company'],
+                                      platoon: userDetails[0]['platoon'],
+                                      section: userDetails[0]['section'],
+                                      dateOfBirth: userDetails[0]['dob'],
+                                      rationType: userDetails[0]['rationType'],
+                                      bloodType: userDetails[0]['bloodgroup'],
+                                      enlistmentDate: userDetails[0]
+                                          ['enlistment'],
+                                      ordDate: userDetails[0]['ord'],
+                                    )));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Image.asset(
+                          'lib/assets/user.png',
+                          width: 50,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24.0),
+                  child: StyledText(
+                    'Our Family of Soldiers:',
+                    20,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => UserProfileScreen(
-                                  soldierName: unitSoldiers[1][0],
-                                  soldierRank: unitSoldiers[1][1],
-                                  soldierAppointment: unitSoldiers[1][5],
-                                  company: unitSoldiers[1][6],
-                                  platoon: unitSoldiers[1][7],
-                                  section: unitSoldiers[1][8],
-                                  dateOfBirth: unitSoldiers[1][9],
-                                  rationType: unitSoldiers[1][10],
-                                  bloodType: unitSoldiers[1][11],
-                                  enlistmentDate: unitSoldiers[1][12],
-                                  ordDate: unitSoldiers[1][13],
-                                )));
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Image.asset(
-                      'lib/assets/user.png',
-                      width: 50,
-                    ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Expanded(
+                  child: GridView.builder(
+                    itemCount: documentIDs.length,
+                    padding: const EdgeInsets.all(12),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2, childAspectRatio: 1 / 1.5),
+                    itemBuilder: (context, index) {
+                      return SoldierTile(
+                        soldierName:
+                            documentIDs[index], //unitSoldiers[index][0],
+                        soldierRank:
+                            "lib/assets/army-ranks/3sg.png", //unitSoldiers[index][1],
+                        soldierAppointment: userDetails[index]['appointment'],
+                        company: userDetails[index]['company'],
+                        platoon: userDetails[index]['platoon'],
+                        section: userDetails[index]['section'],
+                        dateOfBirth: userDetails[index]['dob'],
+                        rationType: userDetails[index]['rationType'],
+                        bloodType: userDetails[index]['bloodgroup'],
+                        enlistmentDate: userDetails[index]['enlistment'],
+                        ordDate: userDetails[index]['ord'],
+                      );
+                    },
                   ),
                 ),
               ],
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.0),
-              child: StyledText(
-                'Our Family of Soldiers:',
-                20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Expanded(
-              child: GridView.builder(
-                itemCount: unitSoldiers.length,
-                padding: const EdgeInsets.all(12),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, childAspectRatio: 1 / 1.5),
-                itemBuilder: (context, index) {
-                  return SoldierTile(
-                    soldierName: unitSoldiers[index][0],
-                    soldierRank: unitSoldiers[index][1],
-                    soldierAppointment: unitSoldiers[index][5],
-                    company: unitSoldiers[index][6],
-                    platoon: unitSoldiers[index][7],
-                    section: unitSoldiers[index][8],
-                    dateOfBirth: unitSoldiers[index][9],
-                    rationType: unitSoldiers[index][10],
-                    bloodType: unitSoldiers[index][11],
-                    enlistmentDate: unitSoldiers[index][12],
-                    ordDate: unitSoldiers[index][13],
-                  );
-                },
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
