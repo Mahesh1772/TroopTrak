@@ -135,19 +135,30 @@ class _RegisterPageState extends State<RegisterPage> {
   late String? selectedBloodType = "Select blood type...";
 
   Future signUp() async {
-    if (_confirmedpassword.text.trim() == _password.text.trim() && (_name.text.titleCase.trim() == '' || _isNumeric(_name.text.titleCase.trim()) == false)) {
-      //creating user
-      UserCredential result =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: _emailId.text.trim(),
-        password: _password.text.trim(),
-      );
-      User user = result.user!;
-      user.updateDisplayName(_name.text.trim());
-      //Adding user details
-      addUserDetails();
+    try {
+      if (_confirmedpassword.text.trim() == _password.text.trim() &&
+          (_name.text.titleCase.trim() == '' ||
+              _isNumeric(_name.text.titleCase.trim()) == false)) {
+        //creating user
+        UserCredential result =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _emailId.text.trim(),
+          password: _password.text.trim(),
+        );
+        User user = result.user!;
+        user.updateDisplayName(_name.text.trim());
+        //Adding user details
+        addUserDetails();
+      }
+      FirebaseAuth.instance.signOut();
+    } catch (e) {
+      IconSnackBar.show(
+          context: context,
+          snackBarType: SnackBarType.fail,
+          label: 'This Email in use/ Enter Email and Password',
+          snackBarStyle: const SnackBarStyle(showIconFirst: true) // this one
+          );
     }
-    FirebaseAuth.instance.signOut();
   }
 
   void _showDatePicker() {
