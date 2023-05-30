@@ -200,6 +200,22 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                 const SizedBox(
                   height: 10,
                 ),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: TextField(
+                    onChanged: (value) => updateList(value),
+                    decoration: InputDecoration(
+                      hintText: 'Search Name',
+                      prefixIcon: const Icon(Icons.search_sharp),
+                      prefixIconColor: Colors.indigo.shade900,
+                      fillColor: Colors.amber,
+                      filled: true,
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none),
+                    ),
+                  ),
+                ),
                 Expanded(
                   child: GridView.builder(
                     itemCount: documentIDs.length,

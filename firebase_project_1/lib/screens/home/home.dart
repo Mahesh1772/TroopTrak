@@ -25,11 +25,10 @@ class _HomeState extends State<Home> {
   List<String> updated_documentIDs = [];
 
   // Test data to store rank
-  List <Map<String, dynamic>> userDetails = [];
-  List <List> soldierTiles = [];
+  List<Map<String, dynamic>> userDetails = [];
+  List<List> soldierTiles = [];
   // DocumentReference<Map<String, dynamic>>(Users/8bu245T440NIuQnJhm81)
   // This is the sample output, to get IDs we just do .id
-
   Future getDocIDs() async {
     await FirebaseFirestore.instance
         .collection('Users')
@@ -52,8 +51,11 @@ class _HomeState extends State<Home> {
   void initState() {
     getDocIDs();
     super.initState();
-    documentIDs = [];
   }
+
+  //void dispay () {
+  //  print(getDocIDs());
+  //}
 
   void reset() {
     Navigator.pushReplacement(context,
@@ -69,14 +71,6 @@ class _HomeState extends State<Home> {
           .toList();
     });
   }
-
-  //void populateList () {
-  //  for (var j = 0; j < userDetails.length; j++) {
-  //    for (var i = 0; i < 2; i++) {
-  //      soldierTiles[j][i] = soldierTiles[j]['rank'];
-  //    }
-  //  }
-  //}
 
   @override
   Widget build(BuildContext context) {
@@ -142,6 +136,7 @@ class _HomeState extends State<Home> {
                 ),
               ),
             ),
+
             // This has a FutureBuilder as it needs
             // to wait for executiion of getDocIDs function to finish execution
             Expanded(
@@ -181,6 +176,7 @@ class _HomeState extends State<Home> {
                 ),
               ),
             ),
+
             ElevatedButton(
               onPressed: reset,
               style: ElevatedButton.styleFrom(
