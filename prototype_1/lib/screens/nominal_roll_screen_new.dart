@@ -1,5 +1,4 @@
 // ignore_for_file: must_be_immutable
-import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:prototype_1/screens/add_new_soldier_screen.dart';
@@ -19,7 +18,7 @@ class NominalRollNewScreen extends StatefulWidget {
 
 class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
   // The DocID or the name of the current user is saved in here
-  final user = FirebaseAuth.instance.currentUser!.displayName.toString();
+  final name = FirebaseAuth.instance.currentUser!.displayName.toString();
 
   Map<String, dynamic> currentUserData = {};
 
@@ -37,10 +36,9 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
   String searchText = '';
 
   Future getCurrentUserData() async {
-    var data = FirebaseFirestore.instance.collection('Users').doc(user);
+    var data = FirebaseFirestore.instance.collection('Users').doc(name);
     data.get().then((DocumentSnapshot doc) {
       currentUserData = doc.data() as Map<String, dynamic>;
-      currentUserData.addEntries({'name': user}.entries);
       // ...
     });
   }
@@ -101,7 +99,7 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                     padding: const EdgeInsets.only(left: 25.0),
                     child: InkWell(
                       onTap: () {
-                        print(currentUserData);
+                        print(userDetails);
                         //FirebaseAuth.instance.signOut();
                       },
                       child: Container(
@@ -204,19 +202,15 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                     var docsmapshot = snapshot.data!;
                     if (searchText.isNotEmpty) {
                       users = users!.where((element) {
-                        return element.reference.id
-                            //.get('Title')
+                        return element
+                            .get('name')
                             .toString()
                             .toLowerCase()
                             .contains(searchText.toLowerCase());
                       }).toList();
-                      for (var i = 0; i < users.length; i++) {
-                        documentIDs.add(users[i].reference.id);
-                        var data =
-                            docsmapshot.docs[i].data() as Map<String, dynamic>;
-                        userDetails.add(data);
-                        userDetails[i]
-                            .addEntries({'name': documentIDs[i]}.entries);
+                      for (var user in users) {
+                        var data = user.data();
+                        userDetails.add(data as Map<String, dynamic>);
                       }
                       if (userDetails.isEmpty) {
                         return Column(
@@ -242,8 +236,6 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                         var data =
                             docsmapshot.docs[i].data() as Map<String, dynamic>;
                         userDetails.add(data);
-                        userDetails[i]
-                            .addEntries({'name': documentIDs[i]}.entries);
                       }
                     }
                   }
@@ -256,10 +248,9 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                               crossAxisCount: 2, childAspectRatio: 1 / 1.5),
                       itemBuilder: (context, index) {
                         return SoldierTile(
-                          soldierName: userDetails[index]
-                              ['name'], //unitSoldiers[index][0],
-                          soldierRank:
-                              "lib/assets/army-ranks/${userDetails[index]['rank'].toString().toLowerCase()}.png", //unitSoldiers[index][1],
+                          soldierName: userDetails[index]['name'],
+                          soldierRank: userDetails[index]['rank'],
+                              //"lib/assets/army-ranks/${userDetails[index]['rank'].toString().toLowerCase()}.png", //unitSoldiers[index][1],
                           soldierAppointment: userDetails[index]['appointment'],
                           company: userDetails[index]['company'],
                           platoon: userDetails[index]['platoon'],

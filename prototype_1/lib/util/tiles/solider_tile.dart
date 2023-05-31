@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/screens/soldier_detailed_screen.dart';
-import 'dart:math' as math;
 
 class SoldierTile extends StatelessWidget {
   final String soldierName;
@@ -79,16 +78,6 @@ class SoldierTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // List colors = [
-    //   Colors.brown.shade800,
-    //   Colors.indigo.shade800,
-    //   Colors.indigo.shade400,
-    //   Colors.teal.shade800,
-    //   Colors.teal.shade400,
-    // ];
-
-    //int index = math.Random().nextInt(4);
-
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: InkWell(
@@ -121,7 +110,7 @@ class SoldierTile extends StatelessWidget {
                     offset: Offset(10, 10),
                     color: Colors.black54)
               ],
-              color: soldierColorGenerator(soldierRank),
+              color: soldierColorGenerator("lib/assets/army-ranks/${soldierRank.toString().toLowerCase()}.png",),
               borderRadius: BorderRadius.circular(12)),
           child: Column(
             children: [
@@ -140,7 +129,7 @@ class SoldierTile extends StatelessWidget {
                           bottomLeft: Radius.circular(12)),
                     ),
                     child: Image.asset(
-                      soldierRank,
+                      "lib/assets/army-ranks/${soldierRank.toString().toLowerCase()}.png",
                       width: 30,
                     ),
                   ),
@@ -152,7 +141,7 @@ class SoldierTile extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 24.0, vertical: 12.0),
                 child: Image.asset(
-                  soldierIconGenerator(soldierRank),
+                  soldierIconGenerator("lib/assets/army-ranks/${soldierRank.toString().toLowerCase()}.png"),
                   width: 90,
                 ),
               ),

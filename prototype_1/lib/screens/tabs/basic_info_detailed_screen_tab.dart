@@ -7,25 +7,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 var fname = FirebaseAuth.instance.currentUser!.displayName.toString();
 var id = FirebaseAuth.instance.currentUser!;
-List profile = [
-  "Sivagnanam Maheshwaran",
-  "lib/assets/army-ranks/3sg.png",
-  Colors.indigo.shade800,
-  "IN CAMP",
-  "lib/assets/army-ranks/soldier.png",
-  "LOGISTICS SPECIALIST",
-  "Bravo",
-  "1",
-  "2",
-  "05 Apr 2001",
-  "VI",
-  "AB+",
-  "11 Aug 2019",
-  "10 Aug 2021",
-];
 
 class BasicInfoTab extends StatefulWidget {
-  const BasicInfoTab({super.key});
+   const BasicInfoTab({super.key, required this.docID});
+
+  final String docID;
 
   @override
   State<BasicInfoTab> createState() => _BasicInfoTabState();
@@ -44,14 +30,14 @@ class _BasicInfoTabState extends State<BasicInfoTab> {
 
   @override
   Widget build(BuildContext context) {
-    const docIDs = 'Lee Kuan Yew';
 
     return SizedBox(
       height: 600,
       child: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('Users')
-            .doc(docIDs)
+            //.where('name')
+            .doc(widget.docID)
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -64,27 +50,27 @@ class _BasicInfoTabState extends State<BasicInfoTab> {
               children: [
                 SoldierDetailedInfoTemplate(
                   title: "Date Of Birth",
-                  content: profile[9].toUpperCase(),
+                  content: data['dob'].toString().toUpperCase(),
                   icon: Icons.cake_rounded,
                 ),
                 SoldierDetailedInfoTemplate(
                   title: "Ration Type:",
-                  content: profile[10].toUpperCase(),
+                  content: data['rationType'].toUpperCase(),
                   icon: Icons.food_bank_rounded,
                 ),
                 SoldierDetailedInfoTemplate(
                   title: "Blood Type:",
-                  content: profile[11].toUpperCase(),
+                  content: data['bloodgroup'].toString(),
                   icon: Icons.bloodtype_rounded,
                 ),
                 SoldierDetailedInfoTemplate(
                   title: "Enlistment Date:",
-                  content: profile[12].toUpperCase(),
+                  content: data['enlistment'].toString().toUpperCase(),
                   icon: Icons.date_range_rounded,
                 ),
                 SoldierDetailedInfoTemplate(
                   title: "ORD:",
-                  content: profile[13].toUpperCase(),
+                  content: data['ord'].toString().toUpperCase(),
                   icon: Icons.military_tech_rounded,
                 ),
                 const SizedBox(
@@ -97,7 +83,7 @@ class _BasicInfoTabState extends State<BasicInfoTab> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => UpdateSoldierDetailsPage(
-                              name: TextEditingController(text: docIDs),
+                              name: TextEditingController(text: data['name']),
                               company:
                                   TextEditingController(text: data['company']),
                               platoon:
