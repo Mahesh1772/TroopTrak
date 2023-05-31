@@ -42,6 +42,7 @@ class _GNavMainScreen extends State<GNavMainScreen> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: const Color.fromARGB(255, 21, 25, 34),
         body: Center(
           child: _widgetOptions.elementAt(selectedIndex),

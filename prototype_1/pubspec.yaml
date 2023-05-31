@@ -84,14 +84,33 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
       - lib/assets/user.png
-      - lib/assets/army-ranks/1sg.png
-      - lib/assets/army-ranks/2sg.png
-      - lib/assets/army-ranks/3sg.png
-      - lib/assets/army-ranks/ssg.png
-      - lib/assets/army-ranks/msg.png
+      - lib/assets/army-ranks/rec.png
+      - lib/assets/army-ranks/pte.png
       - lib/assets/army-ranks/lcp.png
       - lib/assets/army-ranks/cpl.png
       - lib/assets/army-ranks/cfc.png
+      - lib/assets/army-ranks/sct.png
+      - lib/assets/army-ranks/3sg.png
+      - lib/assets/army-ranks/2sg.png
+      - lib/assets/army-ranks/1sg.png
+      - lib/assets/army-ranks/ssg.png
+      - lib/assets/army-ranks/msg.png
+      - lib/assets/army-ranks/3wo.png
+      - lib/assets/army-ranks/2wo.png
+      - lib/assets/army-ranks/1wo.png
+      - lib/assets/army-ranks/mwo.png
+      - lib/assets/army-ranks/swo.png
+      - lib/assets/army-ranks/cwo.png
+      - lib/assets/army-ranks/2lt.png
+      - lib/assets/army-ranks/lta.png
+      - lib/assets/army-ranks/cpt.png
+      - lib/assets/army-ranks/maj.png
+      - lib/assets/army-ranks/ltc.png
+      - lib/assets/army-ranks/sltc.png
+      - lib/assets/army-ranks/col.png
+      - lib/assets/army-ranks/bg.png
+      - lib/assets/army-ranks/mg.png
+      - lib/assets/army-ranks/lg.png
       - lib/assets/army-ranks/soldier.png
       - lib/assets/army-ranks/men.png
       - lib/assets/icons8-medals-64.png

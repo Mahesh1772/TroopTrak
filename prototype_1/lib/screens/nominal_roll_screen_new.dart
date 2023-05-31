@@ -73,6 +73,7 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        resizeToAvoidBottomInset: false,
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.push(
@@ -160,7 +161,8 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                           MaterialPageRoute(
                             builder: (context) => UserProfileScreen(
                               soldierName: documentIDs[0], //unitSoldiers[
-                              soldierRank: "lib/assets/army-ranks/3sg.png", //
+                              soldierRank:
+                                  "lib/assets/army-ranks/${userDetails[0]['rank'].toString().toLowerCase()}.png", //
                               soldierAppointment: userDetails[0]['appointment'],
                               company: userDetails[0]['company'],
                               platoon: userDetails[0]['platoon'],
@@ -226,7 +228,7 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                         soldierName:
                             documentIDs[index], //unitSoldiers[index][0],
                         soldierRank:
-                            "lib/assets/army-ranks/3sg.png", //unitSoldiers[index][1],
+                            "lib/assets/army-ranks/${userDetails[index]['rank'].toString().toLowerCase()}.png", //unitSoldiers[index][1],
                         soldierAppointment: userDetails[index]['appointment'],
                         company: userDetails[index]['company'],
                         platoon: userDetails[index]['platoon'],
