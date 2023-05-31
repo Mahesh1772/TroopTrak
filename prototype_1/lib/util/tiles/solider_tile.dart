@@ -32,17 +32,62 @@ class SoldierTile extends StatelessWidget {
     required this.ordDate,
   });
 
+  String soldierIconGenerator(String rank) {
+    if (rank == 'lib/assets/army-ranks/rec.png' ||
+        rank == 'lib/assets/army-ranks/pte.png' ||
+        rank == 'lib/assets/army-ranks/lcp.png' ||
+        rank == 'lib/assets/army-ranks/cpl.png' ||
+        rank == 'lib/assets/army-ranks/cfc.png') {
+      return "lib/assets/army-ranks/men.png";
+    } else {
+      return "lib/assets/army-ranks/soldier.png";
+    }
+  }
+
+  Color soldierColorGenerator(String rank) {
+    if (rank == 'lib/assets/army-ranks/rec.png' ||
+        rank == 'lib/assets/army-ranks/pte.png' ||
+        rank == 'lib/assets/army-ranks/lcp.png' ||
+        rank == 'lib/assets/army-ranks/cpl.png' ||
+        rank == 'lib/assets/army-ranks/cfc.png') {
+      return Colors.brown.shade800;
+    } else if (rank == 'lib/assets/army-ranks/sct.png') {
+      return Colors.brown.shade400;
+    } else if (rank == 'lib/assets/army-ranks/3sg.png' ||
+        rank == 'lib/assets/army-ranks/2sg.png' ||
+        rank == 'lib/assets/army-ranks/1sg.png' ||
+        rank == 'lib/assets/army-ranks/ssg.png' ||
+        rank == 'lib/assets/army-ranks/msg.png') {
+      return Colors.indigo.shade800;
+    } else if (rank == 'lib/assets/army-ranks/3wo.png' ||
+        rank == 'lib/assets/army-ranks/2wo.png' ||
+        rank == 'lib/assets/army-ranks/1wo.png' ||
+        rank == 'lib/assets/army-ranks/mwo.png' ||
+        rank == 'lib/assets/army-ranks/swo.png' ||
+        rank == 'lib/assets/army-ranks/cwo.png') {
+      return Colors.indigo.shade400;
+    } else if (rank == 'lib/assets/army-ranks/oct.png') {
+      return Colors.teal.shade900;
+    } else if (rank == 'lib/assets/army-ranks/2lt.png' ||
+        rank == 'lib/assets/army-ranks/lta.png' ||
+        rank == 'lib/assets/army-ranks/cpt.png') {
+      return Colors.teal.shade800;
+    } else {
+      return Colors.teal.shade400;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    List colors = [
-      Colors.brown.shade800,
-      Colors.indigo.shade800,
-      Colors.indigo.shade400,
-      Colors.teal.shade800,
-      Colors.teal.shade400,
-    ];
+    // List colors = [
+    //   Colors.brown.shade800,
+    //   Colors.indigo.shade800,
+    //   Colors.indigo.shade400,
+    //   Colors.teal.shade800,
+    //   Colors.teal.shade400,
+    // ];
 
-    int index = math.Random().nextInt(4);
+    //int index = math.Random().nextInt(4);
 
     return Padding(
       padding: const EdgeInsets.all(12.0),
@@ -68,13 +113,16 @@ class SoldierTile extends StatelessWidget {
           );
         },
         child: Container(
-          decoration: BoxDecoration(boxShadow: const [
-            BoxShadow(
-                blurRadius: 2.0,
-                spreadRadius: 2.0,
-                offset: Offset(10, 10),
-                color: Colors.black54)
-          ], color: colors[index], borderRadius: BorderRadius.circular(12)),
+          decoration: BoxDecoration(
+              boxShadow: const [
+                BoxShadow(
+                    blurRadius: 2.0,
+                    spreadRadius: 2.0,
+                    offset: Offset(10, 10),
+                    color: Colors.black54)
+              ],
+              color: soldierColorGenerator(soldierRank),
+              borderRadius: BorderRadius.circular(12)),
           child: Column(
             children: [
               //rank insignia
@@ -104,7 +152,7 @@ class SoldierTile extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 24.0, vertical: 12.0),
                 child: Image.asset(
-                  "lib/assets/army-ranks/soldier.png",
+                  soldierIconGenerator(soldierRank),
                   width: 90,
                 ),
               ),
