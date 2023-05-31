@@ -49,6 +49,8 @@ class _HomeState extends State<Home> {
     setState(() {});
   }
 */
+  String searchText = '';
+
   @override
   void initState() {
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
@@ -128,7 +130,11 @@ class _HomeState extends State<Home> {
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: TextField(
-                  //onChanged: (value) => updateList(value),
+                  onChanged: (value) {
+                    setState(() {
+                      searchText = value;
+                    });
+                  },
                   decoration: InputDecoration(
                     hintText: 'Search Name',
                     prefixIcon: const Icon(Icons.search_sharp),
@@ -149,17 +155,35 @@ class _HomeState extends State<Home> {
                   if (snapshot.hasData) {
                     documentIDs = [];
                     userDetails = [];
-                    final users = snapshot.data?.docs.toList();
+                    var users = snapshot.data?.docs.toList();
                     var docsmapshot = snapshot.data!;
-                    for (var i = 0; i < users!.length; i++) {
-                      documentIDs.add(users[i].reference.id);
-                      var data =
-                          docsmapshot.docs[i].data() as Map<String, dynamic>;
-                      userDetails.add(data);
-                      userDetails[i]
-                          .addEntries({'name': documentIDs[i]}.entries);
+                    if (searchText.isNotEmpty) {
+                      users = users!.where((element) {
+                        return element.reference.id
+                            //.get('Title')
+                            .toString()
+                            .toLowerCase()
+                            .contains(searchText.toLowerCase());
+                      }).toList();
+                      for (var i = 0; i < users!.length; i++) {
+                        documentIDs.add(users[i].reference.id);
+                        var data =
+                            docsmapshot.docs[i].data() as Map<String, dynamic>;
+                        userDetails.add(data);
+                        userDetails[i]
+                            .addEntries({'name': documentIDs[i]}.entries);
+                      }
+                    } else {
+                      for (var i = 0; i < users!.length; i++) {
+                        documentIDs.add(users[i].reference.id);
+                        var data =
+                            docsmapshot.docs[i].data() as Map<String, dynamic>;
+                        userDetails.add(data);
+                        userDetails[i]
+                            .addEntries({'name': documentIDs[i]}.entries);
+                      }
+                      updated_documentIDs = documentIDs;
                     }
-                    updated_documentIDs = documentIDs;
                   }
                   return Expanded(
                     child: Padding(
