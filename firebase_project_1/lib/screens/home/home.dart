@@ -1,11 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_project_1/screens/home/edit_user.dart';
-import 'package:firebase_project_1/screens/home/read_items/read_custom_user_id.dart';
 import 'package:firebase_project_1/screens/home/update_profile.dart';
 import 'package:firebase_project_1/user_model/user_profile_page.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_project_1/screens/home/read_items/read_user_rank.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -30,25 +28,7 @@ class _HomeState extends State<Home> {
   // DocumentReference<Map<String, dynamic>>(Users/8bu245T440NIuQnJhm81)
   // This is the sample output, to get IDs we just do .id
   List<Map<String, dynamic>> userDetails = [];
-/*
-  Future getDocIDs() async {
-    await FirebaseFirestore.instance
-        .collection('Users')
-        //.orderBy('rank', descending: false)
-        .get()
-        .then((snapshot) => {
-              snapshot.docs.forEach((document) {
-                //print(document.reference.id);
-                documentIDs.add(document.reference.id);
-                //userDetails.add(document.data());
-                //print(document.data());
-              })
-            });
-    documentIDs.sort();
-    updated_documentIDs = documentIDs;
-    setState(() {});
-  }
-*/
+  
   String searchText = '';
 
   @override
@@ -150,7 +130,6 @@ class _HomeState extends State<Home> {
 
               StreamBuilder<QuerySnapshot>(
                 stream: documentStream,
-                //FirebaseFirestore.instance.collection('Users').snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     documentIDs = [];
@@ -226,62 +205,13 @@ class _HomeState extends State<Home> {
 
               // This has a FutureBuilder as it needs
               // to wait for executiion of getDocIDs function to finish execution
-              /*
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: ListView.builder(
-                    itemCount: updated_documentIDs.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const EditUserDetails(),
-                              ),
-                            );
-                          },
-                          child: ListTile(
-                            shape: BeveledRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              side: const BorderSide(
-                                width: 2,
-                                color: Colors.indigo,
-                              ),
-                            ),
-                            title:
-                                ReadUserName(docIDs: updated_documentIDs[index]),
-                            subtitle:
-                                ReadUserRank(docIDs: updated_documentIDs[index]),
-                            tileColor: Colors.indigo.shade300,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
-              
-    
-              ElevatedButton(
-                onPressed: reset,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.purple,
-                ),
-                child: const Text('Refresh'),
-              ),
-              */
             ],
           ),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            dispay();
-            //Navigator.push(context,
-            //    MaterialPageRoute(builder: (context) => UpdateProfile()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => UpdateProfile()));
           },
           backgroundColor: Colors.tealAccent,
           child: const Icon(Icons.edit),
