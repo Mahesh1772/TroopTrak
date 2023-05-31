@@ -156,25 +156,23 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                     InkWell(
                       onTap: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => UserProfileScreen(
-                                      soldierName:
-                                          documentIDs[0], //unitSoldiers[
-                                      soldierRank:
-                                          "lib/assets/army-ranks/3sg.png", //
-                                      soldierAppointment: userDetails[0]
-                                          ['appointment'],
-                                      company: userDetails[0]['company'],
-                                      platoon: userDetails[0]['platoon'],
-                                      section: userDetails[0]['section'],
-                                      dateOfBirth: userDetails[0]['dob'],
-                                      rationType: userDetails[0]['rationType'],
-                                      bloodType: userDetails[0]['bloodgroup'],
-                                      enlistmentDate: userDetails[0]
-                                          ['enlistment'],
-                                      ordDate: userDetails[0]['ord'],
-                                    )));
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UserProfileScreen(
+                              soldierName: documentIDs[0], //unitSoldiers[
+                              soldierRank: "lib/assets/army-ranks/3sg.png", //
+                              soldierAppointment: userDetails[0]['appointment'],
+                              company: userDetails[0]['company'],
+                              platoon: userDetails[0]['platoon'],
+                              section: userDetails[0]['section'],
+                              dateOfBirth: userDetails[0]['dob'],
+                              rationType: userDetails[0]['rationType'],
+                              bloodType: userDetails[0]['bloodgroup'],
+                              enlistmentDate: userDetails[0]['enlistment'],
+                              ordDate: userDetails[0]['ord'],
+                            ),
+                          ),
+                        );
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
