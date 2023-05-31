@@ -15,6 +15,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  late Stream<QuerySnapshot> documentStream;
+
   final user = FirebaseAuth.instance.currentUser!;
 
   // The list of all document IDs,
@@ -27,6 +29,7 @@ class _HomeState extends State<Home> {
   List<List> soldierTiles = [];
   // DocumentReference<Map<String, dynamic>>(Users/8bu245T440NIuQnJhm81)
   // This is the sample output, to get IDs we just do .id
+  List<Map<String, dynamic>> userDetails = [];
 /*
   Future getDocIDs() async {
     await FirebaseFirestore.instance
@@ -45,23 +48,23 @@ class _HomeState extends State<Home> {
     updated_documentIDs = documentIDs;
     setState(() {});
   }
-
+*/
   @override
   void initState() {
-    getDocIDs();
+    documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
     super.initState();
   }
-  
 
   void dispay() {
-    print(documentIDs);
+    print(userDetails);
+    print(documentIDs.length);
   }
 
   void reset() {
     Navigator.pushReplacement(context,
         MaterialPageRoute(builder: (BuildContext context) => super.widget));
   }
-*/
+
   void updateList(String value) {
     // This will be used to make the new list with searched word
     setState(() {
@@ -76,6 +79,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: Colors.deepPurple,
           title: Center(
@@ -124,7 +128,7 @@ class _HomeState extends State<Home> {
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: TextField(
-                  onChanged: (value) => updateList(value),
+                  //onChanged: (value) => updateList(value),
                   decoration: InputDecoration(
                     hintText: 'Search Name',
                     prefixIcon: const Icon(Icons.search_sharp),
@@ -139,28 +143,29 @@ class _HomeState extends State<Home> {
               ),
 
               StreamBuilder<QuerySnapshot>(
-                stream:
-                    FirebaseFirestore.instance.collection('Users').snapshots(),
+                stream: documentStream,
+                //FirebaseFirestore.instance.collection('Users').snapshots(),
                 builder: (context, snapshot) {
-                  List<String> listOfUsers = [];
-                  // Test data to store rank
-                  List<Map<String, dynamic>> userDetails = [];
-
                   if (snapshot.hasData) {
+                    documentIDs = [];
+                    userDetails = [];
                     final users = snapshot.data?.docs.toList();
                     var docsmapshot = snapshot.data!;
                     for (var i = 0; i < users!.length; i++) {
-                      listOfUsers.add(users[i].reference.id);
+                      documentIDs.add(users[i].reference.id);
                       var data =
                           docsmapshot.docs[i].data() as Map<String, dynamic>;
                       userDetails.add(data);
+                      userDetails[i]
+                          .addEntries({'name': documentIDs[i]}.entries);
                     }
+                    updated_documentIDs = documentIDs;
                   }
                   return Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: ListView.builder(
-                        itemCount: listOfUsers.length,
+                        itemCount: userDetails.length,
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -182,7 +187,7 @@ class _HomeState extends State<Home> {
                                     color: Colors.indigo,
                                   ),
                                 ),
-                                title: Text(listOfUsers[index]),
+                                title: Text(userDetails[index]['name']),
                                 subtitle: Text(userDetails[index]['rank']),
                                 tileColor: Colors.indigo.shade300,
                               ),
@@ -250,9 +255,9 @@ class _HomeState extends State<Home> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            //dispay();
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => UpdateProfile()));
+            dispay();
+            //Navigator.push(context,
+            //    MaterialPageRoute(builder: (context) => UpdateProfile()));
           },
           backgroundColor: Colors.tealAccent,
           child: const Icon(Icons.edit),
