@@ -18,55 +18,38 @@ class NominalRollNewScreen extends StatefulWidget {
 }
 
 class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
-  final user = FirebaseAuth.instance.currentUser!;
+  // The DocID or the name of the current user is saved in here
+  final user = FirebaseAuth.instance.currentUser!.displayName.toString();
+
+  Map<String, dynamic> currentUserData = {};
+
+  //This is what the stream builder is waiting for
+  late Stream<QuerySnapshot> documentStream;
 
   // The list of all document IDs,
   //which have access to each their own personal information
   List<String> documentIDs = [];
 
-  // New list to hold the new updated list on search
-  List<String> updatedDocumentIDs = [];
+  // List to store all user data, whilst also mapping to name
+  List<Map<String, dynamic>> userDetails = [];
 
-  // List to store all user data
-  List<Map> userDetails = [];
+  // To store text being searched
+  String searchText = '';
 
-  Future getDocIDs() async {
-    await FirebaseFirestore.instance
-        .collection('Users')
-        //.orderBy('rank', descending: false)
-        .get()
-        .then((snapshot) => {
-              snapshot.docs.forEach((document) {
-                documentIDs.add(document.reference.id);
-                userDetails.add(document.data());
-              })
-            });
-    //documentIDs.sort();
-    updatedDocumentIDs = documentIDs;
-    setState(() {});
+  Future getCurrentUserData() async {
+    var data = FirebaseFirestore.instance.collection('Users').doc(user);
+    data.get().then((DocumentSnapshot doc) {
+      currentUserData = doc.data() as Map<String, dynamic>;
+      currentUserData.addEntries({'name': user}.entries);
+      // ...
+    });
   }
 
   @override
   void initState() {
-    getDocIDs();
+    documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
+    getCurrentUserData();
     super.initState();
-    documentIDs = [];
-  }
-
-  Future<void> reset() async {
-    await Future.delayed(Duration(seconds: 2));
-    Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (BuildContext context) => super.widget));
-  }
-
-  void updateList(String value) {
-    // This will be used to make the new list with searched word
-    setState(() {
-      updatedDocumentIDs = documentIDs
-          .where(
-              (element) => element.toLowerCase().contains(value.toLowerCase()))
-          .toList();
-    });
   }
 
   @override
@@ -99,151 +82,200 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
           child: const Icon(Icons.add),
         ),
         backgroundColor: const Color.fromARGB(255, 21, 25, 34),
-        body: LiquidPullToRefresh(
-          onRefresh: reset,
-          color: Colors.deepPurple,
-          height: 250,
-          animSpeedFactor: 5,
-          showChildOpacityTransition: false,
-          springAnimationDurationInMilliseconds: 250,
-          borderWidth: 7,
-          backgroundColor: Colors.deepPurple.shade200,
-          child: SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 24.0),
-                      child: StyledText(
-                        'Nominal Roll',
-                        30,
-                        fontWeight: FontWeight.w500,
-                      ),
+        body: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 24.0),
+                    child: StyledText(
+                      'Nominal Roll',
+                      30,
+                      fontWeight: FontWeight.w500,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 25.0),
-                      child: InkWell(
-                        onTap: () {
-                          //display();
-                          FirebaseAuth.instance.signOut();
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            boxShadow: const [
-                              BoxShadow(
-                                  color: Colors.black54,
-                                  offset: Offset(10.0, 10.0),
-                                  blurRadius: 2.0,
-                                  spreadRadius: 2.0),
-                            ],
-                            color: Colors.deepPurple.shade400,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10)),
-                          ),
-                          child: const Padding(
-                            padding: EdgeInsets.all(defaultPadding),
-                            child: Icon(
-                              Icons.exit_to_app_rounded,
-                              color: Colors.white,
-                              size: 35,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    InkWell(
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 25.0),
+                    child: InkWell(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => UserProfileScreen(
-                              soldierName: documentIDs[0], //unitSoldiers[
-                              soldierRank:
-                                  "lib/assets/army-ranks/${userDetails[0]['rank'].toString().toLowerCase()}.png", //
-                              soldierAppointment: userDetails[0]['appointment'],
-                              company: userDetails[0]['company'],
-                              platoon: userDetails[0]['platoon'],
-                              section: userDetails[0]['section'],
-                              dateOfBirth: userDetails[0]['dob'],
-                              rationType: userDetails[0]['rationType'],
-                              bloodType: userDetails[0]['bloodgroup'],
-                              enlistmentDate: userDetails[0]['enlistment'],
-                              ordDate: userDetails[0]['ord'],
-                            ),
-                          ),
-                        );
+                        print(currentUserData);
+                        //FirebaseAuth.instance.signOut();
                       },
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Image.asset(
-                          'lib/assets/user.png',
-                          width: 50,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          boxShadow: const [
+                            BoxShadow(
+                                color: Colors.black54,
+                                offset: Offset(10.0, 10.0),
+                                blurRadius: 2.0,
+                                spreadRadius: 2.0),
+                          ],
+                          color: Colors.deepPurple.shade400,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.all(defaultPadding),
+                          child: Icon(
+                            Icons.exit_to_app_rounded,
+                            color: Colors.white,
+                            size: 35,
+                          ),
                         ),
                       ),
                     ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24.0),
-                  child: StyledText(
-                    'Our Family of Soldiers:',
-                    20,
-                    fontWeight: FontWeight.bold,
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: TextField(
-                    onChanged: (value) => updateList(value),
-                    decoration: InputDecoration(
-                      hintText: 'Search Name',
-                      prefixIcon: const Icon(Icons.search_sharp),
-                      prefixIconColor: Colors.indigo.shade900,
-                      fillColor: Colors.amber,
-                      filled: true,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide.none),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: GridView.builder(
-                    itemCount: documentIDs.length,
-                    padding: const EdgeInsets.all(12),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2, childAspectRatio: 1 / 1.5),
-                    itemBuilder: (context, index) {
-                      return SoldierTile(
-                        soldierName:
-                            documentIDs[index], //unitSoldiers[index][0],
-                        soldierRank:
-                            "lib/assets/army-ranks/${userDetails[index]['rank'].toString().toLowerCase()}.png", //unitSoldiers[index][1],
-                        soldierAppointment: userDetails[index]['appointment'],
-                        company: userDetails[index]['company'],
-                        platoon: userDetails[index]['platoon'],
-                        section: userDetails[index]['section'],
-                        dateOfBirth: userDetails[index]['dob'],
-                        rationType: userDetails[index]['rationType'],
-                        bloodType: userDetails[index]['bloodgroup'],
-                        enlistmentDate: userDetails[index]['enlistment'],
-                        ordDate: userDetails[index]['ord'],
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UserProfileScreen(
+                            soldierName: currentUserData['name'],
+                            soldierRank:
+                                "lib/assets/army-ranks/${currentUserData['rank'].toString().toLowerCase()}.png",
+                            soldierAppointment: currentUserData['appointment'],
+                            company: currentUserData['company'],
+                            platoon: currentUserData['platoon'],
+                            section: currentUserData['section'],
+                            dateOfBirth: currentUserData['dob'],
+                            rationType: currentUserData['rationType'],
+                            bloodType: currentUserData['bloodgroup'],
+                            enlistmentDate: currentUserData['enlistment'],
+                            ordDate: currentUserData['ord'],
+                          ),
+                        ),
                       );
                     },
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Image.asset(
+                        'lib/assets/user.png',
+                        width: 50,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.0),
+                child: StyledText(
+                  'Our Family of Soldiers:',
+                  20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: TextField(
+                  onChanged: (value) {
+                    setState(() {
+                      searchText = value;
+                    });
+                  },
+                  decoration: InputDecoration(
+                    hintText: 'Search Name',
+                    prefixIcon: const Icon(Icons.search_sharp),
+                    prefixIconColor: Colors.indigo.shade900,
+                    fillColor: Colors.amber,
+                    filled: true,
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none),
                   ),
                 ),
-              ],
-            ),
+              ),
+              StreamBuilder<QuerySnapshot>(
+                stream: documentStream,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    documentIDs = [];
+                    userDetails = [];
+                    var users = snapshot.data?.docs.toList();
+                    var docsmapshot = snapshot.data!;
+                    if (searchText.isNotEmpty) {
+                      users = users!.where((element) {
+                        return element.reference.id
+                            //.get('Title')
+                            .toString()
+                            .toLowerCase()
+                            .contains(searchText.toLowerCase());
+                      }).toList();
+                      for (var i = 0; i < users.length; i++) {
+                        documentIDs.add(users[i].reference.id);
+                        var data =
+                            docsmapshot.docs[i].data() as Map<String, dynamic>;
+                        userDetails.add(data);
+                        userDetails[i]
+                            .addEntries({'name': documentIDs[i]}.entries);
+                      }
+                      if (userDetails.isEmpty) {
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: const [
+                            Center(
+                              child: Text(
+                                'No results Found!',
+                                style: TextStyle(
+                                  color: Colors.purpleAccent,
+                                  fontSize: 45,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
+                        );
+                      }
+                    } else {
+                      for (var i = 0; i < users!.length; i++) {
+                        documentIDs.add(users[i].reference.id);
+                        var data =
+                            docsmapshot.docs[i].data() as Map<String, dynamic>;
+                        userDetails.add(data);
+                        userDetails[i]
+                            .addEntries({'name': documentIDs[i]}.entries);
+                      }
+                    }
+                  }
+                  return Expanded(
+                    child: GridView.builder(
+                      itemCount: userDetails.length,
+                      padding: const EdgeInsets.all(12),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2, childAspectRatio: 1 / 1.5),
+                      itemBuilder: (context, index) {
+                        return SoldierTile(
+                          soldierName: userDetails[index]
+                              ['name'], //unitSoldiers[index][0],
+                          soldierRank:
+                              "lib/assets/army-ranks/${userDetails[index]['rank'].toString().toLowerCase()}.png", //unitSoldiers[index][1],
+                          soldierAppointment: userDetails[index]['appointment'],
+                          company: userDetails[index]['company'],
+                          platoon: userDetails[index]['platoon'],
+                          section: userDetails[index]['section'],
+                          dateOfBirth: userDetails[index]['dob'],
+                          rationType: userDetails[index]['rationType'],
+                          bloodType: userDetails[index]['bloodgroup'],
+                          enlistmentDate: userDetails[index]['enlistment'],
+                          ordDate: userDetails[index]['ord'],
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
         ),
       ),
