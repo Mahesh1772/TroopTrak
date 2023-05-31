@@ -213,6 +213,7 @@ class _RegisterPageState extends State<RegisterPage> {
         .doc(_name.text.titleCase.trim())
         .set({
       //User map formatting
+      'name': _name.text.titleCase.trim(),
       'rank': selectedRank,
       'company': _company.text.trim(),
       'platoon': _platoon.text.trim(),

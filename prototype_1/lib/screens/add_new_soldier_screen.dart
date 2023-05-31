@@ -1,5 +1,5 @@
 // ignore_for_file: must_be_immutable
-
+import 'package:flutter_icon_snackbar/widgets/icon_snackbar.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -39,6 +39,13 @@ class AddNewSoldierPage extends StatefulWidget {
 }
 
 class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
+  bool _isNumeric(String str) {
+    final numericRegex = RegExp(r'^-?(([0-9]*)|(([0-9]*)\.([0-9]*)))$');
+    return numericRegex.hasMatch(str);
+  }
+
+  final _formKey = GlobalKey<FormState>();
+
   final _rationTypes = [
     "Select your ration type...",
     "NM",
@@ -184,105 +191,166 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Icon(
-                    Icons.arrow_back_sharp,
-                    color: Colors.white,
-                    size: 25,
+            child: Form(
+              key: _formKey,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Icon(
+                      Icons.arrow_back_sharp,
+                      color: Colors.white,
+                      size: 25,
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const StyledText(
-                  "Let's get things set up  ✍️",
-                  30,
-                  fontWeight: FontWeight.bold,
-                ),
-                const StyledText(
-                  "Fill in the details of the new soldier you wish to add",
-                  14,
-                  fontWeight: FontWeight.w300,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                //Name of soldier textfield
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.black54,
-                    border: Border.all(color: Colors.white),
-                    borderRadius: BorderRadius.circular(12),
+                  const SizedBox(
+                    height: 20,
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: TextField(
-                      style: GoogleFonts.poppins(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      controller: widget.name,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        labelText: 'Enter Name (as in NRIC):',
-                        labelStyle: GoogleFonts.poppins(
+                  const StyledText(
+                    "Let's get things set up  ✍️",
+                    30,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  const StyledText(
+                    "Fill in the details of the new soldier you wish to add",
+                    14,
+                    fontWeight: FontWeight.w300,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  //Name of soldier textfield
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black54,
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value == '') {
+                            return 'Must have a name right';
+                          } else if (_isNumeric(value!)) {
+                            return 'Name got number meh';
+                          } else if (value.length < 5) {
+                            return 'Brother, enter full name leh';
+                          } else {
+                            return null;
+                          }
+                        },
+                        style: GoogleFonts.poppins(
                           color: Colors.white,
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                         ),
+                        controller: widget.name,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          labelText: 'Enter Name (as in NRIC):',
+                          labelStyle: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    //Date of birth date picker
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.black54,
-                        border: Border.all(color: Colors.white),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 15),
-                        child: Text(
-                          widget.dob,
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: 16),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      //Date of birth date picker
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.black54,
+                          border: Border.all(color: Colors.white),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 15),
+                          child: Text(
+                            widget.dob,
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 16),
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: InkWell(
-                        onTap: () {
-                          _showDatePicker();
-                        },
-                        child: const Icon(
-                          Icons.date_range_rounded,
-                          color: Colors.white,
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: () {
+                            _showDatePicker();
+                          },
+                          child: const Icon(
+                            Icons.date_range_rounded,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                    ),
 
-                    //Ration type dropdown menu
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
-                      child: Container(
-                        width: 205,
+                      //Ration type dropdown menu
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: Container(
+                          width: 205,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Colors.black54,
+                            border: Border.all(color: Colors.white),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: DropdownButtonFormField<String>(
+                            alignment: Alignment.center,
+                            dropdownColor: Colors.black54,
+                            value: widget.selectedItem,
+                            icon: const Icon(
+                              Icons.arrow_downward_sharp,
+                              color: Colors.white,
+                            ),
+                            style: const TextStyle(color: Colors.black54),
+                            items: _rationTypes
+                                .map(
+                                  (item) => DropdownMenuItem<String>(
+                                    value: item,
+                                    child: AutoSizeText(
+                                      item,
+                                      maxLines: 1,
+                                      style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                            onChanged: (item) => setState(() {
+                              widget.selectedItem = item;
+                              //addUserDetails();
+                            }),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    children: [
+                      //Rank dropdown menu
+                      Container(
+                        width: 160,
                         height: 50,
                         decoration: BoxDecoration(
                           color: Colors.black54,
@@ -292,13 +360,13 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                         child: DropdownButtonFormField<String>(
                           alignment: Alignment.center,
                           dropdownColor: Colors.black54,
-                          value: widget.selectedItem,
+                          value: widget.selectedRank,
                           icon: const Icon(
                             Icons.arrow_downward_sharp,
                             color: Colors.white,
                           ),
                           style: const TextStyle(color: Colors.black54),
-                          items: _rationTypes
+                          items: _ranks
                               .map(
                                 (item) => DropdownMenuItem<String>(
                                   value: item,
@@ -313,346 +381,350 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                                 ),
                               )
                               .toList(),
-                          onChanged: (item) => setState(() {
-                            widget.selectedItem = item;
+                          onChanged: (String? item) async => setState(() {
+                            widget.selectedRank = item;
                             //addUserDetails();
                           }),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  children: [
-                    //Rank dropdown menu
-                    Container(
-                      width: 160,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.black54,
-                        border: Border.all(color: Colors.white),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: DropdownButtonFormField<String>(
-                        alignment: Alignment.center,
-                        dropdownColor: Colors.black54,
-                        value: widget.selectedRank,
-                        icon: const Icon(
-                          Icons.arrow_downward_sharp,
-                          color: Colors.white,
-                        ),
-                        style: const TextStyle(color: Colors.black54),
-                        items: _ranks
-                            .map(
-                              (item) => DropdownMenuItem<String>(
-                                value: item,
-                                child: AutoSizeText(
-                                  item,
-                                  maxLines: 1,
-                                  style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.white),
-                                ),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (String? item) async => setState(() {
-                          widget.selectedRank = item;
-                          //addUserDetails();
-                        }),
-                      ),
-                    ),
 
-                    //Blood type dropdown menu
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: Container(
-                        width: 205,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: Colors.black54,
-                          border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: DropdownButtonFormField<String>(
-                          dropdownColor: Colors.black54,
-                          alignment: Alignment.center,
-                          value: widget.selectedBloodType,
-                          icon: const Icon(
-                            Icons.water_drop_sharp,
-                            color: Colors.red,
+                      //Blood type dropdown menu
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20.0),
+                        child: Container(
+                          width: 205,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Colors.black54,
+                            border: Border.all(color: Colors.white),
+                            borderRadius: BorderRadius.circular(12),
                           ),
-                          style: const TextStyle(color: Colors.black54),
-                          items: _bloodTypes
-                              .map(
-                                (item) => DropdownMenuItem<String>(
-                                  value: item,
-                                  child: AutoSizeText(
-                                    item,
-                                    maxLines: 1,
-                                    style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.white),
+                          child: DropdownButtonFormField<String>(
+                            dropdownColor: Colors.black54,
+                            alignment: Alignment.center,
+                            value: widget.selectedBloodType,
+                            icon: const Icon(
+                              Icons.water_drop_sharp,
+                              color: Colors.red,
+                            ),
+                            style: const TextStyle(color: Colors.black54),
+                            items: _bloodTypes
+                                .map(
+                                  (item) => DropdownMenuItem<String>(
+                                    value: item,
+                                    child: AutoSizeText(
+                                      item,
+                                      maxLines: 1,
+                                      style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.white),
+                                    ),
                                   ),
-                                ),
-                              )
-                              .toList(),
-                          onChanged: (item) async => setState(() {
-                            widget.selectedBloodType = item;
-                            //addUserDetails();
-                          }),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-
-                //Company textfield
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.black54,
-                    border: Border.all(color: Colors.white),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: TextField(
-                      controller: widget.company,
-                      style: GoogleFonts.poppins(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        labelText: 'Company:',
-                        labelStyle: GoogleFonts.poppins(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-
-                //Platoon textfield
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.black54,
-                    border: Border.all(color: Colors.white),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: TextField(
-                      controller: widget.platoon,
-                      style: GoogleFonts.poppins(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        labelText: 'Platoon:',
-                        labelStyle: GoogleFonts.poppins(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-
-                //Section textfield
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.black54,
-                    border: Border.all(color: Colors.white),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: TextField(
-                      controller: widget.section,
-                      style: GoogleFonts.poppins(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        labelText: 'Section:',
-                        labelStyle: GoogleFonts.poppins(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-
-                //Soldier Appointment text field
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.black54,
-                    border: Border.all(color: Colors.white),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: TextField(
-                      controller: widget.appointment,
-                      style: GoogleFonts.poppins(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        labelText: 'Appointment (in unit):',
-                        labelStyle: GoogleFonts.poppins(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(
-                  height: 20,
-                ),
-
-                //Enlistment Date picker
-                Row(
-                  children: [
-                    SizedBox(
-                      width: 150,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.black54,
-                          border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 15),
-                          child: Text(
-                            widget.enlistment,
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 16),
+                                )
+                                .toList(),
+                            onChanged: (item) async => setState(() {
+                              widget.selectedBloodType = item;
+                              //addUserDetails();
+                            }),
                           ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: InkWell(
-                        onTap: () {
-                          _enlistmentDatePicker();
-                        },
-                        child: const Icon(
-                          Icons.date_range_rounded,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    //ORD picker
-                    SizedBox(
-                      width: 150,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.black54,
-                          border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 15),
-                          child: Text(
-                            widget.ord,
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 16),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: InkWell(
-                        onTap: () {
-                          _ordDatePicker();
-                        },
-                        child: const Icon(
-                          Icons.date_range_rounded,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
 
-                const SizedBox(
-                  height: 30,
-                ),
-
-                GestureDetector(
-                  onTap: addUserDetails,
-                  child: Container(
-                    padding: const EdgeInsets.all(10),
+                  //Company textfield
+                  Container(
                     decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.deepPurple.shade400,
-                          Colors.deepPurple.shade700,
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      //color: Colors.deepPurple,
+                      color: Colors.black54,
+                      border: Border.all(color: Colors.white),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.group_add_rounded,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value == '') {
+                            return 'Company Name Missing';
+                          }
+                          return null;
+                        },
+                        controller: widget.company,
+                        style: GoogleFonts.poppins(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          labelText: 'Company:',
+                          labelStyle: GoogleFonts.poppins(
                             color: Colors.white,
-                            size: 30,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
                           ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          AutoSizeText(
-                            'ADD NEW SOLDIER',
-                            style: GoogleFonts.poppins(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 22,
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 20),
+
+                  //Platoon textfield
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black54,
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value == '') {
+                            return 'Platoon Information Missing';
+                          }
+                          return null;
+                        },
+                        controller: widget.platoon,
+                        style: GoogleFonts.poppins(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          labelText: 'Platoon:',
+                          labelStyle: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  //Section textfield
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black54,
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value == '') {
+                            return 'Section Information Missing';
+                          }
+                          return null;
+                        },
+                        controller: widget.section,
+                        style: GoogleFonts.poppins(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          labelText: 'Section:',
+                          labelStyle: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  //Soldier Appointment text field
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black54,
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value == '') {
+                            return 'Appointment Missing';
+                          }
+                          return null;
+                        },
+                        controller: widget.appointment,
+                        style: GoogleFonts.poppins(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          labelText: 'Appointment (in unit):',
+                          labelStyle: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(
+                    height: 20,
+                  ),
+
+                  //Enlistment Date picker
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 150,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.black54,
+                            border: Border.all(color: Colors.white),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 15),
+                            child: Text(
+                              widget.enlistment,
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 16),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: () {
+                            _enlistmentDatePicker();
+                          },
+                          child: const Icon(
+                            Icons.date_range_rounded,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      //ORD picker
+                      SizedBox(
+                        width: 150,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.black54,
+                            border: Border.all(color: Colors.white),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 15),
+                            child: Text(
+                              widget.ord,
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 16),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: () {
+                            _ordDatePicker();
+                          },
+                          child: const Icon(
+                            Icons.date_range_rounded,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(
+                    height: 30,
+                  ),
+
+                  GestureDetector(
+                    onTap: () {
+                      if (_formKey.currentState!.validate()) {
+                        if (widget.selectedRank != 'Select your rank...' &&
+                            widget.selectedBloodType != 'Select your blood type...' &&
+                            widget.selectedItem != '') {
+                          IconSnackBar.show(
+                              duration: Duration(seconds: 2),
+                              direction: DismissDirection.horizontal,
+                              context: context,
+                              snackBarType: SnackBarType.save,
+                              label: 'Soldier tile created',
+                              snackBarStyle: const SnackBarStyle(
+                                  showIconFirst: true) // this one
+                              );
+                          addUserDetails();
+                        }
+                      } else {
+                        IconSnackBar.show(
+                            direction: DismissDirection.horizontal,
+                            context: context,
+                            snackBarType: SnackBarType.alert,
+                            label: 'Details missing',
+                            snackBarStyle: const SnackBarStyle(
+                                showIconFirst: true) // this one
+                            );
+                      }
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.deepPurple.shade400,
+                            Colors.deepPurple.shade700,
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        //color: Colors.deepPurple,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.group_add_rounded,
+                              color: Colors.white,
+                              size: 30,
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            AutoSizeText(
+                              'ADD NEW SOLDIER',
+                              style: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 22,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
