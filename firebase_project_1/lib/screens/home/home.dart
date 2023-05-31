@@ -1,11 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_project_1/screens/home/edit_user.dart';
-import 'package:firebase_project_1/screens/home/read_items/read_custom_user_id.dart';
 import 'package:firebase_project_1/screens/home/update_profile.dart';
 import 'package:firebase_project_1/user_model/user_profile_page.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_project_1/screens/home/read_items/read_user_rank.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -15,6 +13,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  late Stream<QuerySnapshot> documentStream;
+
   final user = FirebaseAuth.instance.currentUser!;
 
   // The list of all document IDs,
@@ -27,55 +27,26 @@ class _HomeState extends State<Home> {
   List<List> soldierTiles = [];
   // DocumentReference<Map<String, dynamic>>(Users/8bu245T440NIuQnJhm81)
   // This is the sample output, to get IDs we just do .id
-/*
-  Future getDocIDs() async {
-    await FirebaseFirestore.instance
-        .collection('Users')
-        //.orderBy('rank', descending: false)
-        .get()
-        .then((snapshot) => {
-              snapshot.docs.forEach((document) {
-                //print(document.reference.id);
-                documentIDs.add(document.reference.id);
-                //userDetails.add(document.data());
-                //print(document.data());
-              })
-            });
-    documentIDs.sort();
-    updated_documentIDs = documentIDs;
-    setState(() {});
-  }
+  List<Map<String, dynamic>> userDetails = [];
+
+  String searchText = '';
 
   @override
   void initState() {
-    getDocIDs();
+    documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
     super.initState();
   }
-  
 
   void dispay() {
-    print(documentIDs);
-  }
-
-  void reset() {
-    Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (BuildContext context) => super.widget));
-  }
-*/
-  void updateList(String value) {
-    // This will be used to make the new list with searched word
-    setState(() {
-      updated_documentIDs = documentIDs
-          .where(
-              (element) => element.toLowerCase().contains(value.toLowerCase()))
-          .toList();
-    });
+    print(userDetails);
+    print(documentIDs.length);
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: Colors.deepPurple,
           title: Center(
@@ -124,7 +95,11 @@ class _HomeState extends State<Home> {
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: TextField(
-                  onChanged: (value) => updateList(value),
+                  onChanged: (value) {
+                    setState(() {
+                      searchText = value;
+                    });
+                  },
                   decoration: InputDecoration(
                     hintText: 'Search Name',
                     prefixIcon: const Icon(Icons.search_sharp),
@@ -139,28 +114,55 @@ class _HomeState extends State<Home> {
               ),
 
               StreamBuilder<QuerySnapshot>(
-                stream:
-                    FirebaseFirestore.instance.collection('Users').snapshots(),
+                stream: documentStream,
                 builder: (context, snapshot) {
-                  List<String> listOfUsers = [];
-                  // Test data to store rank
-                  List<Map<String, dynamic>> userDetails = [];
-
                   if (snapshot.hasData) {
-                    final users = snapshot.data?.docs.toList();
+                    documentIDs = [];
+                    userDetails = [];
+                    var users = snapshot.data?.docs.toList();
                     var docsmapshot = snapshot.data!;
-                    for (var i = 0; i < users!.length; i++) {
-                      listOfUsers.add(users[i].reference.id);
-                      var data =
-                          docsmapshot.docs[i].data() as Map<String, dynamic>;
-                      userDetails.add(data);
+                    if (searchText.isNotEmpty) {
+                      users = users!.where((element) {
+                        return element.reference.id
+                            //.get('Title')
+                            .toString()
+                            .toLowerCase()
+                            .contains(searchText.toLowerCase());
+                      }).toList();
+                      for (var i = 0; i < users.length; i++) {
+                        documentIDs.add(users[i].reference.id);
+                        var data =
+                            docsmapshot.docs[i].data() as Map<String, dynamic>;
+                        userDetails.add(data);
+                        userDetails[i]
+                            .addEntries({'name': documentIDs[i]}.entries);
+                      }
+                      if (userDetails.isEmpty) {
+                        return const Text(
+                          'No results Found!',
+                          style: TextStyle(
+                            color: Colors.indigoAccent,
+                            fontSize: 45,
+                          ),
+                        );
+                      }
+                    } else {
+                      for (var i = 0; i < users!.length; i++) {
+                        documentIDs.add(users[i].reference.id);
+                        var data =
+                            docsmapshot.docs[i].data() as Map<String, dynamic>;
+                        userDetails.add(data);
+                        userDetails[i]
+                            .addEntries({'name': documentIDs[i]}.entries);
+                      }
+                      updated_documentIDs = documentIDs;
                     }
                   }
                   return Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: ListView.builder(
-                        itemCount: listOfUsers.length,
+                        itemCount: userDetails.length,
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -182,7 +184,7 @@ class _HomeState extends State<Home> {
                                     color: Colors.indigo,
                                   ),
                                 ),
-                                title: Text(listOfUsers[index]),
+                                title: Text(userDetails[index]['name']),
                                 subtitle: Text(userDetails[index]['rank']),
                                 tileColor: Colors.indigo.shade300,
                               ),
@@ -197,60 +199,11 @@ class _HomeState extends State<Home> {
 
               // This has a FutureBuilder as it needs
               // to wait for executiion of getDocIDs function to finish execution
-              /*
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: ListView.builder(
-                    itemCount: updated_documentIDs.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const EditUserDetails(),
-                              ),
-                            );
-                          },
-                          child: ListTile(
-                            shape: BeveledRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              side: const BorderSide(
-                                width: 2,
-                                color: Colors.indigo,
-                              ),
-                            ),
-                            title:
-                                ReadUserName(docIDs: updated_documentIDs[index]),
-                            subtitle:
-                                ReadUserRank(docIDs: updated_documentIDs[index]),
-                            tileColor: Colors.indigo.shade300,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
-              
-    
-              ElevatedButton(
-                onPressed: reset,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.purple,
-                ),
-                child: const Text('Refresh'),
-              ),
-              */
             ],
           ),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            //dispay();
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => UpdateProfile()));
           },
