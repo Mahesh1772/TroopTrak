@@ -28,7 +28,7 @@ class _HomeState extends State<Home> {
   // DocumentReference<Map<String, dynamic>>(Users/8bu245T440NIuQnJhm81)
   // This is the sample output, to get IDs we just do .id
   List<Map<String, dynamic>> userDetails = [];
-  
+
   String searchText = '';
 
   @override
@@ -40,21 +40,6 @@ class _HomeState extends State<Home> {
   void dispay() {
     print(userDetails);
     print(documentIDs.length);
-  }
-
-  void reset() {
-    Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (BuildContext context) => super.widget));
-  }
-
-  void updateList(String value) {
-    // This will be used to make the new list with searched word
-    setState(() {
-      updated_documentIDs = documentIDs
-          .where(
-              (element) => element.toLowerCase().contains(value.toLowerCase()))
-          .toList();
-    });
   }
 
   @override
@@ -144,13 +129,22 @@ class _HomeState extends State<Home> {
                             .toLowerCase()
                             .contains(searchText.toLowerCase());
                       }).toList();
-                      for (var i = 0; i < users!.length; i++) {
+                      for (var i = 0; i < users.length; i++) {
                         documentIDs.add(users[i].reference.id);
                         var data =
                             docsmapshot.docs[i].data() as Map<String, dynamic>;
                         userDetails.add(data);
                         userDetails[i]
                             .addEntries({'name': documentIDs[i]}.entries);
+                      }
+                      if (userDetails.isEmpty) {
+                        return const Text(
+                          'No results Found!',
+                          style: TextStyle(
+                            color: Colors.indigoAccent,
+                            fontSize: 45,
+                          ),
+                        );
                       }
                     } else {
                       for (var i = 0; i < users!.length; i++) {
