@@ -120,7 +120,7 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
                                   ),
                                 ),
                                 Image.asset(
-                                  widget.soldierRank,
+                                  "lib/assets/army-ranks/${widget.soldierRank.toString().toLowerCase()}.png",
                                   width: 60.w,
                                   color: Colors.white,
                                 )
@@ -200,12 +200,12 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
                   height: 700.h,
                   child: TabBarView(
                     controller: tabController,
-                    children: const [
+                    children: [
                       //Basic Info tab
-                      BasicInfoTab(),
+                      BasicInfoTab(docID: widget.soldierName),
 
                       //Statuses tab
-                      StatusesTab(),
+                      const StatusesTab(),
                     ],
                   ),
                 )

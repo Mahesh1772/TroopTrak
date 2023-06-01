@@ -112,7 +112,9 @@ class SoldierTile extends StatelessWidget {
                     offset: Offset(10.w, 10.h),
                     color: Colors.black54)
               ],
-              color: soldierColorGenerator(soldierRank),
+              color: soldierColorGenerator(
+                "lib/assets/army-ranks/${soldierRank.toString().toLowerCase()}.png",
+              ),
               borderRadius: BorderRadius.circular(12.r)),
           child: Column(
             children: [
@@ -131,7 +133,7 @@ class SoldierTile extends StatelessWidget {
                           bottomLeft: Radius.circular(12.r)),
                     ),
                     child: Image.asset(
-                      soldierRank,
+                      "lib/assets/army-ranks/${soldierRank.toString().toLowerCase()}.png",
                     ),
                   ),
                 ],
@@ -142,7 +144,8 @@ class SoldierTile extends StatelessWidget {
                 padding:
                     EdgeInsets.symmetric(horizontal: 24.0.w, vertical: 12.0.h),
                 child: Image.asset(
-                  soldierIconGenerator(soldierRank),
+                  soldierIconGenerator(
+                      "lib/assets/army-ranks/${soldierRank.toString().toLowerCase()}.png"),
                   width: 90.w,
                 ),
               ),
