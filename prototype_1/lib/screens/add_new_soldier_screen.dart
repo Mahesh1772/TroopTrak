@@ -312,6 +312,12 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                             borderRadius: BorderRadius.circular(12.r),
                           ),
                           child: DropdownButtonFormField<String>(
+                            validator: (value) {
+                              if (value == "Select your ration type...") {
+                                return 'Walao what food you eat?';
+                              }
+                              return null;
+                            },
                             alignment: Alignment.center,
                             dropdownColor: Colors.black54,
                             value: widget.selectedItem,
@@ -359,6 +365,12 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                           borderRadius: BorderRadius.circular(12.r),
                         ),
                         child: DropdownButtonFormField<String>(
+                          validator: (value) {
+                            if (value == "Select your rank...") {
+                              return 'Walao provide rank liao';
+                            }
+                            return null;
+                          },
                           alignment: Alignment.center,
                           dropdownColor: Colors.black54,
                           value: widget.selectedRank,
@@ -401,6 +413,12 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                             borderRadius: BorderRadius.circular(12.r),
                           ),
                           child: DropdownButtonFormField<String>(
+                            validator: (value) {
+                              if (value == "Select your blood type...") {
+                                return 'Why your blood field empty ah?';
+                              }
+                              return null;
+                            },
                             dropdownColor: Colors.black54,
                             alignment: Alignment.center,
                             value: widget.selectedBloodType,
@@ -659,22 +677,29 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
 
                   GestureDetector(
                     onTap: () {
+                      //print(widget.selectedItem);
                       if (_formKey.currentState!.validate()) {
-                        if (widget.selectedRank != 'Select your rank...' &&
-                            widget.selectedBloodType !=
-                                'Select your blood type...' &&
-                            widget.selectedItem != '') {
-                          IconSnackBar.show(
-                              duration: Duration(seconds: 2),
-                              direction: DismissDirection.horizontal,
-                              context: context,
-                              snackBarType: SnackBarType.save,
-                              label: 'Soldier tile created',
-                              snackBarStyle: const SnackBarStyle(
-                                  showIconFirst: true) // this one
-                              );
-                          addUserDetails();
-                        }
+                        IconSnackBar.show(
+                            duration: Duration(seconds: 2),
+                            direction: DismissDirection.horizontal,
+                            context: context,
+                            snackBarType: SnackBarType.save,
+                            label: 'Soldier tile created',
+                            snackBarStyle: const SnackBarStyle(
+                                showIconFirst: true) // this one
+                            );
+                        addUserDetails();
+                      } else if (widget.selectedItem == "Select your ration type..." ||
+                          widget.selectedBloodType == "Select your blood type..." ||
+                          widget.selectedRank == "Select your rank...") {
+                        IconSnackBar.show(
+                            direction: DismissDirection.horizontal,
+                            context: context,
+                            snackBarType: SnackBarType.alert,
+                            label: 'Dropdown values missing',
+                            snackBarStyle: const SnackBarStyle(
+                                showIconFirst: true) // this one
+                            );
                       } else {
                         IconSnackBar.show(
                             direction: DismissDirection.horizontal,
