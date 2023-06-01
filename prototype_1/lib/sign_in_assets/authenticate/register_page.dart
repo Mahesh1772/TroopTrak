@@ -402,6 +402,12 @@ class _RegisterPageState extends State<RegisterPage> {
                               borderRadius: BorderRadius.circular(12.r),
                             ),
                             child: DropdownButtonFormField<String>(
+                              validator: (value) {
+                                if (value == "Select your ration type...") {
+                                  return 'Walao what food you eat?';
+                                }
+                                return null;
+                              },
                               alignment: Alignment.center,
                               dropdownColor: Colors.black54,
                               value: selectedItem,
@@ -447,6 +453,12 @@ class _RegisterPageState extends State<RegisterPage> {
                             borderRadius: BorderRadius.circular(12.r),
                           ),
                           child: DropdownButtonFormField<String>(
+                            validator: (value) {
+                              if (value == "Select your rank...") {
+                                return 'Walao provide rank liao';
+                              }
+                              return null;
+                            },
                             alignment: Alignment.center,
                             dropdownColor: Colors.black54,
                             value: selectedRank,
@@ -488,6 +500,12 @@ class _RegisterPageState extends State<RegisterPage> {
                               borderRadius: BorderRadius.circular(12.r),
                             ),
                             child: DropdownButtonFormField<String>(
+                              validator: (value) {
+                                if (value == "Select your blood type...") {
+                                  return 'Why your blood field empty ah?';
+                                }
+                                return null;
+                              },
                               dropdownColor: Colors.black54,
                               alignment: Alignment.center,
                               value: selectedBloodType,

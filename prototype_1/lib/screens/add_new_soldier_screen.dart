@@ -689,17 +689,6 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                                 showIconFirst: true) // this one
                             );
                         addUserDetails();
-                      } else if (widget.selectedItem == "Select your ration type..." ||
-                          widget.selectedBloodType == "Select your blood type..." ||
-                          widget.selectedRank == "Select your rank...") {
-                        IconSnackBar.show(
-                            direction: DismissDirection.horizontal,
-                            context: context,
-                            snackBarType: SnackBarType.alert,
-                            label: 'Dropdown values missing',
-                            snackBarStyle: const SnackBarStyle(
-                                showIconFirst: true) // this one
-                            );
                       } else {
                         IconSnackBar.show(
                             direction: DismissDirection.horizontal,
