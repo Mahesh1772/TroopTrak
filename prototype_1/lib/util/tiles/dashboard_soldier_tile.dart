@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/screens/soldier_detailed_screen.dart';
 import 'dart:math' as math;
@@ -42,7 +43,7 @@ class DashboardSoldierTile extends StatelessWidget {
 
     int index = math.Random().nextInt(4);
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: EdgeInsets.all(12.0.sp),
       child: InkWell(
         onTap: () {
           Navigator.push(
@@ -64,15 +65,15 @@ class DashboardSoldierTile extends StatelessWidget {
           );
         },
         child: Container(
-          width: 200,
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(boxShadow: const [
+          width: 200.w,
+          padding: EdgeInsets.all(12.sp),
+          decoration: BoxDecoration(boxShadow: [
             BoxShadow(
-                blurRadius: 2.0,
-                spreadRadius: 2.0,
-                offset: Offset(10, 10),
+                blurRadius: 2.0.r,
+                spreadRadius: 2.0.r,
+                offset: Offset(10.w, 10.h),
                 color: Colors.black54)
-          ], color: colors[index], borderRadius: BorderRadius.circular(12)),
+          ], color: colors[index], borderRadius: BorderRadius.circular(12.r)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -82,20 +83,20 @@ class DashboardSoldierTile extends StatelessWidget {
                   //soldier icon
                   Image.asset(
                     "lib/assets/army-ranks/soldier.png",
-                    width: 60,
+                    width: 60.w,
                   ),
 
                   //rank insignia
                   Image.asset(
                     soldierRank,
-                    width: 30,
+                    width: 30.w,
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 10,
+              SizedBox(
+                height: 10.h,
               ),
-              StyledText(soldierName, 20, fontWeight: FontWeight.bold)
+              StyledText(soldierName, 20.sp, fontWeight: FontWeight.bold)
             ],
           ),
         ),

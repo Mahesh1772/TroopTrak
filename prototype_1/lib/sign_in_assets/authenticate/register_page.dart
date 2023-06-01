@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:email_validator/email_validator.dart';
@@ -251,43 +252,43 @@ class _RegisterPageState extends State<RegisterPage> {
               key: _formKey,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                padding: EdgeInsets.symmetric(horizontal: 25.0.w),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(
-                      height: 20,
+                    SizedBox(
+                      height: 20.h,
                     ),
-          
+
                     //welcome text
                     Text(
                       'Sign Up!',
                       style: GoogleFonts.poppins(
-                        fontSize: 30,
+                        fontSize: 30.sp,
                         fontWeight: FontWeight.w600,
                         color: Colors.purple.shade300,
                       ),
                     ),
-                    const SizedBox(height: 5),
+                    SizedBox(height: 5.h),
                     Text(
                       'Make your life easier, Register',
                       style: GoogleFonts.poppins(
-                        fontSize: 20,
+                        fontSize: 20.sp,
                         fontWeight: FontWeight.w500,
                         color: Colors.purple.shade400,
                       ),
                     ),
-                    const SizedBox(height: 30),
-          
+                    SizedBox(height: 30.h),
+
                     // name
                     Container(
                       decoration: BoxDecoration(
                         color: Colors.black54,
                         border: Border.all(color: Colors.white),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 20),
+                        padding: EdgeInsets.only(left: 20.w),
                         child: TextFormField(
                           validator: (value) {
                             if (value == '') {
@@ -301,7 +302,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           keyboardType: TextInputType.name,
                           style: GoogleFonts.poppins(
                             color: Colors.white,
-                            fontSize: 16,
+                            fontSize: 16.sp,
                             fontWeight: FontWeight.w500,
                           ),
                           controller: _name,
@@ -310,24 +311,24 @@ class _RegisterPageState extends State<RegisterPage> {
                             labelText: 'Enter Name (as in NRIC):',
                             labelStyle: GoogleFonts.poppins(
                               color: Colors.white,
-                              fontSize: 16,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
-          
+                    SizedBox(height: 10.h),
+
                     // Appointment
                     Container(
                       decoration: BoxDecoration(
                         color: Colors.black54,
                         border: Border.all(color: Colors.white),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 20),
+                        padding: EdgeInsets.only(left: 20.w),
                         child: TextFormField(
                           validator: (value) {
                             if (value == '') {
@@ -338,7 +339,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           controller: _appointment,
                           style: GoogleFonts.poppins(
                             color: Colors.white,
-                            fontSize: 16,
+                            fontSize: 16.sp,
                             fontWeight: FontWeight.w500,
                           ),
                           decoration: InputDecoration(
@@ -346,15 +347,15 @@ class _RegisterPageState extends State<RegisterPage> {
                             labelText: 'Appointment (in unit):',
                             labelStyle: GoogleFonts.poppins(
                               color: Colors.white,
-                              fontSize: 16,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
-          
+                    SizedBox(height: 10.h),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -363,20 +364,20 @@ class _RegisterPageState extends State<RegisterPage> {
                           decoration: BoxDecoration(
                             color: Colors.black54,
                             border: Border.all(color: Colors.white),
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(12.r),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 15),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 15.w, vertical: 15.h),
                             child: Text(
                               dob,
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 16),
+                              style: GoogleFonts.poppins(
+                                  color: Colors.white, fontSize: 16.sp),
                             ),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: EdgeInsets.all(8.0.sp),
                           child: InkWell(
                             onTap: () {
                               _showDatePicker();
@@ -387,17 +388,17 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                           ),
                         ),
-          
+
                         //Ration type dropdown menu
                         Padding(
-                          padding: const EdgeInsets.only(left: 10.0),
+                          padding: EdgeInsets.only(left: 10.0.w),
                           child: Container(
-                            width: 182,
-                            height: 50,
+                            width: 230.w,
+                            height: 55.h,
                             decoration: BoxDecoration(
                               color: Colors.black54,
                               border: Border.all(color: Colors.white),
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(12.r),
                             ),
                             child: DropdownButtonFormField<String>(
                               alignment: Alignment.center,
@@ -415,8 +416,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                       child: AutoSizeText(
                                         item,
                                         maxLines: 1,
-                                        style: const TextStyle(
-                                            fontSize: 16,
+                                        style: GoogleFonts.poppins(
+                                            fontSize: 16.sp,
                                             fontWeight: FontWeight.w400,
                                             color: Colors.white),
                                       ),
@@ -431,18 +432,18 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10),
-          
+                    SizedBox(height: 10.h),
+
                     Row(
                       children: [
                         //Rank dropdown menu
                         Container(
-                          width: 160,
-                          height: 50,
+                          width: 170.w,
+                          height: 55.h,
                           decoration: BoxDecoration(
                             color: Colors.black54,
                             border: Border.all(color: Colors.white),
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(12.r),
                           ),
                           child: DropdownButtonFormField<String>(
                             alignment: Alignment.center,
@@ -460,8 +461,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                     child: AutoSizeText(
                                       item,
                                       maxLines: 1,
-                                      style: const TextStyle(
-                                          fontSize: 16,
+                                      style: GoogleFonts.poppins(
+                                          fontSize: 16.sp,
                                           fontWeight: FontWeight.w400,
                                           color: Colors.white),
                                     ),
@@ -473,17 +474,17 @@ class _RegisterPageState extends State<RegisterPage> {
                             }),
                           ),
                         ),
-          
+
                         //Blood type dropdown menu
                         Padding(
-                          padding: const EdgeInsets.only(left: 20.0),
+                          padding: EdgeInsets.only(left: 20.0.w),
                           child: Container(
-                            width: 180,
-                            height: 50,
+                            width: 200.w,
+                            height: 55.h,
                             decoration: BoxDecoration(
                               color: Colors.black54,
                               border: Border.all(color: Colors.white),
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(12.r),
                             ),
                             child: DropdownButtonFormField<String>(
                               dropdownColor: Colors.black54,
@@ -501,8 +502,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                       child: AutoSizeText(
                                         item,
                                         maxLines: 1,
-                                        style: const TextStyle(
-                                            fontSize: 16,
+                                        style: GoogleFonts.poppins(
+                                            fontSize: 16.sp,
                                             fontWeight: FontWeight.w400,
                                             color: Colors.white),
                                       ),
@@ -517,18 +518,18 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ],
                     ),
-          
-                    const SizedBox(height: 10),
-          
+
+                    SizedBox(height: 10.h),
+
                     //Company textfield
                     Container(
                       decoration: BoxDecoration(
                         color: Colors.black54,
                         border: Border.all(color: Colors.white),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 20),
+                        padding: EdgeInsets.only(left: 20.w),
                         child: TextFormField(
                           validator: (value) {
                             if (value == '') {
@@ -539,7 +540,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           controller: _company,
                           style: GoogleFonts.poppins(
                             color: Colors.white,
-                            fontSize: 16,
+                            fontSize: 16.sp,
                             fontWeight: FontWeight.w500,
                           ),
                           decoration: InputDecoration(
@@ -547,24 +548,24 @@ class _RegisterPageState extends State<RegisterPage> {
                             labelText: 'Company:',
                             labelStyle: GoogleFonts.poppins(
                               color: Colors.white,
-                              fontSize: 16,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
-          
+                    SizedBox(height: 10.h),
+
                     //Platoon textfield
                     Container(
                       decoration: BoxDecoration(
                         color: Colors.black54,
                         border: Border.all(color: Colors.white),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 20),
+                        padding: EdgeInsets.only(left: 20.w),
                         child: TextFormField(
                           validator: (value) {
                             if (value == '') {
@@ -575,7 +576,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           controller: _platoon,
                           style: GoogleFonts.poppins(
                             color: Colors.white,
-                            fontSize: 16,
+                            fontSize: 16.sp,
                             fontWeight: FontWeight.w500,
                           ),
                           decoration: InputDecoration(
@@ -583,24 +584,24 @@ class _RegisterPageState extends State<RegisterPage> {
                             labelText: 'Platoon:',
                             labelStyle: GoogleFonts.poppins(
                               color: Colors.white,
-                              fontSize: 16,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
-          
+                    SizedBox(height: 10.h),
+
                     //Section textfield
                     Container(
                       decoration: BoxDecoration(
                         color: Colors.black54,
                         border: Border.all(color: Colors.white),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 20),
+                        padding: EdgeInsets.only(left: 20.w),
                         child: TextFormField(
                           validator: (value) {
                             if (value == '') {
@@ -611,7 +612,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           controller: _section,
                           style: GoogleFonts.poppins(
                             color: Colors.white,
-                            fontSize: 16,
+                            fontSize: 16.sp,
                             fontWeight: FontWeight.w500,
                           ),
                           decoration: InputDecoration(
@@ -619,39 +620,39 @@ class _RegisterPageState extends State<RegisterPage> {
                             labelText: 'Section/Detail:',
                             labelStyle: GoogleFonts.poppins(
                               color: Colors.white,
-                              fontSize: 16,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
-          
+                    SizedBox(height: 10.h),
+
                     //Enlistment Date picker
                     Row(
                       children: [
                         SizedBox(
-                          width: 150,
+                          width: 150.w,
                           child: Container(
                             decoration: BoxDecoration(
                               color: Colors.black54,
                               border: Border.all(color: Colors.white),
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(12.r),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 15),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 15.w, vertical: 15.h),
                               child: Text(
                                 enlistment,
-                                style: const TextStyle(
-                                    color: Colors.white, fontSize: 16),
+                                style: GoogleFonts.poppins(
+                                    color: Colors.white, fontSize: 16.sp),
                               ),
                             ),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: EdgeInsets.all(8.0.sp),
                           child: InkWell(
                             onTap: () {
                               _enlistmentDatePicker();
@@ -664,26 +665,26 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                         //ORD picker
                         SizedBox(
-                          width: 130,
+                          width: 130.w,
                           child: Container(
                             decoration: BoxDecoration(
                               color: Colors.black54,
                               border: Border.all(color: Colors.white),
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(12.r),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 15),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 15.w, vertical: 15.h),
                               child: Text(
                                 ord,
-                                style: const TextStyle(
-                                    color: Colors.white, fontSize: 16),
+                                style: GoogleFonts.poppins(
+                                    color: Colors.white, fontSize: 16.sp),
                               ),
                             ),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: EdgeInsets.all(8.0.sp),
                           child: InkWell(
                             onTap: () {
                               _ordDatePicker();
@@ -696,18 +697,18 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ],
                     ),
-          
-                    const SizedBox(height: 10),
-          
+
+                    SizedBox(height: 10.h),
+
                     // email
                     Container(
                       decoration: BoxDecoration(
                         color: Colors.black54,
                         border: Border.all(color: Colors.white),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 20),
+                        padding: EdgeInsets.only(left: 20.w),
                         child: TextFormField(
                           validator: (value) {
                             if (_isvalidaEmail(value!) == false) {
@@ -720,7 +721,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           controller: _emailId,
                           style: GoogleFonts.poppins(
                             color: Colors.white,
-                            fontSize: 16,
+                            fontSize: 16.sp,
                             fontWeight: FontWeight.w500,
                           ),
                           decoration: InputDecoration(
@@ -728,32 +729,31 @@ class _RegisterPageState extends State<RegisterPage> {
                             labelText: 'Email: (example - Email@example.com)',
                             labelStyle: GoogleFonts.poppins(
                               color: Colors.white,
-                              fontSize: 16,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
-          
+                    SizedBox(height: 10.h),
+
                     //Password
                     Container(
                       decoration: BoxDecoration(
                         color: Colors.black54,
                         border: Border.all(color: Colors.white),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 20),
+                        padding: EdgeInsets.only(left: 20.w),
                         child: TextFormField(
                           validator: (value) {
                             if (_isvalidPassword(value!) == false) {
                               return validatePassword(value);
                             } else if (isProperPassword == false) {
                               return 'Password needs to be stronger';
-                            } 
-                            else {
+                            } else {
                               return null;
                             }
                           },
@@ -761,7 +761,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           controller: _password,
                           style: GoogleFonts.poppins(
                             color: Colors.white,
-                            fontSize: 16,
+                            fontSize: 16.sp,
                             fontWeight: FontWeight.w500,
                           ),
                           decoration: InputDecoration(
@@ -769,15 +769,15 @@ class _RegisterPageState extends State<RegisterPage> {
                             labelText: 'Enter password:',
                             labelStyle: GoogleFonts.poppins(
                               color: Colors.white,
-                              fontSize: 16,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
-          
+                    SizedBox(height: 10.h),
+
                     FlutterPwValidator(
                         controller: _password,
                         minLength: 8,
@@ -785,8 +785,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         lowercaseCharCount: 3,
                         numericCharCount: 1,
                         specialCharCount: 1,
-                        width: 400,
-                        height: 150,
+                        width: 400.w,
+                        height: 150.h,
                         onSuccess: () {
                           IconSnackBar.show(
                               direction: DismissDirection.horizontal,
@@ -796,26 +796,26 @@ class _RegisterPageState extends State<RegisterPage> {
                               snackBarStyle: const SnackBarStyle(
                                   showIconFirst: true) // this one
                               );
-                              setState(() {
-                                isProperPassword = true;
-                              });
+                          setState(() {
+                            isProperPassword = true;
+                          });
                         },
                         onFail: () {
                           setState(() {
                             isProperPassword = false;
                           });
                         }),
-                    const SizedBox(height: 30),
-          
+                    SizedBox(height: 30.h),
+
                     // confirm password
                     Container(
                       decoration: BoxDecoration(
                         color: Colors.black54,
                         border: Border.all(color: Colors.white),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 20),
+                        padding: EdgeInsets.only(left: 20.w),
                         child: TextFormField(
                           validator: (value) {
                             if (_isvalidPassword(value!) == false) {
@@ -831,7 +831,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           controller: _confirmedpassword,
                           style: GoogleFonts.poppins(
                             color: Colors.white,
-                            fontSize: 16,
+                            fontSize: 16.sp,
                             fontWeight: FontWeight.w500,
                           ),
                           decoration: InputDecoration(
@@ -839,23 +839,23 @@ class _RegisterPageState extends State<RegisterPage> {
                             labelText: 'Confirm password:',
                             labelStyle: GoogleFonts.poppins(
                               color: Colors.white,
-                              fontSize: 16,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
-          
+                    SizedBox(height: 10.h),
+
                     // sign in
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                      padding: EdgeInsets.symmetric(horizontal: 25.0.w),
                       child: GestureDetector(
                         onTap: () {
                           if (_formKey.currentState!.validate()) {
                             IconSnackBar.show(
-                                duration: Duration(seconds: 4),
+                                duration: const Duration(seconds: 4),
                                 direction: DismissDirection.horizontal,
                                 context: context,
                                 snackBarType: SnackBarType.save,
@@ -876,7 +876,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           }
                         },
                         child: Container(
-                          padding: const EdgeInsets.all(25),
+                          padding: EdgeInsets.all(25.sp),
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               colors: [
@@ -887,41 +887,41 @@ class _RegisterPageState extends State<RegisterPage> {
                               end: Alignment.bottomRight,
                             ),
                             //color: Colors.deepPurple,
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(12.r),
                           ),
-                          child: const Center(
+                          child: Center(
                             child: Text(
                               'Sign Up',
-                              style: TextStyle(
+                              style: GoogleFonts.poppins(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 20,
+                                fontSize: 20.sp,
                               ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 15),
-          
+                    SizedBox(height: 15.h),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           'Alr have an account?',
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
                             fontWeight: FontWeight.bold,
                             color: Colors.indigo.shade300,
                           ),
                         ),
-                        const SizedBox(
-                          width: 10,
+                        SizedBox(
+                          width: 10.w,
                         ),
                         GestureDetector(
                           onTap: widget.showLoginPage,
-                          child: const Text(
+                          child: Text(
                             'Login here',
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
                               color: Colors.tealAccent,
                               fontWeight: FontWeight.bold,
                             ),
@@ -929,7 +929,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20,)
+                    SizedBox(
+                      height: 20.h,
+                    )
                   ],
                 ),
               ),

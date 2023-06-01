@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ForgotPassword extends StatefulWidget {
@@ -60,26 +61,27 @@ class _ForgotPassword extends State<ForgotPassword> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            padding: EdgeInsets.symmetric(horizontal: 25.0.w),
             child: Text(
               'Enter in your Email, a reset link will be sent to it',
               textAlign: TextAlign.center,
-              style: GoogleFonts.kanit(color: Colors.tealAccent, fontSize: 20),
+              style: GoogleFonts.poppins(
+                  color: Colors.tealAccent, fontSize: 20.sp),
             ),
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 20.h),
 
           //Textfield for email
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            padding: EdgeInsets.symmetric(horizontal: 25.0.w),
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.grey.shade200,
                 border: Border.all(color: Colors.white),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(12.r),
               ),
               child: Padding(
-                padding: const EdgeInsets.only(left: 20),
+                padding: EdgeInsets.only(left: 20.w),
                 child: TextField(
                   controller: _emailId,
                   decoration: const InputDecoration(
@@ -88,7 +90,7 @@ class _ForgotPassword extends State<ForgotPassword> {
               ),
             ),
           ),
-          const SizedBox(height: 15),
+          SizedBox(height: 15.h),
 
           //Button to send email
           Container(
@@ -106,10 +108,10 @@ class _ForgotPassword extends State<ForgotPassword> {
               onPressed: resetPassword,
               child: Text(
                 'Reset Password',
-                style: GoogleFonts.kanit(
+                style: GoogleFonts.poppins(
                   color: Colors.amber,
                   fontWeight: FontWeight.bold,
-                  fontSize: 17,
+                  fontSize: 17.sp,
                 ),
               ),
             ),

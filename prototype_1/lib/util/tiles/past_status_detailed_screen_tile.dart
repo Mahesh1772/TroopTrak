@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -24,7 +25,7 @@ class PastSoldierStatusTile extends StatelessWidget {
     setTileIcon(statusType);
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
+      padding: EdgeInsets.only(bottom: 8.0.h),
       child: Slidable(
         endActionPane: ActionPane(
           motion: const StretchMotion(),
@@ -38,48 +39,49 @@ class PastSoldierStatusTile extends StatelessWidget {
               onPressed: (context) {},
               icon: Icons.delete_forever_rounded,
               backgroundColor: Colors.red,
-              borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(12),
-                bottomRight: Radius.circular(12),
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(12.r),
+                bottomRight: Radius.circular(12.r),
               ),
             ),
           ],
         ),
         child: Container(
-          decoration: const BoxDecoration(
-            color: Color.fromARGB(104, 158, 158, 158),
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(104, 158, 158, 158),
             borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(12), bottomLeft: Radius.circular(12)),
+                topLeft: Radius.circular(12.r),
+                bottomLeft: Radius.circular(12.r)),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(16.0.sp),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Icon(
                   tileIcon,
                   color: Colors.white,
-                  size: 30,
+                  size: 30.sp,
                 ),
                 SizedBox(
-                  width: 100,
+                  width: 100.w,
                   child: AutoSizeText(
                     statusName,
                     style: GoogleFonts.poppins(
                         fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                        fontSize: 16.sp,
                         color: Colors.white),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 SizedBox(
-                  width: 150,
+                  width: 150.w,
                   child: AutoSizeText(
                     "$startDate - $endDate",
                     style: GoogleFonts.poppins(
                         fontWeight: FontWeight.bold,
-                        fontSize: 14,
+                        fontSize: 14.sp,
                         color: Colors.white),
                     maxLines: 1,
                   ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
@@ -50,7 +51,7 @@ class _GNavMainScreen extends State<GNavMainScreen> {
         bottomNavigationBar: Container(
           color: const Color.fromARGB(255, 11, 13, 17),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15),
+            padding: EdgeInsets.symmetric(horizontal: 8.0.w, vertical: 15.h),
             child: GNav(
                 onTabChange: (value) {
                   itemTapped(value);
@@ -67,7 +68,7 @@ class _GNavMainScreen extends State<GNavMainScreen> {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(16.sp),
                 tabs: [
                   GButton(
                     icon: Icons.home_outlined,

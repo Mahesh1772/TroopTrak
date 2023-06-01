@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/screens/soldier_detailed_screen.dart';
-import 'dart:math' as math;
+import 'package:auto_size_text/auto_size_text.dart';
 
 class SoldierTile extends StatelessWidget {
   final String soldierName;
@@ -79,18 +80,8 @@ class SoldierTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // List colors = [
-    //   Colors.brown.shade800,
-    //   Colors.indigo.shade800,
-    //   Colors.indigo.shade400,
-    //   Colors.teal.shade800,
-    //   Colors.teal.shade400,
-    // ];
-
-    //int index = math.Random().nextInt(4);
-
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: EdgeInsets.all(12.0.sp),
       child: InkWell(
         onTap: () {
           Navigator.push(
@@ -114,15 +105,15 @@ class SoldierTile extends StatelessWidget {
         },
         child: Container(
           decoration: BoxDecoration(
-              boxShadow: const [
+              boxShadow: [
                 BoxShadow(
-                    blurRadius: 2.0,
-                    spreadRadius: 2.0,
-                    offset: Offset(10, 10),
+                    blurRadius: 2.0.r,
+                    spreadRadius: 2.0.r,
+                    offset: Offset(10.w, 10.h),
                     color: Colors.black54)
               ],
               color: soldierColorGenerator(soldierRank),
-              borderRadius: BorderRadius.circular(12)),
+              borderRadius: BorderRadius.circular(12.r)),
           child: Column(
             children: [
               //rank insignia
@@ -130,18 +121,17 @@ class SoldierTile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Container(
-                    width: 40,
-                    height: 40,
+                    width: 40.w,
+                    height: 40.h,
                     padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
                       color: Colors.transparent.withOpacity(0.15),
-                      borderRadius: const BorderRadius.only(
-                          topRight: Radius.circular(12),
-                          bottomLeft: Radius.circular(12)),
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(12.r),
+                          bottomLeft: Radius.circular(12.r)),
                     ),
                     child: Image.asset(
                       soldierRank,
-                      width: 30,
                     ),
                   ),
                 ],
@@ -149,30 +139,30 @@ class SoldierTile extends StatelessWidget {
 
               //soldier icon
               Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 24.0, vertical: 12.0),
+                padding:
+                    EdgeInsets.symmetric(horizontal: 24.0.w, vertical: 12.0.h),
                 child: Image.asset(
                   soldierIconGenerator(soldierRank),
-                  width: 90,
+                  width: 90.w,
                 ),
               ),
 
               //name
 
               Center(
-                  child: Text(
+                  child: AutoSizeText(
                 soldierName,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.poppins(
-                  fontSize: 20,
+                  fontSize: 20.sp,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
               )),
 
-              const StyledText(
+              StyledText(
                 "IN CAMP",
-                14,
+                14.sp,
                 fontWeight: FontWeight.w500,
               )
             ],

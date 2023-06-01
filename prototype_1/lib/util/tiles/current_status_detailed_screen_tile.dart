@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -71,17 +72,17 @@ class _SoldierStatusTileState extends State<SoldierStatusTile> {
     setTileIconAndColor(statusType);
 
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: EdgeInsets.all(12.0.sp),
       child: Container(
-        width: 250,
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(boxShadow: const [
+        width: 250.w,
+        padding: EdgeInsets.all(12.sp),
+        decoration: BoxDecoration(boxShadow: [
           BoxShadow(
-              blurRadius: 2.0,
-              spreadRadius: 2.0,
-              offset: Offset(10, 10),
+              blurRadius: 2.0.r,
+              spreadRadius: 2.0.r,
+              offset: Offset(10.w, 10.h),
               color: Colors.black54)
-        ], color: tileColor, borderRadius: BorderRadius.circular(12)),
+        ], color: tileColor, borderRadius: BorderRadius.circular(12.r)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -91,25 +92,26 @@ class _SoldierStatusTileState extends State<SoldierStatusTile> {
                 Icon(
                   tileIcon,
                   color: Colors.white,
-                  size: 60,
+                  size: 60.sp,
                 ),
                 InkWell(
                   onTap: deleteCurrentStatus,
-                  child: const Icon(
+                  child: Icon(
                     Icons.delete_rounded,
                     color: Colors.white,
-                    size: 30,
+                    size: 30.sp,
                   ),
                 ),
               ],
             ),
-            const SizedBox(
-              height: 10,
+            SizedBox(
+              height: 10.h,
             ),
-            StyledText(statusName, 20, fontWeight: FontWeight.bold),
-            StyledText(statusType.toUpperCase(), 18,
+            StyledText(statusName, 20.sp, fontWeight: FontWeight.bold),
+            StyledText(statusType.toUpperCase(), 18.sp,
                 fontWeight: FontWeight.w500),
-            StyledText("$startDate - $endDate", 16, fontWeight: FontWeight.bold)
+            StyledText("$startDate - $endDate", 16.sp,
+                fontWeight: FontWeight.bold)
           ],
         ),
       ),

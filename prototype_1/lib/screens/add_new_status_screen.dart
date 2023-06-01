@@ -3,6 +3,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
@@ -91,7 +92,7 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
+            padding: EdgeInsets.symmetric(horizontal: 12.w),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,34 +101,34 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
                   onTap: () {
                     Navigator.pop(context);
                   },
-                  child: const Icon(
+                  child: Icon(
                     Icons.arrow_back_sharp,
                     color: Colors.white,
-                    size: 25,
+                    size: 25.sp,
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
+                SizedBox(
+                  height: 20.h,
                 ),
-                const StyledText(
+                StyledText(
                   "Let's add a new status for this soldier ✍️",
-                  30,
+                  30.sp,
                   fontWeight: FontWeight.bold,
                 ),
-                const StyledText(
+                StyledText(
                   "Fill in the details of the status",
-                  14,
+                  14.sp,
                   fontWeight: FontWeight.w300,
                 ),
-                const SizedBox(
-                  height: 40,
+                SizedBox(
+                  height: 40.h,
                 ),
                 //Status type drop down menu
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.black54,
                     border: Border.all(color: Colors.white),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12.r),
                   ),
                   child: DropdownButtonFormField<String>(
                     alignment: Alignment.center,
@@ -146,7 +147,7 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
                               item,
                               maxLines: 1,
                               style: GoogleFonts.poppins(
-                                  fontSize: 16,
+                                  fontSize: 16.sp,
                                   fontWeight: FontWeight.w400,
                                   color: Colors.white),
                             ),
@@ -160,8 +161,8 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
                   ),
                 ),
 
-                const SizedBox(
-                  height: 30,
+                SizedBox(
+                  height: 30.h,
                 ),
 
                 //Name of status textfield
@@ -169,14 +170,14 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
                   decoration: BoxDecoration(
                     color: Colors.black54,
                     border: Border.all(color: Colors.white),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12.r),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 20),
+                    padding: EdgeInsets.only(left: 20.w),
                     child: TextField(
                       style: GoogleFonts.poppins(
                         color: Colors.white,
-                        fontSize: 16,
+                        fontSize: 16.sp,
                         fontWeight: FontWeight.w500,
                       ),
                       controller: widget.statusName,
@@ -185,40 +186,40 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
                         labelText: 'Enter Status Name:',
                         labelStyle: GoogleFonts.poppins(
                           color: Colors.white,
-                          fontSize: 16,
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 30,
+                SizedBox(
+                  height: 30.h,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     //Status start date picker
                     Container(
-                      height: 55,
-                      width: 150,
+                      height: 55.h,
+                      width: 150.w,
                       decoration: BoxDecoration(
                         color: Colors.black54,
                         border: Border.all(color: Colors.white),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 15),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 15.w, vertical: 15.h),
                         child: AutoSizeText(
                           widget.startDate,
                           style: GoogleFonts.poppins(
-                              color: Colors.white, fontSize: 16),
+                              color: Colors.white, fontSize: 16.sp),
                         ),
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(8.0.sp),
                       child: InkWell(
                         onTap: () {
                           _showStartDatePicker();
@@ -230,31 +231,31 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
                       ),
                     ),
 
-                    const SizedBox(
-                      width: 10,
+                    SizedBox(
+                      width: 10.w,
                     ),
 
                     //Status end date picker
                     Container(
-                      width: 145,
-                      height: 55,
+                      width: 145.w,
+                      height: 55.h,
                       decoration: BoxDecoration(
                         color: Colors.black54,
                         border: Border.all(color: Colors.white),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 15),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 15.w, vertical: 15.h),
                         child: AutoSizeText(
                           widget.endDate,
                           style: GoogleFonts.poppins(
-                              color: Colors.white, fontSize: 16),
+                              color: Colors.white, fontSize: 16.sp),
                         ),
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(8.0.sp),
                       child: InkWell(
                         onTap: () {
                           _showEndDatePicker();
@@ -267,14 +268,14 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 40,
+                SizedBox(
+                  height: 40.h,
                 ),
 
                 GestureDetector(
                   onTap: addUserDetails,
                   child: Container(
-                    padding: const EdgeInsets.all(10),
+                    padding: EdgeInsets.all(10.sp),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
@@ -285,26 +286,26 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
                         end: Alignment.bottomRight,
                       ),
                       //color: Colors.deepPurple,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.r),
                     ),
                     child: Center(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.add_to_photos_rounded,
                             color: Colors.white,
-                            size: 30,
+                            size: 30.sp,
                           ),
-                          const SizedBox(
-                            width: 20,
+                          SizedBox(
+                            width: 20.w,
                           ),
                           AutoSizeText(
                             'ADD STATUS',
                             style: GoogleFonts.poppins(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
-                              fontSize: 22,
+                              fontSize: 22.sp,
                             ),
                           ),
                         ],

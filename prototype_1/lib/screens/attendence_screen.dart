@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -25,8 +26,8 @@ class _HomePageState extends State<HomePage> {
               CircularPercentIndicator(
                 animation: true,
                 animationDuration: 2000,
-                radius: 150,
-                lineWidth: 25,
+                radius: 150.r,
+                lineWidth: 25.w,
                 percent: 0.8,
                 progressColor: Colors.deepPurple,
                 backgroundColor: Colors.deepPurple.shade200,

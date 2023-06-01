@@ -2,6 +2,7 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:intl/intl.dart';
@@ -219,14 +220,14 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                   decoration: BoxDecoration(
                     color: Colors.black54,
                     border: Border.all(color: Colors.white),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12.r),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 20),
+                    padding: EdgeInsets.only(left: 20.w),
                     child: TextField(
                       style: GoogleFonts.poppins(
                         color: Colors.white,
-                        fontSize: 16,
+                        fontSize: 16.sp,
                         fontWeight: FontWeight.w500,
                       ),
                       controller: widget.name,
@@ -235,15 +236,15 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                         labelText: 'Enter Name (as in NRIC):',
                         labelStyle: GoogleFonts.poppins(
                           color: Colors.white,
-                          fontSize: 16,
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
+                SizedBox(
+                  height: 20.h,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -253,20 +254,20 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                       decoration: BoxDecoration(
                         color: Colors.black54,
                         border: Border.all(color: Colors.white),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 15),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 15.w, vertical: 15.h),
                         child: Text(
                           widget.dob,
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: 16),
+                          style: GoogleFonts.poppins(
+                              color: Colors.white, fontSize: 16.sp),
                         ),
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(8.0.sp),
                       child: InkWell(
                         onTap: () {
                           _showDatePicker();
@@ -280,14 +281,14 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
 
                     //Ration type dropdown menu
                     Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
+                      padding: EdgeInsets.only(left: 10.0.w),
                       child: Container(
-                        width: 205,
-                        height: 50,
+                        width: 240.w,
+                        height: 55.h,
                         decoration: BoxDecoration(
                           color: Colors.black54,
                           border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(12.r),
                         ),
                         child: DropdownButtonFormField<String>(
                           alignment: Alignment.center,
@@ -297,7 +298,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                             Icons.arrow_downward_sharp,
                             color: Colors.white,
                           ),
-                          style: const TextStyle(color: Colors.black54),
+                          style: GoogleFonts.poppins(color: Colors.black54),
                           items: _rationTypes
                               .map(
                                 (item) => DropdownMenuItem<String>(
@@ -305,8 +306,8 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                                   child: AutoSizeText(
                                     item,
                                     maxLines: 1,
-                                    style: const TextStyle(
-                                        fontSize: 16,
+                                    style: GoogleFonts.poppins(
+                                        fontSize: 16.sp,
                                         fontWeight: FontWeight.w400,
                                         color: Colors.white),
                                   ),
@@ -322,19 +323,19 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 20,
+                SizedBox(
+                  height: 20.h,
                 ),
                 Row(
                   children: [
                     //Rank dropdown menu
                     Container(
-                      width: 160,
-                      height: 50,
+                      width: 170.w,
+                      height: 55.h,
                       decoration: BoxDecoration(
                         color: Colors.black54,
                         border: Border.all(color: Colors.white),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: DropdownButtonFormField<String>(
                         alignment: Alignment.center,
@@ -344,7 +345,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                           Icons.arrow_downward_sharp,
                           color: Colors.white,
                         ),
-                        style: const TextStyle(color: Colors.black54),
+                        style: GoogleFonts.poppins(color: Colors.black54),
                         items: _ranks
                             .map(
                               (item) => DropdownMenuItem<String>(
@@ -352,8 +353,8 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                                 child: AutoSizeText(
                                   item,
                                   maxLines: 1,
-                                  style: const TextStyle(
-                                      fontSize: 16,
+                                  style: GoogleFonts.poppins(
+                                      fontSize: 16.sp,
                                       fontWeight: FontWeight.w400,
                                       color: Colors.white),
                                 ),
@@ -369,14 +370,14 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
 
                     //Blood type dropdown menu
                     Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
+                      padding: EdgeInsets.only(left: 20.0.w),
                       child: Container(
-                        width: 205,
-                        height: 50,
+                        width: 225.w,
+                        height: 55.h,
                         decoration: BoxDecoration(
                           color: Colors.black54,
                           border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(12.r),
                         ),
                         child: DropdownButtonFormField<String>(
                           dropdownColor: Colors.black54,
@@ -386,7 +387,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                             Icons.water_drop_sharp,
                             color: Colors.red,
                           ),
-                          style: const TextStyle(color: Colors.black54),
+                          style: GoogleFonts.poppins(color: Colors.black54),
                           items: _bloodTypes
                               .map(
                                 (item) => DropdownMenuItem<String>(
@@ -394,8 +395,8 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                                   child: AutoSizeText(
                                     item,
                                     maxLines: 1,
-                                    style: const TextStyle(
-                                        fontSize: 16,
+                                    style: GoogleFonts.poppins(
+                                        fontSize: 16.sp,
                                         fontWeight: FontWeight.w400,
                                         color: Colors.white),
                                   ),
@@ -411,8 +412,8 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 20,
+                SizedBox(
+                  height: 20.h,
                 ),
 
                 //Company textfield
@@ -420,15 +421,15 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                   decoration: BoxDecoration(
                     color: Colors.black54,
                     border: Border.all(color: Colors.white),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12.r),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 20),
+                    padding: EdgeInsets.only(left: 20.w),
                     child: TextField(
                       controller: widget.company,
                       style: GoogleFonts.poppins(
                         color: Colors.white,
-                        fontSize: 16,
+                        fontSize: 16.sp,
                         fontWeight: FontWeight.w500,
                       ),
                       decoration: InputDecoration(
@@ -436,29 +437,29 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                         labelText: 'Company:',
                         labelStyle: GoogleFonts.poppins(
                           color: Colors.white,
-                          fontSize: 16,
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: 20.h),
 
                 //Platoon textfield
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.black54,
                     border: Border.all(color: Colors.white),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12.r),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 20),
+                    padding: EdgeInsets.only(left: 20.w),
                     child: TextField(
                       controller: widget.platoon,
                       style: GoogleFonts.poppins(
                         color: Colors.white,
-                        fontSize: 16,
+                        fontSize: 16.sp,
                         fontWeight: FontWeight.w500,
                       ),
                       decoration: InputDecoration(
@@ -466,29 +467,29 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                         labelText: 'Platoon:',
                         labelStyle: GoogleFonts.poppins(
                           color: Colors.white,
-                          fontSize: 16,
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: 20.h),
 
                 //Section textfield
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.black54,
                     border: Border.all(color: Colors.white),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12.r),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 20),
+                    padding: EdgeInsets.only(left: 20.w),
                     child: TextField(
                       controller: widget.section,
                       style: GoogleFonts.poppins(
                         color: Colors.white,
-                        fontSize: 16,
+                        fontSize: 16.sp,
                         fontWeight: FontWeight.w500,
                       ),
                       decoration: InputDecoration(
@@ -496,29 +497,29 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                         labelText: 'Section:',
                         labelStyle: GoogleFonts.poppins(
                           color: Colors.white,
-                          fontSize: 16,
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: 20.h),
 
                 //Soldier Appointment text field
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.black54,
                     border: Border.all(color: Colors.white),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12.r),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 20),
+                    padding: EdgeInsets.only(left: 20.r),
                     child: TextField(
                       controller: widget.appointment,
                       style: GoogleFonts.poppins(
                         color: Colors.white,
-                        fontSize: 16,
+                        fontSize: 16.sp,
                         fontWeight: FontWeight.w500,
                       ),
                       decoration: InputDecoration(
@@ -526,7 +527,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                         labelText: 'Appointment (in unit):',
                         labelStyle: GoogleFonts.poppins(
                           color: Colors.white,
-                          fontSize: 16,
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -534,34 +535,34 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                   ),
                 ),
 
-                const SizedBox(
-                  height: 20,
+                SizedBox(
+                  height: 20.h,
                 ),
 
                 //Enlistment Date picker
                 Row(
                   children: [
                     SizedBox(
-                      width: 150,
+                      width: 150.w,
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.black54,
                           border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(12.r),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 15),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 15.w, vertical: 15.h),
                           child: Text(
                             widget.enlistment,
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 16),
+                            style: GoogleFonts.poppins(
+                                color: Colors.white, fontSize: 16.sp),
                           ),
                         ),
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(8.0.sp),
                       child: InkWell(
                         onTap: () {
                           _enlistmentDatePicker();
@@ -574,26 +575,26 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                     ),
                     //ORD picker
                     SizedBox(
-                      width: 150,
+                      width: 150.w,
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.black54,
                           border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(12.r),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 15),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 15.w, vertical: 15.h),
                           child: Text(
                             widget.ord,
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 16),
+                            style: GoogleFonts.poppins(
+                                color: Colors.white, fontSize: 16.sp),
                           ),
                         ),
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(8.0.sp),
                       child: InkWell(
                         onTap: () {
                           _ordDatePicker();
@@ -607,14 +608,14 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                   ],
                 ),
 
-                const SizedBox(
-                  height: 30,
+                SizedBox(
+                  height: 30.h,
                 ),
 
                 GestureDetector(
                   onTap: addUserDetails,
                   child: Container(
-                    padding: const EdgeInsets.all(10),
+                    padding: EdgeInsets.all(10.sp),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
@@ -625,26 +626,26 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                         end: Alignment.bottomRight,
                       ),
                       //color: Colors.deepPurple,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.r),
                     ),
                     child: Center(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.group_add_rounded,
                             color: Colors.white,
-                            size: 30,
+                            size: 30.sp,
                           ),
-                          const SizedBox(
-                            width: 20,
+                          SizedBox(
+                            width: 20.w,
                           ),
                           AutoSizeText(
                             'ADD NEW SOLDIER',
                             style: GoogleFonts.poppins(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
-                              fontSize: 22,
+                              fontSize: 22.sp,
                             ),
                           ),
                         ],

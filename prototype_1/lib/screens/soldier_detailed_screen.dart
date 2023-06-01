@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/screens/tabs/basic_info_detailed_screen_tab.dart';
 import 'package:prototype_1/screens/tabs/statuses_detailed_screen_tab.dart';
@@ -48,9 +49,9 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
         child: Column(
           children: [
             Container(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                gradient: LinearGradient(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(12.0.r)),
+                gradient: const LinearGradient(
                   colors: [
                     Color.fromARGB(255, 72, 30, 229),
                     Color.fromARGB(255, 130, 60, 229),
@@ -63,7 +64,7 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,18 +73,18 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
                             onTap: () {
                               Navigator.pop(context);
                             },
-                            child: const Icon(
+                            child: Icon(
                               Icons.arrow_back_sharp,
                               color: Colors.white,
-                              size: 25,
+                              size: 25.sp,
                             ),
                           ),
-                          const SizedBox(
-                            height: 20,
+                          SizedBox(
+                            height: 20.h,
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(
-                                left: 20.0, right: 20.0, top: 20.0),
+                            padding: EdgeInsets.only(
+                                left: 20.0.w, right: 20.0.w, top: 20.0.h),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -97,20 +98,20 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
                                         maxLines: 3,
                                         style: GoogleFonts.poppins(
                                           color: Colors.white,
-                                          fontSize: 25,
+                                          fontSize: 25.sp,
                                           fontWeight: FontWeight.bold,
                                           letterSpacing: 1.5,
                                         ),
                                       ),
-                                      const SizedBox(
-                                        height: 5,
+                                      SizedBox(
+                                        height: 5.h,
                                       ),
                                       Text(
                                         widget.soldierAppointment.titleCase,
                                         maxLines: 2,
                                         style: GoogleFonts.poppins(
                                           color: Colors.white,
-                                          fontSize: 16,
+                                          fontSize: 16.sp,
                                           fontWeight: FontWeight.w500,
                                           letterSpacing: 1.5,
                                         ),
@@ -120,23 +121,23 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
                                 ),
                                 Image.asset(
                                   widget.soldierRank,
-                                  width: 60,
+                                  width: 60.w,
                                   color: Colors.white,
                                 )
                               ],
                             ),
                           ),
-                          const SizedBox(
-                            height: 20,
+                          SizedBox(
+                            height: 20.h,
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 20.0),
+                            padding: EdgeInsets.only(left: 20.0.w),
                             child: Text(
                               "${widget.company.toUpperCase()} COMPANY",
                               maxLines: 2,
                               style: GoogleFonts.poppins(
                                 color: Colors.white,
-                                fontSize: 18,
+                                fontSize: 18.sp,
                                 fontWeight: FontWeight.bold,
                                 letterSpacing: 1.5,
                               ),
@@ -144,13 +145,13 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
                           ),
                           Padding(
                             padding:
-                                const EdgeInsets.only(left: 20.0, bottom: 50.0),
+                                EdgeInsets.only(left: 20.0.w, bottom: 50.0.h),
                             child: Text(
                               "Platoon ${widget.platoon}, Section ${widget.section}",
                               maxLines: 2,
                               style: GoogleFonts.poppins(
                                 color: Colors.white,
-                                fontSize: 16,
+                                fontSize: 16.sp,
                                 fontWeight: FontWeight.w500,
                                 letterSpacing: 1.5,
                               ),
@@ -166,13 +167,13 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(
-                  height: 10,
+                SizedBox(
+                  height: 10.h,
                 ),
                 TabBar(
                   labelStyle: GoogleFonts.poppins(
                     color: Colors.white,
-                    fontSize: 16,
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.w500,
                     letterSpacing: 1.5,
                   ),
@@ -196,7 +197,7 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
                 ),
                 SizedBox(
                   width: double.maxFinite,
-                  height: 650,
+                  height: 700.h,
                   child: TabBarView(
                     controller: tabController,
                     children: const [

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/util/tiles/current_status_detailed_screen_tile.dart';
@@ -36,27 +37,27 @@ class _UserProfileStatusesTabState extends State<UserProfileStatusesTab> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Padding(
-        padding: const EdgeInsets.all(30.0),
+        padding: EdgeInsets.all(30.0.sp),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.medical_information_rounded,
                   color: Colors.white,
-                  size: 30,
+                  size: 30.sp,
                 ),
-                const SizedBox(
-                  width: 20,
+                SizedBox(
+                  width: 20.w,
                 ),
                 Text(
                   "Active Statuses",
                   maxLines: 2,
                   style: GoogleFonts.poppins(
                     color: Colors.white,
-                    fontSize: 20,
+                    fontSize: 20.sp,
                     fontWeight: FontWeight.w500,
                     letterSpacing: 1.5,
                   ),
@@ -64,10 +65,10 @@ class _UserProfileStatusesTabState extends State<UserProfileStatusesTab> {
               ],
             ),
             SizedBox(
-              height: 250,
+              height: 250.h,
               child: ListView.builder(
                 itemCount: soldierStatuses.length,
-                padding: const EdgeInsets.all(12),
+                padding: EdgeInsets.all(12.sp),
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
                   return SoldierStatusTile(
@@ -80,20 +81,20 @@ class _UserProfileStatusesTabState extends State<UserProfileStatusesTab> {
             ),
             Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.av_timer_rounded,
                   color: Colors.white,
-                  size: 30,
+                  size: 30.sp,
                 ),
-                const SizedBox(
-                  width: 20,
+                SizedBox(
+                  width: 20.w,
                 ),
                 Text(
                   "Past Statuses",
                   maxLines: 2,
                   style: GoogleFonts.poppins(
                     color: Colors.white,
-                    fontSize: 20,
+                    fontSize: 20.sp,
                     fontWeight: FontWeight.w500,
                     letterSpacing: 1.5,
                   ),
@@ -113,15 +114,15 @@ class _UserProfileStatusesTabState extends State<UserProfileStatusesTab> {
                 },
               ),
             ),
-            const SizedBox(
-              height: 20,
+            SizedBox(
+              height: 20.h,
             ),
             Center(
               child: TextButton(
                 onPressed: () {},
                 child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 40.0, vertical: 16.0),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 40.0.w, vertical: 16.0.h),
                   decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
                       gradient: const LinearGradient(
@@ -133,16 +134,16 @@ class _UserProfileStatusesTabState extends State<UserProfileStatusesTab> {
                       borderRadius: BorderRadius.circular(50.0)),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
+                    children: [
                       Icon(
                         Icons.note_add,
                         color: Colors.white,
-                        size: 30,
+                        size: 30.sp,
                       ),
                       SizedBox(
-                        width: 20,
+                        width: 20.w,
                       ),
-                      StyledText("ADD NEW STATUS", 18,
+                      StyledText("ADD NEW STATUS", 18.sp,
                           fontWeight: FontWeight.bold),
                     ],
                   ),

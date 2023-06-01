@@ -2,6 +2,7 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:intl/intl.dart';
@@ -40,7 +41,6 @@ class UpdateSoldierDetailsPage extends StatefulWidget {
 }
 
 class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
-
   Future deleteCurrentUser() async {
     FirebaseFirestore.instance.collection("Users").doc(docIDs).delete();
     Navigator.pop(context);
@@ -207,7 +207,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                     snapshot.data!.data() as Map<String, dynamic>;
 
                 return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  padding: EdgeInsets.symmetric(horizontal: 12.w),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -216,28 +216,28 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                         onTap: () {
                           Navigator.pop(context);
                         },
-                        child: const Icon(
+                        child: Icon(
                           Icons.arrow_back_sharp,
                           color: Colors.white,
-                          size: 25,
+                          size: 25.sp,
                         ),
                       ),
-                      const SizedBox(
-                        height: 20,
+                      SizedBox(
+                        height: 20.h,
                       ),
-                      const StyledText(
+                      StyledText(
                         "Change details  ✍️",
-                        30,
+                        30.sp,
                         fontWeight: FontWeight.bold,
                       ),
-                      const StyledText(
+                      StyledText(
                         "Update the details of an existing soldier.",
-                        14,
+                        14.sp,
                         fontWeight: FontWeight.w300,
                       ),
 
-                      const SizedBox(
-                        height: 20,
+                      SizedBox(
+                        height: 20.h,
                       ),
 
                       //Name of soldier textfield
@@ -248,11 +248,11 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 20),
+                          padding: EdgeInsets.only(left: 20.w),
                           child: TextField(
                             style: GoogleFonts.poppins(
                               color: Colors.white,
-                              fontSize: 16,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.w500,
                             ),
                             controller: widget.name,
@@ -261,14 +261,14 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                               labelText: 'Enter Name (as in NRIC):',
                               labelStyle: GoogleFonts.poppins(
                                 color: Colors.white,
-                                fontSize: 16,
+                                fontSize: 16.sp,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      SizedBox(height: 10.h),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -277,20 +277,20 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                             decoration: BoxDecoration(
                               color: Colors.black54,
                               border: Border.all(color: Colors.white),
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(12.r),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 15),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 15.w, vertical: 15.h),
                               child: AutoSizeText(
                                 widget.dob,
                                 style: GoogleFonts.poppins(
-                                    color: Colors.white, fontSize: 16),
+                                    color: Colors.white, fontSize: 16.sp),
                               ),
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(8.0.sp),
                             child: InkWell(
                               onTap: () {
                                 _showDatePicker();
@@ -304,14 +304,14 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
 
                           //Ration type dropdown menu
                           Padding(
-                            padding: const EdgeInsets.only(left: 10.0),
+                            padding: EdgeInsets.only(left: 10.0.w),
                             child: Container(
-                              width: 215,
-                              height: 50,
+                              width: 215.w,
+                              height: 50.h,
                               decoration: BoxDecoration(
                                 color: Colors.black54,
                                 border: Border.all(color: Colors.white),
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(12.r),
                               ),
                               child: DropdownButtonFormField<String>(
                                 alignment: Alignment.center,
@@ -330,7 +330,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                           item,
                                           maxLines: 1,
                                           style: GoogleFonts.poppins(
-                                              fontSize: 16,
+                                              fontSize: 16.sp,
                                               fontWeight: FontWeight.w400,
                                               color: Colors.white),
                                         ),
@@ -346,21 +346,21 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                           ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 20,
+                      SizedBox(
+                        height: 20.h,
                       ),
                       Row(
                         children: [
                           //Rank dropdown menu
                           Padding(
-                            padding: const EdgeInsets.only(right: 10.0),
+                            padding: EdgeInsets.only(right: 10.0.w),
                             child: Container(
-                              width: 165,
-                              height: 50,
+                              width: 165.w,
+                              height: 50.h,
                               decoration: BoxDecoration(
                                 color: Colors.black54,
                                 border: Border.all(color: Colors.white),
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(12.r),
                               ),
                               child: DropdownButtonFormField<String>(
                                 alignment: Alignment.center,
@@ -395,14 +395,14 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
 
                           //Blood type dropdown menu
                           Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
+                            padding: EdgeInsets.only(left: 8.0.w),
                             child: Container(
-                              width: 200,
-                              height: 50,
+                              width: 200.w,
+                              height: 50.h,
                               decoration: BoxDecoration(
                                 color: Colors.black54,
                                 border: Border.all(color: Colors.white),
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(12.r),
                               ),
                               child: DropdownButtonFormField<String>(
                                 dropdownColor: Colors.black54,
@@ -438,8 +438,8 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                         ],
                       ),
 
-                      const SizedBox(
-                        height: 20,
+                      SizedBox(
+                        height: 20.h,
                       ),
 
                       //Company textfield
@@ -447,15 +447,15 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                         decoration: BoxDecoration(
                           color: Colors.black54,
                           border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(12.r),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 20),
+                          padding: EdgeInsets.only(left: 20.w),
                           child: TextField(
                             controller: widget.company,
                             style: GoogleFonts.poppins(
                               color: Colors.white,
-                              fontSize: 16,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.w500,
                             ),
                             decoration: InputDecoration(
@@ -463,29 +463,29 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                               labelText: 'Company:',
                               labelStyle: GoogleFonts.poppins(
                                 color: Colors.white,
-                                fontSize: 16,
+                                fontSize: 16.sp,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20.h),
 
                       //Platoon textfield
                       Container(
                         decoration: BoxDecoration(
                           color: Colors.black54,
                           border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(12.r),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 20),
+                          padding: EdgeInsets.only(left: 20.w),
                           child: TextField(
                             controller: widget.platoon,
                             style: GoogleFonts.poppins(
                               color: Colors.white,
-                              fontSize: 16,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.w500,
                             ),
                             decoration: InputDecoration(
@@ -493,29 +493,29 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                               labelText: 'Platoon:',
                               labelStyle: GoogleFonts.poppins(
                                 color: Colors.white,
-                                fontSize: 16,
+                                fontSize: 16.sp,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20.h),
 
                       //Section textfield
                       Container(
                         decoration: BoxDecoration(
                           color: Colors.black54,
                           border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(12.r),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 20),
+                          padding: EdgeInsets.only(left: 20.w),
                           child: TextField(
                             controller: widget.section,
                             style: GoogleFonts.poppins(
                               color: Colors.white,
-                              fontSize: 16,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.w500,
                             ),
                             decoration: InputDecoration(
@@ -523,29 +523,29 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                               labelText: 'Section:',
                               labelStyle: GoogleFonts.poppins(
                                 color: Colors.white,
-                                fontSize: 16,
+                                fontSize: 16.sp,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20.h),
 
                       //Soldier Appointment text field
                       Container(
                         decoration: BoxDecoration(
                           color: Colors.black54,
                           border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(12.r),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 20),
+                          padding: EdgeInsets.only(left: 20.w),
                           child: TextField(
                             controller: widget.appointment,
                             style: GoogleFonts.poppins(
                               color: Colors.white,
-                              fontSize: 16,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.w500,
                             ),
                             decoration: InputDecoration(
@@ -553,39 +553,39 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                               labelText: 'Appointment (in unit):',
                               labelStyle: GoogleFonts.poppins(
                                 color: Colors.white,
-                                fontSize: 16,
+                                fontSize: 16.sp,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20.h),
 
                       //Enlistment Date picker
                       Row(
                         children: [
                           SizedBox(
-                            width: 140,
+                            width: 140.w,
                             child: Container(
                               decoration: BoxDecoration(
                                 color: Colors.black54,
                                 border: Border.all(color: Colors.white),
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(12.r),
                               ),
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 15),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 15.w, vertical: 15.h),
                                 child: AutoSizeText(
                                   widget.enlistment,
                                   style: GoogleFonts.poppins(
-                                      color: Colors.white, fontSize: 16),
+                                      color: Colors.white, fontSize: 16.sp),
                                 ),
                               ),
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(8.0.sp),
                             child: InkWell(
                               onTap: () {
                                 _enlistmentDatePicker();
@@ -597,31 +597,31 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                             ),
                           ),
 
-                          const SizedBox(
-                            width: 20,
+                          SizedBox(
+                            width: 20.w,
                           ),
                           //ORD picker
                           SizedBox(
-                            width: 140,
+                            width: 140.w,
                             child: Container(
                               decoration: BoxDecoration(
                                 color: Colors.black54,
                                 border: Border.all(color: Colors.white),
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(12.r),
                               ),
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 15),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 15.w, vertical: 15.h),
                                 child: AutoSizeText(
                                   widget.ord,
                                   style: GoogleFonts.poppins(
-                                      color: Colors.white, fontSize: 16),
+                                      color: Colors.white, fontSize: 16.sp),
                                 ),
                               ),
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(8.0.sp),
                             child: InkWell(
                               onTap: () {
                                 _ordDatePicker();
@@ -635,19 +635,19 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                         ],
                       ),
 
-                      const SizedBox(
-                        height: 30,
+                      SizedBox(
+                        height: 30.h,
                       ),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(left: 5.0),
+                            padding: EdgeInsets.only(left: 5.0.w),
                             child: GestureDetector(
                               onTap: updateUserDetails,
                               child: Container(
-                                padding: const EdgeInsets.all(16),
+                                padding: EdgeInsets.all(16.sp),
                                 decoration: BoxDecoration(
                                   gradient: LinearGradient(
                                     colors: [
@@ -658,25 +658,25 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                     end: Alignment.bottomRight,
                                   ),
                                   //color: Colors.deepPurple,
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(12.r),
                                 ),
                                 child: Center(
                                   child: Row(
                                     children: [
-                                      const Icon(
+                                      Icon(
                                         Icons.edit_note_rounded,
                                         color: Colors.white,
-                                        size: 30,
+                                        size: 30.sp,
                                       ),
-                                      const SizedBox(
-                                        width: 10,
+                                      SizedBox(
+                                        width: 10.w,
                                       ),
                                       AutoSizeText(
                                         'UPDATE DETAILS',
                                         style: GoogleFonts.poppins(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 10,
+                                          fontSize: 10.sp,
                                         ),
                                       ),
                                     ],
@@ -686,12 +686,11 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                             ),
                           ),
                           Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 25.0),
+                            padding: EdgeInsets.symmetric(horizontal: 25.0.w),
                             child: GestureDetector(
                               onTap: deleteCurrentUser,
                               child: Container(
-                                padding: const EdgeInsets.all(16),
+                                padding: EdgeInsets.all(16.sp),
                                 decoration: BoxDecoration(
                                   gradient: const LinearGradient(
                                     colors: [
@@ -702,25 +701,25 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                     end: Alignment.bottomRight,
                                   ),
                                   //color: Colors.deepPurple,
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(12.r),
                                 ),
                                 child: Center(
                                   child: Row(
                                     children: [
-                                      const Icon(
+                                      Icon(
                                         Icons.delete_forever_rounded,
                                         color: Colors.white,
-                                        size: 30,
+                                        size: 30.sp,
                                       ),
-                                      const SizedBox(
-                                        width: 10,
+                                      SizedBox(
+                                        width: 10.w,
                                       ),
                                       AutoSizeText(
                                         'DELETE DETAILS',
                                         style: GoogleFonts.poppins(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 10,
+                                          fontSize: 10.sp,
                                         ),
                                       ),
                                     ],

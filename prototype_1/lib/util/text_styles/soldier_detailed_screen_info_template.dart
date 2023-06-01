@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SoldierDetailedInfoTemplate extends StatelessWidget {
@@ -15,17 +16,17 @@ class SoldierDetailedInfoTemplate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 30.0, right: 30.0, top: 30.0),
+      padding: EdgeInsets.only(left: 30.0.w, right: 30.0.w, top: 30.0.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Icon(
             icon,
             color: Colors.white,
-            size: 30,
+            size: 30.sp,
           ),
-          const SizedBox(
-            width: 20,
+          SizedBox(
+            width: 20.w,
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,7 +36,7 @@ class SoldierDetailedInfoTemplate extends StatelessWidget {
                 maxLines: 2,
                 style: GoogleFonts.poppins(
                   color: Colors.white,
-                  fontSize: 18,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.w500,
                   letterSpacing: 1.5,
                 ),
@@ -45,7 +46,7 @@ class SoldierDetailedInfoTemplate extends StatelessWidget {
                 maxLines: 2,
                 style: GoogleFonts.poppins(
                   color: Colors.white,
-                  fontSize: 20,
+                  fontSize: 20.sp,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.5,
                 ),

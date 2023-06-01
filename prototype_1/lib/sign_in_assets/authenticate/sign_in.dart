@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_icon_snackbar/widgets/icon_snackbar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:prototype_1/sign_in_assets/authenticate/forgot_password_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -108,46 +109,46 @@ class _SignInState extends State<SignIn> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(
-                    height: 80,
+                  SizedBox(
+                    height: 80.h,
                   ),
-                  const Icon(
+                  Icon(
                     Icons.military_tech_outlined,
-                    size: 150,
+                    size: 150.sp,
                     color: Colors.deepPurpleAccent,
                   ),
-                  const SizedBox(height: 80),
+                  SizedBox(height: 80.h),
                   //welcome text
                   Text(
                     'Welcome to camp!',
-                    style: GoogleFonts.kanit(
-                      fontSize: 35,
+                    style: GoogleFonts.poppins(
+                      fontSize: 35.sp,
                       fontWeight: FontWeight.bold,
                       color: Colors.purple.shade300,
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: 10.h),
                   Text(
                     'Time to get back!',
-                    style: GoogleFonts.kanit(
-                      fontSize: 20,
+                    style: GoogleFonts.poppins(
+                      fontSize: 20.sp,
                       fontWeight: FontWeight.bold,
                       color: Colors.purple.shade400,
                     ),
                   ),
-                  const SizedBox(height: 50),
+                  SizedBox(height: 50.h),
 
                   // email
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    padding: EdgeInsets.symmetric(horizontal: 25.0.w),
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.grey.shade200,
                         border: Border.all(color: Colors.white),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 20),
+                        padding: EdgeInsets.only(left: 20.w),
                         child: TextFormField(
                           keyboardType: TextInputType.emailAddress,
                           controller: _emailId,
@@ -168,19 +169,19 @@ class _SignInState extends State<SignIn> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: 10.h),
 
                   // password
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    padding: EdgeInsets.symmetric(horizontal: 25.0.w),
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.grey.shade200,
                         border: Border.all(color: Colors.white),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 20),
+                        padding: EdgeInsets.only(left: 20.w),
                         child: TextFormField(
                           controller: _password,
                           obscureText: true,
@@ -200,11 +201,11 @@ class _SignInState extends State<SignIn> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: 10.h),
 
                   //Forgot Password button
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    padding: EdgeInsets.symmetric(horizontal: 25.0.w),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -219,9 +220,9 @@ class _SignInState extends State<SignIn> {
                               ),
                             );
                           },
-                          child: const Text(
+                          child: Text(
                             'Forgot Password? Aiyahhh',
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
                               color: Colors.amber,
                             ),
                           ),
@@ -229,11 +230,11 @@ class _SignInState extends State<SignIn> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: 20.h),
 
                   // sign in
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    padding: EdgeInsets.symmetric(horizontal: 25.0.w),
                     child: GestureDetector(
                       onTap: () {
                         if (_formKey.currentState!.validate()) {
@@ -250,7 +251,7 @@ class _SignInState extends State<SignIn> {
                         }
                       },
                       child: Container(
-                        padding: const EdgeInsets.all(25),
+                        padding: EdgeInsets.all(25.sp),
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: [
@@ -261,41 +262,41 @@ class _SignInState extends State<SignIn> {
                             end: Alignment.bottomRight,
                           ),
                           //color: Colors.deepPurple,
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(12.r),
                         ),
-                        child: const Center(
+                        child: Center(
                           child: Text(
                             'Sign In',
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
-                              fontSize: 20,
+                              fontSize: 20.sp,
                             ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 35),
+                  SizedBox(height: 35.h),
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         'No account?',
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
                           fontWeight: FontWeight.bold,
                           color: Colors.indigo.shade300,
                         ),
                       ),
-                      const SizedBox(
-                        width: 10,
+                      SizedBox(
+                        width: 10.h,
                       ),
                       GestureDetector(
                         onTap: widget.showRegisterPage,
-                        child: const Text(
+                        child: Text(
                           'Create one here!',
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
                             color: Colors.tealAccent,
                             fontWeight: FontWeight.bold,
                           ),

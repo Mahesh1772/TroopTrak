@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/util/constants.dart';
 
@@ -10,24 +11,27 @@ class CurrentStrengthChart extends StatelessWidget {
 
   final List<PieChartSectionData> pieChartSoldierStrengthIndicators = [
     PieChartSectionData(
-        color: Colors.red, value: 6, showTitle: false, radius: 25),
+        color: Colors.red, value: 6, showTitle: false, radius: 25.r),
     PieChartSectionData(
-        color: Colors.blue, value: 74, showTitle: false, radius: 22),
+        color: Colors.blue, value: 74, showTitle: false, radius: 22.r),
     PieChartSectionData(
-        color: Colors.yellow, value: 25, showTitle: false, radius: 19),
+        color: Colors.yellow, value: 25, showTitle: false, radius: 19.r),
     PieChartSectionData(
-        color: Colors.lightBlueAccent, value: 1, showTitle: false, radius: 16),
+        color: Colors.lightBlueAccent,
+        value: 1,
+        showTitle: false,
+        radius: 16.r),
     PieChartSectionData(
         color: Colors.blue.withOpacity(0.1),
         value: 44,
         showTitle: false,
-        radius: 16),
+        radius: 16.r),
   ];
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 200,
+      height: 215.h,
       child: Stack(
         children: [
           PieChart(
@@ -46,7 +50,7 @@ class CurrentStrengthChart extends StatelessWidget {
               Text(
                 "79",
                 style: GoogleFonts.poppins(
-                  fontSize: 48,
+                  fontSize: 48.sp,
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
                   height: 0.5,
@@ -55,7 +59,7 @@ class CurrentStrengthChart extends StatelessWidget {
               Text(
                 "of 126 soldiers",
                 style: GoogleFonts.poppins(
-                  fontSize: 14,
+                  fontSize: 14.sp,
                   color: Colors.white,
                   fontWeight: FontWeight.w500,
                 ),

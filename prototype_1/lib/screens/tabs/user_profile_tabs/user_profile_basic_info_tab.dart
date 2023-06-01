@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:prototype_1/screens/update_soldier_details_screen.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/util/text_styles/soldier_detailed_screen_info_template.dart';
@@ -60,7 +61,7 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab> {
     const docIDs = 'Lee Kuan Yew';
 
     return SizedBox(
-      height: 600,
+      height: 600.h,
       child: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('Users')
@@ -100,8 +101,8 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab> {
                   content: profile[13].toUpperCase(),
                   icon: Icons.military_tech_rounded,
                 ),
-                const SizedBox(
-                  height: 30,
+                SizedBox(
+                  height: 30.h,
                 ),
                 Center(
                   child: TextButton(
@@ -129,8 +130,8 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab> {
                       );
                     },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 40.0, vertical: 16.0),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 40.0.w, vertical: 16.0.h),
                       decoration: BoxDecoration(
                           shape: BoxShape.rectangle,
                           gradient: const LinearGradient(
@@ -139,33 +140,33 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab> {
                               Color.fromARGB(255, 130, 60, 229),
                             ],
                           ),
-                          borderRadius: BorderRadius.circular(50.0)),
+                          borderRadius: BorderRadius.circular(50.0.r)),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
-                        children: const [
-                          Icon(
+                        children: [
+                          const Icon(
                             Icons.edit_document,
                             color: Colors.white,
                           ),
                           SizedBox(
-                            width: 20,
+                            width: 20.w,
                           ),
-                          StyledText("EDIT USER PROFILE", 18,
+                          StyledText("EDIT USER PROFILE", 18.sp,
                               fontWeight: FontWeight.bold),
                         ],
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 10,
+                SizedBox(
+                  height: 10.h,
                 ),
                 Center(
                   child: TextButton(
                     onPressed: deleteUserAccount,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 30.0, vertical: 16.0),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 30.0.w, vertical: 16.0.h),
                       decoration: BoxDecoration(
                           shape: BoxShape.rectangle,
                           gradient: const LinearGradient(
@@ -174,18 +175,18 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab> {
                               Color.fromARGB(255, 237, 131, 124)
                             ],
                           ),
-                          borderRadius: BorderRadius.circular(50.0)),
+                          borderRadius: BorderRadius.circular(50.0.r)),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
-                        children: const [
-                          Icon(
+                        children: [
+                          const Icon(
                             Icons.delete,
                             color: Colors.white,
                           ),
                           SizedBox(
-                            width: 20,
+                            width: 20.w,
                           ),
-                          StyledText("DELETE USER PROFILE", 18,
+                          StyledText("DELETE USER PROFILE", 18.sp,
                               fontWeight: FontWeight.bold),
                         ],
                       ),

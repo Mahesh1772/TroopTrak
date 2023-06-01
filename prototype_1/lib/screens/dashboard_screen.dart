@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/screens/soldier_detailed_screen.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
@@ -116,16 +117,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24.0),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 24.0.w),
                     child: StyledText(
                       'Dashboard',
-                      20,
+                      20.sp,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 100.0),
+                    padding: EdgeInsets.only(left: 100.0.w),
                     child: InkWell(
                       onTap: () {
                         //print(fname);
@@ -133,23 +134,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                          boxShadow: const [
+                          boxShadow: [
                             BoxShadow(
                                 color: Colors.black54,
-                                offset: Offset(10.0, 10.0),
-                                blurRadius: 2.0,
-                                spreadRadius: 2.0),
+                                offset: Offset(10.0.w, 10.0.h),
+                                blurRadius: 2.0.r,
+                                spreadRadius: 2.0.r),
                           ],
                           color: Colors.deepPurple.shade400,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(10)),
+                          borderRadius: BorderRadius.all(Radius.circular(10.r)),
                         ),
-                        child: const Padding(
-                          padding: EdgeInsets.all(defaultPadding),
+                        child: Padding(
+                          padding: EdgeInsets.all(defaultPadding.sp),
                           child: Icon(
                             Icons.exit_to_app_rounded,
                             color: Colors.white,
-                            size: 35,
+                            size: 35.sp,
                           ),
                         ),
                       ),
@@ -175,43 +175,43 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   )));
                     },
                     child: Padding(
-                      padding: const EdgeInsets.all(12.0),
+                      padding: EdgeInsets.all(12.0.sp),
                       child: Image.asset(
                         'lib/assets/user.png',
-                        width: 50,
+                        width: 50.w,
                       ),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 10,
+              SizedBox(
+                height: 10.h,
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.0),
+                padding: EdgeInsets.symmetric(horizontal: 24.0.w),
                 child: StyledText(
                   'Welcome,\n$fname! 👋',
-                  32,
+                  32.sp,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(
-                height: 20,
+              SizedBox(
+                height: 20.h,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
+                padding: EdgeInsets.symmetric(horizontal: defaultPadding.w),
                 child: Container(
-                  padding: const EdgeInsets.all(defaultPadding),
-                  decoration: const BoxDecoration(
+                  padding: EdgeInsets.all(defaultPadding.sp),
+                  decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
                           color: Colors.black54,
-                          offset: Offset(10.0, 10.0),
-                          blurRadius: 2.0,
-                          spreadRadius: 2.0),
+                          offset: Offset(10.0.w, 10.0.h),
+                          blurRadius: 2.0.r,
+                          spreadRadius: 2.0.r),
                     ],
                     color: accentColor,
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    borderRadius: BorderRadius.all(Radius.circular(10.r)),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -222,7 +222,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           Text(
                             "Strength In-Camp",
                             style: GoogleFonts.poppins(
-                                fontSize: 24,
+                                fontSize: 24.sp,
                                 fontWeight: FontWeight.w500,
                                 color: Colors.white),
                           ),
@@ -237,16 +237,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       Text(
                         "As of ${DateFormat('yMMMMd').add_Hm().format(DateTime.now())}",
                         style: GoogleFonts.poppins(
-                            fontSize: 18,
+                            fontSize: 18.sp,
                             fontWeight: FontWeight.w500,
                             color: Colors.white.withOpacity(0.45)),
                       ),
-                      const SizedBox(
-                        height: defaultPadding + 2,
+                      SizedBox(
+                        height: (defaultPadding + 2).h,
                       ),
                       CurrentStrengthChart(),
-                      const SizedBox(
-                        height: defaultPadding,
+                      SizedBox(
+                        height: defaultPadding.h,
                       ),
                       const CurrentStrengthBreakdownTile(
                         title: "Total Officers",
@@ -305,12 +305,12 @@ class CurrentStrengthBreakdownTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(
-        top: defaultPadding,
+      margin: EdgeInsets.only(
+        top: defaultPadding.h,
       ),
-      padding: const EdgeInsets.all(defaultPadding),
+      padding: EdgeInsets.all(defaultPadding.sp),
       decoration: BoxDecoration(
-        border: Border.all(width: 2, color: Colors.blue.withOpacity(0.15)),
+        border: Border.all(width: 2.w, color: Colors.blue.withOpacity(0.15)),
         borderRadius: const BorderRadius.all(
           Radius.circular(defaultPadding),
         ),
@@ -319,8 +319,8 @@ class CurrentStrengthBreakdownTile extends StatelessWidget {
         title: Row(
           children: [
             SizedBox(
-              height: 20,
-              width: 20,
+              height: 20.h,
+              width: 20.w,
               child: Image.asset(
                 imgSrc,
                 color: imgColor,
@@ -328,7 +328,7 @@ class CurrentStrengthBreakdownTile extends StatelessWidget {
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
+                padding: EdgeInsets.symmetric(horizontal: defaultPadding.w),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -336,7 +336,7 @@ class CurrentStrengthBreakdownTile extends StatelessWidget {
                       title,
                       style: GoogleFonts.poppins(
                         color: Colors.white,
-                        fontSize: 18,
+                        fontSize: 18.sp,
                         fontWeight: FontWeight.w500,
                       ),
                       maxLines: 1,
@@ -346,7 +346,7 @@ class CurrentStrengthBreakdownTile extends StatelessWidget {
                       "$currentNumOfSoldiers In Camp",
                       style: GoogleFonts.poppins(
                         color: Colors.white.withOpacity(0.45),
-                        fontSize: 14,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
                       ),
                       maxLines: 1,
@@ -359,7 +359,7 @@ class CurrentStrengthBreakdownTile extends StatelessWidget {
             Text(
               "$currentNumOfSoldiers / $totalNumOfSoldiers",
               style: GoogleFonts.poppins(
-                  fontSize: 24,
+                  fontSize: 24.sp,
                   fontWeight: FontWeight.w500,
                   color: Colors.white),
             ),
@@ -368,10 +368,10 @@ class CurrentStrengthBreakdownTile extends StatelessWidget {
         collapsedIconColor: Colors.white,
         children: [
           SizedBox(
-            height: 220,
+            height: 220.h,
             child: ListView.builder(
               itemCount: unitSoldiers.length,
-              padding: const EdgeInsets.all(12),
+              padding: EdgeInsets.all(12.sp),
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 return DashboardSoldierTile(

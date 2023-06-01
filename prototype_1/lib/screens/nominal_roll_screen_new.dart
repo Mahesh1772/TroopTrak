@@ -1,4 +1,5 @@
 // ignore_for_file: must_be_immutable
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -89,16 +90,16 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24.0),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 24.0.w),
                     child: StyledText(
                       'Nominal Roll',
-                      30,
+                      30.sp,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 25.0),
+                    padding: EdgeInsets.only(left: 25.0.w),
                     child: InkWell(
                       onTap: () {
                         print(currentUserData);
@@ -106,23 +107,22 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                          boxShadow: const [
+                          boxShadow: [
                             BoxShadow(
                                 color: Colors.black54,
-                                offset: Offset(10.0, 10.0),
-                                blurRadius: 2.0,
-                                spreadRadius: 2.0),
+                                offset: Offset(10.0.w, 10.0.h),
+                                blurRadius: 2.0.r,
+                                spreadRadius: 2.0.r),
                           ],
                           color: Colors.deepPurple.shade400,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(10)),
+                          borderRadius: BorderRadius.all(Radius.circular(10.r)),
                         ),
-                        child: const Padding(
-                          padding: EdgeInsets.all(defaultPadding),
+                        child: Padding(
+                          padding: EdgeInsets.all(defaultPadding.sp),
                           child: Icon(
                             Icons.exit_to_app_rounded,
                             color: Colors.white,
-                            size: 35,
+                            size: 35.sp,
                           ),
                         ),
                       ),
@@ -151,31 +151,31 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                       );
                     },
                     child: Padding(
-                      padding: const EdgeInsets.all(12.0),
+                      padding: EdgeInsets.all(12.0.sp),
                       child: Image.asset(
                         'lib/assets/user.png',
-                        width: 50,
+                        width: 50.w,
                       ),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 10,
+              SizedBox(
+                height: 10.h,
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.0),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.0.w),
                 child: StyledText(
                   'Our Family of Soldiers:',
-                  20,
+                  20.sp,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(
-                height: 10,
+              SizedBox(
+                height: 10.h,
               ),
               Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: EdgeInsets.all(20.0.sp),
                 child: TextField(
                   onChanged: (value) {
                     setState(() {
@@ -189,7 +189,7 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                     fillColor: Colors.amber,
                     filled: true,
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(10.r),
                         borderSide: BorderSide.none),
                   ),
                 ),
@@ -222,13 +222,13 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                         return Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          children: const [
+                          children: [
                             Center(
                               child: Text(
                                 'No results Found!',
                                 style: TextStyle(
                                   color: Colors.purpleAccent,
-                                  fontSize: 45,
+                                  fontSize: 45.sp,
                                 ),
                                 textAlign: TextAlign.center,
                               ),
@@ -250,10 +250,9 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                   return Expanded(
                     child: GridView.builder(
                       itemCount: userDetails.length,
-                      padding: const EdgeInsets.all(12),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2, childAspectRatio: 1 / 1.5),
+                      padding: EdgeInsets.all(12.sp),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2, childAspectRatio: 1.w / 1.5.h),
                       itemBuilder: (context, index) {
                         return SoldierTile(
                           soldierName: userDetails[index]
