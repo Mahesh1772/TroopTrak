@@ -24,7 +24,7 @@ class StatusesTab extends StatefulWidget {
     required this.docID,
   });
 
-  late String docID;
+  final String docID;
 
   @override
   State<StatusesTab> createState() => _StatusesTabState();
@@ -46,7 +46,9 @@ class _StatusesTabState extends State<StatusesTab> {
 
   @override
   Widget build(BuildContext context) {
-    List<Map<String, dynamic>> userStatus = [];
+    List<Map<String, dynamic>> userCurrentStatus = [];
+    List<Map<String, dynamic>> userPastStatus = [];
+    List<Map<String, dynamic>> toRemove = [];
 
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -57,11 +59,23 @@ class _StatusesTabState extends State<StatusesTab> {
           builder: (context, snapshot) {
             var users = snapshot.data?.docs.toList();
             if (snapshot.hasData) {
-              userStatus = [];
-              for (var user in users!) {
-                var data = user.data();
-                userStatus.add(data as Map<String, dynamic>);
+              userCurrentStatus = [];
+              for (var i = 0; i < users!.length; i++) {
+                var data = users[i].data();
+                userCurrentStatus.add(data as Map<String, dynamic>);
+                userCurrentStatus[i]
+                    .addEntries({'ID': users[i].reference.id}.entries);
               }
+              for (var status in userCurrentStatus) {
+                if (DateFormat("d MMM yyyy")
+                    .parse(status['endDate'])
+                    .isBefore(DateTime.now())) {
+                  userPastStatus.add(status);
+                  toRemove.add(status);
+                  //userCurrentStatus.remove(status);
+                }
+              }
+              userCurrentStatus.removeWhere((element) => toRemove.contains(element));
             }
             return Column(
               mainAxisSize: MainAxisSize.min,
@@ -92,15 +106,17 @@ class _StatusesTabState extends State<StatusesTab> {
                 SizedBox(
                   height: 295.h,
                   child: ListView.builder(
-                    itemCount: userStatus.length,
+                    itemCount: userCurrentStatus.length,
                     padding: EdgeInsets.all(12.sp),
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return SoldierStatusTile(
-                        statusType: userStatus[index]['statusType'],
-                        statusName: userStatus[index]['statusName'],
-                        startDate: userStatus[index]['startDate'],
-                        endDate: userStatus[index]['endDate'],
+                        statusID: widget.docID,
+                        docID: userCurrentStatus[index]['ID'],
+                        statusType: userCurrentStatus[index]['statusType'],
+                        statusName: userCurrentStatus[index]['statusName'],
+                        startDate: userCurrentStatus[index]['startDate'],
+                        endDate: userCurrentStatus[index]['endDate'],
                       );
                     },
                   ),
@@ -130,13 +146,13 @@ class _StatusesTabState extends State<StatusesTab> {
                 Expanded(
                   child: ListView.builder(
                     scrollDirection: Axis.vertical,
-                    itemCount: pastStatuses.length,
+                    itemCount: userPastStatus.length,
                     itemBuilder: (context, index) {
                       return PastSoldierStatusTile(
-                          statusType: pastStatuses[index][0],
-                          statusName: pastStatuses[index][1],
-                          startDate: pastStatuses[index][2],
-                          endDate: pastStatuses[index][3]);
+                          statusType: userPastStatus[index][0],
+                          statusName: userPastStatus[index][1],
+                          startDate: userPastStatus[index][2],
+                          endDate: userPastStatus[index][3]);
                     },
                   ),
                 ),

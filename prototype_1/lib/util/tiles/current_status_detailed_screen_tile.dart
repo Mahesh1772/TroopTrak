@@ -8,35 +8,35 @@ late IconData? tileIcon;
 List soldierStatus = ["Excuse", "Ex FLEGs", "13 Jul 2021", "12 Jul 2022"];
 
 class SoldierStatusTile extends StatefulWidget {
-  const SoldierStatusTile({
-    super.key,
-    required this.statusType,
-    required this.statusName,
-    required this.startDate,
-    required this.endDate,
-    required this.docID
-  });
+  const SoldierStatusTile(
+      {super.key,
+      required this.statusType,
+      required this.statusName,
+      required this.startDate,
+      required this.endDate,
+      required this.docID,
+      required this.statusID});
 
   final String statusType;
   final String startDate;
   final String endDate;
   final String statusName;
   final String docID;
+  final String statusID;
 
   @override
   State<SoldierStatusTile> createState() => _SoldierStatusTileState();
 }
 
 class _SoldierStatusTileState extends State<SoldierStatusTile> {
-
-
-  //Future deleteCurrentStatus() async {
-  //  await FirebaseFirestore.instance
-  //      .collection('Users')
-  //      .doc(widget.docID)
-  //      .collection('Statuses').where('statusName'== widget.statusName)
-  //      .delete();
-  //}
+  Future deleteCurrentStatus() async {
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(widget.docID)
+        .collection('Statuses')
+        .doc(widget.statusID)
+        .delete();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +66,7 @@ class _SoldierStatusTileState extends State<SoldierStatusTile> {
                   size: 60.sp,
                 ),
                 InkWell(
-                  onTap: (){}, //deleteCurrentStatus,
+                  onTap: deleteCurrentStatus,
                   child: Icon(
                     Icons.delete_rounded,
                     color: Colors.white,
