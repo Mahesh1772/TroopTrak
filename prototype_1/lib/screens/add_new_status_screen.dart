@@ -74,8 +74,8 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
         .collection('Users')
         .doc(widget.docID)
         .collection('Statuses')
-        .doc(widget.statusName.text.trim())
-        .set({
+        //.doc(widget.statusName.text.trim())
+        .add({
       //User map formatting
       'statusName': widget.statusName.text.trim(),
       'statusType': widget.selectedStatusType,

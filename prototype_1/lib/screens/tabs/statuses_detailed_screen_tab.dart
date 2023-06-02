@@ -19,7 +19,7 @@ var pastStatuses = [
 ];
 
 class StatusesTab extends StatefulWidget {
-  StatusesTab({
+  const StatusesTab({
     super.key,
     required this.docID,
   });
@@ -60,6 +60,8 @@ class _StatusesTabState extends State<StatusesTab> {
             var users = snapshot.data?.docs.toList();
             if (snapshot.hasData) {
               userCurrentStatus = [];
+              userPastStatus = [];
+              toRemove = [];
               for (var i = 0; i < users!.length; i++) {
                 var data = users[i].data();
                 userCurrentStatus.add(data as Map<String, dynamic>);
@@ -75,7 +77,8 @@ class _StatusesTabState extends State<StatusesTab> {
                   //userCurrentStatus.remove(status);
                 }
               }
-              userCurrentStatus.removeWhere((element) => toRemove.contains(element));
+              userCurrentStatus
+                  .removeWhere((element) => toRemove.contains(element));
             }
             return Column(
               mainAxisSize: MainAxisSize.min,
@@ -111,8 +114,8 @@ class _StatusesTabState extends State<StatusesTab> {
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return SoldierStatusTile(
-                        statusID: widget.docID,
-                        docID: userCurrentStatus[index]['ID'],
+                        statusID: userCurrentStatus[index]['ID'],
+                        docID: widget.docID,
                         statusType: userCurrentStatus[index]['statusType'],
                         statusName: userCurrentStatus[index]['statusName'],
                         startDate: userCurrentStatus[index]['startDate'],
@@ -149,10 +152,11 @@ class _StatusesTabState extends State<StatusesTab> {
                     itemCount: userPastStatus.length,
                     itemBuilder: (context, index) {
                       return PastSoldierStatusTile(
-                          statusType: userPastStatus[index][0],
-                          statusName: userPastStatus[index][1],
-                          startDate: userPastStatus[index][2],
-                          endDate: userPastStatus[index][3]);
+                        statusType: userPastStatus[index]['statusType'],
+                        statusName: userPastStatus[index]['statusName'],
+                        startDate: userPastStatus[index]['startDate'],
+                        endDate: userPastStatus[index]['endDate'],
+                      );
                     },
                   ),
                 ),

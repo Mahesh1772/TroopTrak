@@ -43,9 +43,9 @@ class _SoldierStatusTileState extends State<SoldierStatusTile> {
     setTileIconAndColor(widget.statusType);
 
     return Padding(
-      padding: EdgeInsets.all(12.0.sp),
+      padding: EdgeInsets.all(15.0.sp),
       child: Container(
-        width: 250.w,
+        width: 225.w,
         padding: EdgeInsets.all(12.sp),
         decoration: BoxDecoration(boxShadow: [
           BoxShadow(
@@ -66,7 +66,10 @@ class _SoldierStatusTileState extends State<SoldierStatusTile> {
                   size: 60.sp,
                 ),
                 InkWell(
-                  onTap: deleteCurrentStatus,
+                  onTap: () {
+                    //print(widget.docID);
+                    deleteCurrentStatus();
+                  },
                   child: Icon(
                     Icons.delete_rounded,
                     color: Colors.white,
@@ -76,11 +79,17 @@ class _SoldierStatusTileState extends State<SoldierStatusTile> {
               ],
             ),
             SizedBox(
-              height: 10.h,
+              height: 20.h,
             ),
             StyledText(widget.statusName, 20.sp, fontWeight: FontWeight.bold),
+            const SizedBox(
+              height: 10,
+            ),
             StyledText(widget.statusType.toUpperCase(), 18.sp,
                 fontWeight: FontWeight.w500),
+            const SizedBox(
+              height: 10,
+            ),
             StyledText("${widget.startDate} - ${widget.endDate}", 16.sp,
                 fontWeight: FontWeight.bold)
           ],
