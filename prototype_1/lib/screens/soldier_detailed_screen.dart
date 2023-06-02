@@ -205,7 +205,7 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
                       BasicInfoTab(docID: widget.soldierName),
 
                       //Statuses tab
-                      const StatusesTab(),
+                      StatusesTab(docID: widget.soldierName,),
                     ],
                   ),
                 )

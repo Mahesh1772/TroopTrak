@@ -199,7 +199,6 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                     documentIDs = [];
                     userDetails = [];
                     var users = snapshot.data?.docs.toList();
-                    var docsmapshot = snapshot.data!;
                     if (searchText.isNotEmpty) {
                       users = users!.where((element) {
                         return element
@@ -231,11 +230,9 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                         );
                       }
                     } else {
-                      for (var i = 0; i < users!.length; i++) {
-                        documentIDs.add(users[i].reference.id);
-                        var data =
-                            docsmapshot.docs[i].data() as Map<String, dynamic>;
-                        userDetails.add(data);
+                      for (var user in users!) {
+                        var data = user.data();
+                        userDetails.add(data as Map<String, dynamic>);
                       }
                     }
                   }
@@ -249,7 +246,6 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                         return SoldierTile(
                           soldierName: userDetails[index]['name'],
                           soldierRank: userDetails[index]['rank'],
-                          //"lib/assets/army-ranks/${userDetails[index]['rank'].toString().toLowerCase()}.png", //unitSoldiers[index][1],
                           soldierAppointment: userDetails[index]['appointment'],
                           company: userDetails[index]['company'],
                           platoon: userDetails[index]['platoon'],
