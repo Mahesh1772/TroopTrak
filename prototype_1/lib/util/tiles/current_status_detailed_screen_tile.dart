@@ -14,62 +14,33 @@ class SoldierStatusTile extends StatefulWidget {
     required this.statusName,
     required this.startDate,
     required this.endDate,
+    required this.docID
   });
 
   final String statusType;
   final String startDate;
   final String endDate;
   final String statusName;
+  final String docID;
 
   @override
   State<SoldierStatusTile> createState() => _SoldierStatusTileState();
 }
 
-List<String> documentIDs = [];
-const docIDs = 'Aakash Ramaswamy';
-
 class _SoldierStatusTileState extends State<SoldierStatusTile> {
-  Future getDocIDs() async {
-    await FirebaseFirestore.instance
-        .collection('Users')
-        .doc(docIDs)
-        .collection('Statuses')
-        .get()
-        .then((value) {
-      value.docs.forEach((element) {
-        //print(element.data());
-        documentIDs.add(element.reference.id);
-      });
-    });
-    //.orderBy('rank', descending: false)
-    print(documentIDs);
-    setState(() {});
-  }
 
-  @override
-  void initState() {
-    getDocIDs();
-    super.initState();
-    documentIDs = [];
-  }
 
-  Future deleteCurrentStatus() async {
-    await FirebaseFirestore.instance
-        .collection('Users')
-        .doc(docIDs)
-        .collection('Statuses')
-        .doc('yKPlOfPtnQnRypRDvTZI')
-        .delete();
-  }
-
-  final String statusType = "Excuse";
-  final String startDate = "Ex FLEGs";
-  final String endDate = "13 Jul 2021";
-  final String statusName = "12 Jul 2022";
+  //Future deleteCurrentStatus() async {
+  //  await FirebaseFirestore.instance
+  //      .collection('Users')
+  //      .doc(widget.docID)
+  //      .collection('Statuses').where('statusName'== widget.statusName)
+  //      .delete();
+  //}
 
   @override
   Widget build(BuildContext context) {
-    setTileIconAndColor(statusType);
+    setTileIconAndColor(widget.statusType);
 
     return Padding(
       padding: EdgeInsets.all(12.0.sp),
@@ -95,7 +66,7 @@ class _SoldierStatusTileState extends State<SoldierStatusTile> {
                   size: 60.sp,
                 ),
                 InkWell(
-                  onTap: deleteCurrentStatus,
+                  onTap: (){}, //deleteCurrentStatus,
                   child: Icon(
                     Icons.delete_rounded,
                     color: Colors.white,
@@ -107,10 +78,10 @@ class _SoldierStatusTileState extends State<SoldierStatusTile> {
             SizedBox(
               height: 10.h,
             ),
-            StyledText(statusName, 20.sp, fontWeight: FontWeight.bold),
-            StyledText(statusType.toUpperCase(), 18.sp,
+            StyledText(widget.statusName, 20.sp, fontWeight: FontWeight.bold),
+            StyledText(widget.statusType.toUpperCase(), 18.sp,
                 fontWeight: FontWeight.w500),
-            StyledText("$startDate - $endDate", 16.sp,
+            StyledText("${widget.startDate} - ${widget.endDate}", 16.sp,
                 fontWeight: FontWeight.bold)
           ],
         ),
