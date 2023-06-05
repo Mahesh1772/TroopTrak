@@ -9,6 +9,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
 late Stream<QuerySnapshot> documentStream;
+List<Map<String, dynamic>> userCurrentStatus = [];
 
 class StatusesTab extends StatefulWidget {
   const StatusesTab({
@@ -37,31 +38,10 @@ class _StatusesTabState extends State<StatusesTab> {
 
   @override
   Widget build(BuildContext context) {
-    List<Map<String, dynamic>> userCurrentStatus = [];
     List<Map<String, dynamic>> userPastStatus = [];
     List<Map<String, dynamic>> toRemove = [];
 
     return Scaffold(
-      /*floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AddNewStatusScreen(
-                docID: widget.docID,
-                selectedStatusType: "Select status type...",
-                statusName: TextEditingController(),
-                startDate: //'Start Date',
-                    DateFormat('d MMM yyyy').format(DateTime.now()),
-                endDate: //'End Date',
-                    DateFormat('d MMM yyyy').format(DateTime.now()),
-              ),
-            ),
-          );
-        },
-        backgroundColor: Colors.deepPurple,
-        child: const Icon(Icons.add),
-      ),*/
       backgroundColor: Colors.transparent,
       body: Padding(
         padding: EdgeInsets.all(30.0.sp),
@@ -184,9 +164,9 @@ class _StatusesTabState extends State<StatusesTab> {
                             selectedStatusType: "Select status type...",
                             statusName: TextEditingController(),
                             startDate: 'Start Date',
-                                //DateFormat('d MMM yyyy').format(DateTime.now()),
+                            //DateFormat('d MMM yyyy').format(DateTime.now()),
                             endDate: 'End Date',
-                                //DateFormat('d MMM yyyy').format(DateTime.now()),
+                            //DateFormat('d MMM yyyy').format(DateTime.now()),
                           ),
                         ),
                       );

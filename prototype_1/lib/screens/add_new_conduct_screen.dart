@@ -1,5 +1,5 @@
 // ignore_for_file: must_be_immutable
-
+import "dart:collection";
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +36,9 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
   //This is what the stream builder is waiting for
   late Stream<QuerySnapshot> documentStream;
 
+  //This is a Stram used to read the statuses and the names associated with it
+  List<dynamic> soldierStatusArray = [];
+
   // The list of all document IDs,
   //which have access to each their own personal information
   List<String> documentIDs = [];
@@ -57,10 +60,39 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
     });
   }
 
+  Future getUserBooks() async {
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .get()
+        .then((querySnapshot) async {
+      querySnapshot.docs.forEach((snapshot) {
+        FirebaseFirestore.instance
+            .collection("Users")
+            .doc(snapshot.id)
+            .collection("Statuses")
+            .get()
+            .then((querySnapshot) {
+          querySnapshot.docs.forEach((result) {
+            Map<String, dynamic> data = result.data();
+            print(snapshot.id);
+            soldierStatusArray.add(snapshot.id);
+          });
+        });
+      });
+    });
+  }
+
+  void filter() {
+    soldierStatusArray = LinkedHashSet<String>.from(soldierStatusArray).toList();
+    print(soldierStatusArray);
+  }
+
   @override
   void initState() {
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
     getCurrentUserData();
+    getUserBooks();
+    soldierStatusArray = LinkedHashSet<String>.from(soldierStatusArray).toList();
     super.initState();
   }
 
@@ -74,6 +106,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
     "Metabolic Circuit",
     "Combat Circuit",
     "Live Firing",
+    "SOC/VOC"
   ];
 
   void _showStartDatePicker() {
@@ -87,7 +120,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
         if (value != null) {
           widget.startDate = DateFormat('d MMM yyyy').format(value);
         }
-        addUserDetails();
+        //addUserDetails();
       });
     });
   }
@@ -103,22 +136,24 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
         if (value != null) {
           widget.endDate = DateFormat('d MMM yyyy').format(value);
         }
-        addUserDetails();
+        //addUserDetails();
       });
     });
   }
 
-  Future addUserDetails() async {
+  Future addConductDetails() async {
     await FirebaseFirestore.instance
-        .collection('Statuses')
-        .doc(widget.conductName.text)
-        .update({
+        .collection('Conducts')
+        //.doc(widget.conductName.text)
+        .add({
       //User map formatting
       'conductName': widget.conductName.text.trim(),
       'conductType': widget.selectedConductType,
       'startDate': widget.startDate,
       'endDate': widget.endDate,
+      'participants': tempArray,
     });
+    Navigator.pop(context);
   }
 
   @override
@@ -155,12 +190,12 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                   height: 20.h,
                 ),
                 StyledText(
-                  "Add a new conduct for this company ✍️",
+                  "Add a new conduct ✍️",
                   30.sp,
                   fontWeight: FontWeight.bold,
                 ),
                 StyledText(
-                  "Fill in the details of the conduct",
+                  "Details of the conduct",
                   14.sp,
                   fontWeight: FontWeight.w300,
                 ),
@@ -200,7 +235,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                         .toList(),
                     onChanged: (String? item) async => setState(() {
                       widget.selectedConductType = item;
-                      addUserDetails();
+                      //addUserDetails();
                     }),
                   ),
                 ),
@@ -358,6 +393,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                         }).toList();
                         for (var user in users) {
                           var data = user.data();
+                          documentIDs.add(user['name']);
                           userDetails.add(data as Map<String, dynamic>);
                         }
                         if (userDetails.isEmpty) {
@@ -380,11 +416,14 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                         }
                       } else {
                         for (var i = 0; i < users!.length; i++) {
-                          documentIDs.add(users[i].reference.id);
+                          documentIDs.add(users[i]['name']);
                           var data = docsmapshot.docs[i].data()
                               as Map<String, dynamic>;
                           userDetails.add(data);
                         }
+                        tempArray = documentIDs;
+                        filter();
+                        tempArray.removeWhere((element) => soldierStatusArray.contains(element));
                       }
                     }
                     return Flexible(
@@ -453,7 +492,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                   height: 30.h,
                 ),
                 GestureDetector(
-                  onTap: addUserDetails,
+                  onTap: addConductDetails,
                   child: Container(
                     padding: EdgeInsets.all(10.sp),
                     decoration: BoxDecoration(
