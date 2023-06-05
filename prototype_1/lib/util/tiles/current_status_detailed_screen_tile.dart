@@ -5,7 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 late Color? tileColor;
 late IconData? tileIcon;
-List soldierStatus = ["Excuse", "Ex FLEGs", "13 Jul 2021", "12 Jul 2022"];
 
 class SoldierStatusTile extends StatefulWidget {
   const SoldierStatusTile(
@@ -45,7 +44,7 @@ class _SoldierStatusTileState extends State<SoldierStatusTile> {
     return Padding(
       padding: EdgeInsets.all(15.0.sp),
       child: Container(
-        width: 225.w,
+        width: 230.w,
         padding: EdgeInsets.all(12.sp),
         decoration: BoxDecoration(boxShadow: [
           BoxShadow(
@@ -55,7 +54,7 @@ class _SoldierStatusTileState extends State<SoldierStatusTile> {
               color: Colors.black54)
         ], color: tileColor, borderRadius: BorderRadius.circular(12.r)),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -79,17 +78,17 @@ class _SoldierStatusTileState extends State<SoldierStatusTile> {
               ],
             ),
             SizedBox(
-              height: 20.h,
+              height: 5.h,
             ),
             StyledText(widget.statusName, 20.sp, fontWeight: FontWeight.bold),
-            const SizedBox(
-              height: 10,
-            ),
+            //const SizedBox(
+            //  height: 5,
+            //),
             StyledText(widget.statusType.toUpperCase(), 18.sp,
                 fontWeight: FontWeight.w500),
-            const SizedBox(
-              height: 10,
-            ),
+            //const SizedBox(
+            //  height: 5,
+            //),
             StyledText("${widget.startDate} - ${widget.endDate}", 16.sp,
                 fontWeight: FontWeight.bold)
           ],

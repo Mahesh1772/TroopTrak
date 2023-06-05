@@ -8,15 +8,7 @@ import 'package:prototype_1/util/tiles/past_status_detailed_screen_tile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
-var pastStatuses = [
-  //soldierStatuses - [statusType, statusName, startDate, endDate]
-  ["Excuse", "Ex FLEGs", "13 Jul 2021", "12 Jul 2022"],
-  ["Leave", "MC", "10 Jun 2021", "12 Jul 2021"],
-  ["Medical Appointment", "National Skin Centre", "5 Apr 2021", "5 Apr 2021"],
-  ["Excuse", "Ex FLEGs", "13 Jul 2021", "12 Jul 2022"],
-  ["Leave", "MC", "10 Jun 2021", "12 Jul 2021"],
-  ["Medical Appointment", "National Skin Centre", "5 Apr 2021", "5 Apr 2021"],
-];
+late Stream<QuerySnapshot> documentStream;
 
 class StatusesTab extends StatefulWidget {
   const StatusesTab({
@@ -32,7 +24,6 @@ class StatusesTab extends StatefulWidget {
 
 class _StatusesTabState extends State<StatusesTab> {
   //This is what the stream builder is waiting for
-  late Stream<QuerySnapshot> documentStream;
 
   @override
   void initState() {
@@ -51,6 +42,26 @@ class _StatusesTabState extends State<StatusesTab> {
     List<Map<String, dynamic>> toRemove = [];
 
     return Scaffold(
+      /*floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AddNewStatusScreen(
+                docID: widget.docID,
+                selectedStatusType: "Select status type...",
+                statusName: TextEditingController(),
+                startDate: //'Start Date',
+                    DateFormat('d MMM yyyy').format(DateTime.now()),
+                endDate: //'End Date',
+                    DateFormat('d MMM yyyy').format(DateTime.now()),
+              ),
+            ),
+          );
+        },
+        backgroundColor: Colors.deepPurple,
+        child: const Icon(Icons.add),
+      ),*/
       backgroundColor: Colors.transparent,
       body: Padding(
         padding: EdgeInsets.all(30.0.sp),
@@ -74,7 +85,6 @@ class _StatusesTabState extends State<StatusesTab> {
                     .isBefore(DateTime.now())) {
                   userPastStatus.add(status);
                   toRemove.add(status);
-                  //userCurrentStatus.remove(status);
                 }
               }
               userCurrentStatus
@@ -173,10 +183,10 @@ class _StatusesTabState extends State<StatusesTab> {
                             docID: widget.docID,
                             selectedStatusType: "Select status type...",
                             statusName: TextEditingController(),
-                            startDate:
-                                DateFormat('d MMM yyyy').format(DateTime.now()),
-                            endDate:
-                                DateFormat('d MMM yyyy').format(DateTime.now()),
+                            startDate: 'Start Date',
+                                //DateFormat('d MMM yyyy').format(DateTime.now()),
+                            endDate: 'End Date',
+                                //DateFormat('d MMM yyyy').format(DateTime.now()),
                           ),
                         ),
                       );

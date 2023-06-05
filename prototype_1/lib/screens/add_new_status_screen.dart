@@ -21,11 +21,13 @@ class AddNewStatusScreen extends StatefulWidget {
   late String? selectedStatusType;
   late String startDate;
   late String endDate;
-  String docID;
+  late String docID;
 
   @override
   State<AddNewStatusScreen> createState() => _AddNewStatusScreenState();
 }
+
+CollectionReference db = FirebaseFirestore.instance.collection('Users');
 
 class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
   final _formKey = GlobalKey<FormState>();
@@ -37,18 +39,25 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
     "Medical Appointment",
   ];
 
+  String sType = '';
+  TextEditingController sName = TextEditingController();
+  String sDate = DateFormat('d MMM yyyy').format(DateTime.now());
+  String eDate = DateFormat('d MMM yyyy').format(DateTime.now());
+
   void _showStartDatePicker() {
     showDatePicker(
       context: context,
-      initialDate: DateFormat("d MMM yyyy").parse(widget.startDate),
+      initialDate:
+          DateTime.now(), //DateFormat("d MMM yyyy").parse(widget.startDate),
       firstDate: DateTime(1960),
       lastDate: DateTime(2030),
     ).then((value) {
       setState(() {
         if (value != null) {
           widget.startDate = DateFormat('d MMM yyyy').format(value);
+          sDate = DateFormat('d MMM yyyy').format(value);
         }
-        addUserStatus();
+        //addUserStatus();
       });
     });
   }
@@ -56,43 +65,70 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
   void _showEndDatePicker() {
     showDatePicker(
       context: context,
-      initialDate: DateFormat("d MMM yyyy").parse(widget.endDate),
+      initialDate:
+          DateTime.now(), //DateFormat("d MMM yyyy").parse(widget.endDate),
       firstDate: DateTime(1960),
       lastDate: DateTime(2030),
     ).then((value) {
       setState(() {
         if (value != null) {
           widget.endDate = DateFormat('d MMM yyyy').format(value);
+          eDate = DateFormat('d MMM yyyy').format(value);
         }
-        addUserStatus();
+        //addUserStatus();
       });
     });
   }
 
   Future addUserStatus() async {
-    await FirebaseFirestore.instance
-        .collection('Users')
+    //await FirebaseFirestore.instance
+    //    .collection('Users')
+    db
         .doc(widget.docID)
         .collection('Statuses')
-        //.doc(widget.statusName.text.trim())
+        //.doc(sName.text.trim())
         .add({
       //User map formatting
-      'statusName': widget.statusName.text.trim(),
-      'statusType': widget.selectedStatusType,
-      'startDate': widget.startDate,
-      'endDate': widget.endDate,
+      'statusName': sName.text.trim(), //widget.statusName.text.trim(),//
+      'statusType': sType, //widget.selectedStatusType,
+      'startDate': sDate, //widget.startDate,
+      'endDate': eDate, //widget.endDate,
     });
+    Navigator.pop(context);
   }
 
-  /*
+  void display() {
+    print(sName.text.trim());
+    print(sType);
+    print(widget.startDate);
+    print(widget.endDate);
+    print(widget.docID);
+  }
+
   @override
   void dispose() {
     widget.statusName.dispose();
     super.dispose();
-  }*/
+  }
+
+  @override
+  void initState() {
+    widget.statusName = sName;
+    widget.endDate = eDate;
+    widget.selectedStatusType = sType;
+    widget.startDate = sDate;
+  }
 
   @override
   Widget build(BuildContext context) {
+
+    void initState() {
+      widget.statusName = sName;
+      widget.endDate = eDate;
+      widget.selectedStatusType = sType;
+      widget.startDate = sDate;
+    }
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
@@ -142,7 +178,8 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
                     child: DropdownButtonFormField<String>(
                       alignment: Alignment.center,
                       dropdownColor: Colors.black54,
-                      value: widget.selectedStatusType,
+                      value:
+                          "Select status type...", //widget.selectedStatusType,
                       icon: const Icon(
                         Icons.arrow_downward_sharp,
                         color: Colors.white,
@@ -164,8 +201,9 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
                           )
                           .toList(),
                       onChanged: (String? item) async => setState(() {
-                        widget.selectedStatusType = item;
-                        addUserStatus();
+                        //widget.selectedStatusType = item;
+                        sType = item!;
+                        //addUserStatus();
                       }),
                     ),
                   ),
@@ -189,7 +227,7 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w500,
                         ),
-                        controller: widget.statusName,
+                        controller: sName, //widget.statusName,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           labelText: 'Enter Status Name:',
@@ -221,7 +259,8 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
                           padding: EdgeInsets.symmetric(
                               horizontal: 15.w, vertical: 15.h),
                           child: AutoSizeText(
-                            widget.startDate,
+                            //widget.startDate,
+                            sDate,
                             style: GoogleFonts.poppins(
                                 color: Colors.white, fontSize: 16.sp),
                           ),
@@ -257,7 +296,8 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
                           padding: EdgeInsets.symmetric(
                               horizontal: 15.w, vertical: 15.h),
                           child: AutoSizeText(
-                            widget.endDate,
+                            //widget.endDate,
+                            eDate,
                             style: GoogleFonts.poppins(
                                 color: Colors.white, fontSize: 16.sp),
                           ),
@@ -282,7 +322,7 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
                   ),
 
                   GestureDetector(
-                    onTap: addUserStatus,
+                    onTap:  addUserStatus,//display, //
                     child: Container(
                       padding: EdgeInsets.all(10.sp),
                       decoration: BoxDecoration(
