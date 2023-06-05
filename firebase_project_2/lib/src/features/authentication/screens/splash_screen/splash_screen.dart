@@ -20,10 +20,10 @@ class _SplashScreenState extends State<SplashScreen> {
       body: SafeArea(
         child: Stack(
           children: [
-            const Positioned(
+            Positioned(
               top: animate ? 0 : -30,
               left: 0,
-              child: Image(
+              child: const Image(
                 image: AssetImage(SplashTopIcon),
               ),
             ),

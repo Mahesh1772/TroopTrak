@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter_icon_snackbar/widgets/icon_snackbar.dart';
+import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 import 'package:recase/recase.dart';
 import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 
@@ -158,7 +158,7 @@ class _RegisterPageState extends State<RegisterPage> {
           context: context,
           snackBarType: SnackBarType.fail,
           label: 'This Email in use/ Enter Email and Password',
-          snackBarStyle: const SnackBarStyle(showIconFirst: true) // this one
+          snackBarStyle: const SnackBarStyle() // this one
           );
     }
   }
@@ -812,8 +812,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               context: context,
                               snackBarType: SnackBarType.save,
                               label: 'Password Approved',
-                              snackBarStyle: const SnackBarStyle(
-                                  showIconFirst: true) // this one
+                              snackBarStyle: const SnackBarStyle() // this one
                               );
                           setState(() {
                             isProperPassword = true;
@@ -879,8 +878,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 context: context,
                                 snackBarType: SnackBarType.save,
                                 label: 'User Profile created',
-                                snackBarStyle: const SnackBarStyle(
-                                    showIconFirst: true) // this one
+                                snackBarStyle: const SnackBarStyle() // this one
                                 );
                             signUp();
                           } else {
@@ -889,8 +887,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 context: context,
                                 snackBarType: SnackBarType.alert,
                                 label: 'Details missing',
-                                snackBarStyle: const SnackBarStyle(
-                                    showIconFirst: true) // this one
+                                snackBarStyle: const SnackBarStyle() // this one
                                 );
                           }
                         },

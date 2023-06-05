@@ -1,5 +1,5 @@
 // ignore_for_file: must_be_immutable
-import 'package:flutter_icon_snackbar/widgets/icon_snackbar.dart';
+import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -685,8 +685,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                             context: context,
                             snackBarType: SnackBarType.save,
                             label: 'Soldier tile created',
-                            snackBarStyle: const SnackBarStyle(
-                                showIconFirst: true) // this one
+                            snackBarStyle: const SnackBarStyle() // this one
                             );
                         addUserDetails();
                       } else {
@@ -695,8 +694,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                             context: context,
                             snackBarType: SnackBarType.alert,
                             label: 'Details missing',
-                            snackBarStyle: const SnackBarStyle(
-                                showIconFirst: true) // this one
+                            snackBarStyle: const SnackBarStyle() // this one
                             );
                       }
                     },

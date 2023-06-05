@@ -1,5 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_icon_snackbar/widgets/icon_snackbar.dart';
+import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:prototype_1/sign_in_assets/authenticate/forgot_password_page.dart';
 import 'package:flutter/material.dart';
@@ -31,12 +33,12 @@ class _SignInState extends State<SignIn> {
         password: _password.text.trim(),
       );
       IconSnackBar.show(
-          duration: Duration(seconds: 4),
+          duration: const Duration(seconds: 4),
           direction: DismissDirection.horizontal,
           context: context,
           snackBarType: SnackBarType.save,
           label: 'Login Successful',
-          snackBarStyle: const SnackBarStyle(showIconFirst: true) // this one
+          snackBarStyle: const SnackBarStyle() // this one
           );
     } on FirebaseAuthException catch (e) {
       errorName = e.message!;
@@ -45,7 +47,7 @@ class _SignInState extends State<SignIn> {
           context: context,
           snackBarType: SnackBarType.fail,
           label: 'Wrong Email/Password or Both',
-          snackBarStyle: const SnackBarStyle(showIconFirst: true) // this one
+          snackBarStyle: const SnackBarStyle() // this one
           );
     }
   }
@@ -245,8 +247,7 @@ class _SignInState extends State<SignIn> {
                               context: context,
                               snackBarType: SnackBarType.alert,
                               label: 'Fill in all the fields',
-                              snackBarStyle: const SnackBarStyle(
-                                  showIconFirst: true) // this one
+                              snackBarStyle: const SnackBarStyle() // this one
                               );
                         }
                       },

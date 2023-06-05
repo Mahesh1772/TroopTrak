@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:prototype_1/screens/conduct_tracker_screen.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/screens/dashboard_screen.dart';
 import 'package:prototype_1/screens/nominal_roll_screen_new.dart';
@@ -20,11 +21,7 @@ class _GNavMainScreen extends State<GNavMainScreen> {
   static final List<Widget> _widgetOptions = <Widget>[
     const DashboardScreen(),
     const NominalRollNewScreen(),
-    const StyledText(
-      'Parade State',
-      25,
-      fontWeight: FontWeight.w500,
-    ),
+    const ConductTrackerScreen(),
     //const StyledText('Conduct Tracker', 25),
     //const StyledText('Parade State', 25),
     const StyledText(
@@ -77,13 +74,13 @@ class _GNavMainScreen extends State<GNavMainScreen> {
                         color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                   GButton(
-                      icon: Icons.track_changes_rounded,
+                      icon: Icons.perm_contact_calendar_rounded,
                       text: 'Nominal Roll',
                       textStyle: GoogleFonts.poppins(
                           color: Colors.white, fontWeight: FontWeight.bold)),
                   GButton(
-                      icon: Icons.perm_contact_calendar_rounded,
-                      text: 'Nominal Roll',
+                      icon: Icons.track_changes_rounded,
+                      text: 'Conduct Tracker',
                       textStyle: GoogleFonts.poppins(
                           color: Colors.white, fontWeight: FontWeight.bold)),
                   GButton(

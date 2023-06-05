@@ -30,12 +30,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  google_fonts: ^2.1.0 
-  flutter_svg: ^0.22.0
-  fl_chart: ^0.35.0
-  provider: ^5.0.0
+  google_fonts: ^4.0.4 
+  flutter_svg: ^2.0.5
+  fl_chart: ^0.62.0
+  provider: ^6.0.5
   cloud_firestore: ^4.5.3
-  intl: ^0.17.0
+  intl: ^0.18.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -54,7 +54,7 @@ dependencies:
   flutter_slidable: ^3.0.0
   animated_snack_bar: ^0.3.1
   email_validator: ^2.0.1
-  flutter_icon_snackbar: ^1.0.2
+  flutter_icon_snackbar: ^1.1.4
   flutter_pw_validator: ^1.6.0
   responsive_framework: ^1.0.0
   liquid_pull_to_refresh: ^3.0.1
