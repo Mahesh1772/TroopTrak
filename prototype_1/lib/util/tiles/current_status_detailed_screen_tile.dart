@@ -5,76 +5,46 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 late Color? tileColor;
 late IconData? tileIcon;
-List soldierStatus = ["Excuse", "Ex FLEGs", "13 Jul 2021", "12 Jul 2022"];
 
 class SoldierStatusTile extends StatefulWidget {
-  const SoldierStatusTile({
-    super.key,
-    required this.statusType,
-    required this.statusName,
-    required this.startDate,
-    required this.endDate,
-  });
+  const SoldierStatusTile(
+      {super.key,
+      required this.statusType,
+      required this.statusName,
+      required this.startDate,
+      required this.endDate,
+      required this.docID,
+      required this.statusID});
 
   final String statusType;
   final String startDate;
   final String endDate;
   final String statusName;
+  final String docID;
+  final String statusID;
 
   @override
   State<SoldierStatusTile> createState() => _SoldierStatusTileState();
 }
 
-List<String> documentIDs = [];
-const docIDs = 'Aakash Ramaswamy';
-
 class _SoldierStatusTileState extends State<SoldierStatusTile> {
-  Future getDocIDs() async {
-    await FirebaseFirestore.instance
-        .collection('Users')
-        .doc(docIDs)
-        .collection('Statuses')
-        .get()
-        .then((value) {
-      value.docs.forEach((element) {
-        //print(element.data());
-        documentIDs.add(element.reference.id);
-      });
-    });
-    //.orderBy('rank', descending: false)
-    print(documentIDs);
-    setState(() {});
-  }
-
-  @override
-  void initState() {
-    getDocIDs();
-    super.initState();
-    documentIDs = [];
-  }
-
   Future deleteCurrentStatus() async {
     await FirebaseFirestore.instance
         .collection('Users')
-        .doc(docIDs)
+        .doc(widget.docID)
         .collection('Statuses')
-        .doc('yKPlOfPtnQnRypRDvTZI')
+        .doc(widget.statusID)
         .delete();
   }
 
-  final String statusType = "Excuse";
-  final String startDate = "Ex FLEGs";
-  final String endDate = "13 Jul 2021";
-  final String statusName = "12 Jul 2022";
-
   @override
   Widget build(BuildContext context) {
-    setTileIconAndColor(statusType);
+    setTileIconAndColor(widget.statusType);
 
     return Padding(
-      padding: EdgeInsets.all(12.0.sp),
+      padding: EdgeInsets.all(15.0.sp),
       child: Container(
-        width: 250.w,
+        width: 230.w,
         padding: EdgeInsets.all(12.sp),
         decoration: BoxDecoration(boxShadow: [
           BoxShadow(
@@ -84,7 +54,7 @@ class _SoldierStatusTileState extends State<SoldierStatusTile> {
               color: Colors.black54)
         ], color: tileColor, borderRadius: BorderRadius.circular(12.r)),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -95,7 +65,10 @@ class _SoldierStatusTileState extends State<SoldierStatusTile> {
                   size: 60.sp,
                 ),
                 InkWell(
-                  onTap: deleteCurrentStatus,
+                  onTap: () {
+                    //print(widget.docID);
+                    deleteCurrentStatus();
+                  },
                   child: Icon(
                     Icons.delete_rounded,
                     color: Colors.white,
@@ -105,12 +78,18 @@ class _SoldierStatusTileState extends State<SoldierStatusTile> {
               ],
             ),
             SizedBox(
-              height: 10.h,
+              height: 5.h,
             ),
-            StyledText(statusName, 20.sp, fontWeight: FontWeight.bold),
-            StyledText(statusType.toUpperCase(), 18.sp,
+            StyledText(widget.statusName, 20.sp, fontWeight: FontWeight.bold),
+            //const SizedBox(
+            //  height: 5,
+            //),
+            StyledText(widget.statusType.toUpperCase(), 18.sp,
                 fontWeight: FontWeight.w500),
-            StyledText("$startDate - $endDate", 16.sp,
+            //const SizedBox(
+            //  height: 5,
+            //),
+            StyledText("${widget.startDate} - ${widget.endDate}", 16.sp,
                 fontWeight: FontWeight.bold)
           ],
         ),

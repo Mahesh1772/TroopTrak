@@ -56,13 +56,14 @@ class PastSoldierStatusTile extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(16.0.sp),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Icon(
                   tileIcon,
                   color: Colors.white,
                   size: 30.sp,
                 ),
+                //SizedBox(width: 20),
                 SizedBox(
                   width: 100.w,
                   child: AutoSizeText(
@@ -76,7 +77,7 @@ class PastSoldierStatusTile extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: 150.w,
+                  width: 200.w,
                   child: AutoSizeText(
                     "$startDate - $endDate",
                     style: GoogleFonts.poppins(

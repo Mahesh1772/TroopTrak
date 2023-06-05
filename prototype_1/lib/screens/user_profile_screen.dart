@@ -210,7 +210,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                           ordDate: widget.ordDate),
 
                       //Statuses tab
-                      const UserProfileStatusesTab(),
+                      UserProfileStatusesTab(docID: widget.soldierName),
                     ],
                   ),
                 )
