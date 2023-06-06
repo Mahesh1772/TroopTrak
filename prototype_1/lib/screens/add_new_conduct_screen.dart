@@ -1,12 +1,10 @@
 // ignore_for_file: must_be_immutable
-import "dart:collection";
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:prototype_1/screens/tabs/statuses_detailed_screen_tab.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:recase/recase.dart';
@@ -27,33 +25,23 @@ class AddNewConductScreen extends StatefulWidget {
   @override
   State<AddNewConductScreen> createState() => _AddNewConductScreenState();
 }
-
+// Store all the names in conduct
+List<String> tempArray = [];
+// List of all names
 List<String> documentIDs = [];
+// Name of soldiers not included
+List<dynamic> soldierStatusArray = [];
 
 class _AddNewConductScreenState extends State<AddNewConductScreen> {
-  // The DocID or the name of the current user is saved in here
-  final name = FirebaseAuth.instance.currentUser!.displayName.toString();
-
-  Map<String, dynamic> currentUserData = {};
 
   //This is what the stream builder is waiting for
   late Stream<QuerySnapshot> documentStream;
-
-  //This is a Stram used to read the statuses and the names associated with it
-  List<dynamic> soldierStatusArray = [];
-
-  // The list of all document IDs,
-  //which have access to each their own personal information
 
   // List to store all user data, whilst also mapping to name
   List<Map<String, dynamic>> userDetails = [];
 
   // To store text being searched
   String searchText = '';
-
-  //To store all the names selected for the conduct
-  List<String> tempArray = [];
-  //var tempArray = [];
 
   Future getUserBooks() async {
     FirebaseFirestore.instance
@@ -69,11 +57,11 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
             .then((querySnapshot) {
           querySnapshot.docs.forEach((result) {
             Map<String, dynamic> data = result.data();
-            print(snapshot.id);
-            //print(data);
-            soldierStatusArray.add(snapshot.id);
-            //tempArray.removeWhere((element) => element == snapshot.id);
-            //print(soldierStatusArray);
+            if (DateFormat("d MMM yyyy")
+                .parse(data['endDate'])
+                .isAfter(DateTime.now())) {
+              soldierStatusArray.add(snapshot.id);
+            }
           });
         });
       });
@@ -81,21 +69,17 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
   }
 
   void filter() {
-    //getUserBooks();
-    tempArray = documentIDs;
-    tempArray.removeWhere((element) => soldierStatusArray.contains(element));
-    //soldierStatusArray =
-    //    LinkedHashSet<String>.from(soldierStatusArray).toList();
-    //print(soldierStatusArray);
-    //print(soldierStatusArray);
+    if (tempArray.isEmpty) {
+      documentIDs
+          .removeWhere((element) => soldierStatusArray.contains(element));
+      tempArray = documentIDs;
+    }
   }
 
   @override
   void initState() {
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
     getUserBooks();
-    soldierStatusArray =
-        LinkedHashSet<String>.from(soldierStatusArray).toList();
     super.initState();
   }
 
@@ -424,8 +408,8 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                               as Map<String, dynamic>;
                           userDetails.add(data);
                         }
+                        filter();
                       }
-                      filter();
                     }
                     return Flexible(
                       child: SizedBox(
@@ -447,7 +431,6 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                                         userDetails[index]['name'].toString());
                                   }
                                 });
-                                print(tempArray);
                               },
                               child: Card(
                                 color: Colors.black54,
@@ -493,7 +476,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                   height: 30.h,
                 ),
                 GestureDetector(
-                  onTap: filter, //addConductDetails,
+                  onTap: addConductDetails,
                   child: Container(
                     padding: EdgeInsets.all(10.sp),
                     decoration: BoxDecoration(
@@ -505,7 +488,6 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
-                      //color: Colors.deepPurple,
                       borderRadius: BorderRadius.circular(12.r),
                     ),
                     child: Center(
