@@ -161,14 +161,14 @@ class _StatusesTabState extends State<StatusesTab> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => AddNewStatusScreen(
+                          builder: (context) => AddNewStatusPage(
                             docID: widget.docID,
                             selectedStatusType: "Select status type...",
                             statusName: TextEditingController(),
-                            startDate: 'Start Date',
-                            //DateFormat('d MMM yyyy').format(DateTime.now()),
-                            endDate: 'End Date',
-                            //DateFormat('d MMM yyyy').format(DateTime.now()),
+                            startDate: //'Start Date',
+                                DateFormat('d MMM yyyy').format(DateTime.now()),
+                            endDate: //'End Date',
+                                DateFormat('d MMM yyyy').format(DateTime.now()),
                           ),
                         ),
                       );

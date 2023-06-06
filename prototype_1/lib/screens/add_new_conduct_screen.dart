@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:prototype_1/screens/tabs/statuses_detailed_screen_tab.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:recase/recase.dart';
