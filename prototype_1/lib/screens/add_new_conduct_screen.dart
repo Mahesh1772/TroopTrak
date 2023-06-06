@@ -73,7 +73,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
             //print(data);
             soldierStatusArray.add(snapshot.id);
             //tempArray.removeWhere((element) => element == snapshot.id);
-            print(soldierStatusArray);
+            //print(soldierStatusArray);
           });
         });
       });
@@ -83,11 +83,11 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
   void filter() {
     //getUserBooks();
     tempArray = documentIDs;
-    //tempArray.removeWhere((element) => soldierStatusArray.contains(element));
+    tempArray.removeWhere((element) => soldierStatusArray.contains(element));
     //soldierStatusArray =
     //    LinkedHashSet<String>.from(soldierStatusArray).toList();
     //print(soldierStatusArray);
-    print(soldierStatusArray);
+    //print(soldierStatusArray);
   }
 
   @override
@@ -493,7 +493,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                   height: 30.h,
                 ),
                 GestureDetector(
-                  onTap: filter,//addConductDetails,
+                  onTap: filter, //addConductDetails,
                   child: Container(
                     padding: EdgeInsets.all(10.sp),
                     decoration: BoxDecoration(
