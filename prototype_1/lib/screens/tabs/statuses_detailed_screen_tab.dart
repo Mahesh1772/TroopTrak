@@ -165,10 +165,10 @@ class _StatusesTabState extends State<StatusesTab> {
                             docID: widget.docID,
                             selectedStatusType: "Select status type...",
                             statusName: TextEditingController(),
-                            startDate: 'Start Date',
-                            //DateFormat('d MMM yyyy').format(DateTime.now()),
-                            endDate: 'End Date',
-                            //DateFormat('d MMM yyyy').format(DateTime.now()),
+                            startDate:
+                                DateFormat('d MMM yyyy').format(DateTime.now()),
+                            endDate:
+                                DateFormat('d MMM yyyy').format(DateTime.now()),
                           ),
                         ),
                       );

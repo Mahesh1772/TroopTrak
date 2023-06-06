@@ -57,7 +57,6 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
           widget.startDate = DateFormat('d MMM yyyy').format(value);
           sDate = DateFormat('d MMM yyyy').format(value);
         }
-        //addUserStatus();
       });
     });
   }
@@ -75,31 +74,30 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
           widget.endDate = DateFormat('d MMM yyyy').format(value);
           eDate = DateFormat('d MMM yyyy').format(value);
         }
-        //addUserStatus();
       });
     });
   }
 
   Future addUserStatus() async {
-    //await FirebaseFirestore.instance
-    //    .collection('Users')
+    widget.statusName = sName;
+    widget.selectedStatusType = sType;
     db
         .doc(widget.docID)
         .collection('Statuses')
         //.doc(sName.text.trim())
         .add({
       //User map formatting
-      'statusName': sName.text.trim(), //widget.statusName.text.trim(),//
-      'statusType': sType, //widget.selectedStatusType,
-      'startDate': sDate, //widget.startDate,
-      'endDate': eDate, //widget.endDate,
+      'statusName':  widget.statusName.text.trim(),//sName.text.trim(),
+      'statusType':  widget.selectedStatusType,//sType,
+      'startDate': widget.startDate, //sDate,
+      'endDate':  widget.endDate,//eDate,
     });
     Navigator.pop(context);
   }
 
   void display() {
-    print(sName.text.trim());
-    print(sType);
+    print(widget.statusName.text.trim());
+    print(widget.selectedStatusType);
     print(widget.startDate);
     print(widget.endDate);
     print(widget.docID);
@@ -112,22 +110,15 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
   }
 
   @override
-  void initState() {
-    widget.statusName = sName;
-    widget.endDate = eDate;
-    widget.selectedStatusType = sType;
-    widget.startDate = sDate;
-  }
-
-  @override
   Widget build(BuildContext context) {
 
-    void initState() {
-      widget.statusName = sName;
-      widget.endDate = eDate;
-      widget.selectedStatusType = sType;
-      widget.startDate = sDate;
-    }
+    //void initState() {
+    //  widget.statusName = sName;
+    //  widget.endDate = eDate;
+    //  widget.selectedStatusType = sType;
+    //  widget.startDate = sDate;
+    //  super.initState();
+    //}
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -178,8 +169,8 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
                     child: DropdownButtonFormField<String>(
                       alignment: Alignment.center,
                       dropdownColor: Colors.black54,
-                      value:
-                          "Select status type...", //widget.selectedStatusType,
+                      value: widget.selectedStatusType,
+                           //"Select status type...",
                       icon: const Icon(
                         Icons.arrow_downward_sharp,
                         color: Colors.white,
@@ -322,7 +313,7 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
                   ),
 
                   GestureDetector(
-                    onTap:  addUserStatus,//display, //
+                    onTap:  addUserStatus,
                     child: Container(
                       padding: EdgeInsets.all(10.sp),
                       decoration: BoxDecoration(
