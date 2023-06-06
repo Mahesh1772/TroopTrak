@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:prototype_1/screens/tabs/statuses_detailed_screen_tab.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:recase/recase.dart';
@@ -27,6 +28,8 @@ class AddNewConductScreen extends StatefulWidget {
   State<AddNewConductScreen> createState() => _AddNewConductScreenState();
 }
 
+List<String> documentIDs = [];
+
 class _AddNewConductScreenState extends State<AddNewConductScreen> {
   // The DocID or the name of the current user is saved in here
   final name = FirebaseAuth.instance.currentUser!.displayName.toString();
@@ -41,7 +44,6 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
 
   // The list of all document IDs,
   //which have access to each their own personal information
-  List<String> documentIDs = [];
 
   // List to store all user data, whilst also mapping to name
   List<Map<String, dynamic>> userDetails = [];
@@ -51,17 +53,10 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
 
   //To store all the names selected for the conduct
   List<String> tempArray = [];
-
-  Future getCurrentUserData() async {
-    var data = FirebaseFirestore.instance.collection('Users').doc(name);
-    data.get().then((DocumentSnapshot doc) {
-      currentUserData = doc.data() as Map<String, dynamic>;
-      // ...
-    });
-  }
+  //var tempArray = [];
 
   Future getUserBooks() async {
-    await FirebaseFirestore.instance
+    FirebaseFirestore.instance
         .collection("Users")
         .get()
         .then((querySnapshot) async {
@@ -75,7 +70,10 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
           querySnapshot.docs.forEach((result) {
             Map<String, dynamic> data = result.data();
             print(snapshot.id);
+            //print(data);
             soldierStatusArray.add(snapshot.id);
+            //tempArray.removeWhere((element) => element == snapshot.id);
+            print(soldierStatusArray);
           });
         });
       });
@@ -83,16 +81,21 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
   }
 
   void filter() {
-    soldierStatusArray = LinkedHashSet<String>.from(soldierStatusArray).toList();
+    //getUserBooks();
+    tempArray = documentIDs;
+    //tempArray.removeWhere((element) => soldierStatusArray.contains(element));
+    //soldierStatusArray =
+    //    LinkedHashSet<String>.from(soldierStatusArray).toList();
+    //print(soldierStatusArray);
     print(soldierStatusArray);
   }
 
   @override
   void initState() {
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
-    getCurrentUserData();
     getUserBooks();
-    soldierStatusArray = LinkedHashSet<String>.from(soldierStatusArray).toList();
+    soldierStatusArray =
+        LinkedHashSet<String>.from(soldierStatusArray).toList();
     super.initState();
   }
 
@@ -421,10 +424,8 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                               as Map<String, dynamic>;
                           userDetails.add(data);
                         }
-                        tempArray = documentIDs;
-                        filter();
-                        tempArray.removeWhere((element) => soldierStatusArray.contains(element));
                       }
+                      filter();
                     }
                     return Flexible(
                       child: SizedBox(
@@ -492,7 +493,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                   height: 30.h,
                 ),
                 GestureDetector(
-                  onTap: addConductDetails,
+                  onTap: filter,//addConductDetails,
                   child: Container(
                     padding: EdgeInsets.all(10.sp),
                     decoration: BoxDecoration(

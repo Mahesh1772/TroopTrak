@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 
 late Stream<QuerySnapshot> documentStream;
 List<Map<String, dynamic>> userCurrentStatus = [];
+List<String> kengs = [];
 
 class StatusesTab extends StatefulWidget {
   const StatusesTab({
@@ -69,6 +70,7 @@ class _StatusesTabState extends State<StatusesTab> {
               }
               userCurrentStatus
                   .removeWhere((element) => toRemove.contains(element));
+              kengs.add(widget.docID);
             }
             return Column(
               mainAxisSize: MainAxisSize.min,
