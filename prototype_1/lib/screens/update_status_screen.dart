@@ -30,8 +30,9 @@ class UpdateStatusScreen extends StatefulWidget {
 }
 
 CollectionReference db = FirebaseFirestore.instance.collection('Users');
+//bool firstTime = true;
 TextEditingController sName = TextEditingController();
-bool firstTime = true;
+Map<String, dynamic> data = {};
 
 class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
   final _formKey = GlobalKey<FormState>();
@@ -43,9 +44,10 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
   ];
 
   void initState() {
-    if (firstTime) {
-      sName = widget.statusName;
-    }
+    //if (firstTime) {
+    //  sName = widget.statusName;
+    //}
+    sName = widget.statusName;
     display();
     super.initState();
   }
@@ -122,238 +124,250 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
         child: SafeArea(
           child: Form(
             key: _formKey,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.w),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Icon(
-                      Icons.arrow_back_sharp,
-                      color: Colors.white,
-                      size: 25.sp,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  StyledText(
-                    "Let's add a new status for this soldier ✍️",
-                    30.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  StyledText(
-                    "Fill in the details of the status",
-                    14.sp,
-                    fontWeight: FontWeight.w300,
-                  ),
-                  SizedBox(
-                    height: 40.h,
-                  ),
-                  //Status type drop down menu
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.black54,
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    child: DropdownButtonFormField<String>(
-                      alignment: Alignment.center,
-                      dropdownColor: Colors.black54,
-                      value: widget.selectedStatusType,
-                      icon: const Icon(
-                        Icons.arrow_downward_sharp,
-                        color: Colors.white,
-                      ),
-                      style: const TextStyle(color: Colors.black54),
-                      items: _statusTypes
-                          .map(
-                            (item) => DropdownMenuItem<String>(
-                              value: item,
-                              child: AutoSizeText(
-                                item,
-                                maxLines: 1,
-                                style: GoogleFonts.poppins(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.white),
-                              ),
-                            ),
-                          )
-                          .toList(),
-                      onChanged: (String? item) async => setState(() {
-                        widget.selectedStatusType = item;
-                        editUserStatus();
-                      }),
-                    ),
-                  ),
-
-                  SizedBox(
-                    height: 30.h,
-                  ),
-
-                  //Name of status textfield
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.black54,
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 20.w),
-                      child: TextFormField(
-                        style: GoogleFonts.poppins(
-                          color: Colors.white,
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        controller: sName,
-                        onEditingComplete: () {
-                          setState(() {
-                            firstTime = false;
-                          });
-                        },
-                        decoration: InputDecoration(
-                          hintText: widget.statusName.text,
-                          border: InputBorder.none,
-                          labelText: widget.statusName.text,
-                          labelStyle: GoogleFonts.poppins(
-                            color: Colors.white,
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 30.h,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      //Status start date picker
-                      Container(
-                        height: 55.h,
-                        width: 150.w,
-                        decoration: BoxDecoration(
-                          color: Colors.black54,
-                          border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(12.r),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 15.w, vertical: 15.h),
-                          child: AutoSizeText(
-                            widget.startDate,
-                            //sDate,
-                            style: GoogleFonts.poppins(
-                                color: Colors.white, fontSize: 16.sp),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(8.0.sp),
-                        child: InkWell(
+            child: StreamBuilder(
+                stream: db
+                    .doc(widget.docID)
+                    .collection('Statuses')
+                    .doc(widget.statusID)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    data = snapshot.data!.data() as Map<String, dynamic>;
+                    widget.startDate = data['startDate'];
+                    widget.selectedStatusType = data['statusType'];
+                    widget.statusName = TextEditingController(text: data['statusName']);
+                    widget.endDate = data['endDate'];
+                  }
+                  return Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 12.w),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        InkWell(
                           onTap: () {
-                            _showStartDatePicker();
+                            Navigator.pop(context);
                           },
-                          child: const Icon(
-                            Icons.date_range_rounded,
+                          child: Icon(
+                            Icons.arrow_back_sharp,
                             color: Colors.white,
+                            size: 25.sp,
                           ),
                         ),
-                      ),
-
-                      SizedBox(
-                        width: 10.w,
-                      ),
-
-                      //Status end date picker
-                      Container(
-                        width: 145.w,
-                        height: 55.h,
-                        decoration: BoxDecoration(
-                          color: Colors.black54,
-                          border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(12.r),
+                        SizedBox(
+                          height: 20.h,
                         ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 15.w, vertical: 15.h),
-                          child: AutoSizeText(
-                            widget.endDate,
-                            //eDate,
-                            style: GoogleFonts.poppins(
-                                color: Colors.white, fontSize: 16.sp),
+                        StyledText(
+                          "Let's add a new status for this soldier ✍️",
+                          30.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        StyledText(
+                          "Fill in the details of the status",
+                          14.sp,
+                          fontWeight: FontWeight.w300,
+                        ),
+                        SizedBox(
+                          height: 40.h,
+                        ),
+                        //Status type drop down menu
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.black54,
+                            border: Border.all(color: Colors.white),
+                            borderRadius: BorderRadius.circular(12.r),
                           ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(8.0.sp),
-                        child: InkWell(
-                          onTap: () {
-                            _showEndDatePicker();
-                          },
-                          child: const Icon(
-                            Icons.date_range_rounded,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 40.h,
-                  ),
-
-                  GestureDetector(
-                    onTap: editStatus,
-                    child: Container(
-                      padding: EdgeInsets.all(10.sp),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.deepPurple.shade400,
-                            Colors.deepPurple.shade700,
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        borderRadius: BorderRadius.circular(12.r),
-                      ),
-                      child: Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.add_to_photos_rounded,
+                          child: DropdownButtonFormField<String>(
+                            alignment: Alignment.center,
+                            validator: (value) {
+                              return null;
+                            },
+                            dropdownColor: Colors.black54,
+                            value: widget.selectedStatusType,
+                            icon: const Icon(
+                              Icons.arrow_downward_sharp,
                               color: Colors.white,
-                              size: 30.sp,
                             ),
-                            SizedBox(
-                              width: 20.w,
-                            ),
-                            AutoSizeText(
-                              'ADD STATUS',
+                            style: const TextStyle(color: Colors.black54),
+                            items: _statusTypes
+                                .map(
+                                  (item) => DropdownMenuItem<String>(
+                                    value: item,
+                                    child: AutoSizeText(
+                                      item,
+                                      maxLines: 1,
+                                      style: GoogleFonts.poppins(
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                            onChanged: (String? item) async => setState(() {
+                              widget.selectedStatusType = item;
+                              editUserStatus();
+                            }),
+                          ),
+                        ),
+
+                        SizedBox(
+                          height: 30.h,
+                        ),
+
+                        //Name of status textfield
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.black54,
+                            border: Border.all(color: Colors.white),
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 20.w),
+                            child: TextFormField(
                               style: GoogleFonts.poppins(
                                 color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 22.sp,
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              controller: sName,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                labelText: 'Status Name',
+                                labelStyle: GoogleFonts.poppins(
+                                  color: Colors.white,
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 30.h,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            //Status start date picker
+                            Container(
+                              height: 55.h,
+                              width: 150.w,
+                              decoration: BoxDecoration(
+                                color: Colors.black54,
+                                border: Border.all(color: Colors.white),
+                                borderRadius: BorderRadius.circular(12.r),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 15.w, vertical: 15.h),
+                                child: AutoSizeText(
+                                  widget.startDate,
+                                  //sDate,
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.white, fontSize: 16.sp),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(8.0.sp),
+                              child: InkWell(
+                                onTap: () {
+                                  _showStartDatePicker();
+                                },
+                                child: const Icon(
+                                  Icons.date_range_rounded,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+
+                            SizedBox(
+                              width: 10.w,
+                            ),
+
+                            //Status end date picker
+                            Container(
+                              width: 145.w,
+                              height: 55.h,
+                              decoration: BoxDecoration(
+                                color: Colors.black54,
+                                border: Border.all(color: Colors.white),
+                                borderRadius: BorderRadius.circular(12.r),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 15.w, vertical: 15.h),
+                                child: AutoSizeText(
+                                  widget.endDate,
+                                  //eDate,
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.white, fontSize: 16.sp),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(8.0.sp),
+                              child: InkWell(
+                                onTap: () {
+                                  _showEndDatePicker();
+                                },
+                                child: const Icon(
+                                  Icons.date_range_rounded,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                           ],
                         ),
-                      ),
+                        SizedBox(
+                          height: 40.h,
+                        ),
+
+                        GestureDetector(
+                          onTap: editStatus,
+                          child: Container(
+                            padding: EdgeInsets.all(10.sp),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.deepPurple.shade400,
+                                  Colors.deepPurple.shade700,
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              borderRadius: BorderRadius.circular(12.r),
+                            ),
+                            child: Center(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.add_to_photos_rounded,
+                                    color: Colors.white,
+                                    size: 30.sp,
+                                  ),
+                                  SizedBox(
+                                    width: 20.w,
+                                  ),
+                                  AutoSizeText(
+                                    'ADD STATUS',
+                                    style: GoogleFonts.poppins(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 22.sp,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-            ),
+                  );
+                }),
           ),
         ),
       ),
