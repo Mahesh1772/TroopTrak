@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_project_1/screens/home/edit_user.dart';
 import 'package:firebase_project_1/screens/home/update_profile.dart';
+import 'package:firebase_project_1/services/calender.dart';
 import 'package:firebase_project_1/user_model/user_profile_page.dart';
 import 'package:flutter/material.dart';
 
@@ -73,8 +74,10 @@ class _HomeState extends State<Home> {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const UpdateUser()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const UpdateUser()));
               },
               child: const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10.0),
@@ -197,6 +200,18 @@ class _HomeState extends State<Home> {
                 },
               ),
 
+              MaterialButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const Calender(),
+                    ),
+                  );
+                },
+                child: const Text('Calender'),
+              )
+
               // This has a FutureBuilder as it needs
               // to wait for executiion of getDocIDs function to finish execution
             ],
@@ -205,7 +220,7 @@ class _HomeState extends State<Home> {
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => UpdateProfile()));
+                MaterialPageRoute(builder: (context) => const UpdateProfile()));
           },
           backgroundColor: Colors.tealAccent,
           child: const Icon(Icons.edit),
