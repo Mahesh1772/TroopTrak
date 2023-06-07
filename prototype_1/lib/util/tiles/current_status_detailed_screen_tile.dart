@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:recase/recase.dart';
 
 late Color? tileColor;
 late IconData? tileIcon;

@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/screens/soldier_detailed_screen.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/util/constants.dart';
-import 'package:prototype_1/util/charts/current_strength_chart.dart';
+import 'package:prototype_1/util/charts/pie_chart/current_strength_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:prototype_1/util/tiles/dashboard_soldier_tile.dart';
 
