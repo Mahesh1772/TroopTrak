@@ -71,7 +71,6 @@ class _StatusesTabState extends State<StatusesTab> {
               }
               userCurrentStatus
                   .removeWhere((element) => toRemove.contains(element));
-              kengs.add(widget.docID);
             }
             return Column(
               mainAxisSize: MainAxisSize.min,
@@ -112,6 +111,7 @@ class _StatusesTabState extends State<StatusesTab> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => UpdateStatusScreen(
+                                statusID: userCurrentStatus[index]['ID'],
                                 docID: widget.docID,
                                 selectedStatusType: userCurrentStatus[index]
                                     ['statusType'],
@@ -165,6 +165,7 @@ class _StatusesTabState extends State<StatusesTab> {
                     itemCount: userPastStatus.length,
                     itemBuilder: (context, index) {
                       return PastSoldierStatusTile(
+                        statusID: userPastStatus[index]['ID'],
                         docID: widget.docID,
                         statusType: userPastStatus[index]['statusType'],
                         statusName: userPastStatus[index]['statusName'],

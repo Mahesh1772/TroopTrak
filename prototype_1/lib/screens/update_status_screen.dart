@@ -9,29 +9,31 @@ import 'package:intl/intl.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 
 class UpdateStatusScreen extends StatefulWidget {
-  UpdateStatusScreen(
-      {super.key,
-      required this.docID,
-      required this.selectedStatusType,
-      required this.statusName,
-      required this.startDate,
-      required this.endDate});
+  UpdateStatusScreen({
+    super.key,
+    required this.docID,
+    required this.selectedStatusType,
+    required this.statusName,
+    required this.startDate,
+    required this.endDate,
+    required this.statusID,
+  });
 
   late TextEditingController statusName;
   late String? selectedStatusType;
   late String startDate;
   late String endDate;
   late String docID;
+  late String statusID;
 
   @override
   State<UpdateStatusScreen> createState() => _UpdateStatusScreenState();
 }
-
 CollectionReference db = FirebaseFirestore.instance.collection('Users');
 
 class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
   final _formKey = GlobalKey<FormState>();
-
+  late TextEditingController sName =  sName.text.trim() == '' ? widget.statusName : sName;
   final _statusTypes = [
     "Select status type...",
     "Excuse",
@@ -40,9 +42,11 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
   ];
 
   late String sType;
-  late TextEditingController sName;
-  // String sDate = DateFormat('d MMM yyyy').format(DateTime.now());
-  // String eDate = DateFormat('d MMM yyyy').format(DateTime.now());
+
+  void initState () {
+    display();
+    super.initState();
+  }
 
   void _showStartDatePicker() {
     showDatePicker(
@@ -55,6 +59,7 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
         if (value != null) {
           widget.startDate = DateFormat('d MMM yyyy').format(value);
           //sDate = DateFormat('d MMM yyyy').format(value);
+          addUserStatus();
         }
       });
     });
@@ -71,19 +76,16 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
         if (value != null) {
           widget.endDate = DateFormat('d MMM yyyy').format(value);
           //eDate = DateFormat('d MMM yyyy').format(value);
+          addUserStatus();
         }
       });
     });
   }
 
   Future addUserStatus() async {
-    widget.statusName = sName;
+    //widget.statusName = sName;
     widget.selectedStatusType = sType;
-    db
-        .doc(widget.docID)
-        .collection('Statuses')
-        //.doc(sName.text.trim())
-        .add({
+    db.doc(widget.docID).collection('Statuses').doc(widget.statusID).update({
       //User map formatting
       'statusName': widget.statusName.text.trim(), //sName.text.trim(),
       'statusType': widget.selectedStatusType, //sType,
@@ -99,6 +101,7 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
     print(widget.startDate);
     print(widget.endDate);
     print(widget.docID);
+    print(widget.statusID);
   }
 
   @override
@@ -182,9 +185,9 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
                           )
                           .toList(),
                       onChanged: (String? item) async => setState(() {
-                        //widget.selectedStatusType = item;
-                        sType = item!;
-                        //addUserStatus();
+                        widget.selectedStatusType = item;
+                        //sType = item!;
+                        addUserStatus();
                       }),
                     ),
                   ),
@@ -208,7 +211,8 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w500,
                         ),
-                        controller: sName, //widget.statusName,
+                        controller: sName,//widget.statusName,
+                        //initialValue: sName.text,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           labelText: 'Enter Status Name:',
@@ -303,7 +307,7 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
                   ),
 
                   GestureDetector(
-                    onTap: addUserStatus,
+                    onTap: display,//addUserStatus,
                     child: Container(
                       padding: EdgeInsets.all(10.sp),
                       decoration: BoxDecoration(

@@ -14,6 +14,7 @@ class PastSoldierStatusTile extends StatelessWidget {
   final String endDate;
   final String statusName;
   final String docID;
+  final String statusID;
 
   const PastSoldierStatusTile({
     super.key,
@@ -22,6 +23,7 @@ class PastSoldierStatusTile extends StatelessWidget {
     required this.startDate,
     required this.endDate,
     required this.docID,
+    required this.statusID,
   });
 
   @override
@@ -40,6 +42,7 @@ class PastSoldierStatusTile extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => UpdateStatusScreen(
+                      statusID: statusID,
                       docID: docID,
                       selectedStatusType: statusType,
                       statusName:
