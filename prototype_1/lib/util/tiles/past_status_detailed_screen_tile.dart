@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:intl/intl.dart';
+import 'package:prototype_1/screens/update_status_screen.dart';
 
 late IconData? tileIcon;
 
@@ -11,6 +13,7 @@ class PastSoldierStatusTile extends StatelessWidget {
   final String startDate;
   final String endDate;
   final String statusName;
+  final String docID;
 
   const PastSoldierStatusTile({
     super.key,
@@ -18,6 +21,7 @@ class PastSoldierStatusTile extends StatelessWidget {
     required this.statusName,
     required this.startDate,
     required this.endDate,
+    required this.docID,
   });
 
   @override
@@ -31,7 +35,21 @@ class PastSoldierStatusTile extends StatelessWidget {
           motion: const StretchMotion(),
           children: [
             SlidableAction(
-              onPressed: (context) {},
+              onPressed: (context) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UpdateStatusScreen(
+                      docID: docID,
+                      selectedStatusType: statusType,
+                      statusName:
+                          TextEditingController(text: statusName.toString()),
+                      startDate: startDate,
+                      endDate: endDate,
+                    ),
+                  ),
+                );
+              },
               icon: Icons.info_rounded,
               backgroundColor: Colors.blue,
             ),

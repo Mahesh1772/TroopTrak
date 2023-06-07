@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/screens/add_new_status_screen.dart';
+import 'package:prototype_1/screens/update_status_screen.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/util/tiles/current_status_detailed_screen_tile.dart';
 import 'package:prototype_1/util/tiles/past_status_detailed_screen_tile.dart';
@@ -105,13 +106,33 @@ class _StatusesTabState extends State<StatusesTab> {
                     padding: EdgeInsets.all(12.sp),
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
-                      return SoldierStatusTile(
-                        statusID: userCurrentStatus[index]['ID'],
-                        docID: widget.docID,
-                        statusType: userCurrentStatus[index]['statusType'],
-                        statusName: userCurrentStatus[index]['statusName'],
-                        startDate: userCurrentStatus[index]['startDate'],
-                        endDate: userCurrentStatus[index]['endDate'],
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => UpdateStatusScreen(
+                                docID: widget.docID,
+                                selectedStatusType: userCurrentStatus[index]
+                                    ['statusType'],
+                                statusName: TextEditingController(
+                                    text: userCurrentStatus[index]['statusName']
+                                        .toString()),
+                                startDate: userCurrentStatus[index]
+                                    ['startDate'],
+                                endDate: userCurrentStatus[index]['endDate'],
+                              ),
+                            ),
+                          );
+                        },
+                        child: SoldierStatusTile(
+                          statusID: userCurrentStatus[index]['ID'],
+                          docID: widget.docID,
+                          statusType: userCurrentStatus[index]['statusType'],
+                          statusName: userCurrentStatus[index]['statusName'],
+                          startDate: userCurrentStatus[index]['startDate'],
+                          endDate: userCurrentStatus[index]['endDate'],
+                        ),
                       );
                     },
                   ),
@@ -144,6 +165,7 @@ class _StatusesTabState extends State<StatusesTab> {
                     itemCount: userPastStatus.length,
                     itemBuilder: (context, index) {
                       return PastSoldierStatusTile(
+                        docID: widget.docID,
                         statusType: userPastStatus[index]['statusType'],
                         statusName: userPastStatus[index]['statusName'],
                         startDate: userPastStatus[index]['startDate'],

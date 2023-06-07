@@ -151,6 +151,7 @@ class _UserProfileStatusesTabState extends State<UserProfileStatusesTab> {
                       itemCount: pastStatuses.length,
                       itemBuilder: (context, index) {
                         return PastSoldierStatusTile(
+                            docID: widget.docID,
                             statusType: pastStatuses[index][0],
                             statusName: pastStatuses[index][1],
                             startDate: pastStatuses[index][2],
