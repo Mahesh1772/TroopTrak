@@ -1,5 +1,4 @@
 // ignore_for_file: must_be_immutable
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -29,11 +28,13 @@ class UpdateStatusScreen extends StatefulWidget {
   @override
   State<UpdateStatusScreen> createState() => _UpdateStatusScreenState();
 }
+
 CollectionReference db = FirebaseFirestore.instance.collection('Users');
+TextEditingController sName = TextEditingController();
+bool firstTime = true;
 
 class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
   final _formKey = GlobalKey<FormState>();
-  late TextEditingController sName =  sName.text.trim() == '' ? widget.statusName : sName;
   final _statusTypes = [
     "Select status type...",
     "Excuse",
@@ -41,9 +42,10 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
     "Medical Appointment",
   ];
 
-  late String sType;
-
-  void initState () {
+  void initState() {
+    if (firstTime) {
+      sName = widget.statusName;
+    }
     display();
     super.initState();
   }
@@ -58,8 +60,7 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
       setState(() {
         if (value != null) {
           widget.startDate = DateFormat('d MMM yyyy').format(value);
-          //sDate = DateFormat('d MMM yyyy').format(value);
-          addUserStatus();
+          editUserStatus();
         }
       });
     });
@@ -75,28 +76,30 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
       setState(() {
         if (value != null) {
           widget.endDate = DateFormat('d MMM yyyy').format(value);
-          //eDate = DateFormat('d MMM yyyy').format(value);
-          addUserStatus();
+          editUserStatus();
         }
       });
     });
   }
 
-  Future addUserStatus() async {
-    //widget.statusName = sName;
-    widget.selectedStatusType = sType;
-    db.doc(widget.docID).collection('Statuses').doc(widget.statusID).update({
-      //User map formatting
-      'statusName': widget.statusName.text.trim(), //sName.text.trim(),
-      'statusType': widget.selectedStatusType, //sType,
-      'startDate': widget.startDate, //sDate,
-      'endDate': widget.endDate, //eDate,
-    });
+  void editStatus() {
+    editUserStatus();
     Navigator.pop(context);
   }
 
+  Future editUserStatus() async {
+    widget.statusName = sName;
+    db.doc(widget.docID).collection('Statuses').doc(widget.statusID).update({
+      //User map formatting
+      'statusName': widget.statusName.text.trim(),
+      'statusType': widget.selectedStatusType,
+      'startDate': widget.startDate,
+      'endDate': widget.endDate,
+    });
+  }
+
   void display() {
-    print(widget.statusName.text.trim());
+    //print(sName.text);
     print(widget.selectedStatusType);
     print(widget.startDate);
     print(widget.endDate);
@@ -112,16 +115,15 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
 
   @override
   Widget build(BuildContext context) {
-    sName = widget.statusName;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
       body: SingleChildScrollView(
         child: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.w),
-            child: Form(
-              key: _formKey,
+          child: Form(
+            key: _formKey,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12.w),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -163,7 +165,6 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
                       alignment: Alignment.center,
                       dropdownColor: Colors.black54,
                       value: widget.selectedStatusType,
-                      //"Select status type...",
                       icon: const Icon(
                         Icons.arrow_downward_sharp,
                         color: Colors.white,
@@ -186,8 +187,7 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
                           .toList(),
                       onChanged: (String? item) async => setState(() {
                         widget.selectedStatusType = item;
-                        //sType = item!;
-                        addUserStatus();
+                        editUserStatus();
                       }),
                     ),
                   ),
@@ -211,11 +211,16 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w500,
                         ),
-                        controller: sName,//widget.statusName,
-                        //initialValue: sName.text,
+                        controller: sName,
+                        onEditingComplete: () {
+                          setState(() {
+                            firstTime = false;
+                          });
+                        },
                         decoration: InputDecoration(
+                          hintText: widget.statusName.text,
                           border: InputBorder.none,
-                          labelText: 'Enter Status Name:',
+                          labelText: widget.statusName.text,
                           labelStyle: GoogleFonts.poppins(
                             color: Colors.white,
                             fontSize: 16.sp,
@@ -307,7 +312,7 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
                   ),
 
                   GestureDetector(
-                    onTap: display,//addUserStatus,
+                    onTap: editStatus,
                     child: Container(
                       padding: EdgeInsets.all(10.sp),
                       decoration: BoxDecoration(
@@ -319,7 +324,6 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),
-                        //color: Colors.deepPurple,
                         borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: Center(

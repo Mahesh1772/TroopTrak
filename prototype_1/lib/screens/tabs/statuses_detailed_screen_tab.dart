@@ -11,7 +11,6 @@ import 'package:intl/intl.dart';
 
 late Stream<QuerySnapshot> documentStream;
 List<Map<String, dynamic>> userCurrentStatus = [];
-List<String> kengs = [];
 
 class StatusesTab extends StatefulWidget {
   const StatusesTab({
