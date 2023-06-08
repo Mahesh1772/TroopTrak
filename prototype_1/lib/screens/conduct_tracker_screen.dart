@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,7 +8,6 @@ import 'package:intl/intl.dart';
 import 'package:prototype_1/screens/add_new_conduct_screen.dart';
 import 'package:prototype_1/screens/user_profile_screen.dart';
 import 'package:prototype_1/util/charts/bar_graph/bar_graph_styling.dart';
-import 'package:prototype_1/util/constants.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/util/tiles/conduct_main_page_tiles.dart';
 
@@ -31,13 +28,17 @@ class ConductTrackerScreen extends StatefulWidget {
 }
 
 class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
+  List<Map<String, dynamic>> todayConducts = [];
+  List<Map<String, dynamic>> allConducts = [];
+  DateTime selectedDate = DateTime.now();
+
   // The DocID or the name of the current user is saved in here
   final name = FirebaseAuth.instance.currentUser!.displayName.toString();
 
   Map<String, dynamic> currentUserData = {};
 
   //This is what the stream builder is waiting for
-  late Stream<QuerySnapshot> documentStream;
+  late Stream<QuerySnapshot> conductStream;
 
   Future getCurrentUserData() async {
     var data = FirebaseFirestore.instance.collection('Users').doc(name);
@@ -49,9 +50,18 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
 
   @override
   void initState() {
-    documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
+    conductStream =
+        FirebaseFirestore.instance.collection('Conducts').snapshots();
     getCurrentUserData();
     super.initState();
+  }
+
+  /// Returns the difference (in full days) between the provided date and today.
+  int calculateDifference(DateTime date) {
+    //DateTime now = DateTime.now();
+    return DateTime(date.year, date.month, date.day)
+        .difference(DateTime(selectedDate.year, selectedDate.month, selectedDate.day))
+        .inDays;
   }
 
   @override
@@ -74,35 +84,6 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                       'Conduct Tracker',
                       26.sp,
                       fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 25.0.w),
-                    child: InkWell(
-                      onTap: () {
-                        //FirebaseAuth.instance.signOut();
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.black54,
-                                offset: Offset(10.0.w, 10.0.h),
-                                blurRadius: 2.0.r,
-                                spreadRadius: 2.0.r),
-                          ],
-                          color: Colors.deepPurple.shade400,
-                          borderRadius: BorderRadius.all(Radius.circular(10.r)),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.all(defaultPadding.sp),
-                          child: Icon(
-                            Icons.exit_to_app_rounded,
-                            color: Colors.white,
-                            size: 35.sp,
-                          ),
-                        ),
-                      ),
                     ),
                   ),
                   InkWell(
@@ -219,6 +200,11 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                   height: 110.h,
                   width: 80.w,
                   initialSelectedDate: DateTime.now(),
+                  onDateChange: (date) {
+                    setState(() {
+                      selectedDate = date;
+                    });
+                  },
                   selectionColor: const Color.fromARGB(255, 72, 30, 229),
                   selectedTextColor: Colors.white,
                   dayTextStyle: GoogleFonts.poppins(
@@ -264,16 +250,40 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
               SizedBox(
                 height: 10.h,
               ),
-              ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: conducts.length,
-                  itemBuilder: (context, index) {
-                    return ConductTile(
-                      conductNumber: index.toInt(),
-                      conductName: conducts[index][1],
-                      conductType: conducts[index][0],
-                    );
-                  })
+              StreamBuilder<QuerySnapshot>(
+                stream: conductStream,
+                builder: (context, snapshot) {
+                  var conducts = snapshot.data?.docs.toList();
+                  if (snapshot.hasData) {
+                    todayConducts = [];
+                    allConducts = [];
+                    for (var i = 0; i < conducts!.length; i++) {
+                      var data = conducts[i].data();
+                      allConducts.add(data as Map<String, dynamic>);
+                      allConducts[i]
+                          .addEntries({'ID': conducts[i].reference.id}.entries);
+                    }
+                    for (var conduct in allConducts) {
+                      if (calculateDifference(DateFormat("d MMM yyyy")
+                              .parse(conduct['endDate'])) ==
+                          0) {
+                        todayConducts.add(conduct);
+                      }
+                    }
+                    return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: todayConducts.length,
+                        itemBuilder: (context, index) {
+                          return ConductTile(
+                            conductNumber: index.toInt(),
+                            conductName: todayConducts[index]['conductName'],
+                            conductType: todayConducts[index]['conductType'],
+                          );
+                        });
+                  }
+                  return const Text('Loading......');
+                },
+              )
             ],
           ),
         ),

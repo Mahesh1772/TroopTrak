@@ -6,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:recase/recase.dart';
 
 class AddNewConductScreen extends StatefulWidget {
@@ -25,6 +24,7 @@ class AddNewConductScreen extends StatefulWidget {
   @override
   State<AddNewConductScreen> createState() => _AddNewConductScreenState();
 }
+
 // Store all the names in conduct
 List<String> tempArray = [];
 // List of all names
@@ -33,12 +33,14 @@ List<String> documentIDs = [];
 List<dynamic> soldierStatusArray = [];
 
 class _AddNewConductScreenState extends State<AddNewConductScreen> {
-
   //This is what the stream builder is waiting for
   late Stream<QuerySnapshot> documentStream;
 
   // List to store all user data, whilst also mapping to name
   List<Map<String, dynamic>> userDetails = [];
+
+  // Boolean value for checking if it is first time or not
+  bool isFirstTIme = true;
 
   // To store text being searched
   String searchText = '';
@@ -69,7 +71,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
   }
 
   void filter() {
-    if (tempArray.isEmpty) {
+    if (isFirstTIme) {
       documentIDs
           .removeWhere((element) => soldierStatusArray.contains(element));
       tempArray = documentIDs;
@@ -101,7 +103,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(1960),
-      lastDate: DateTime.now(),
+      lastDate: DateTime(2030),
     ).then((value) {
       setState(() {
         if (value != null) {
@@ -151,6 +153,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //isFirstTIme = true;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
@@ -430,6 +433,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                                     tempArray.add(
                                         userDetails[index]['name'].toString());
                                   }
+                                  isFirstTIme = false;
                                 });
                               },
                               child: Card(

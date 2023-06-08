@@ -42,11 +42,11 @@ class UpdateSoldierDetailsPage extends StatefulWidget {
 
 class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
   Future deleteCurrentUser() async {
-    FirebaseFirestore.instance.collection("Users").doc(docIDs).delete();
+    FirebaseFirestore.instance.collection("Users").doc(widget.name.text.trim()).delete();
     Navigator.pop(context);
   }
 
-  final docIDs = 'Lee Kuan Yew';
+
 
   final _rationTypes = [
     "Select your ration type...",
@@ -197,7 +197,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
           child: StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection('Users')
-                .doc(docIDs)
+                .doc(widget.name.text.trim())
                 .snapshots(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
