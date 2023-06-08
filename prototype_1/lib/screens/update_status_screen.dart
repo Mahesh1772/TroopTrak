@@ -30,8 +30,12 @@ class UpdateStatusScreen extends StatefulWidget {
 }
 
 CollectionReference db = FirebaseFirestore.instance.collection('Users');
-//bool firstTime = true;
 TextEditingController sName = TextEditingController();
+bool isFirstTIme = true;
+String _initialsType = '';
+String _inititialSDate = '';
+String _intitialEDate = '';
+String _initialName = '';
 Map<String, dynamic> data = {};
 
 class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
@@ -44,10 +48,13 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
   ];
 
   void initState() {
-    //if (firstTime) {
-    //  sName = widget.statusName;
-    //}
     sName = widget.statusName;
+    if (isFirstTIme) {
+      _initialName = widget.statusName.text;
+      _initialsType = widget.selectedStatusType!;
+      _inititialSDate = widget.startDate;
+      _intitialEDate = widget.endDate;
+    }
     display();
     super.initState();
   }
@@ -62,6 +69,7 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
       setState(() {
         if (value != null) {
           widget.startDate = DateFormat('d MMM yyyy').format(value);
+          isFirstTIme = false;
           editUserStatus();
         }
       });
@@ -79,6 +87,7 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
         if (value != null) {
           widget.endDate = DateFormat('d MMM yyyy').format(value);
           editUserStatus();
+          isFirstTIme = false;
         }
       });
     });
@@ -87,6 +96,17 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
   void editStatus() {
     editUserStatus();
     Navigator.pop(context);
+  }
+
+  Future goBackWithoutChanges() async {
+    widget.statusName = sName;
+    db.doc(widget.docID).collection('Statuses').doc(widget.statusID).update({
+      //User map formatting
+      'statusName': _initialName,
+      'statusType': _initialsType,
+      'startDate': _inititialSDate,
+      'endDate': _intitialEDate,
+    });
   }
 
   Future editUserStatus() async {
@@ -135,7 +155,8 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
                     data = snapshot.data!.data() as Map<String, dynamic>;
                     widget.startDate = data['startDate'];
                     widget.selectedStatusType = data['statusType'];
-                    widget.statusName = TextEditingController(text: data['statusName']);
+                    widget.statusName =
+                        TextEditingController(text: data['statusName']);
                     widget.endDate = data['endDate'];
                   }
                   return Padding(
@@ -146,6 +167,7 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
                       children: [
                         InkWell(
                           onTap: () {
+                            goBackWithoutChanges();
                             Navigator.pop(context);
                           },
                           child: Icon(
@@ -206,6 +228,7 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
                                 .toList(),
                             onChanged: (String? item) async => setState(() {
                               widget.selectedStatusType = item;
+                              isFirstTIme = false;
                               editUserStatus();
                             }),
                           ),
