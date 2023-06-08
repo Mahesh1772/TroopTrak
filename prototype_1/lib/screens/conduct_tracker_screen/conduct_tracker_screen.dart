@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:prototype_1/screens/add_new_conduct_screen.dart';
-import 'package:prototype_1/screens/user_profile_screen.dart';
-import 'package:prototype_1/util/charts/bar_graph/bar_graph_styling.dart';
+import 'package:prototype_1/screens/conduct_tracker_screen/add_new_conduct_screen.dart';
+import 'package:prototype_1/screens/detailed_screen/tabs/user_profile_tabs/user_profile_screen.dart';
+import 'package:prototype_1/screens/conduct_tracker_screen/util/charts/bar_graph/bar_graph_styling.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
-import 'package:prototype_1/util/tiles/conduct_main_page_tiles.dart';
+import 'package:prototype_1/screens/conduct_tracker_screen/util/conduct_main_page_tiles.dart';
 
 class ConductTrackerScreen extends StatefulWidget {
   const ConductTrackerScreen({super.key});
@@ -51,7 +51,8 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
   int calculateDifference(DateTime date) {
     //DateTime now = DateTime.now();
     return DateTime(date.year, date.month, date.day)
-        .difference(DateTime(selectedDate.year, selectedDate.month, selectedDate.day))
+        .difference(
+            DateTime(selectedDate.year, selectedDate.month, selectedDate.day))
         .inDays;
   }
 
@@ -125,14 +126,14 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                           style: GoogleFonts.poppins(
                               color: Colors.white54,
                               fontWeight: FontWeight.w400,
-                              fontSize: 24),
+                              fontSize: 24.sp),
                         ),
                         Text(
                           "Today",
                           style: GoogleFonts.poppins(
                               color: Colors.white,
                               fontWeight: FontWeight.w500,
-                              fontSize: 30),
+                              fontSize: 30.sp),
                         ),
                       ],
                     ),
@@ -218,7 +219,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                 height: 30.h,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                padding: EdgeInsets.symmetric(horizontal: 20.0.w),
                 child: StyledText("Participation Strength", 24.sp,
                     fontWeight: FontWeight.w600),
               ),
@@ -227,14 +228,16 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
               ),
               Container(
                 height: 450.h,
-                padding: const EdgeInsets.all(16.0),
-                child: const BarGraphStyling(),
+                padding: EdgeInsets.all(16.0.sp),
+                child: BarGraphStyling(
+                  conductNames: todayConducts,
+                ),
               ),
               SizedBox(
                 height: 20.h,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                padding: EdgeInsets.symmetric(horizontal: 20.0.w),
                 child: StyledText("Conducts Completed / Ongoing", 24.sp,
                     fontWeight: FontWeight.w600),
               ),
@@ -265,15 +268,21 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                         shrinkWrap: true,
                         itemCount: todayConducts.length,
                         itemBuilder: (context, index) {
-                          return ConductTile(
-                            conductNumber: index.toInt(),
-                            conductName: todayConducts[index]['conductName'],
-                            conductType: todayConducts[index]['conductType'],
+                          return InkWell(
+                            onTap: () {},
+                            child: ConductTile(
+                              conductNumber: index.toInt(),
+                              conductName: todayConducts[index]['conductName'],
+                              conductType: todayConducts[index]['conductType'],
+                            ),
                           );
                         });
                   }
                   return const Text('Loading......');
                 },
+              ),
+              SizedBox(
+                height: 20.h,
               )
             ],
           ),

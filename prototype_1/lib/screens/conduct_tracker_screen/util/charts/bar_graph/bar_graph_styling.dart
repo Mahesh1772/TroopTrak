@@ -3,10 +3,11 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:prototype_1/util/charts/bar_graph/bar_data.dart';
+import 'package:prototype_1/screens/conduct_tracker_screen/util/charts/bar_graph/bar_data.dart';
 
 class BarGraphStyling extends StatelessWidget {
-  const BarGraphStyling({super.key});
+  final conductNames;
+  const BarGraphStyling({super.key, required this.conductNames});
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +16,47 @@ class BarGraphStyling extends StatelessWidget {
       54,
       64,
     ];
+
+    Widget getTitles(double value, TitleMeta meta) {
+      final style = GoogleFonts.poppins(
+        color: Colors.white,
+        fontWeight: FontWeight.w500,
+      );
+      String text;
+      switch (value.toInt()) {
+        case 0:
+          text = 'RM 4';
+          break;
+        case 1:
+          text = 'Fartlek 2';
+          break;
+        case 2:
+          text = 'S&P 5';
+          break;
+        case 3:
+          text = 'IPPT 2';
+          break;
+        case 4:
+          text = 'TABATAR';
+          break;
+
+        default:
+          text = '';
+          break;
+      }
+      return SideTitleWidget(
+        axisSide: meta.axisSide,
+        space: 8,
+        child: SizedBox(
+            height: 90,
+            child: AutoSizeText(
+              text,
+              style: style,
+              maxLines: 1,
+              minFontSize: 20,
+            )),
+      );
+    }
 
     //initialize bar data
 
@@ -91,45 +133,4 @@ class BarGraphStyling extends StatelessWidget {
       ),
     );
   }
-}
-
-Widget getTitles(double value, TitleMeta meta) {
-  final style = GoogleFonts.poppins(
-    color: Colors.white54,
-    fontWeight: FontWeight.w500,
-  );
-  String text;
-  switch (value.toInt()) {
-    case 0:
-      text = 'Route March';
-      break;
-    case 1:
-      text = 'Fartlek 2';
-      break;
-    case 2:
-      text = 'S&P 5';
-      break;
-    case 3:
-      text = 'IPPT 2';
-      break;
-    case 4:
-      text = 'TABATAR';
-      break;
-
-    default:
-      text = '';
-      break;
-  }
-  return SideTitleWidget(
-    axisSide: meta.axisSide,
-    space: 8,
-    child: SizedBox(
-        height: 90,
-        child: AutoSizeText(
-          text,
-          style: style,
-          maxLines: 1,
-          minFontSize: 20,
-        )),
-  );
 }

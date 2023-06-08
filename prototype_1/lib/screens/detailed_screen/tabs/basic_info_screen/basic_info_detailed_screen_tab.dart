@@ -1,16 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:prototype_1/screens/update_soldier_details_screen.dart';
+import 'package:prototype_1/screens/detailed_screen/tabs/basic_info_screen/update_soldier_details_screen.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
-import '../../util/text_styles/soldier_detailed_screen_info_template.dart';
+import '../../util/soldier_detailed_screen_info_template.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 var fname = FirebaseAuth.instance.currentUser!.displayName.toString();
 var id = FirebaseAuth.instance.currentUser!;
 
 class BasicInfoTab extends StatefulWidget {
-   const BasicInfoTab({super.key, required this.docID});
+  const BasicInfoTab({super.key, required this.docID});
 
   final String docID;
 
@@ -31,7 +31,6 @@ class _BasicInfoTabState extends State<BasicInfoTab> {
 
   @override
   Widget build(BuildContext context) {
-
     return SingleChildScrollView(
       child: SizedBox(
         height: 750.h,
@@ -47,7 +46,7 @@ class _BasicInfoTabState extends State<BasicInfoTab> {
               //to a variable called "data" of Type Map
               Map<String, dynamic> data =
                   snapshot.data!.data() as Map<String, dynamic>;
-    
+
               return Column(
                 children: [
                   SoldierDetailedInfoTemplate(
@@ -86,12 +85,12 @@ class _BasicInfoTabState extends State<BasicInfoTab> {
                           MaterialPageRoute(
                             builder: (context) => UpdateSoldierDetailsPage(
                                 name: TextEditingController(text: data['name']),
-                                company:
-                                    TextEditingController(text: data['company']),
-                                platoon:
-                                    TextEditingController(text: data['platoon']),
-                                section:
-                                    TextEditingController(text: data['section']),
+                                company: TextEditingController(
+                                    text: data['company']),
+                                platoon: TextEditingController(
+                                    text: data['platoon']),
+                                section: TextEditingController(
+                                    text: data['section']),
                                 appointment: TextEditingController(
                                     text: data['appointment']),
                                 dob: data['dob'],

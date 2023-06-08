@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:prototype_1/screens/tabs/basic_info_detailed_screen_tab.dart';
-import 'package:prototype_1/screens/tabs/statuses_detailed_screen_tab.dart';
+import 'package:prototype_1/screens/detailed_screen/tabs/basic_info_screen/basic_info_detailed_screen_tab.dart';
+import 'package:prototype_1/screens/detailed_screen/tabs/statuses_screen/statuses_detailed_screen_tab.dart';
 import 'package:recase/recase.dart';
 
 class SoldierDetailedScreen extends StatefulWidget {
@@ -205,7 +205,9 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
                       BasicInfoTab(docID: widget.soldierName),
 
                       //Statuses tab
-                      StatusesTab(docID: widget.soldierName,),
+                      StatusesTab(
+                        docID: widget.soldierName,
+                      ),
                     ],
                   ),
                 )

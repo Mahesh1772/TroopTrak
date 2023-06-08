@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:prototype_1/screens/tabs/user_profile_tabs/user_profile_basic_info_tab.dart';
-import 'package:prototype_1/screens/tabs/user_profile_tabs/user_profile_statuses_tab.dart';
+import 'package:prototype_1/screens/detailed_screen/tabs/user_profile_tabs/user_profile_basic_info_tab.dart';
+import 'package:prototype_1/screens/detailed_screen/tabs/user_profile_tabs/user_profile_statuses_tab.dart';
 import 'package:recase/recase.dart';
 
 class UserProfileScreen extends StatefulWidget {

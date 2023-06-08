@@ -2,7 +2,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:prototype_1/util/text_styles/text_style.dart';
 
 class ConductTile extends StatelessWidget {
   final String conductType;
@@ -24,7 +23,7 @@ class ConductTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(right: 30.0),
+            padding: EdgeInsets.only(right: 30.0.w),
             child: Container(
               height: 70.h,
               width: 70.w,
@@ -33,11 +32,12 @@ class ConductTile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: Center(
-                child: AutoSizeText(
+                child: Text(
                   (conductNumber + 1).toString(),
-                  minFontSize: 30,
                   style: GoogleFonts.poppins(
-                      color: Colors.white, fontWeight: FontWeight.bold),
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24.sp),
                 ),
               ),
             ),
@@ -45,10 +45,37 @@ class ConductTile extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              StyledText(conductType, 14, fontWeight: FontWeight.w400),
-              StyledText(conductName, 24, fontWeight: FontWeight.w500)
+              SizedBox(
+                width: 230,
+                child: AutoSizeText(
+                  conductType,
+                  maxLines: 1,
+                  style: GoogleFonts.poppins(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white),
+                ),
+              ),
+              SizedBox(
+                width: 230,
+                child: AutoSizeText(
+                  conductName,
+                  maxLines: 1,
+                  style: GoogleFonts.poppins(
+                      fontSize: 24.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white),
+                ),
+              ),
             ],
           ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.0.w),
+            child: const Icon(
+              Icons.arrow_forward_outlined,
+              color: Colors.white,
+            ),
+          )
         ],
       ),
     );

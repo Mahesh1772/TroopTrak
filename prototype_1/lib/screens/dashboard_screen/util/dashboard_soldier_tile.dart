@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
-import 'package:prototype_1/screens/soldier_detailed_screen.dart';
+import 'package:prototype_1/screens/detailed_screen/soldier_detailed_screen.dart';
 import 'dart:math' as math;
 
 class DashboardSoldierTile extends StatelessWidget {

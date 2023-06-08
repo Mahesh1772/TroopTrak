@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:prototype_1/screens/update_soldier_details_screen.dart';
+import 'package:prototype_1/screens/detailed_screen/tabs/basic_info_screen/update_soldier_details_screen.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
-import 'package:prototype_1/util/text_styles/soldier_detailed_screen_info_template.dart';
+import 'package:prototype_1/screens/detailed_screen/util/soldier_detailed_screen_info_template.dart';
 
 var fname = FirebaseAuth.instance.currentUser!.displayName.toString();
 var id = FirebaseAuth.instance.currentUser!;

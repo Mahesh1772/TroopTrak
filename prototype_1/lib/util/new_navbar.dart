@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:prototype_1/screens/conduct_tracker_screen.dart';
+import 'package:prototype_1/screens/conduct_tracker_screen/conduct_tracker_screen.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
-import 'package:prototype_1/screens/dashboard_screen.dart';
-import 'package:prototype_1/screens/nominal_roll_screen_new.dart';
+import 'package:prototype_1/screens/dashboard_screen/dashboard_screen.dart';
+import 'package:prototype_1/screens/nominal_roll_screen/nominal_roll_screen_new.dart';
 
 class GNavMainScreen extends StatefulWidget {
   const GNavMainScreen({super.key});

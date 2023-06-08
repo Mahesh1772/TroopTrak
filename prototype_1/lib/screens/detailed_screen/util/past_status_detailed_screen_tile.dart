@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
-import 'package:prototype_1/screens/update_status_screen.dart';
+import 'package:prototype_1/screens/detailed_screen/tabs/statuses_screen/update_status_screen.dart';
 
 late IconData? tileIcon;
 

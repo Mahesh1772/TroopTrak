@@ -1,4 +1,4 @@
-import 'package:prototype_1/util/charts/bar_graph/individual_bar_graph.dart';
+import 'package:prototype_1/screens/conduct_tracker_screen/util/charts/bar_graph/individual_bar_graph.dart';
 
 class BarData {
   final List<double> conductParticipationList;

@@ -2,12 +2,12 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:prototype_1/screens/add_new_soldier_screen.dart';
+import 'package:prototype_1/screens/nominal_roll_screen/add_new_soldier_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:prototype_1/screens/user_profile_screen.dart';
+import 'package:prototype_1/screens/detailed_screen/tabs/user_profile_tabs/user_profile_screen.dart';
 import 'package:prototype_1/util/constants.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
-import 'package:prototype_1/util/tiles/solider_tile.dart';
+import 'package:prototype_1/screens/nominal_roll_screen/util/solider_tile.dart';
 import 'package:intl/intl.dart';
 
 class NominalRollNewScreen extends StatefulWidget {

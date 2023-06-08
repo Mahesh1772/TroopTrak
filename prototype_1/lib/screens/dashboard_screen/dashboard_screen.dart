@@ -3,12 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:prototype_1/screens/soldier_detailed_screen.dart';
+import 'package:prototype_1/screens/detailed_screen/soldier_detailed_screen.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/util/constants.dart';
-import 'package:prototype_1/util/charts/pie_chart/current_strength_chart.dart';
+import 'package:prototype_1/screens/dashboard_screen/util/pie_chart/current_strength_chart.dart';
 import 'package:intl/intl.dart';
-import 'package:prototype_1/util/tiles/dashboard_soldier_tile.dart';
+import 'package:prototype_1/screens/dashboard_screen/util/dashboard_soldier_tile.dart';
 
 List unitSoldiers = [
   //[ soldierName, soldierRank, tileColour, soldierAttendance, soldierIcon, soldierAppointment, companyName, platoonName, sectionNumber, dateOfBirth, rationType, bloodType, enlistmentDate, ordDate]
