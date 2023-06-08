@@ -11,15 +11,6 @@ import 'package:prototype_1/util/charts/bar_graph/bar_graph_styling.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/util/tiles/conduct_main_page_tiles.dart';
 
-List<List<String>> conducts = [
-  [
-    "Route March",
-    "4KM Route March",
-  ],
-  ["Run", "Fartlek 2"],
-  ["Strength and Power", "S&P 5"],
-];
-
 class ConductTrackerScreen extends StatefulWidget {
   const ConductTrackerScreen({super.key});
 
