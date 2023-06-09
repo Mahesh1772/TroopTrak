@@ -206,10 +206,10 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                               children: [
                                 Center(
                                   child: Text(
-                                    'No results Found!',
-                                    style: TextStyle(
-                                      color: Colors.purpleAccent,
-                                      fontSize: 45.sp,
+                                    'Nothing to see here...yet.',
+                                    style: GoogleFonts.poppins(
+                                      color: Colors.lightBlue,
+                                      fontSize: 24.sp,
                                     ),
                                     textAlign: TextAlign.center,
                                   ),
@@ -232,7 +232,7 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                           StyledText("Non-Participants", 24.sp,
                               fontWeight: FontWeight.w500),
                           SizedBox(
-                            height: 400,
+                            height: 250,
                             child: ListView.builder(
                                 itemCount: userDetails.length,
                                 itemBuilder: (context, index) {
@@ -286,7 +286,7 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                           StyledText("Participants", 24.sp,
                               fontWeight: FontWeight.w500),
                           SizedBox(
-                            height: 400,
+                            height: 250,
                             child: ListView.builder(
                                 itemCount: userDetails.length,
                                 itemBuilder: (context, index) {

@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -78,7 +80,7 @@ class _BarGraphStylingState extends State<BarGraphStyling> {
     return BarChart(
       BarChartData(
         alignment: BarChartAlignment.spaceEvenly,
-        maxY: 100,
+        maxY: widget.totalStrength,
         minY: 0,
         gridData: FlGridData(show: false),
         borderData: FlBorderData(
@@ -90,13 +92,14 @@ class _BarGraphStylingState extends State<BarGraphStyling> {
           touchTooltipData: BarTouchTooltipData(
               tooltipBgColor: Colors.transparent,
               tooltipPadding: EdgeInsets.zero,
-              tooltipMargin: 8,
+              tooltipMargin: 4,
               getTooltipItem: (group, groupIndex, rod, rodIndex) {
                 return BarTooltipItem(
                   rod.toY.round().toString(),
                   GoogleFonts.poppins(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
+                    fontSize: 16,
                   ),
                 );
               }),

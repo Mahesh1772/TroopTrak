@@ -87,8 +87,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                   }
                 }
                 for (var conduct in todayConducts) {
-                  participant
-                      .add(conduct['participants'].length.toDouble());
+                  participant.add(conduct['participants'].length.toDouble());
                 }
 
                 ///print(todayConducts);
@@ -254,7 +253,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                           fontWeight: FontWeight.w600),
                     ),
                     SizedBox(
-                      height: 10.h,
+                      height: 20.h,
                     ),
                     Container(
                       height: 450.h,
