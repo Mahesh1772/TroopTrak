@@ -129,7 +129,9 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                           ),
                           Center(
                             child: Text(
-                              widget.startDate.toUpperCase(),
+                              widget.startDate == widget.endDate
+                                  ? widget.startDate.toUpperCase()
+                                  : "${widget.startDate.toUpperCase()} - ${widget.endDate.toUpperCase()}",
                               maxLines: 2,
                               style: GoogleFonts.poppins(
                                 color: Colors.white,
@@ -154,11 +156,6 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  StyledText("Non-Participants", 24.sp,
-                      fontWeight: FontWeight.w500),
                   SizedBox(
                     height: 10.h,
                   ),
@@ -228,7 +225,117 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                         }
                       }
 
-                      return Placeholder();
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          StyledText("Non-Participants", 24.sp,
+                              fontWeight: FontWeight.w500),
+                          SizedBox(
+                            height: 400,
+                            child: ListView.builder(
+                                itemCount: userDetails.length,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                    padding: EdgeInsets.all(16.0.sp),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.all(20.0.sp),
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.transparent,
+                                            border: Border.all(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          child: Center(
+                                            child: Image.asset(
+                                              "lib/assets/army-ranks/${userDetails[index]['rank'].toString().toLowerCase()}.png",
+                                              width: 20,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              StyledText(
+                                                  userDetails[index]['name']
+                                                      .toString()
+                                                      .titleCase,
+                                                  18,
+                                                  fontWeight: FontWeight.w600),
+                                              const StyledText(
+                                                  "Reason: Ex RMJ", 14,
+                                                  fontWeight: FontWeight.w400),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                }),
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          StyledText("Participants", 24.sp,
+                              fontWeight: FontWeight.w500),
+                          SizedBox(
+                            height: 400,
+                            child: ListView.builder(
+                                itemCount: userDetails.length,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                    padding: EdgeInsets.all(16.0.sp),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.all(20.0.sp),
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.transparent,
+                                            border: Border.all(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          child: Center(
+                                            child: Image.asset(
+                                              "lib/assets/army-ranks/${userDetails[index]['rank'].toString().toLowerCase()}.png",
+                                              width: 20,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              StyledText(
+                                                  userDetails[index]['name']
+                                                      .toString()
+                                                      .titleCase,
+                                                  18,
+                                                  fontWeight: FontWeight.w600),
+                                              const StyledText(
+                                                  "Reason: Ex RMJ", 14,
+                                                  fontWeight: FontWeight.w400),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                }),
+                          ),
+                        ],
+                      );
                     },
                   ),
                 ],
