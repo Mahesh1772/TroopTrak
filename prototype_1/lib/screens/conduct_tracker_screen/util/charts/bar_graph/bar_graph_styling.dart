@@ -6,8 +6,16 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/screens/conduct_tracker_screen/util/charts/bar_graph/bar_data.dart';
 
 class BarGraphStyling extends StatelessWidget {
-  final conductNames;
-  const BarGraphStyling({super.key, required this.conductNames});
+  final conductList;
+  BarGraphStyling({super.key, required this.conductList});
+
+  List<double> participationStrength = [];
+
+  void populate() {
+    for (var conduct in conductList) {
+      participationStrength.add(conduct['participants'].length.toDouble());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +69,7 @@ class BarGraphStyling extends StatelessWidget {
     //initialize bar data
 
     BarData myBarData =
-        BarData(conductParticipationList: conductParticipations);
+        BarData(conductParticipationList: participationStrength);
     myBarData.initializeBarData();
 
     return BarChart(
