@@ -63,208 +63,210 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
       body: SingleChildScrollView(
         child: SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24.0.w),
-                    child: StyledText(
-                      'Conduct Tracker',
-                      26.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => UserProfileScreen(
-                            soldierName: currentUserData['name'],
-                            soldierRank:
-                                "lib/assets/army-ranks/${currentUserData['rank'].toString().toLowerCase()}.png",
-                            soldierAppointment: currentUserData['appointment'],
-                            company: currentUserData['company'],
-                            platoon: currentUserData['platoon'],
-                            section: currentUserData['section'],
-                            dateOfBirth: currentUserData['dob'],
-                            rationType: currentUserData['rationType'],
-                            bloodType: currentUserData['bloodgroup'],
-                            enlistmentDate: currentUserData['enlistment'],
-                            ordDate: currentUserData['ord'],
+          child: StreamBuilder<QuerySnapshot>(
+            stream: conductStream,
+            builder: (context, snapshot) {
+              var conducts = snapshot.data?.docs.toList();
+              if (snapshot.hasData) {
+                todayConducts = [];
+                allConducts = [];
+                for (var i = 0; i < conducts!.length; i++) {
+                  var data = conducts[i].data();
+                  allConducts.add(data as Map<String, dynamic>);
+                  allConducts[i]
+                      .addEntries({'ID': conducts[i].reference.id}.entries);
+                }
+                for (var conduct in allConducts) {
+                  if (calculateDifference(
+                          DateFormat("d MMM yyyy").parse(conduct['endDate'])) ==
+                      0) {
+                    todayConducts.add(conduct);
+                  }
+                }
+
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 24.0.w),
+                          child: StyledText(
+                            'Conduct Tracker',
+                            26.sp,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
-                      );
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.all(12.0.sp),
-                      child: Image.asset(
-                        'lib/assets/user.png',
-                        width: 50.w,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 20.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          DateFormat.yMMMMd().format(DateTime.now()),
-                          style: GoogleFonts.poppins(
-                              color: Colors.white54,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 24.sp),
-                        ),
-                        Text(
-                          "Today",
-                          style: GoogleFonts.poppins(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 30.sp),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => UserProfileScreen(
+                                  soldierName: currentUserData['name'],
+                                  soldierRank:
+                                      "lib/assets/army-ranks/${currentUserData['rank'].toString().toLowerCase()}.png",
+                                  soldierAppointment:
+                                      currentUserData['appointment'],
+                                  company: currentUserData['company'],
+                                  platoon: currentUserData['platoon'],
+                                  section: currentUserData['section'],
+                                  dateOfBirth: currentUserData['dob'],
+                                  rationType: currentUserData['rationType'],
+                                  bloodType: currentUserData['bloodgroup'],
+                                  enlistmentDate: currentUserData['enlistment'],
+                                  ordDate: currentUserData['ord'],
+                                ),
+                              ),
+                            );
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.all(12.0.sp),
+                            child: Image.asset(
+                              'lib/assets/user.png',
+                              width: 50.w,
+                            ),
+                          ),
                         ),
                       ],
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AddNewConductScreen(
-                              selectedConductType: "Select conduct...",
-                              conductName: TextEditingController(),
-                              startDate: "Start Date:",
-                              endDate: "End Date:",
-                            ),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(8.0.sp),
-                        height: 60.h,
-                        width: 180.w,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.r),
-                          gradient: const LinearGradient(
-                            colors: [
-                              Color.fromARGB(255, 72, 30, 229),
-                              Color.fromARGB(255, 130, 60, 229),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 20.w),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                DateFormat.yMMMMd().format(DateTime.now()),
+                                style: GoogleFonts.poppins(
+                                    color: Colors.white54,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 24.sp),
+                              ),
+                              Text(
+                                "Today",
+                                style: GoogleFonts.poppins(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 30.sp),
+                              ),
                             ],
                           ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AddNewConductScreen(
+                                    selectedConductType: "Select conduct...",
+                                    conductName: TextEditingController(),
+                                    startDate: "Start Date:",
+                                    endDate: "End Date:",
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(8.0.sp),
+                              height: 60.h,
+                              width: 180.w,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.r),
+                                gradient: const LinearGradient(
+                                  colors: [
+                                    Color.fromARGB(255, 72, 30, 229),
+                                    Color.fromARGB(255, 130, 60, 229),
+                                  ],
+                                ),
+                              ),
+                              child: Row(
+                                children: [
+                                  const Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 10.w,
+                                  ),
+                                  StyledText("Add Conduct", 18.sp,
+                                      fontWeight: FontWeight.w400),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(left: 20),
+                      child: DatePicker(
+                        DateTime.now(),
+                        height: 110.h,
+                        width: 80.w,
+                        initialSelectedDate: DateTime.now(),
+                        onDateChange: (date) {
+                          setState(() {
+                            selectedDate = date;
+                          });
+                        },
+                        selectionColor: const Color.fromARGB(255, 72, 30, 229),
+                        selectedTextColor: Colors.white,
+                        dayTextStyle: GoogleFonts.poppins(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white54,
                         ),
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.add,
-                              color: Colors.white,
-                            ),
-                            SizedBox(
-                              width: 10.w,
-                            ),
-                            StyledText("Add Conduct", 18.sp,
-                                fontWeight: FontWeight.w400),
-                          ],
+                        monthTextStyle: GoogleFonts.poppins(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white54,
+                          fontSize: 10,
+                        ),
+                        dateTextStyle: GoogleFonts.poppins(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 20,
                         ),
                       ),
-                    )
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              Container(
-                margin: const EdgeInsets.only(left: 20),
-                child: DatePicker(
-                  DateTime.now(),
-                  height: 110.h,
-                  width: 80.w,
-                  initialSelectedDate: DateTime.now(),
-                  onDateChange: (date) {
-                    setState(() {
-                      selectedDate = date;
-                    });
-                  },
-                  selectionColor: const Color.fromARGB(255, 72, 30, 229),
-                  selectedTextColor: Colors.white,
-                  dayTextStyle: GoogleFonts.poppins(
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white54,
-                  ),
-                  monthTextStyle: GoogleFonts.poppins(
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white54,
-                    fontSize: 10,
-                  ),
-                  dateTextStyle: GoogleFonts.poppins(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 30.h,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.0.w),
-                child: StyledText("Participation Strength", 24.sp,
-                    fontWeight: FontWeight.w600),
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              Container(
-                height: 450.h,
-                padding: EdgeInsets.all(16.0.sp),
-                child: BarGraphStyling(
-                  conductNames: todayConducts,
-                ),
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.0.w),
-                child: StyledText("Conducts Completed / Ongoing", 24.sp,
-                    fontWeight: FontWeight.w600),
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              StreamBuilder<QuerySnapshot>(
-                stream: conductStream,
-                builder: (context, snapshot) {
-                  var conducts = snapshot.data?.docs.toList();
-                  if (snapshot.hasData) {
-                    todayConducts = [];
-                    allConducts = [];
-                    for (var i = 0; i < conducts!.length; i++) {
-                      var data = conducts[i].data();
-                      allConducts.add(data as Map<String, dynamic>);
-                      allConducts[i]
-                          .addEntries({'ID': conducts[i].reference.id}.entries);
-                    }
-                    for (var conduct in allConducts) {
-                      if (calculateDifference(DateFormat("d MMM yyyy")
-                              .parse(conduct['endDate'])) ==
-                          0) {
-                        todayConducts.add(conduct);
-                      }
-                    }
-                    return ListView.builder(
+                    ),
+                    SizedBox(
+                      height: 30.h,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.0.w),
+                      child: StyledText("Participation Strength", 24.sp,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    Container(
+                      height: 450.h,
+                      padding: EdgeInsets.all(16.0.sp),
+                      child: BarGraphStyling(
+                        conductNames: todayConducts,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.0.w),
+                      child: StyledText("Conducts Completed / Ongoing", 24.sp,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    ListView.builder(
                         shrinkWrap: true,
                         itemCount: todayConducts.length,
                         itemBuilder: (context, index) {
@@ -276,15 +278,52 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                               conductType: todayConducts[index]['conductType'],
                             ),
                           );
-                        });
-                  }
-                  return const Text('Loading......');
-                },
-              ),
-              SizedBox(
-                height: 20.h,
-              )
-            ],
+                        }),
+                    /*StreamBuilder<QuerySnapshot>(
+                    stream: conductStream,
+                    builder: (context, snapshot) {
+                      var conducts = snapshot.data?.docs.toList();
+                      if (snapshot.hasData) {
+                        todayConducts = [];
+                        allConducts = [];
+                        for (var i = 0; i < conducts!.length; i++) {
+                          var data = conducts[i].data();
+                          allConducts.add(data as Map<String, dynamic>);
+                          allConducts[i]
+                              .addEntries({'ID': conducts[i].reference.id}.entries);
+                        }
+                        for (var conduct in allConducts) {
+                          if (calculateDifference(DateFormat("d MMM yyyy")
+                                  .parse(conduct['endDate'])) ==
+                              0) {
+                            todayConducts.add(conduct);
+                          }
+                        }
+                        return ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: todayConducts.length,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () {},
+                                child: ConductTile(
+                                  conductNumber: index.toInt(),
+                                  conductName: todayConducts[index]['conductName'],
+                                  conductType: todayConducts[index]['conductType'],
+                                ),
+                              );
+                            });
+                      }
+                      return const Text('Loading......');
+                    },
+                  ),*/
+                    SizedBox(
+                      height: 20.h,
+                    )
+                  ],
+                );
+              }
+              return const Text('Loading......');
+            },
           ),
         ),
       ),
