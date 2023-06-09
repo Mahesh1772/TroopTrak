@@ -21,6 +21,7 @@ class ConductTrackerScreen extends StatefulWidget {
 class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
   List<Map<String, dynamic>> todayConducts = [];
   List<Map<String, dynamic>> allConducts = [];
+  List<double> participant = [];
   DateTime selectedDate = DateTime.now();
 
   // The DocID or the name of the current user is saved in here
@@ -70,6 +71,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
               if (snapshot.hasData) {
                 todayConducts = [];
                 allConducts = [];
+                participant = [];
                 for (var i = 0; i < conducts!.length; i++) {
                   var data = conducts[i].data();
                   allConducts.add(data as Map<String, dynamic>);
@@ -83,7 +85,12 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                     todayConducts.add(conduct);
                   }
                 }
+                for (var conduct in todayConducts) {
+                  participant
+                      .add(conduct['participants'].length.toDouble());
+                }
 
+                ///print(todayConducts);
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -253,6 +260,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                       padding: EdgeInsets.all(16.0.sp),
                       child: BarGraphStyling(
                         conductList: todayConducts,
+                        participationStrength: participant,
                       ),
                     ),
                     SizedBox(

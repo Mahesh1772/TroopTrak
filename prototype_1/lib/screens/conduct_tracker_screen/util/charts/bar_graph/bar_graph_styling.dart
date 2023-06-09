@@ -6,27 +6,29 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/screens/conduct_tracker_screen/util/charts/bar_graph/bar_data.dart';
 
 class BarGraphStyling extends StatefulWidget {
-  final List conductList;
-  BarGraphStyling({super.key, required this.conductList});
+  final List<Map<String, dynamic>> conductList;
+  List<double> participationStrength = [];
+ BarGraphStyling(
+      {super.key,
+      required this.conductList,
+      required this.participationStrength});
 
   @override
   State<BarGraphStyling> createState() => _BarGraphStylingState();
 }
 
 class _BarGraphStylingState extends State<BarGraphStyling> {
-  List<double> participationStrength = [];
-
-  void populate() {
-    for (var conduct in widget.conductList) {
-      participationStrength.add(conduct['participants'].length.toDouble());
-      print(participationStrength);
-    }
-  }
+  //void populate() {
+  //  for (var conduct in widget.conductList) {
+  //    participationStrength.add(conduct['participants'].length.toDouble());
+  //  }
+  //  print(widget.conductList);
+  //}
 
   @override
   void initState() {
     super.initState();
-    populate();
+    //populate();
   }
 
   @override
@@ -81,7 +83,7 @@ class _BarGraphStylingState extends State<BarGraphStyling> {
     //initialize bar data
 
     BarData myBarData =
-        BarData(conductParticipationList: participationStrength);
+        BarData(conductParticipationList: widget.participationStrength);
     myBarData.initializeBarData();
 
     return BarChart(
@@ -142,7 +144,7 @@ class _BarGraphStylingState extends State<BarGraphStyling> {
                       end: Alignment.bottomRight,
                     ),
                     width:
-                        (200 * (1 / participationStrength.length.toDouble())).w,
+                        (200 * (1 / widget.participationStrength.length.toDouble())).w,
                     borderRadius: BorderRadius.circular(4),
                   ),
                 ],
