@@ -6,37 +6,28 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/screens/conduct_tracker_screen/util/charts/bar_graph/bar_data.dart';
 
 class BarGraphStyling extends StatefulWidget {
-  final List conductList;
-  BarGraphStyling({super.key, required this.conductList});
+  final List<Map<String, dynamic>> conductList;
+  List<double> participationStrength = [];
+  double totalStrength;
+  BarGraphStyling({
+    super.key,
+    required this.conductList,
+    required this.totalStrength,
+    required this.participationStrength,
+  });
 
   @override
   State<BarGraphStyling> createState() => _BarGraphStylingState();
 }
 
 class _BarGraphStylingState extends State<BarGraphStyling> {
-  List<double> participationStrength = [];
-
-  void populate() {
-    for (var conduct in widget.conductList) {
-      participationStrength.add(conduct['participants'].length.toDouble());
-      print(participationStrength);
-    }
-  }
-
   @override
   void initState() {
     super.initState();
-    populate();
   }
 
   @override
   Widget build(BuildContext context) {
-    // List<double> conductParticipations = [
-    //   49,
-    //   54,
-    //   64,
-    // ];
-
     Widget getTitles(double value, TitleMeta meta) {
       final style = GoogleFonts.poppins(
         color: Colors.white,
@@ -81,7 +72,7 @@ class _BarGraphStylingState extends State<BarGraphStyling> {
     //initialize bar data
 
     BarData myBarData =
-        BarData(conductParticipationList: participationStrength);
+        BarData(conductParticipationList: widget.participationStrength);
     myBarData.initializeBarData();
 
     return BarChart(
@@ -141,8 +132,10 @@ class _BarGraphStylingState extends State<BarGraphStyling> {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
-                    width:
-                        (200 * (1 / participationStrength.length.toDouble())).w,
+                    width: (200 *
+                            (1 /
+                                widget.participationStrength.length.toDouble()))
+                        .w,
                     borderRadius: BorderRadius.circular(4),
                   ),
                 ],
