@@ -5,25 +5,37 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/screens/conduct_tracker_screen/util/charts/bar_graph/bar_data.dart';
 
-class BarGraphStyling extends StatelessWidget {
-  final conductList;
+class BarGraphStyling extends StatefulWidget {
+  final List conductList;
   BarGraphStyling({super.key, required this.conductList});
 
+  @override
+  State<BarGraphStyling> createState() => _BarGraphStylingState();
+}
+
+class _BarGraphStylingState extends State<BarGraphStyling> {
   List<double> participationStrength = [];
 
   void populate() {
-    for (var conduct in conductList) {
+    for (var conduct in widget.conductList) {
       participationStrength.add(conduct['participants'].length.toDouble());
+      print(participationStrength);
     }
   }
 
   @override
+  void initState() {
+    super.initState();
+    populate();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    List<double> conductParticipations = [
-      49,
-      54,
-      64,
-    ];
+    // List<double> conductParticipations = [
+    //   49,
+    //   54,
+    //   64,
+    // ];
 
     Widget getTitles(double value, TitleMeta meta) {
       final style = GoogleFonts.poppins(
@@ -33,19 +45,19 @@ class BarGraphStyling extends StatelessWidget {
       String text;
       switch (value.toInt()) {
         case 0:
-          text = 'RM 4';
+          text = widget.conductList[0]['conductName'];
           break;
         case 1:
-          text = 'Fartlek 2';
+          text = widget.conductList[1]['conductName'];
           break;
         case 2:
-          text = 'S&P 5';
+          text = widget.conductList[2]['conductName'];
           break;
         case 3:
-          text = 'IPPT 2';
+          text = widget.conductList[3]['conductName'];
           break;
         case 4:
-          text = 'TABATAR';
+          text = widget.conductList[4]['conductName'];
           break;
 
         default:
@@ -130,7 +142,7 @@ class BarGraphStyling extends StatelessWidget {
                       end: Alignment.bottomRight,
                     ),
                     width:
-                        (200 * (1 / conductParticipations.length.toDouble())).w,
+                        (200 * (1 / participationStrength.length.toDouble())).w,
                     borderRadius: BorderRadius.circular(4),
                   ),
                 ],
