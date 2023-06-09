@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:prototype_1/screens/conduct_tracker_screen/add_new_conduct_screen.dart';
+import 'package:prototype_1/screens/conduct_tracker_screen/conduct_details_screen.dart';
 import 'package:prototype_1/screens/detailed_screen/tabs/user_profile_tabs/user_profile_screen.dart';
 import 'package:prototype_1/screens/conduct_tracker_screen/util/charts/bar_graph/bar_graph_styling.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
@@ -271,7 +272,22 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                         itemCount: todayConducts.length,
                         itemBuilder: (context, index) {
                           return InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ConductDetailsScreen(
+                                    conductName: todayConducts[index]
+                                        ['conductName'],
+                                    conductType: todayConducts[index]
+                                        ['conductType'],
+                                    startDate: todayConducts[index]
+                                        ['startDate'],
+                                    endDate: todayConducts[index]['endDate'],
+                                  ),
+                                ),
+                              );
+                            },
                             child: ConductTile(
                               conductNumber: index.toInt(),
                               conductName: todayConducts[index]['conductName'],
