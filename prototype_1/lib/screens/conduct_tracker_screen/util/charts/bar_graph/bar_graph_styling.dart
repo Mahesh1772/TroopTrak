@@ -18,26 +18,14 @@ class BarGraphStyling extends StatefulWidget {
 }
 
 class _BarGraphStylingState extends State<BarGraphStyling> {
-  //void populate() {
-  //  for (var conduct in widget.conductList) {
-  //    participationStrength.add(conduct['participants'].length.toDouble());
-  //  }
-  //  print(widget.conductList);
-  //}
 
   @override
   void initState() {
     super.initState();
-    //populate();
   }
 
   @override
   Widget build(BuildContext context) {
-    // List<double> conductParticipations = [
-    //   49,
-    //   54,
-    //   64,
-    // ];
 
     Widget getTitles(double value, TitleMeta meta) {
       final style = GoogleFonts.poppins(
