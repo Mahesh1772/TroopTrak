@@ -259,6 +259,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                       height: 450.h,
                       padding: EdgeInsets.all(16.0.sp),
                       child: BarGraphStyling(
+                        totalStrength: allConducts.length.toDouble(),
                         conductList: todayConducts,
                         participationStrength: participant,
                       ),

@@ -8,17 +8,19 @@ import 'package:prototype_1/screens/conduct_tracker_screen/util/charts/bar_graph
 class BarGraphStyling extends StatefulWidget {
   final List<Map<String, dynamic>> conductList;
   List<double> participationStrength = [];
- BarGraphStyling(
-      {super.key,
-      required this.conductList,
-      required this.participationStrength});
+  double totalStrength;
+  BarGraphStyling({
+    super.key,
+    required this.conductList,
+    required this.totalStrength,
+    required this.participationStrength,
+  });
 
   @override
   State<BarGraphStyling> createState() => _BarGraphStylingState();
 }
 
 class _BarGraphStylingState extends State<BarGraphStyling> {
-
   @override
   void initState() {
     super.initState();
@@ -26,7 +28,6 @@ class _BarGraphStylingState extends State<BarGraphStyling> {
 
   @override
   Widget build(BuildContext context) {
-
     Widget getTitles(double value, TitleMeta meta) {
       final style = GoogleFonts.poppins(
         color: Colors.white,
@@ -131,8 +132,10 @@ class _BarGraphStylingState extends State<BarGraphStyling> {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
-                    width:
-                        (200 * (1 / widget.participationStrength.length.toDouble())).w,
+                    width: (200 *
+                            (1 /
+                                widget.participationStrength.length.toDouble()))
+                        .w,
                     borderRadius: BorderRadius.circular(4),
                   ),
                 ],
