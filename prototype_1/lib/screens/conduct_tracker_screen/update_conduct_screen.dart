@@ -8,8 +8,8 @@ import 'package:intl/intl.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:recase/recase.dart';
 
-class AddNewConductScreen extends StatefulWidget {
-  AddNewConductScreen({
+class UpdateConductScreen extends StatefulWidget {
+  UpdateConductScreen({
     super.key,
     required this.selectedConductType,
     required this.conductName,
@@ -25,7 +25,7 @@ class AddNewConductScreen extends StatefulWidget {
   late String endTime;
 
   @override
-  State<AddNewConductScreen> createState() => _AddNewConductScreenState();
+  State<UpdateConductScreen> createState() => _UpdateConductScreenState();
 }
 
 // Store all the names in conduct
@@ -35,7 +35,7 @@ List<String> documentIDs = [];
 // Name of soldiers not included
 List<dynamic> soldierStatusArray = [];
 
-class _AddNewConductScreenState extends State<AddNewConductScreen> {
+class _UpdateConductScreenState extends State<UpdateConductScreen> {
   //This is what the stream builder is waiting for
   late Stream<QuerySnapshot> documentStream;
 
@@ -47,6 +47,15 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
 
   // To store text being searched
   String searchText = '';
+
+  CollectionReference db = FirebaseFirestore.instance.collection('Users');
+  TextEditingController sName = TextEditingController();
+  String _initialsType = '';
+  String _inititialSDate = '';
+  String _intitialSTime = '';
+  String _intitialETime = '';
+  String _initialName = '';
+  Map<String, dynamic> data = {};
 
   Future getUserBooks() async {
     FirebaseFirestore.instance
@@ -71,6 +80,50 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
         });
       });
     });
+  }
+
+  // void editStatus() {
+  //   editUserStatus();
+  //   Navigator.pop(context);
+  // }
+
+  // Future goBackWithoutChanges() async {
+  //   widget.conductName = sName;
+  //   db.doc(widget.docID).collection('Statuses').doc(widget.statusID).update({
+  //     //User map formatting
+  //     'conductName': widget.conductName.text.trim(),
+  //     'conductType': widget.selectedConductType,
+  //     'startDate': widget.startDate,
+  //     'startTime': widget.startTime,
+  //     'endTime': widget.endTime,
+  //   });
+  // }
+
+  // Future editUserStatus() async {
+  //   widget.conductName = sName;
+  //   db.doc(widget.docID).collection('Statuses').doc(widget.statusID).update({
+  //     //User map formatting
+  //     'conductName': widget.conductName.text.trim(),
+  //     'conductType': widget.selectedConductType,
+  //     'startDate': widget.startDate,
+  //     'startTime': widget.startTime,
+  //     'endTime': widget.endTime,
+  //   });
+  // }
+
+  // void display() {
+  //   //print(sName.text);
+  //   print(widget.selectedStatusType);
+  //   print(widget.startDate);
+  //   print(widget.endDate);
+  //   print(widget.docID);
+  //   print(widget.statusID);
+  // }
+
+  @override
+  void dispose() {
+    widget.conductName.clear();
+    super.dispose();
   }
 
   void filter() {
@@ -165,12 +218,6 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
       'participants': tempArray,
     });
     Navigator.pop(context);
-  }
-
-  @override
-  void dispose() {
-    widget.conductName.dispose();
-    super.dispose();
   }
 
   @override

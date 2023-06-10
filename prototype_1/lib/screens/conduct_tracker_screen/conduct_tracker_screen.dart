@@ -184,8 +184,9 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                                   builder: (context) => AddNewConductScreen(
                                     selectedConductType: "Select conduct...",
                                     conductName: TextEditingController(),
-                                    startDate: "Start Date:",
-                                    endDate: "End Date:",
+                                    startDate: "Date:",
+                                    startTime: "Start Time:",
+                                    endTime: "End Time:",
                                   ),
                                 ),
                               );
@@ -302,7 +303,8 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                                   conductType: todayConducts[index]
                                       ['conductType'],
                                   startDate: todayConducts[index]['startDate'],
-                                  endDate: todayConducts[index]['endDate'],
+                                  startTime: todayConducts[index]['startDate'],
+                                  endTime: todayConducts[index]['startDate'],
                                 ),
                               ),
                             );

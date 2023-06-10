@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:prototype_1/screens/conduct_tracker_screen/update_conduct_screen.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:recase/recase.dart';
 
@@ -11,7 +12,8 @@ class ConductDetailsScreen extends StatefulWidget {
     required this.conductName,
     required this.conductType,
     required this.startDate,
-    required this.endDate,
+    required this.startTime,
+    required this.endTime,
     required this.participants,
     required this.nonParticipants,
   });
@@ -19,9 +21,10 @@ class ConductDetailsScreen extends StatefulWidget {
   final String conductName;
   final String conductType;
   final String startDate;
-  final String endDate;
+  final String? startTime;
+  final String? endTime;
   final List<String> participants;
-   final List<String> nonParticipants;
+  final List<String> nonParticipants;
   @override
   State<ConductDetailsScreen> createState() => _ConductDetailsScreenState();
 }
@@ -51,6 +54,7 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
       body: SingleChildScrollView(
         child: Column(
@@ -77,15 +81,54 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Icon(
-                              Icons.arrow_back_sharp,
-                              color: Colors.white,
-                              size: 25.sp,
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Icon(
+                                  Icons.arrow_back_sharp,
+                                  color: Colors.white,
+                                  size: 25.sp,
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      UpdateConductScreen(
+                                        selectedConductType:
+                                            "Select conduct...",
+                                        conductName: TextEditingController(),
+                                        startDate: "Date:",
+                                        startTime: "Start Time:",
+                                        endTime: "End Time:",
+                                      );
+                                    },
+                                    child: Icon(
+                                      Icons.edit,
+                                      color: Colors.white,
+                                      size: 25.sp,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 40.w,
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Icon(
+                                      Icons.delete_forever,
+                                      color: Colors.white,
+                                      size: 25.sp,
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
                           ),
                           SizedBox(
                             height: 20.h,
@@ -135,9 +178,7 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                           ),
                           Center(
                             child: Text(
-                              widget.startDate == widget.endDate
-                                  ? widget.startDate.toUpperCase()
-                                  : "${widget.startDate.toUpperCase()} - ${widget.endDate.toUpperCase()}",
+                              widget.startDate.toUpperCase(),
                               maxLines: 2,
                               style: GoogleFonts.poppins(
                                 color: Colors.white,
@@ -235,7 +276,8 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                           toRemove.add(detail);
                         }
                       }
-                      userDetails.removeWhere((element) => toRemove.contains(element));
+                      userDetails
+                          .removeWhere((element) => toRemove.contains(element));
 
                       return Column(
                         mainAxisSize: MainAxisSize.min,
