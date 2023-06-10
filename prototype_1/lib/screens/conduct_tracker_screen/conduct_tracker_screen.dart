@@ -22,7 +22,9 @@ class ConductTrackerScreen extends StatefulWidget {
 class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
   List<Map<String, dynamic>> todayConducts = [];
   List<Map<String, dynamic>> allConducts = [];
+  List<String> allParticipants = [];
   List<double> participant = [];
+  List<String> participants = [];
   DateTime selectedDate = DateTime.now();
 
   // The DocID or the name of the current user is saved in here
@@ -73,6 +75,8 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                 todayConducts = [];
                 allConducts = [];
                 participant = [];
+                participants = [];
+                allParticipants = [];
                 for (var i = 0; i < conducts!.length; i++) {
                   var data = conducts[i].data();
                   allConducts.add(data as Map<String, dynamic>);
@@ -85,10 +89,16 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                       0) {
                     todayConducts.add(conduct);
                   }
+                  allParticipants.add(conduct['participants'].toString());
                 }
                 for (var conduct in todayConducts) {
                   participant.add(conduct['participants'].length.toDouble());
+                  participants.add(conduct['participants'].toString());
                 }
+                allParticipants.removeWhere(
+                  (element) => participants.contains(element),
+                );
+                print(participants);
 
                 ///print(todayConducts);
                 return Column(
@@ -276,70 +286,35 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                       height: 10.h,
                     ),
                     ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: todayConducts.length,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ConductDetailsScreen(
-                                    conductName: todayConducts[index]
-                                        ['conductName'],
-                                    conductType: todayConducts[index]
-                                        ['conductType'],
-                                    startDate: todayConducts[index]
-                                        ['startDate'],
-                                    endDate: todayConducts[index]['endDate'],
-                                  ),
+                      shrinkWrap: true,
+                      itemCount: todayConducts.length,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ConductDetailsScreen(
+                                  nonParticipants: allParticipants,
+                                  participants: participants,
+                                  conductName: todayConducts[index]
+                                      ['conductName'],
+                                  conductType: todayConducts[index]
+                                      ['conductType'],
+                                  startDate: todayConducts[index]['startDate'],
+                                  endDate: todayConducts[index]['endDate'],
                                 ),
-                              );
-                            },
-                            child: ConductTile(
-                              conductNumber: index.toInt(),
-                              conductName: todayConducts[index]['conductName'],
-                              conductType: todayConducts[index]['conductType'],
-                            ),
-                          );
-                        }),
-                    /*StreamBuilder<QuerySnapshot>(
-                    stream: conductStream,
-                    builder: (context, snapshot) {
-                      var conducts = snapshot.data?.docs.toList();
-                      if (snapshot.hasData) {
-                        todayConducts = [];
-                        allConducts = [];
-                        for (var i = 0; i < conducts!.length; i++) {
-                          var data = conducts[i].data();
-                          allConducts.add(data as Map<String, dynamic>);
-                          allConducts[i]
-                              .addEntries({'ID': conducts[i].reference.id}.entries);
-                        }
-                        for (var conduct in allConducts) {
-                          if (calculateDifference(DateFormat("d MMM yyyy")
-                                  .parse(conduct['endDate'])) ==
-                              0) {
-                            todayConducts.add(conduct);
-                          }
-                        }
-                        return ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: todayConducts.length,
-                            itemBuilder: (context, index) {
-                              return InkWell(
-                                onTap: () {},
-                                child: ConductTile(
-                                  conductNumber: index.toInt(),
-                                  conductName: todayConducts[index]['conductName'],
-                                  conductType: todayConducts[index]['conductType'],
-                                ),
-                              );
-                            });
-                      }
-                      return const Text('Loading......');
-                    },
-                  ),*/
+                              ),
+                            );
+                          },
+                          child: ConductTile(
+                            conductNumber: index.toInt(),
+                            conductName: todayConducts[index]['conductName'],
+                            conductType: todayConducts[index]['conductType'],
+                          ),
+                        );
+                      },
+                    ),
                     SizedBox(
                       height: 20.h,
                     )

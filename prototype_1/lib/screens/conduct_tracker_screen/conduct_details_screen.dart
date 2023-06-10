@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,17 +6,22 @@ import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:recase/recase.dart';
 
 class ConductDetailsScreen extends StatefulWidget {
-  const ConductDetailsScreen(
-      {super.key,
-      required this.conductName,
-      required this.conductType,
-      required this.startDate,
-      required this.endDate});
+  const ConductDetailsScreen({
+    super.key,
+    required this.conductName,
+    required this.conductType,
+    required this.startDate,
+    required this.endDate,
+    required this.participants,
+    required this.nonParticipants,
+  });
 
   final String conductName;
   final String conductType;
   final String startDate;
   final String endDate;
+  final List<String> participants;
+   final List<String> nonParticipants;
   @override
   State<ConductDetailsScreen> createState() => _ConductDetailsScreenState();
 }
@@ -32,6 +36,7 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
 
   // List to store all user data, whilst also mapping to name
   List<Map<String, dynamic>> userDetails = [];
+  List<Map<String, dynamic>> toRemove = [];
 
   // To store text being searched
   String searchText = '';
@@ -39,6 +44,7 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
   @override
   void initState() {
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
+    print(widget.nonParticipants);
     super.initState();
   }
 
@@ -224,6 +230,12 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                           }
                         }
                       }
+                      for (var detail in userDetails) {
+                        if (widget.nonParticipants.contains(detail['name'])) {
+                          toRemove.add(detail);
+                        }
+                      }
+                      userDetails.removeWhere((element) => toRemove.contains(element));
 
                       return Column(
                         mainAxisSize: MainAxisSize.min,
@@ -288,7 +300,7 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                           SizedBox(
                             height: 250,
                             child: ListView.builder(
-                                itemCount: userDetails.length,
+                                itemCount: toRemove.length,
                                 itemBuilder: (context, index) {
                                   return Container(
                                     padding: EdgeInsets.all(16.0.sp),
@@ -305,7 +317,7 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                                           ),
                                           child: Center(
                                             child: Image.asset(
-                                              "lib/assets/army-ranks/${userDetails[index]['rank'].toString().toLowerCase()}.png",
+                                              "lib/assets/army-ranks/${toRemove[index]['rank'].toString().toLowerCase()}.png",
                                               width: 20,
                                               color: Colors.white,
                                             ),
@@ -318,7 +330,7 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               StyledText(
-                                                  userDetails[index]['name']
+                                                  toRemove[index]['name']
                                                       .toString()
                                                       .titleCase,
                                                   18,
