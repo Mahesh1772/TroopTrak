@@ -16,6 +16,7 @@ class UpdateConductScreen extends StatefulWidget {
     required this.startDate,
     required this.startTime,
     required this.endTime,
+    required this.conductID,
   });
 
   late TextEditingController conductName;
@@ -23,6 +24,7 @@ class UpdateConductScreen extends StatefulWidget {
   late String startDate;
   late String startTime;
   late String endTime;
+  late String conductID;
 
   @override
   State<UpdateConductScreen> createState() => _UpdateConductScreenState();

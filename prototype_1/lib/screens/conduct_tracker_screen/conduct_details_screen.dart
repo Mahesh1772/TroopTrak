@@ -42,9 +42,14 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
   // List to store all user data, whilst also mapping to name
   List<Map<String, dynamic>> userDetails = [];
   List<Map<String, dynamic>> toRemove = [];
+  List listOfParticipants = [];
 
   // To store text being searched
   String searchText = '';
+
+  Future genatateList() async {
+    await FirebaseFirestore.instance.collection('Users').snapshots();
+  }
 
   Future deleteConductDetails() async {
     await FirebaseFirestore.instance
@@ -118,6 +123,7 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               UpdateConductScreen(
+                                            conductID: widget.conductID,
                                             selectedConductType:
                                                 widget.conductType,
                                             conductName: TextEditingController(
@@ -265,8 +271,10 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                                 .contains(searchText.toLowerCase());
                           }).toList();
                           for (var user in users) {
-                            var data = user.data();
-                            userDetails.add(data as Map<String, dynamic>);
+                            if (widget.participants.contains(user['name'])) {
+                              var data = user.data();
+                              userDetails.add(data as Map<String, dynamic>);
+                            }
                           }
 
                           if (userDetails.isEmpty) {
