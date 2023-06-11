@@ -85,7 +85,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                 }
                 for (var conduct in allConducts) {
                   if (calculateDifference(
-                          DateFormat("d MMM yyyy").parse(conduct['endDate'])) ==
+                          DateFormat("d MMM yyyy").parse(conduct['startDate'])) ==
                       0) {
                     todayConducts.add(conduct);
                   }
