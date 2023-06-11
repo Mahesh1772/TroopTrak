@@ -21,8 +21,8 @@ class ConductDetailsScreen extends StatefulWidget {
   final String conductName;
   final String conductType;
   final String startDate;
-  final String? startTime;
-  final String? endTime;
+  final String startTime;
+  final String endTime;
   final List<String> participants;
   final List<String> nonParticipants;
   @override
@@ -43,6 +43,18 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
 
   // To store text being searched
   String searchText = '';
+
+  Future deleteConductDetails() async {
+    await FirebaseFirestore.instance
+        .collection('Conducts')
+        .doc(widget.conductName)
+        .delete();
+  }
+
+  deleteConduct() {
+    deleteConductDetails();
+    Navigator.pop(context);
+  }
 
   @override
   void initState() {
@@ -76,7 +88,8 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10.w),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 10.w, vertical: 20.h),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,13 +111,20 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                                 children: [
                                   InkWell(
                                     onTap: () {
-                                      UpdateConductScreen(
-                                        selectedConductType:
-                                            "Select conduct...",
-                                        conductName: TextEditingController(),
-                                        startDate: "Date:",
-                                        startTime: "Start Time:",
-                                        endTime: "End Time:",
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              UpdateConductScreen(
+                                            selectedConductType:
+                                                widget.conductType,
+                                            conductName: TextEditingController(
+                                                text: widget.conductName),
+                                            startDate: widget.startDate,
+                                            startTime: widget.startTime,
+                                            endTime: widget.endTime,
+                                          ),
+                                        ),
                                       );
                                     },
                                     child: Icon(
@@ -118,7 +138,7 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      Navigator.pop(context);
+                                      deleteConduct();
                                     },
                                     child: Icon(
                                       Icons.delete_forever,

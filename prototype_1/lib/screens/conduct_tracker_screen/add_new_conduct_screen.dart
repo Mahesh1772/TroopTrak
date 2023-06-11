@@ -164,6 +164,10 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
       'endTime': widget.endTime,
       'participants': tempArray,
     });
+  }
+
+  addConduct() {
+    addConductDetails();
     Navigator.pop(context);
   }
 
@@ -551,7 +555,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                   height: 30.h,
                 ),
                 GestureDetector(
-                  onTap: addConductDetails,
+                  onTap: addConduct,
                   child: Container(
                     padding: EdgeInsets.all(10.sp),
                     decoration: BoxDecoration(

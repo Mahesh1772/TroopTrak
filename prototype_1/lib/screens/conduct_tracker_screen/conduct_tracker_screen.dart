@@ -84,8 +84,8 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                       .addEntries({'ID': conducts[i].reference.id}.entries);
                 }
                 for (var conduct in allConducts) {
-                  if (calculateDifference(
-                          DateFormat("d MMM yyyy").parse(conduct['startDate'])) ==
+                  if (calculateDifference(DateFormat("d MMM yyyy")
+                          .parse(conduct['startDate'])) ==
                       0) {
                     todayConducts.add(conduct);
                   }
@@ -303,8 +303,8 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                                   conductType: todayConducts[index]
                                       ['conductType'],
                                   startDate: todayConducts[index]['startDate'],
-                                  startTime: todayConducts[index]['startDate'],
-                                  endTime: todayConducts[index]['startDate'],
+                                  startTime: todayConducts[index]['startTime'],
+                                  endTime: todayConducts[index]['endTime'],
                                 ),
                               ),
                             );
