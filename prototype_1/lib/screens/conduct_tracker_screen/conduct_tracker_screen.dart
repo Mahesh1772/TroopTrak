@@ -98,9 +98,9 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                 allParticipants.removeWhere(
                   (element) => participants.contains(element),
                 );
-                print(participants);
+                //print(participants);
 
-                ///print(todayConducts);
+                print(todayConducts);
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -296,8 +296,9 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ConductDetailsScreen(
+                                  conductID: todayConducts[index]['ID'],
                                   nonParticipants: allParticipants,
-                                  participants: participants,
+                                  participants: todayConducts[index]['participants'],
                                   conductName: todayConducts[index]
                                       ['conductName'],
                                   conductType: todayConducts[index]

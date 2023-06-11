@@ -16,6 +16,7 @@ class ConductDetailsScreen extends StatefulWidget {
     required this.endTime,
     required this.participants,
     required this.nonParticipants,
+    required this.conductID,
   });
 
   final String conductName;
@@ -23,7 +24,8 @@ class ConductDetailsScreen extends StatefulWidget {
   final String startDate;
   final String startTime;
   final String endTime;
-  final List<String> participants;
+  final List participants;
+  final String conductID;
   final List<String> nonParticipants;
   @override
   State<ConductDetailsScreen> createState() => _ConductDetailsScreenState();
@@ -47,7 +49,7 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
   Future deleteConductDetails() async {
     await FirebaseFirestore.instance
         .collection('Conducts')
-        .doc(widget.conductName)
+        .doc(widget.conductID)
         .delete();
   }
 
@@ -59,7 +61,7 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
   @override
   void initState() {
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
-    print(widget.nonParticipants);
+    print(widget.participants);
     super.initState();
   }
 
@@ -252,6 +254,7 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                       if (snapshot.hasData) {
                         documentIDs = [];
                         userDetails = [];
+                        //var users = widget.participants;
                         var users = snapshot.data?.docs.toList();
                         if (searchText.isNotEmpty) {
                           users = users!.where((element) {
