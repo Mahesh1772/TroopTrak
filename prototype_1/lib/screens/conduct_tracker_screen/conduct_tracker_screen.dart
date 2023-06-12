@@ -100,7 +100,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                 );
                 //print(participants);
 
-                print(todayConducts);
+                //print(todayConducts);
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -228,7 +228,8 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                     Container(
                       margin: const EdgeInsets.only(left: 20),
                       child: DatePicker(
-                        DateTime.now(),
+                        DateTime(DateTime.now().year, DateTime.now().month, 0),
+                        ///DateTime.now(),
                         height: 110.h,
                         width: 80.w,
                         initialSelectedDate: DateTime.now(),
@@ -297,7 +298,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                               MaterialPageRoute(
                                 builder: (context) => ConductDetailsScreen(
                                   conductID: todayConducts[index]['ID'],
-                                  nonParticipants: allParticipants,
+                                  //nonParticipants: allParticipants,
                                   participants: todayConducts[index]['participants'],
                                   conductName: todayConducts[index]
                                       ['conductName'],
