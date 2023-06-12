@@ -51,7 +51,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
     conductStream =
         FirebaseFirestore.instance.collection('Conducts').snapshots();
     getCurrentUserData();
-
+    _selectedDate = DateTime.now();
     super.initState();
   }
 
