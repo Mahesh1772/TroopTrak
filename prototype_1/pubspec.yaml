@@ -59,6 +59,8 @@ dependencies:
   responsive_framework: ^1.0.0
   liquid_pull_to_refresh: ^3.0.1
   date_picker_timeline: ^1.2.3
+  date_picker_timeline_fixed: ^2.0.0
+  horizontal_center_date_picker: ^2.1.1
 
 dev_dependencies:
   flutter_test:

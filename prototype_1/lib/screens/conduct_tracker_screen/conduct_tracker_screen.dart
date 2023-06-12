@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,6 +10,9 @@ import 'package:prototype_1/screens/detailed_screen/tabs/user_profile_tabs/user_
 import 'package:prototype_1/screens/conduct_tracker_screen/util/charts/bar_graph/bar_graph_styling.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/screens/conduct_tracker_screen/util/conduct_main_page_tiles.dart';
+
+import 'package:horizontal_center_date_picker/datepicker_controller.dart';
+import 'package:horizontal_center_date_picker/horizontal_date_picker.dart';
 
 class ConductTrackerScreen extends StatefulWidget {
   const ConductTrackerScreen({super.key});
@@ -26,7 +28,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
   List<double> participant = [];
   List<String> participants = [];
   DateTime _selectedDate = DateTime.now();
-  DatePickerController _date = DatePickerController();
+  final DatePickerController _date = DatePickerController();
 
   // The DocID or the name of the current user is saved in here
   final name = FirebaseAuth.instance.currentUser!.displayName.toString();
@@ -42,10 +44,6 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
       currentUserData = doc.data() as Map<String, dynamic>;
       // ...
     });
-  }
-
-  void executeAfterBuild() {
-    _date.animateToDate(_selectedDate);
   }
 
   @override
@@ -68,6 +66,10 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var now = DateTime.now();
+    DateTime startDate = DateTime(2020);
+    DateTime endDate = DateTime(2030);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
@@ -173,7 +175,8 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                               ).then((value) {
                                 setState(() {
                                   _selectedDate = value!;
-                                  executeAfterBuild();
+                                  _date.scrollTo(_selectedDate);
+                                  _date.selectedDate = _selectedDate;
                                 });
                               });
                             },
@@ -253,33 +256,37 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                     ),
                     Container(
                       margin: const EdgeInsets.only(left: 20),
-                      child: DatePicker(
-                        DateTime(2020),
+                      child: HorizontalDatePickerWidget(
+                        startDate: startDate,
+                        endDate: endDate,
                         height: 110.h,
                         width: 80.w,
-                        initialSelectedDate: DateTime.now(),
-                        daysCount: 2000,
-                        onDateChange: (date) {
+                        widgetWidth: MediaQuery.of(context).size.width,
+                        selectedDate: now,
+                        onValueSelected: (date) {
                           setState(() {
                             _selectedDate = date;
                           });
                         },
-                        controller: _date,
-                        selectionColor: const Color.fromARGB(255, 72, 30, 229),
-                        selectedTextColor: Colors.white,
-                        dayTextStyle: GoogleFonts.poppins(
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white54,
-                        ),
+                        datePickerController: _date,
+                        normalColor: const Color.fromARGB(255, 21, 25, 34),
+                        selectedColor: const Color.fromARGB(255, 72, 30, 229),
+                        disabledColor: const Color.fromARGB(255, 21, 25, 34),
+                        normalTextColor: Colors.white,
                         monthTextStyle: GoogleFonts.poppins(
-                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
                           color: Colors.white54,
-                          fontSize: 10,
+                          fontWeight: FontWeight.w500,
                         ),
-                        dateTextStyle: GoogleFonts.poppins(
-                          fontWeight: FontWeight.bold,
+                        dayTextStyle: GoogleFonts.poppins(
+                          fontSize: 24,
                           color: Colors.white,
-                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        weekDayTextStyle: GoogleFonts.poppins(
+                          fontSize: 18,
+                          color: Colors.white54,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
