@@ -53,7 +53,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
     conductStream =
         FirebaseFirestore.instance.collection('Conducts').snapshots();
     getCurrentUserData();
-
+    _selectedDate = DateTime.now();
     super.initState();
   }
 
@@ -254,7 +254,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                     Container(
                       margin: const EdgeInsets.only(left: 20),
                       child: DatePicker(
-                        DateTime(2020),
+                        DateTime(2022),
                         height: 110.h,
                         width: 80.w,
                         initialSelectedDate: DateTime.now(),
