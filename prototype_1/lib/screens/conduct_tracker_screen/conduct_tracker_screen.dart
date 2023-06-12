@@ -25,7 +25,8 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
   List<String> allParticipants = [];
   List<double> participant = [];
   List<String> participants = [];
-  DateTime selectedDate = DateTime.now();
+  DateTime _selectedDate = DateTime.now();
+  DatePickerController _date = DatePickerController();
 
   // The DocID or the name of the current user is saved in here
   final name = FirebaseAuth.instance.currentUser!.displayName.toString();
@@ -43,11 +44,16 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
     });
   }
 
+  void executeAfterBuild() {
+    _date.animateToDate(_selectedDate);
+  }
+
   @override
   void initState() {
     conductStream =
         FirebaseFirestore.instance.collection('Conducts').snapshots();
     getCurrentUserData();
+
     super.initState();
   }
 
@@ -55,8 +61,8 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
   int calculateDifference(DateTime date) {
     //DateTime now = DateTime.now();
     return DateTime(date.year, date.month, date.day)
-        .difference(
-            DateTime(selectedDate.year, selectedDate.month, selectedDate.day))
+        .difference(DateTime(
+            _selectedDate.year, _selectedDate.month, _selectedDate.day))
         .inDays;
   }
 
@@ -157,6 +163,26 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          InkWell(
+                            onTap: () {
+                              showDatePicker(
+                                context: context,
+                                initialDate: _selectedDate,
+                                firstDate: DateTime(2020),
+                                lastDate: DateTime(2030),
+                              ).then((value) {
+                                setState(() {
+                                  _selectedDate = value!;
+                                  executeAfterBuild();
+                                });
+                              });
+                            },
+                            child: const Icon(
+                              Icons.date_range_rounded,
+                              color: Colors.white,
+                              size: 50,
+                            ),
+                          ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -228,15 +254,17 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                     Container(
                       margin: const EdgeInsets.only(left: 20),
                       child: DatePicker(
-                        DateTime.now(),
+                        DateTime(2020),
                         height: 110.h,
                         width: 80.w,
                         initialSelectedDate: DateTime.now(),
+                        daysCount: 2000,
                         onDateChange: (date) {
                           setState(() {
-                            selectedDate = date;
+                            _selectedDate = date;
                           });
                         },
+                        controller: _date,
                         selectionColor: const Color.fromARGB(255, 72, 30, 229),
                         selectedTextColor: Colors.white,
                         dayTextStyle: GoogleFonts.poppins(
@@ -298,7 +326,8 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                                 builder: (context) => ConductDetailsScreen(
                                   conductID: todayConducts[index]['ID'],
                                   nonParticipants: allParticipants,
-                                  participants: todayConducts[index]['participants'],
+                                  participants: todayConducts[index]
+                                      ['participants'],
                                   conductName: todayConducts[index]
                                       ['conductName'],
                                   conductType: todayConducts[index]

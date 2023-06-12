@@ -54,7 +54,7 @@ class _BarGraphStylingState extends State<BarGraphStyling> {
           break;
 
         default:
-          text = '';
+          text = 'Nothing to see here!';
           break;
       }
       return SideTitleWidget(
