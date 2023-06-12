@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/screens/conduct_tracker_screen/update_conduct_screen.dart';
-import 'package:prototype_1/screens/nominal_roll_screen/nominal_roll_screen_new.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:recase/recase.dart';
 
@@ -127,6 +126,7 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                                             conductID: widget.conductID,
                                             selectedConductType:
                                                 widget.conductType,
+                                                nonParticipants: nonParticipants,
                                             conductName: TextEditingController(
                                                 text: widget.conductName),
                                             startDate: widget.startDate,
@@ -315,6 +315,7 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
 
                       nonParticipants
                           .removeWhere((element) => toRemove.contains(element));
+                      print(nonParticipants.length);
 
                       return Column(
                         mainAxisSize: MainAxisSize.min,
