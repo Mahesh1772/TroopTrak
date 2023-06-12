@@ -7,7 +7,7 @@ import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:recase/recase.dart';
 
 class ConductDetailsScreen extends StatefulWidget {
-  ConductDetailsScreen({
+  const ConductDetailsScreen({
     super.key,
     required this.conductName,
     required this.conductType,
@@ -15,7 +15,6 @@ class ConductDetailsScreen extends StatefulWidget {
     required this.startTime,
     required this.endTime,
     required this.participants,
-    //required this.nonParticipants,
     required this.conductID,
   });
 
@@ -47,10 +46,6 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
   // To store text being searched
   String searchText = '';
 
-  Future genatateList() async {
-    await FirebaseFirestore.instance.collection('Users').snapshots();
-  }
-
   Future deleteConductDetails() async {
     await FirebaseFirestore.instance
         .collection('Conducts')
@@ -63,10 +58,15 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
     Navigator.pop(context);
   }
 
+  Future getUserBooks(String name) async {
+    FirebaseFirestore.instance
+        .collection("Users")
+        .doc(name).collection('Statuses').get();
+  }
+
   @override
   void initState() {
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
-    //print(widget.participants);
     super.initState();
   }
 
@@ -126,7 +126,7 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                                             conductID: widget.conductID,
                                             selectedConductType:
                                                 widget.conductType,
-                                                nonParticipants: nonParticipants,
+                                            nonParticipants: nonParticipants,
                                             conductName: TextEditingController(
                                                 text: widget.conductName),
                                             startDate: widget.startDate,
@@ -361,9 +361,6 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                                                       .titleCase,
                                                   18,
                                                   fontWeight: FontWeight.w600),
-                                              const StyledText(
-                                                  "Reason: Ex RMJ", 14,
-                                                  fontWeight: FontWeight.w400),
                                             ],
                                           ),
                                         )
