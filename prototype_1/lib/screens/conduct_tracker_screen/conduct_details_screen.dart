@@ -15,7 +15,6 @@ class ConductDetailsScreen extends StatefulWidget {
     required this.startTime,
     required this.endTime,
     required this.participants,
-    required this.nonParticipants,
     required this.conductID,
   });
 
@@ -26,7 +25,6 @@ class ConductDetailsScreen extends StatefulWidget {
   final String endTime;
   final List participants;
   final String conductID;
-  final List<String> nonParticipants;
   @override
   State<ConductDetailsScreen> createState() => _ConductDetailsScreenState();
 }
@@ -43,13 +41,10 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
   List<Map<String, dynamic>> userDetails = [];
   List<Map<String, dynamic>> toRemove = [];
   List listOfParticipants = [];
+  List<Map<String, dynamic>> nonParticipants = [];
 
   // To store text being searched
   String searchText = '';
-
-  Future genatateList() async {
-    await FirebaseFirestore.instance.collection('Users').snapshots();
-  }
 
   Future deleteConductDetails() async {
     await FirebaseFirestore.instance
@@ -63,10 +58,15 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
     Navigator.pop(context);
   }
 
+  Future getUserBooks(String name) async {
+    FirebaseFirestore.instance
+        .collection("Users")
+        .doc(name).collection('Statuses').get();
+  }
+
   @override
   void initState() {
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
-    print(widget.participants);
     super.initState();
   }
 
@@ -126,6 +126,7 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                                             conductID: widget.conductID,
                                             selectedConductType:
                                                 widget.conductType,
+                                            nonParticipants: nonParticipants,
                                             conductName: TextEditingController(
                                                 text: widget.conductName),
                                             startDate: widget.startDate,
@@ -260,6 +261,7 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                       if (snapshot.hasData) {
                         documentIDs = [];
                         userDetails = [];
+                        nonParticipants = [];
                         //var users = widget.participants;
                         var users = snapshot.data?.docs.toList();
                         if (searchText.isNotEmpty) {
@@ -271,13 +273,15 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                                 .contains(searchText.toLowerCase());
                           }).toList();
                           for (var user in users) {
+                            var data = user.data();
                             if (widget.participants.contains(user['name'])) {
-                              var data = user.data();
                               userDetails.add(data as Map<String, dynamic>);
+                            } else {
+                              nonParticipants.add(data as Map<String, dynamic>);
                             }
                           }
 
-                          if (userDetails.isEmpty) {
+                          if (userDetails.isEmpty && nonParticipants.isEmpty) {
                             return Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -298,23 +302,26 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                         } else {
                           for (var user in users!) {
                             var data = user.data();
-                            userDetails.add(data as Map<String, dynamic>);
+                            if (widget.participants.contains(user['name'])) {
+                              userDetails.add(data as Map<String, dynamic>);
+                            } else {
+                              nonParticipants.add(data as Map<String, dynamic>);
+                            }
                           }
-                        }
-                      }
-                      for (var detail in userDetails) {
-                        if (widget.nonParticipants.contains(detail['name'])) {
-                          toRemove.add(detail);
                         }
                       }
                       userDetails
                           .removeWhere((element) => toRemove.contains(element));
 
+                      nonParticipants
+                          .removeWhere((element) => toRemove.contains(element));
+                      print(nonParticipants.length);
+
                       return Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          StyledText("Non-Participants", 24.sp,
+                          StyledText("Participants", 24.sp,
                               fontWeight: FontWeight.w500),
                           SizedBox(
                             height: 250,
@@ -354,9 +361,6 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                                                       .titleCase,
                                                   18,
                                                   fontWeight: FontWeight.w600),
-                                              const StyledText(
-                                                  "Reason: Ex RMJ", 14,
-                                                  fontWeight: FontWeight.w400),
                                             ],
                                           ),
                                         )
@@ -368,12 +372,12 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                           SizedBox(
                             height: 20.h,
                           ),
-                          StyledText("Participants", 24.sp,
+                          StyledText("Non-Participants", 24.sp,
                               fontWeight: FontWeight.w500),
                           SizedBox(
                             height: 250,
                             child: ListView.builder(
-                                itemCount: toRemove.length,
+                                itemCount: nonParticipants.length,
                                 itemBuilder: (context, index) {
                                   return Container(
                                     padding: EdgeInsets.all(16.0.sp),
@@ -390,7 +394,7 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                                           ),
                                           child: Center(
                                             child: Image.asset(
-                                              "lib/assets/army-ranks/${toRemove[index]['rank'].toString().toLowerCase()}.png",
+                                              "lib/assets/army-ranks/${nonParticipants[index]['rank'].toString().toLowerCase()}.png",
                                               width: 20,
                                               color: Colors.white,
                                             ),
@@ -403,7 +407,7 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               StyledText(
-                                                  toRemove[index]['name']
+                                                  nonParticipants[index]['name']
                                                       .toString()
                                                       .titleCase,
                                                   18,

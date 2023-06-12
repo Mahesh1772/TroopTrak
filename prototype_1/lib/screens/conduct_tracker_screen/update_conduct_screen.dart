@@ -16,6 +16,7 @@ class UpdateConductScreen extends StatefulWidget {
     required this.startDate,
     required this.startTime,
     required this.endTime,
+    required this.nonParticipants,
     required this.conductID,
   });
 
@@ -25,6 +26,7 @@ class UpdateConductScreen extends StatefulWidget {
   late String startTime;
   late String endTime;
   late String conductID;
+  late List nonParticipants;
 
   @override
   State<UpdateConductScreen> createState() => _UpdateConductScreenState();
@@ -34,10 +36,11 @@ class UpdateConductScreen extends StatefulWidget {
 List<String> tempArray = [];
 // List of all names
 List<String> documentIDs = [];
-// Name of soldiers not included
-List<dynamic> soldierStatusArray = [];
 
 class _UpdateConductScreenState extends State<UpdateConductScreen> {
+// Name of soldiers not included
+  List<dynamic> soldierStatusArray = [];
+
   //This is what the stream builder is waiting for
   late Stream<QuerySnapshot> documentStream;
 
@@ -50,77 +53,61 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
   // To store text being searched
   String searchText = '';
 
-  CollectionReference db = FirebaseFirestore.instance.collection('Users');
+  CollectionReference db = FirebaseFirestore.instance.collection('Conducts');
   TextEditingController sName = TextEditingController();
   String _initialsType = '';
+  List<String> _initialParticipants = [];
   String _inititialSDate = '';
   String _intitialSTime = '';
   String _intitialETime = '';
   String _initialName = '';
   Map<String, dynamic> data = {};
 
-  Future getUserBooks() async {
-    FirebaseFirestore.instance
-        .collection("Users")
-        .get()
-        .then((querySnapshot) async {
-      querySnapshot.docs.forEach((snapshot) {
-        FirebaseFirestore.instance
-            .collection("Users")
-            .doc(snapshot.id)
-            .collection("Statuses")
-            .get()
-            .then((querySnapshot) {
-          querySnapshot.docs.forEach((result) {
-            Map<String, dynamic> data = result.data();
-            if (DateFormat("d MMM yyyy")
-                .parse(data['endDate'])
-                .isAfter(DateTime.now())) {
-              soldierStatusArray.add(snapshot.id);
-            }
-          });
-        });
-      });
+  void getInitialValues() {
+    if (isFirstTIme) {
+      _initialName = widget.conductName.text.trim();
+      _initialParticipants = tempArray;
+      _initialsType = widget.selectedConductType!;
+      _inititialSDate = widget.startDate;
+      _intitialETime = widget.endTime;
+      _intitialSTime = widget.startTime;
+    }
+  }
+
+  void editConduct() {
+    editConductDetails();
+    Navigator.pop(context);
+  }
+
+  Future goBackWithoutChanges() async {
+    db.doc(widget.conductID).update({
+      //User map formatting
+      'conductName': _initialName,
+      'conductType': _initialsType,
+      'startDate': _inititialSDate,
+      'startTime': _intitialSTime,
+      'endTime': _intitialETime,
+      'participants' : _initialParticipants,
+    });
+  
+  }
+
+  Future editConductDetails() async {
+    db.doc(widget.conductID).update({
+      //User map formatting
+      'conductName': widget.conductName.text.trim(),
+      'conductType': widget.selectedConductType,
+      'startDate': widget.startDate,
+      'startTime': widget.startTime,
+      'endTime': widget.endTime,
+      'participants': tempArray,
     });
   }
 
-  // void editStatus() {
-  //   editUserStatus();
-  //   Navigator.pop(context);
-  // }
-
-  // Future goBackWithoutChanges() async {
-  //   widget.conductName = sName;
-  //   db.doc(widget.docID).collection('Statuses').doc(widget.statusID).update({
-  //     //User map formatting
-  //     'conductName': widget.conductName.text.trim(),
-  //     'conductType': widget.selectedConductType,
-  //     'startDate': widget.startDate,
-  //     'startTime': widget.startTime,
-  //     'endTime': widget.endTime,
-  //   });
-  // }
-
-  // Future editUserStatus() async {
-  //   widget.conductName = sName;
-  //   db.doc(widget.docID).collection('Statuses').doc(widget.statusID).update({
-  //     //User map formatting
-  //     'conductName': widget.conductName.text.trim(),
-  //     'conductType': widget.selectedConductType,
-  //     'startDate': widget.startDate,
-  //     'startTime': widget.startTime,
-  //     'endTime': widget.endTime,
-  //   });
-  // }
-
-  // void display() {
-  //   //print(sName.text);
-  //   print(widget.selectedStatusType);
-  //   print(widget.startDate);
-  //   print(widget.endDate);
-  //   print(widget.docID);
-  //   print(widget.statusID);
-  // }
+  void display() {
+    //print(sName.text);
+    print(widget.nonParticipants.length);
+  }
 
   @override
   void dispose() {
@@ -130,16 +117,21 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
 
   void filter() {
     if (isFirstTIme) {
+      for (var participant in widget.nonParticipants) {
+        soldierStatusArray.add(participant['name']);
+      }
       documentIDs
           .removeWhere((element) => soldierStatusArray.contains(element));
       tempArray = documentIDs;
     }
+    print(tempArray);
   }
 
   @override
   void initState() {
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
-    getUserBooks();
+    //getUserBooks();
+    getInitialValues();
     super.initState();
   }
 
@@ -206,25 +198,8 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
     );
   }
 
-  Future addConductDetails() async {
-    await FirebaseFirestore.instance
-        .collection('Conducts')
-        //.doc(widget.conductName.text)
-        .add({
-      //User map formatting
-      'conductName': widget.conductName.text.trim(),
-      'conductType': widget.selectedConductType,
-      'startDate': widget.startDate,
-      'startTime': widget.startTime,
-      'endTime': widget.endTime,
-      'participants': tempArray,
-    });
-    Navigator.pop(context);
-  }
-
   @override
   Widget build(BuildContext context) {
-    //isFirstTIme = true;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
@@ -239,6 +214,7 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
               children: [
                 InkWell(
                   onTap: () {
+                    goBackWithoutChanges();
                     Navigator.pop(context);
                   },
                   child: Icon(
@@ -251,7 +227,7 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
                   height: 20.h,
                 ),
                 StyledText(
-                  "Add a new conduct ✍️",
+                  "Edit conduct ✍️",
                   30.sp,
                   fontWeight: FontWeight.bold,
                 ),
@@ -531,8 +507,9 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
                               as Map<String, dynamic>;
                           userDetails.add(data);
                         }
-                        filter();
                       }
+                      filter();
+                      print(documentIDs);
                     }
                     return Flexible(
                       child: SizedBox(
@@ -600,7 +577,7 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
                   height: 30.h,
                 ),
                 GestureDetector(
-                  onTap: addConductDetails,
+                  onTap: editConduct,
                   child: Container(
                     padding: EdgeInsets.all(10.sp),
                     decoration: BoxDecoration(
@@ -627,7 +604,7 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
                             width: 20.w,
                           ),
                           AutoSizeText(
-                            'ADD NEW CONDUCT',
+                            'EDIT CONDUCT DETAILS',
                             style: GoogleFonts.poppins(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,

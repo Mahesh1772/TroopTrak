@@ -106,7 +106,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                 );
                 //print(participants);
 
-                print(todayConducts);
+                //print(todayConducts);
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -325,7 +325,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                               MaterialPageRoute(
                                 builder: (context) => ConductDetailsScreen(
                                   conductID: todayConducts[index]['ID'],
-                                  nonParticipants: allParticipants,
+                                  //nonParticipants: allParticipants,
                                   participants: todayConducts[index]
                                       ['participants'],
                                   conductName: todayConducts[index]
