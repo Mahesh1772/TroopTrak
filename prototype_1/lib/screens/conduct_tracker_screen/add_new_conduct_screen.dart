@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:recase/recase.dart';
+import 'package:prototype_1/screens/conduct_tracker_screen/util/filters/participant_auto_selection.dart';
 
 class AddNewConductScreen extends StatefulWidget {
   AddNewConductScreen({
@@ -78,6 +79,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
       documentIDs
           .removeWhere((element) => soldierStatusArray.contains(element));
       tempArray = documentIDs;
+      tempArray = ParticipantAutoSelect.auto_filter();
     }
   }
 

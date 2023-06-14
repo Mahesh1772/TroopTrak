@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
@@ -39,19 +38,40 @@ List<String> soc = [
   'Ex Boots',
   'Ex FLEGS'
 ];
+List MetabolicCircuit = [
+  'Ex RMJ',
+  'Ex Lower Limb',
+  'LD',
+];
+List CombatCircuit = [
+  'Ex Uniform',
+  'Ex Boots',
+  'Ex RMJ',
+  'Ex Heavy Loads',
+  'Ex Lower Limb',
+  'Ex FLEGs',
+  'LD',
+];
+List RouteMarch = [
+  'Ex RMJ',
+  'Ex Heavy Loads',
+  'Ex Lower Limbs',
+  'LD',
+  'Ex Uniform',
+  'Ex Boots',
+  'Ex FLEGs',
+];
 int i = 0;
-List<String> participants = [];
 List<String> non_participants = [];
 
-class ParticipantAutoSelect extends StatelessWidget {
+class ParticipantAutoSelect {
   ParticipantAutoSelect({
-    super.key,
     required this.conductType,
-    required this.documentIDs,
+    //required this.documentIDs,
   });
 
   String conductType;
-  List<String> documentIDs;
+  late List<String> documentIDs;
 
   Future getUserBooks() async {
     FirebaseFirestore.instance
@@ -118,8 +138,110 @@ class ParticipantAutoSelect extends StatelessWidget {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
+  void isFitForOutsoc() {
+    for (var status in statusList) {
+      if (status['statusType'] == 'Excuse') {
+        if (soc.contains(status['statusName'])) {
+          non_participants.add(status['Name']);
+        }
+      }
+    }
+  }
+
+  void isFitForOutIppt() {
+    for (var status in statusList) {
+      if (status['statusType'] == 'Excuse') {
+        if (Ippt.contains(status['statusName'])) {
+          non_participants.add(status['Name']);
+        }
+      }
+    }
+  }
+
+  void isFitForOutAtp() {
+    for (var status in statusList) {
+      if (status['statusType'] == 'Excuse') {
+        if (Atp.contains(status['statusName'])) {
+          non_participants.add(status['Name']);
+        }
+      }
+    }
+  }
+
+  void isFitForOutS_P() {
+    for (var status in statusList) {
+      if (status['statusType'] == 'Excuse') {
+        if (S_P.contains(status['statusName'])) {
+          non_participants.add(status['Name']);
+        }
+      }
+    }
+  }
+
+  void isFitForOutCC() {
+    for (var status in statusList) {
+      if (status['statusType'] == 'Excuse') {
+        if (CombatCircuit.contains(status['statusName'])) {
+          non_participants.add(status['Name']);
+        }
+      }
+    }
+  }
+
+  void isFitForOutRouteMarch() {
+    for (var status in statusList) {
+      if (status['statusType'] == 'Excuse') {
+        if (RouteMarch.contains(status['statusName'])) {
+          non_participants.add(status['Name']);
+        }
+      }
+    }
+  }
+
+  void isFitForOutMC() {
+    for (var status in statusList) {
+      if (status['statusType'] == 'Excuse') {
+        if (MetabolicCircuit.contains(status['statusName'])) {
+          non_participants.add(status['Name']);
+        }
+      }
+    }
+  }
+
+  List<String> auto_filter() {
+    switch (conductType) {
+      case 'Run':
+        isFitForOutRun();
+        break;
+      case 'Route March':
+        isFitForOutRouteMarch();
+        break;
+      case 'IPPT':
+        isFitForOutIppt();
+        break;
+      case 'Outfield':
+        isFitForOutField();
+        break;
+      case 'Metabolic Circuit':
+        isFitForOutMC();
+        break;
+      case 'Strength & Power':
+        isFitForOutS_P();
+        break;
+      case 'Combat Circuit':
+        isFitForOutCC();
+        break;
+      case 'Live Firing':
+        isFitForOutAtp();
+        isFitForOutImt();
+        break;
+      case 'SOC/VOC':
+        isFitForOutsoc();
+        break;
+      default: null;
+    }
+    isOnLeave();
+    documentIDs.removeWhere((element) => non_participants.contains(element));
+    return documentIDs;
   }
 }
