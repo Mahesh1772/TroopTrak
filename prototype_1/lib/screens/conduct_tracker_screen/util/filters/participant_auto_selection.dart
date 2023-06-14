@@ -2,15 +2,46 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
-List<Map<String , dynamic>> statusList = [];
-List Outfield = ['Ex Sunlight','Ex grass', 'Ex Outfield' , 'Ex Outfield' , 'Ex Uniform' , 'Ex Boots'];
-List Run = [ 'Ex RMJ' , 'Ex Lower Limb' , 'LD'];
-List S_P = [ 'Ex Upper Limb' , 'LD'];
-List Imt = ['Ex FLEGS' , 'Ex Uniform' , 'Ex Boots' , 'LD'];
-List Atp = ['Ex FLEGS' , 'Ex Uniform' , 'Ex Boots' , 'LD' , 'Ex Lower Limb' , 'Ex RMJ'];
-List Ippt = [ 'Ex Upper Limb' , 'LD', 'Ex Lower Limb' , 'Ex RMJ' , 'Ex Pushup' , 'Ex Situp'];
-List soc = ['Ex Upper Limb' , 'LD', 'Ex Lower Limb' , 'Ex RMJ' ,'Ex Uniform' , 'Ex Boots' , 'Ex FLEGS'];
+List<Map<String, dynamic>> statusList = [];
+List<String> Outfield = [
+  'Ex Sunlight',
+  'Ex grass',
+  'Ex Outfield',
+  'Ex Outfield',
+  'Ex Uniform',
+  'Ex Boots'
+];
+List<String> Run = ['Ex RMJ', 'Ex Lower Limb', 'LD'];
+List<String> S_P = ['Ex Upper Limb', 'LD'];
+List<String> Imt = ['Ex FLEGS', 'Ex Uniform', 'Ex Boots', 'LD'];
+List<String> Atp = [
+  'Ex FLEGS',
+  'Ex Uniform',
+  'Ex Boots',
+  'LD',
+  'Ex Lower Limb',
+  'Ex RMJ'
+];
+List<String> Ippt = [
+  'Ex Upper Limb',
+  'LD',
+  'Ex Lower Limb',
+  'Ex RMJ',
+  'Ex Pushup',
+  'Ex Situp'
+];
+List<String> soc = [
+  'Ex Upper Limb',
+  'LD',
+  'Ex Lower Limb',
+  'Ex RMJ',
+  'Ex Uniform',
+  'Ex Boots',
+  'Ex FLEGS'
+];
 int i = 0;
+List<String> participants = [];
+List<String> non_participants = [];
 
 class ParticipantAutoSelect extends StatelessWidget {
   ParticipantAutoSelect({
@@ -49,7 +80,43 @@ class ParticipantAutoSelect extends StatelessWidget {
     });
   }
 
+  void isOnLeave() {
+    for (var status in statusList) {
+      if (status['statusType'] == 'Leave') {
+        non_participants.add(status['Name']);
+      }
+    }
+  }
 
+  void isFitForOutField() {
+    for (var status in statusList) {
+      if (status['statusType'] == 'Excuse') {
+        if (Outfield.contains(status['statusName'])) {
+          non_participants.add(status['Name']);
+        }
+      }
+    }
+  }
+
+  void isFitForOutRun() {
+    for (var status in statusList) {
+      if (status['statusType'] == 'Excuse') {
+        if (Run.contains(status['statusName'])) {
+          non_participants.add(status['Name']);
+        }
+      }
+    }
+  }
+
+  void isFitForOutImt() {
+    for (var status in statusList) {
+      if (status['statusType'] == 'Excuse') {
+        if (Imt.contains(status['statusName'])) {
+          non_participants.add(status['Name']);
+        }
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
