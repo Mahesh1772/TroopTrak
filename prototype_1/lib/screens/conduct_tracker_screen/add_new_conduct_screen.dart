@@ -74,12 +74,12 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
     });
   }
 
-  void filter() {
+  Future filter() async {
     if (isFirstTIme) {
       documentIDs
           .removeWhere((element) => soldierStatusArray.contains(element));
       tempArray = documentIDs;
-      tempArray = ParticipantAutoSelect.auto_filter();
+      //tempArray = part.auto_filter();
     }
   }
 
@@ -181,6 +181,9 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Instance of a class
+    final ParticipantAutoSelect part =
+        ParticipantAutoSelect(conductType: widget.selectedConductType);
     //isFirstTIme = true;
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -490,6 +493,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                         }
                         filter();
                       }
+                      tempArray = part.auto_filter();
                     }
                     return Flexible(
                       child: SizedBox(

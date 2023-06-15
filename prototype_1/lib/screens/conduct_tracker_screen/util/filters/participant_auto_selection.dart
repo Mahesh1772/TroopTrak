@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 List<Map<String, dynamic>> statusList = [];
@@ -70,7 +71,7 @@ class ParticipantAutoSelect {
     //required this.documentIDs,
   });
 
-  String conductType;
+  String? conductType;
   late List<String> documentIDs;
 
   Future getUserBooks() async {
@@ -238,7 +239,8 @@ class ParticipantAutoSelect {
       case 'SOC/VOC':
         isFitForOutsoc();
         break;
-      default: null;
+      default:
+        null;
     }
     isOnLeave();
     documentIDs.removeWhere((element) => non_participants.contains(element));
