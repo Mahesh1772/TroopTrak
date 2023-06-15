@@ -108,7 +108,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: const Color.fromARGB(255, 21, 25, 34),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Column(
@@ -121,7 +121,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 24.0.w),
                     child: StyledText(
                       'Dashboard',
-                      20.sp,
+                      26.sp,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -210,7 +210,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           blurRadius: 2.0.r,
                           spreadRadius: 2.0.r),
                     ],
-                    color: accentColor,
+                    color: const Color.fromARGB(255, 32, 36, 51),
                     borderRadius: BorderRadius.all(Radius.circular(10.r)),
                   ),
                   child: Column(

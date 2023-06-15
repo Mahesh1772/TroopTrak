@@ -180,10 +180,10 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                                 });
                               });
                             },
-                            child: const Icon(
+                            child: Icon(
                               Icons.date_range_rounded,
                               color: Colors.white,
-                              size: 50,
+                              size: 45.sp,
                             ),
                           ),
                           Column(
@@ -194,14 +194,14 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                                 style: GoogleFonts.poppins(
                                     color: Colors.white54,
                                     fontWeight: FontWeight.w400,
-                                    fontSize: 24.sp),
+                                    fontSize: 22.sp),
                               ),
                               Text(
                                 "Today",
                                 style: GoogleFonts.poppins(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w500,
-                                    fontSize: 30.sp),
+                                    fontSize: 28.sp),
                               ),
                             ],
                           ),
@@ -252,10 +252,10 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: 20.h,
+                      height: 30.h,
                     ),
                     Container(
-                      margin: const EdgeInsets.only(left: 20),
+                      margin: EdgeInsets.only(left: 20.w),
                       child: HorizontalDatePickerWidget(
                         startDate: startDate,
                         endDate: endDate,
@@ -274,17 +274,17 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                         disabledColor: const Color.fromARGB(255, 21, 25, 34),
                         normalTextColor: Colors.white,
                         monthTextStyle: GoogleFonts.poppins(
-                          fontSize: 14,
+                          fontSize: 14.sp,
                           color: Colors.white54,
                           fontWeight: FontWeight.w500,
                         ),
                         dayTextStyle: GoogleFonts.poppins(
-                          fontSize: 24,
+                          fontSize: 24.sp,
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
                         weekDayTextStyle: GoogleFonts.poppins(
-                          fontSize: 18,
+                          fontSize: 18.sp,
                           color: Colors.white54,
                           fontWeight: FontWeight.w500,
                         ),
@@ -355,7 +355,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                       },
                     ),
                     SizedBox(
-                      height: 20.h,
+                      height: 30.h,
                     )
                   ],
                 );
