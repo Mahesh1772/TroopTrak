@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:recase/recase.dart';
+import 'package:prototype_1/screens/conduct_tracker_screen/util/filters/participant_auto_selection.dart';
 
 class AddNewConductScreen extends StatefulWidget {
   AddNewConductScreen({
@@ -73,11 +74,12 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
     });
   }
 
-  void filter() {
+  Future filter() async {
     if (isFirstTIme) {
       documentIDs
           .removeWhere((element) => soldierStatusArray.contains(element));
       tempArray = documentIDs;
+      //tempArray = part.auto_filter();
     }
   }
 
@@ -179,6 +181,9 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Instance of a class
+    final ParticipantAutoSelect part =
+        ParticipantAutoSelect(conductType: widget.selectedConductType);
     //isFirstTIme = true;
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -488,6 +493,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                         }
                         filter();
                       }
+                      tempArray = part.auto_filter();
                     }
                     return Flexible(
                       child: SizedBox(

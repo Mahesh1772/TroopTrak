@@ -3,19 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:intl/intl.dart';
 import 'package:prototype_1/screens/detailed_screen/tabs/statuses_screen/update_status_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 late IconData? tileIcon;
 
-class PastSoldierStatusTile extends StatelessWidget {
-  final String statusType;
-  final String startDate;
-  final String endDate;
-  final String statusName;
-  final String docID;
-  final String statusID;
-
+class PastSoldierStatusTile extends StatefulWidget {
   const PastSoldierStatusTile({
     super.key,
     required this.statusType,
@@ -26,9 +19,29 @@ class PastSoldierStatusTile extends StatelessWidget {
     required this.statusID,
   });
 
+  final String statusType;
+  final String startDate;
+  final String endDate;
+  final String statusName;
+  final String docID;
+  final String statusID;
+  @override
+  State<PastSoldierStatusTile> createState() => _PastSoldierStatusTileState();
+}
+
+class _PastSoldierStatusTileState extends State<PastSoldierStatusTile> {
   @override
   Widget build(BuildContext context) {
-    setTileIcon(statusType);
+    Future deletePastStatus() async {
+      await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(widget.docID)
+          .collection('Statuses')
+          .doc(widget.statusID)
+          .delete();
+    }
+
+    setTileIcon(widget.statusType);
 
     return Padding(
       padding: EdgeInsets.only(bottom: 8.0.h),
@@ -42,13 +55,13 @@ class PastSoldierStatusTile extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => UpdateStatusScreen(
-                      statusID: statusID,
-                      docID: docID,
-                      selectedStatusType: statusType,
+                      statusID: widget.statusID,
+                      docID: widget.docID,
+                      selectedStatusType: widget.statusType,
                       statusName:
-                          TextEditingController(text: statusName.toString()),
-                      startDate: startDate,
-                      endDate: endDate,
+                          TextEditingController(text: widget.statusName.toString()),
+                      startDate: widget.startDate,
+                      endDate: widget.endDate,
                     ),
                   ),
                 );
@@ -57,7 +70,9 @@ class PastSoldierStatusTile extends StatelessWidget {
               backgroundColor: Colors.blue,
             ),
             SlidableAction(
-              onPressed: (context) {},
+              onPressed: (context) {
+                deletePastStatus();
+              },
               icon: Icons.delete_forever_rounded,
               backgroundColor: Colors.red,
               borderRadius: BorderRadius.only(
@@ -88,7 +103,7 @@ class PastSoldierStatusTile extends StatelessWidget {
                 SizedBox(
                   width: 100.w,
                   child: AutoSizeText(
-                    statusName,
+                    widget.statusName,
                     style: GoogleFonts.poppins(
                         fontWeight: FontWeight.bold,
                         fontSize: 16.sp,
@@ -100,7 +115,7 @@ class PastSoldierStatusTile extends StatelessWidget {
                 SizedBox(
                   width: 200.w,
                   child: AutoSizeText(
-                    "$startDate - $endDate",
+                    "$widget.startDate - $widget.endDate",
                     style: GoogleFonts.poppins(
                         fontWeight: FontWeight.bold,
                         fontSize: 14.sp,

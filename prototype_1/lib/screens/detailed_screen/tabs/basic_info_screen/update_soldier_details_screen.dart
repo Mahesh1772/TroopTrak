@@ -41,12 +41,63 @@ class UpdateSoldierDetailsPage extends StatefulWidget {
 }
 
 class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
+  bool isFirstTIme = true;
+  String _name = '';
+  String _company = '';
+  String _platoon = '';
+  String _section = '';
+  String _appointment = '';
+  String _dob = '';
+  String _ord = '';
+  String _enlistment = '';
+  String _selectedItem = '';
+  String _selectedRank = '';
+  String _selectedBloodType = '';
+
   Future deleteCurrentUser() async {
-    FirebaseFirestore.instance.collection("Users").doc(widget.name.text.trim()).delete();
+    FirebaseFirestore.instance
+        .collection("Users")
+        .doc(widget.name.text.trim())
+        .delete();
     Navigator.pop(context);
   }
 
+  Future goBackWithoutChanges() async {
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(widget.name.text.trim())
+        .update({
+      //User map formatting
+      'rank': _name,
+      'name': _company,
+      'company': _platoon,
+      'platoon': _section,
+      'section': _appointment,
+      'appointment': _dob,
+      'rationType': _ord,
+      'bloodgroup': _enlistment,
+      'dob': _selectedItem,
+      'ord': _selectedRank,
+      'enlistment': _selectedBloodType,
+    });
+  }
 
+  void initState() {
+    if (isFirstTIme) {
+      _name = widget.name.text.trim();
+      _company = widget.company.text.trim();
+      _platoon = widget.platoon.text.trim();
+      _section = widget.section.text.trim();
+      _appointment = widget.appointment.text.trim();
+      _dob = widget.dob;
+      _ord = widget.ord;
+      _enlistment = widget.enlistment;
+      _selectedItem = widget.selectedItem!;
+      _selectedRank = widget.selectedRank!;
+      _selectedBloodType = widget.selectedBloodType!;
+    }
+    super.initState();
+  }
 
   final _rationTypes = [
     "Select your ration type...",
@@ -116,6 +167,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
         if (value != null) {
           widget.dob = DateFormat('d MMM yyyy').format(value);
         }
+        isFirstTIme = false;
         addUserDetails();
       });
     });
@@ -132,6 +184,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
         if (value != null) {
           widget.ord = DateFormat('d MMM yyyy').format(value);
         }
+        isFirstTIme = false;
         addUserDetails();
       });
     });
@@ -148,6 +201,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
         if (value != null) {
           widget.enlistment = DateFormat('d MMM yyyy').format(value);
         }
+        isFirstTIme = false;
         addUserDetails();
       });
     });
@@ -214,6 +268,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                     children: [
                       InkWell(
                         onTap: () {
+                          goBackWithoutChanges();
                           Navigator.pop(context);
                         },
                         child: Icon(
@@ -339,6 +394,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                     .toList(),
                                 onChanged: (item) => setState(() {
                                   widget.selectedItem = item;
+                                  isFirstTIme = false;
                                   addUserDetails();
                                 }),
                               ),
@@ -387,6 +443,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                     .toList(),
                                 onChanged: (String? item) async => setState(() {
                                   widget.selectedRank = item;
+                                  isFirstTIme = false;
                                   addUserDetails();
                                 }),
                               ),
@@ -430,6 +487,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                     .toList(),
                                 onChanged: (item) async => setState(() {
                                   widget.selectedBloodType = item;
+                                  isFirstTIme = false;
                                   addUserDetails();
                                 }),
                               ),

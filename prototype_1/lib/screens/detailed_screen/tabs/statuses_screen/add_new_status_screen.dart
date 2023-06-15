@@ -81,6 +81,8 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
   Future addUserStatus() async {
     widget.statusName = sName;
     widget.selectedStatusType = sType;
+    widget.endDate = eDate;
+    widget.startDate = sDate;
     db
         .doc(widget.docID)
         .collection('Statuses')
