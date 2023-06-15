@@ -491,9 +491,10 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                               as Map<String, dynamic>;
                           userDetails.add(data);
                         }
-                        filter();
                       }
-                      tempArray = part.auto_filter();
+                      if (widget.selectedConductType!.isNotEmpty) {
+                        tempArray = part.auto_filter();
+                      }
                     }
                     return Flexible(
                       child: SizedBox(

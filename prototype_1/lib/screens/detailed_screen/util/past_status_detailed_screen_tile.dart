@@ -115,7 +115,7 @@ class _PastSoldierStatusTileState extends State<PastSoldierStatusTile> {
                 SizedBox(
                   width: 200.w,
                   child: AutoSizeText(
-                    "$widget.startDate - $widget.endDate",
+                    "${widget.startDate} - ${widget.endDate}",
                     style: GoogleFonts.poppins(
                         fontWeight: FontWeight.bold,
                         fontSize: 14.sp,

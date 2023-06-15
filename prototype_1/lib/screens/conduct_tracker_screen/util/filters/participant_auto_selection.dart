@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+List<String> documentIDs = [];
 List<Map<String, dynamic>> statusList = [];
 List<String> Outfield = [
   'Ex Sunlight',
@@ -72,7 +73,6 @@ class ParticipantAutoSelect {
   });
 
   String? conductType;
-  late List<String> documentIDs;
 
   Future getUserBooks() async {
     FirebaseFirestore.instance
@@ -99,6 +99,15 @@ class ParticipantAutoSelect {
         });
       });
     });
+  }
+
+  Future getDocIDs() async {
+    FirebaseFirestore.instance
+        .collection('Users')
+        .get()
+        .then((value) => value.docs.forEach((element) {
+              documentIDs.add(element['name']);
+            }));
   }
 
   void isOnLeave() {
@@ -210,6 +219,9 @@ class ParticipantAutoSelect {
   }
 
   List<String> auto_filter() {
+    //documentIDs = [];
+    getDocIDs();
+    getUserBooks();
     switch (conductType) {
       case 'Run':
         isFitForOutRun();
