@@ -43,6 +43,10 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
   // List to store all user data, whilst also mapping to name
   List<Map<String, dynamic>> userDetails = [];
 
+  bool type_changed = false ;
+
+  ParticipantAutoSelect parts = ParticipantAutoSelect(conductType: null);
+
   // Boolean value for checking if it is first time or not
   bool isFirstTIme = true;
 
@@ -76,11 +80,17 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
 
   Future filter() async {
     if (isFirstTIme) {
-      documentIDs
-          .removeWhere((element) => soldierStatusArray.contains(element));
-      tempArray = documentIDs;
-      //tempArray = part.auto_filter();
+      //documentIDs
+      //    .removeWhere((element) => soldierStatusArray.contains(element));
+      //tempArray = documentIDs;
+      if (widget.selectedConductType!.isNotEmpty) {
+        tempArray = parts.auto_filter();
+      }
     }
+    tempArray = tempArray;
+    //else if(widget.selectedConductType!.isNotEmpty) {
+    //  tempArray = parts.auto_filter();
+    //}
   }
 
   @override
@@ -181,10 +191,10 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
 
   @override
   Widget build(BuildContext context) {
+    type_changed = false;
     // Instance of a class
     final ParticipantAutoSelect part =
         ParticipantAutoSelect(conductType: widget.selectedConductType);
-    //isFirstTIme = true;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
@@ -258,6 +268,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                           .toList(),
                       onChanged: (String? item) async => setState(() {
                         widget.selectedConductType = item;
+                        isFirstTIme = true;
                         //addUserDetails();
                       }),
                     ),
@@ -492,9 +503,11 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                           userDetails.add(data);
                         }
                       }
-                      if (widget.selectedConductType!.isNotEmpty) {
-                        tempArray = part.auto_filter();
-                      }
+                      parts = part;
+                      filter();
+                      //if (widget.selectedConductType!.isNotEmpty) {
+                      //  tempArray = part.auto_filter();
+                      //}
                     }
                     return Flexible(
                       child: SizedBox(
