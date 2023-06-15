@@ -42,15 +42,14 @@ dependencies:
   cupertino_icons: ^1.0.2
   google_nav_bar: ^5.0.6
   firebase_core: ^2.12.0
-  contacts_service: ^0.6.3
+  
   permission_handler: ^10.2.0
   flutter_screenutil: ^5.7.0
   percent_indicator: ^4.2.3
   firebase_auth: ^4.6.0
   recase: ^4.1.0
   auto_size_text: ^3.0.0
-  datetime_picker_formfield_new: ^2.1.0
-  date_field: ^3.0.3
+  
   flutter_slidable: ^3.0.0
   animated_snack_bar: ^0.3.1
   email_validator: ^2.0.1
@@ -58,9 +57,9 @@ dependencies:
   flutter_pw_validator: ^1.6.0
   responsive_framework: ^1.0.0
   liquid_pull_to_refresh: ^3.0.1
-  date_picker_timeline: ^1.2.3
-  date_picker_timeline_fixed: ^2.0.0
+  
   horizontal_center_date_picker: ^2.1.1
+  syncfusion_flutter_datagrid: ^21.2.10
 
 dev_dependencies:
   flutter_test:

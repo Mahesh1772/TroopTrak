@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/screens/conduct_tracker_screen/conduct_tracker_screen.dart';
+import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/guard_duty_tracker_screen.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/screens/dashboard_screen/dashboard_screen.dart';
 import 'package:prototype_1/screens/nominal_roll_screen/nominal_roll_screen_new.dart';
@@ -22,13 +23,9 @@ class _GNavMainScreen extends State<GNavMainScreen> {
     const DashboardScreen(),
     const NominalRollNewScreen(),
     const ConductTrackerScreen(),
+    const GuardDutyTrackerScreen(),
     //const StyledText('Conduct Tracker', 25),
     //const StyledText('Parade State', 25),
-    const StyledText(
-      'Guard Duty',
-      25,
-      fontWeight: FontWeight.w500,
-    ),
   ];
   void itemTapped(int index) {
     setState(() {

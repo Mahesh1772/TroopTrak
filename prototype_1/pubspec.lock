@@ -97,14 +97,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.17.0"
-  contacts_service:
-    dependency: "direct main"
-    description:
-      name: contacts_service
-      sha256: f6d5ea33b31dfcdcd2e65d8abdc836502e04ddb0f66a96aa726fa9891ea9671e
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.6.3"
   crypto:
     dependency: transitive
     description:
@@ -121,38 +113,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
-  date_field:
-    dependency: "direct main"
-    description:
-      name: date_field
-      sha256: "88f54bd36f8dbda7584d86684087020be5d1bd7bc8273dc05e6ba9c9c65e9352"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.3"
-  date_picker_timeline:
-    dependency: "direct main"
-    description:
-      name: date_picker_timeline
-      sha256: d92956ddd6eb3070f5637b1514201342e739b6ed1ad830c365d64f9349f4f682
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.2.3"
-  date_picker_timeline_fixed:
-    dependency: "direct main"
-    description:
-      name: date_picker_timeline_fixed
-      sha256: d24eef4a53a0ced92bc9ce9d3325087ef441444abd9144dae7444a5642e77960
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.0"
-  datetime_picker_formfield_new:
-    dependency: "direct main"
-    description:
-      name: datetime_picker_formfield_new
-      sha256: "04e353b959fa9f2654bb41ec016100152bdcd0afdef7b7b74a83d7d97bdba0a3"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.0"
   email_validator:
     dependency: "direct main"
     description:
@@ -576,14 +536,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.5"
-  quiver:
-    dependency: transitive
-    description:
-      name: quiver
-      sha256: b1c1ac5ce6688d77f65f3375a9abb9319b3cb32486bdc7a1e0fdf004d7ba4e47
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.2.1"
   recase:
     dependency: "direct main"
     description:
@@ -637,6 +589,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  syncfusion_flutter_core:
+    dependency: transitive
+    description:
+      name: syncfusion_flutter_core
+      sha256: "8db8f55c77f56968681447d3837c10f27a9e861e238a898fda116c7531def979"
+      url: "https://pub.dev"
+    source: hosted
+    version: "21.2.10"
+  syncfusion_flutter_datagrid:
+    dependency: "direct main"
+    description:
+      name: syncfusion_flutter_datagrid
+      sha256: "2cd5fad76f90ebcfe577a2e6bdfef39cf2860c68a90293a2c21e8eb924ec3795"
+      url: "https://pub.dev"
+    source: hosted
+    version: "21.2.10"
   term_glyph:
     dependency: transitive
     description:

@@ -92,7 +92,7 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 24.0.w),
                     child: StyledText(
                       'Nominal Roll',
-                      30.sp,
+                      26.sp,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -159,13 +159,13 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                 ],
               ),
               SizedBox(
-                height: 10.h,
+                height: 20.h,
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24.0.w),
                 child: StyledText(
                   'Our Family of Soldiers:',
-                  20.sp,
+                  30.sp,
                   fontWeight: FontWeight.bold,
                 ),
               ),
