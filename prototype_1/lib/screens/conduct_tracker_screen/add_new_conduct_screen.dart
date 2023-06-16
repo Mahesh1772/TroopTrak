@@ -491,30 +491,32 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                           itemCount: userDetails.length,
                           padding: EdgeInsets.all(12.sp),
                           itemBuilder: (context, index) {
-                            return InkWell(
-                              onTap: () {
-                                setState(() {
-                                  if (tempArray.contains(
-                                      userDetails[index]['name'].toString())) {
-                                    tempArray.remove(
-                                        userDetails[index]['name'].toString());
-                                  } else {
-                                    tempArray.add(
-                                        userDetails[index]['name'].toString());
-                                  }
-                                  isFirstTIme = false;
-                                });
-                              },
-                              child: Card(
-                                color: Colors.black54,
-                                child: ListTile(
-                                  title: StyledText(
-                                      userDetails[index]['name']
-                                          .toString()
-                                          .titleCase,
-                                      16.sp,
-                                      fontWeight: FontWeight.w500),
-                                  leading: Container(
+                            return Card(
+                              color: Colors.black54,
+                              child: ListTile(
+                                title: StyledText(
+                                    userDetails[index]['name']
+                                        .toString()
+                                        .titleCase,
+                                    16.sp,
+                                    fontWeight: FontWeight.w500),
+                                leading: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      if (tempArray.contains(userDetails[index]
+                                              ['name']
+                                          .toString())) {
+                                        tempArray.remove(userDetails[index]
+                                                ['name']
+                                            .toString());
+                                      } else {
+                                        tempArray.add(userDetails[index]['name']
+                                            .toString());
+                                      }
+                                      isFirstTIme = false;
+                                    });
+                                  },
+                                  child: Container(
                                     height: 40.h,
                                     width: 100.w,
                                     decoration: BoxDecoration(
