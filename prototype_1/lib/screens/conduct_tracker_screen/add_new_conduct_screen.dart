@@ -43,7 +43,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
   // List to store all user data, whilst also mapping to name
   List<Map<String, dynamic>> userDetails = [];
 
-  bool type_changed = false ;
+  bool type_changed = false;
 
   ParticipantAutoSelect parts = ParticipantAutoSelect(conductType: null);
 
@@ -53,41 +53,15 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
   // To store text being searched
   String searchText = '';
 
-  Future getUserBooks() async {
-    FirebaseFirestore.instance
-        .collection("Users")
-        .get()
-        .then((querySnapshot) async {
-      querySnapshot.docs.forEach((snapshot) {
-        FirebaseFirestore.instance
-            .collection("Users")
-            .doc(snapshot.id)
-            .collection("Statuses")
-            .get()
-            .then((querySnapshot) {
-          querySnapshot.docs.forEach((result) {
-            Map<String, dynamic> data = result.data();
-            if (DateFormat("d MMM yyyy")
-                .parse(data['endDate'])
-                .isAfter(DateTime.now())) {
-              soldierStatusArray.add(snapshot.id);
-            }
-          });
-        });
-      });
-    });
-  }
-
   Future filter() async {
     if (isFirstTIme) {
       //documentIDs
       //    .removeWhere((element) => soldierStatusArray.contains(element));
       //tempArray = documentIDs;
-      if (widget.selectedConductType!.isNotEmpty) {
-        tempArray = parts.auto_filter();
-      }
+      //if (widget.selectedConductType!.isNotEmpty) {
+      tempArray = parts.auto_filter();
+      //}
     }
-    tempArray = tempArray;
     //else if(widget.selectedConductType!.isNotEmpty) {
     //  tempArray = parts.auto_filter();
     //}
@@ -96,7 +70,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
   @override
   void initState() {
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
-    getUserBooks();
+
     super.initState();
   }
 
@@ -504,7 +478,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                         }
                       }
                       parts = part;
-                      filter();
+                      //filter();
                       //if (widget.selectedConductType!.isNotEmpty) {
                       //  tempArray = part.auto_filter();
                       //}
