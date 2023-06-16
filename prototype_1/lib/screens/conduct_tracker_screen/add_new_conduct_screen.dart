@@ -55,22 +55,239 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
 
   Future filter() async {
     if (isFirstTIme) {
+      auto_filter();
       //documentIDs
       //    .removeWhere((element) => soldierStatusArray.contains(element));
       //tempArray = documentIDs;
       //if (widget.selectedConductType!.isNotEmpty) {
-      tempArray = parts.auto_filter();
+      //tempArray = parts.auto_filter();
       //}
+      tempArray = documentIDs;
     }
     //else if(widget.selectedConductType!.isNotEmpty) {
     //  tempArray = parts.auto_filter();
     //}
   }
 
+  // All this was supposed to be in another file
+  List<Map<String, dynamic>> statusList = [];
+  List<String> Outfield = [
+    'Ex Sunlight',
+    'Ex grass',
+    'Ex Outfield',
+    'Ex Outfield',
+    'Ex Uniform',
+    'Ex Boots'
+  ];
+  List<String> Run = ['Ex RMJ', 'Ex Lower Limb', 'LD'];
+  List<String> S_P = ['Ex Upper Limb', 'LD'];
+  List<String> Imt = ['Ex FLEGS', 'Ex Uniform', 'Ex Boots', 'LD'];
+  List<String> Atp = [
+    'Ex FLEGS',
+    'Ex Uniform',
+    'Ex Boots',
+    'LD',
+    'Ex Lower Limb',
+    'Ex RMJ'
+  ];
+  List<String> Ippt = [
+    'Ex Upper Limb',
+    'LD',
+    'Ex Lower Limb',
+    'Ex RMJ',
+    'Ex Pushup',
+    'Ex Situp'
+  ];
+  List<String> soc = [
+    'Ex Upper Limb',
+    'LD',
+    'Ex Lower Limb',
+    'Ex RMJ',
+    'Ex Uniform',
+    'Ex Boots',
+    'Ex FLEGS'
+  ];
+  List MetabolicCircuit = [
+    'Ex RMJ',
+    'Ex Lower Limb',
+    'LD',
+  ];
+  List CombatCircuit = [
+    'Ex Uniform',
+    'Ex Boots',
+    'Ex RMJ',
+    'Ex Heavy Loads',
+    'Ex Lower Limb',
+    'Ex FLEGs',
+    'LD',
+  ];
+  List RouteMarch = [
+    'Ex RMJ',
+    'Ex Heavy Loads',
+    'Ex Lower Limbs',
+    'LD',
+    'Ex Uniform',
+    'Ex Boots',
+    'Ex FLEGs',
+  ];
+  int i = 0;
+  List<String> non_participants = [];
+
+  Future getUserBooks() async {
+    FirebaseFirestore.instance
+        .collection("Users")
+        .get()
+        .then((querySnapshot) async {
+      querySnapshot.docs.forEach((snapshot) {
+        FirebaseFirestore.instance
+            .collection("Users")
+            .doc(snapshot.id)
+            .collection("Statuses")
+            .get()
+            .then((querySnapshot) {
+          querySnapshot.docs.forEach((result) {
+            Map<String, dynamic> data = result.data();
+            if (DateFormat("d MMM yyyy")
+                .parse(data['endDate'])
+                .isAfter(DateTime.now())) {
+              statusList.add(data);
+              statusList[i].addEntries({'Name': snapshot.id}.entries);
+              i++;
+            }
+          });
+        });
+      });
+    });
+  }
+
+  Future getDocIDs() async {
+    FirebaseFirestore.instance
+        .collection('Users')
+        .get()
+        .then((value) => value.docs.forEach((element) {
+              documentIDs.add(element['name']);
+            }));
+  }
+
+  void auto_filter() {
+    //documentIDs = [];
+    switch (widget.selectedConductType) {
+      case 'Run':
+        for (var status in statusList) {
+          if (status['statusType'] == 'Excuse') {
+            if (Run.contains(status['statusName'])) {
+              non_participants.add(status['Name']);
+            }
+          } else if (status['statusType'] == 'Leave') {
+            non_participants.add(status['Name']);
+          }
+        }
+        break;
+      case 'Route March':
+        for (var status in statusList) {
+          if (status['statusType'] == 'Excuse') {
+            if (RouteMarch.contains(status['statusName'])) {
+              non_participants.add(status['Name']);
+            }
+          } else if (status['statusType'] == 'Leave') {
+            non_participants.add(status['Name']);
+          }
+        }
+        break;
+      case 'IPPT':
+        for (var status in statusList) {
+          if (status['statusType'] == 'Excuse') {
+            if (Ippt.contains(status['statusName'])) {
+              non_participants.add(status['Name']);
+            }
+          } else if (status['statusType'] == 'Leave') {
+            non_participants.add(status['Name']);
+          }
+        }
+        break;
+      case 'Outfield':
+        for (var status in statusList) {
+          if (status['statusType'] == 'Excuse') {
+            if (Outfield.contains(status['statusName'])) {
+              non_participants.add(status['Name']);
+            }
+          } else if (status['statusType'] == 'Leave') {
+            non_participants.add(status['Name']);
+          }
+        }
+        break;
+      case 'Metabolic Circuit':
+        for (var status in statusList) {
+          if (status['statusType'] == 'Excuse') {
+            if (MetabolicCircuit.contains(status['statusName'])) {
+              non_participants.add(status['Name']);
+            }
+          } else if (status['statusType'] == 'Leave') {
+            non_participants.add(status['Name']);
+          }
+        }
+        break;
+      case 'Strength & Power':
+        for (var status in statusList) {
+          if (status['statusType'] == 'Excuse') {
+            if (S_P.contains(status['statusName'])) {
+              non_participants.add(status['Name']);
+            }
+          } else if (status['statusType'] == 'Leave') {
+            non_participants.add(status['Name']);
+          }
+        }
+        break;
+      case 'Combat Circuit':
+        for (var status in statusList) {
+          if (status['statusType'] == 'Excuse') {
+            if (CombatCircuit.contains(status['statusName'])) {
+              non_participants.add(status['Name']);
+            }
+          } else if (status['statusType'] == 'Leave') {
+            non_participants.add(status['Name']);
+          }
+        }
+        break;
+      case 'Live Firing':
+        for (var status in statusList) {
+          if (status['statusType'] == 'Excuse') {
+            if (Atp.contains(status['statusName']) ||
+                Imt.contains(status['statusName'])) {
+              non_participants.add(status['Name']);
+            }
+          } else if (status['statusType'] == 'Leave') {
+            non_participants.add(status['Name']);
+          }
+        }
+        break;
+      case 'SOC/VOC':
+        for (var status in statusList) {
+          if (status['statusType'] == 'Excuse') {
+            if (soc.contains(status['statusName'])) {
+              non_participants.add(status['Name']);
+            }
+          } else if (status['statusType'] == 'Leave') {
+            non_participants.add(status['Name']);
+          }
+        }
+        break;
+      default:
+        for (var status in statusList) {
+          if (status['statusType'] == 'Leave') {
+            non_participants.add(status['Name']);
+          }
+        }
+    }
+    documentIDs.removeWhere((element) => non_participants.contains(element));
+    //return documentIDs;
+  }
+
   @override
   void initState() {
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
-
+    getDocIDs();
+    getUserBooks();
     super.initState();
   }
 
@@ -243,7 +460,6 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                       onChanged: (String? item) async => setState(() {
                         widget.selectedConductType = item;
                         isFirstTIme = true;
-                        //addUserDetails();
                       }),
                     ),
                   ),
@@ -434,7 +650,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                   stream: documentStream,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      documentIDs = [];
+                      //documentIDs = [];
                       userDetails = [];
                       var users = snapshot.data?.docs.toList();
                       var docsmapshot = snapshot.data!;
@@ -448,7 +664,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                         }).toList();
                         for (var user in users) {
                           var data = user.data();
-                          documentIDs.add(user['name']);
+                          //documentIDs.add(user['name']);
                           userDetails.add(data as Map<String, dynamic>);
                         }
                         if (userDetails.isEmpty) {
@@ -476,12 +692,8 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                               as Map<String, dynamic>;
                           userDetails.add(data);
                         }
+                        filter();
                       }
-                      parts = part;
-                      //filter();
-                      //if (widget.selectedConductType!.isNotEmpty) {
-                      //  tempArray = part.auto_filter();
-                      //}
                     }
                     return Flexible(
                       child: SizedBox(

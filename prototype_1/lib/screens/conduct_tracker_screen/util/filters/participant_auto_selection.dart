@@ -218,7 +218,7 @@ class ParticipantAutoSelect {
     }
   }
 
-  List<String> auto_filter() {
+  List<String> auto_filter1() {
     //documentIDs = [];
     getDocIDs();
     getUserBooks();
@@ -257,5 +257,121 @@ class ParticipantAutoSelect {
     isOnLeave();
     documentIDs.removeWhere((element) => non_participants.contains(element));
     return documentIDs;
+  }
+
+  void auto_filter() {
+    //documentIDs = [];
+    getDocIDs();
+    getUserBooks();
+    switch (conductType) {
+      case 'Run':
+        for (var status in statusList) {
+          if (status['statusType'] == 'Excuse') {
+            if (Run.contains(status['statusName'])) {
+              non_participants.add(status['Name']);
+            }
+          } else if (status['statusType'] == 'Leave') {
+            non_participants.add(status['Name']);
+          }
+        }
+        break;
+      case 'Route March':
+        for (var status in statusList) {
+          if (status['statusType'] == 'Excuse') {
+            if (RouteMarch.contains(status['statusName'])) {
+              non_participants.add(status['Name']);
+            }
+          } else if (status['statusType'] == 'Leave') {
+            non_participants.add(status['Name']);
+          }
+        }
+        break;
+      case 'IPPT':
+        for (var status in statusList) {
+          if (status['statusType'] == 'Excuse') {
+            if (Ippt.contains(status['statusName'])) {
+              non_participants.add(status['Name']);
+            }
+          } else if (status['statusType'] == 'Leave') {
+            non_participants.add(status['Name']);
+          }
+        }
+        break;
+      case 'Outfield':
+        for (var status in statusList) {
+          if (status['statusType'] == 'Excuse') {
+            if (Outfield.contains(status['statusName'])) {
+              non_participants.add(status['Name']);
+            }
+          } else if (status['statusType'] == 'Leave') {
+            non_participants.add(status['Name']);
+          }
+        }
+        break;
+      case 'Metabolic Circuit':
+        for (var status in statusList) {
+          if (status['statusType'] == 'Excuse') {
+            if (MetabolicCircuit.contains(status['statusName'])) {
+              non_participants.add(status['Name']);
+            }
+          } else if (status['statusType'] == 'Leave') {
+            non_participants.add(status['Name']);
+          }
+        }
+        break;
+      case 'Strength & Power':
+        for (var status in statusList) {
+          if (status['statusType'] == 'Excuse') {
+            if (S_P.contains(status['statusName'])) {
+              non_participants.add(status['Name']);
+            }
+          } else if (status['statusType'] == 'Leave') {
+            non_participants.add(status['Name']);
+          }
+        }
+        break;
+      case 'Combat Circuit':
+        for (var status in statusList) {
+          if (status['statusType'] == 'Excuse') {
+            if (CombatCircuit.contains(status['statusName'])) {
+              non_participants.add(status['Name']);
+            }
+          } else if (status['statusType'] == 'Leave') {
+            non_participants.add(status['Name']);
+          }
+        }
+        break;
+      case 'Live Firing':
+        for (var status in statusList) {
+          if (status['statusType'] == 'Excuse') {
+            if (Atp.contains(status['statusName']) ||
+                Imt.contains(status['statusName'])) {
+              non_participants.add(status['Name']);
+            }
+          } else if (status['statusType'] == 'Leave') {
+            non_participants.add(status['Name']);
+          }
+        }
+        break;
+      case 'SOC/VOC':
+        for (var status in statusList) {
+          if (status['statusType'] == 'Excuse') {
+            if (soc.contains(status['statusName'])) {
+              non_participants.add(status['Name']);
+            }
+          } else if (status['statusType'] == 'Leave') {
+            non_participants.add(status['Name']);
+          }
+        }
+        break;
+      default:
+        for (var status in statusList) {
+          if (status['statusType'] == 'Leave') {
+            non_participants.add(status['Name']);
+          }
+        }
+    }
+    documentIDs.removeWhere((element) => non_participants.contains(element));
+    //return documentIDs;
   }
 }
