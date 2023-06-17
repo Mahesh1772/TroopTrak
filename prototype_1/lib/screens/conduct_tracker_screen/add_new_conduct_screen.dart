@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/guard_duty_tracker_screen.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:recase/recase.dart';
 import 'package:prototype_1/screens/conduct_tracker_screen/util/filters/participant_auto_selection.dart';
@@ -31,6 +32,8 @@ class AddNewConductScreen extends StatefulWidget {
 
 // Store all the names in conduct
 List<String> tempArray = [];
+
+List<String> searchArray = List.from(userDetails);
 // List of all names
 List<String> documentIDs = [];
 // Name of soldiers not included
@@ -169,6 +172,15 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
               Map<String, dynamic> data = element.data();
               userDetails.add(data);
             }));
+  }
+
+  void updateList(String value) {
+    setState(() {
+      searchArray = documentIDs
+          .where((element) =>
+              element.toString().toLowerCase().contains(value.toLowerCase()))
+          .toList();
+    });
   }
 
   void auto_filter() {
@@ -629,20 +641,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                 Padding(
                   padding: EdgeInsets.all(20.0.sp),
                   child: TextField(
-                    onChanged: (value) {
-                      setState(() {
-                        //if (value.isEmpty) {
-                        //  userDetails = userDetails;
-                        //} else {
-                        //  userDetails = userDetails
-                        //      .where((element) => element['name']
-                        //          .toLowerCase()
-                        //          .contains(value.toLowerCase()))
-                        //      .toList();
-                        //}
-                        searchText = value;
-                      });
-                    },
+                    onChanged: (value) => updateList(value),
                     decoration: InputDecoration(
                       hintText: 'Search Name',
                       prefixIcon: const Icon(Icons.search_sharp),
@@ -661,26 +660,25 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                     height: 300,
                     child: ListView.builder(
                       scrollDirection: Axis.vertical,
-                      itemCount: userDetails.length,
+                      itemCount: searchArray.length,
                       padding: EdgeInsets.all(12.sp),
                       itemBuilder: (context, index) {
                         return Card(
                           color: Colors.black54,
                           child: ListTile(
                             title: StyledText(
-                                userDetails[index]['name'].toString().titleCase,
-                                16.sp,
+                                searchArray[index].toString().titleCase, 16.sp,
                                 fontWeight: FontWeight.w500),
                             leading: InkWell(
                               onTap: () {
                                 setState(() {
                                   if (tempArray.contains(
-                                      userDetails[index]['name'].toString())) {
-                                    tempArray.remove(
-                                        userDetails[index]['name'].toString());
+                                      searchArray[index].toString())) {
+                                    tempArray
+                                        .remove(searchArray[index].toString());
                                   } else {
-                                    tempArray.add(
-                                        userDetails[index]['name'].toString());
+                                    tempArray
+                                        .add(searchArray[index].toString());
                                   }
                                   isFirstTIme = false;
                                 });
@@ -690,16 +688,15 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                                 width: 100.w,
                                 decoration: BoxDecoration(
                                   color: tempArray.contains(
-                                          userDetails[index]['name'].toString())
+                                          searchArray[index].toString())
                                       ? Colors.red
                                       : Colors.green,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Center(
                                   child: StyledText(
-                                      tempArray.contains(userDetails[index]
-                                                  ['name']
-                                              .toString())
+                                      tempArray.contains(
+                                              searchArray[index].toString())
                                           ? "REMOVE"
                                           : "ADD",
                                       18.sp,
