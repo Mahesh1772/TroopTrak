@@ -166,6 +166,8 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
         .get()
         .then((value) => value.docs.forEach((element) {
               documentIDs.add(element['name']);
+              Map<String, dynamic> data = element.data();
+              userDetails.add(data);
             }));
   }
 
@@ -288,6 +290,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
     getDocIDs();
     getUserBooks();
+    filter();
     super.initState();
   }
 
@@ -383,9 +386,6 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
   @override
   Widget build(BuildContext context) {
     type_changed = false;
-    // Instance of a class
-    final ParticipantAutoSelect part =
-        ParticipantAutoSelect(conductType: widget.selectedConductType);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
@@ -631,6 +631,15 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                   child: TextField(
                     onChanged: (value) {
                       setState(() {
+                        //if (value.isEmpty) {
+                        //  userDetails = userDetails;
+                        //} else {
+                        //  userDetails = userDetails
+                        //      .where((element) => element['name']
+                        //          .toLowerCase()
+                        //          .contains(value.toLowerCase()))
+                        //      .toList();
+                        //}
                         searchText = value;
                       });
                     },
@@ -709,7 +718,9 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                   height: 30.h,
                 ),
                 GestureDetector(
-                  onTap: addConduct,
+                  onTap: () {
+                    print(userDetails);
+                  }, //addConduct,
                   child: Container(
                     padding: EdgeInsets.all(10.sp),
                     decoration: BoxDecoration(
