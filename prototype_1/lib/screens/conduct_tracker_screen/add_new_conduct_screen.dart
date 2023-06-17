@@ -646,119 +646,65 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                     ),
                   ),
                 ),
-                StreamBuilder<QuerySnapshot>(
-                  stream: documentStream,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      //documentIDs = [];
-                      userDetails = [];
-                      var users = snapshot.data?.docs.toList();
-                      var docsmapshot = snapshot.data!;
-                      if (searchText.isNotEmpty) {
-                        users = users!.where((element) {
-                          return element
-                              .get('name')
-                              .toString()
-                              .toLowerCase()
-                              .contains(searchText.toLowerCase());
-                        }).toList();
-                        for (var user in users) {
-                          var data = user.data();
-                          //documentIDs.add(user['name']);
-                          userDetails.add(data as Map<String, dynamic>);
-                        }
-                        if (userDetails.isEmpty) {
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Center(
-                                child: Text(
-                                  'No results Found!',
-                                  style: TextStyle(
-                                    color: Colors.purpleAccent,
-                                    fontSize: 45.sp,
-                                  ),
-                                  textAlign: TextAlign.center,
+
+                Flexible(
+                  child: SizedBox(
+                    height: 300,
+                    child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      itemCount: userDetails.length,
+                      padding: EdgeInsets.all(12.sp),
+                      itemBuilder: (context, index) {
+                        return Card(
+                          color: Colors.black54,
+                          child: ListTile(
+                            title: StyledText(
+                                userDetails[index]['name'].toString().titleCase,
+                                16.sp,
+                                fontWeight: FontWeight.w500),
+                            leading: InkWell(
+                              onTap: () {
+                                setState(() {
+                                  if (tempArray.contains(
+                                      userDetails[index]['name'].toString())) {
+                                    tempArray.remove(
+                                        userDetails[index]['name'].toString());
+                                  } else {
+                                    tempArray.add(
+                                        userDetails[index]['name'].toString());
+                                  }
+                                  isFirstTIme = false;
+                                });
+                              },
+                              child: Container(
+                                height: 40.h,
+                                width: 100.w,
+                                decoration: BoxDecoration(
+                                  color: tempArray.contains(
+                                          userDetails[index]['name'].toString())
+                                      ? Colors.red
+                                      : Colors.green,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Center(
+                                  child: StyledText(
+                                      tempArray.contains(userDetails[index]
+                                                  ['name']
+                                              .toString())
+                                          ? "REMOVE"
+                                          : "ADD",
+                                      18.sp,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ),
-                            ],
-                          );
-                        }
-                      } else {
-                        for (var i = 0; i < users!.length; i++) {
-                          documentIDs.add(users[i]['name']);
-                          var data = docsmapshot.docs[i].data()
-                              as Map<String, dynamic>;
-                          userDetails.add(data);
-                        }
-                        filter();
-                      }
-                    }
-                    return Flexible(
-                      child: SizedBox(
-                        height: 300,
-                        child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          itemCount: userDetails.length,
-                          padding: EdgeInsets.all(12.sp),
-                          itemBuilder: (context, index) {
-                            return Card(
-                              color: Colors.black54,
-                              child: ListTile(
-                                title: StyledText(
-                                    userDetails[index]['name']
-                                        .toString()
-                                        .titleCase,
-                                    16.sp,
-                                    fontWeight: FontWeight.w500),
-                                leading: InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      if (tempArray.contains(userDetails[index]
-                                              ['name']
-                                          .toString())) {
-                                        tempArray.remove(userDetails[index]
-                                                ['name']
-                                            .toString());
-                                      } else {
-                                        tempArray.add(userDetails[index]['name']
-                                            .toString());
-                                      }
-                                      isFirstTIme = false;
-                                    });
-                                  },
-                                  child: Container(
-                                    height: 40.h,
-                                    width: 100.w,
-                                    decoration: BoxDecoration(
-                                      color: tempArray.contains(
-                                              userDetails[index]['name']
-                                                  .toString())
-                                          ? Colors.red
-                                          : Colors.green,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Center(
-                                      child: StyledText(
-                                          tempArray.contains(userDetails[index]
-                                                      ['name']
-                                                  .toString())
-                                              ? "REMOVE"
-                                              : "ADD",
-                                          18.sp,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    );
-                  },
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                 ),
+
                 SizedBox(
                   height: 30.h,
                 ),
