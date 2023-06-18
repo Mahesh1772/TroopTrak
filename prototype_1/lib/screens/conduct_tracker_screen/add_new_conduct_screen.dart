@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/guard_duty_tracker_screen.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:recase/recase.dart';
 import 'package:prototype_1/screens/conduct_tracker_screen/util/filters/participant_auto_selection.dart';
@@ -19,21 +18,17 @@ class AddNewConductScreen extends StatefulWidget {
     required this.startTime,
     required this.endTime,
   });
-
   late TextEditingController conductName;
   late String? selectedConductType;
   late String startDate;
   late String startTime;
   late String endTime;
-
   @override
   State<AddNewConductScreen> createState() => _AddNewConductScreenState();
 }
 
 // Store all the names in conduct
 List<String> tempArray = [];
-
-List<String> searchArray = List.from(userDetails);
 // List of all names
 List<String> documentIDs = [];
 // Name of soldiers not included
@@ -42,20 +37,14 @@ List<dynamic> soldierStatusArray = [];
 class _AddNewConductScreenState extends State<AddNewConductScreen> {
   //This is what the stream builder is waiting for
   late Stream<QuerySnapshot> documentStream;
-
   // List to store all user data, whilst also mapping to name
   List<Map<String, dynamic>> userDetails = [];
-
   bool type_changed = false;
-
   ParticipantAutoSelect parts = ParticipantAutoSelect(conductType: null);
-
   // Boolean value for checking if it is first time or not
   bool isFirstTIme = true;
-
   // To store text being searched
   String searchText = '';
-
   Future filter() async {
     if (isFirstTIme) {
       auto_filter();
@@ -135,7 +124,6 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
   ];
   int i = 0;
   List<String> non_participants = [];
-
   Future getUserBooks() async {
     FirebaseFirestore.instance
         .collection("Users")
@@ -169,18 +157,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
         .get()
         .then((value) => value.docs.forEach((element) {
               documentIDs.add(element['name']);
-              Map<String, dynamic> data = element.data();
-              userDetails.add(data);
             }));
-  }
-
-  void updateList(String value) {
-    setState(() {
-      searchArray = documentIDs
-          .where((element) =>
-              element.toString().toLowerCase().contains(value.toLowerCase()))
-          .toList();
-    });
   }
 
   void auto_filter() {
@@ -302,7 +279,6 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
     getDocIDs();
     getUserBooks();
-    filter();
     super.initState();
   }
 
@@ -318,7 +294,6 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
     "Live Firing",
     "SOC/VOC"
   ];
-
   void _showStartDatePicker() {
     showDatePicker(
       context: context,
@@ -398,6 +373,9 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
   @override
   Widget build(BuildContext context) {
     type_changed = false;
+    // Instance of a class
+    final ParticipantAutoSelect part =
+        ParticipantAutoSelect(conductType: widget.selectedConductType);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
@@ -476,11 +454,9 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                     ),
                   ),
                 ),
-
                 SizedBox(
                   height: 30.h,
                 ),
-
                 //Name of status textfield
                 Container(
                   decoration: BoxDecoration(
@@ -550,7 +526,6 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                 SizedBox(
                   height: 30.h,
                 ),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -632,7 +607,6 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                 SizedBox(
                   height: 40.h,
                 ),
-
                 const StyledText("Add Participants", 24,
                     fontWeight: FontWeight.bold),
                 SizedBox(
@@ -641,7 +615,11 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                 Padding(
                   padding: EdgeInsets.all(20.0.sp),
                   child: TextField(
-                    onChanged: (value) => updateList(value),
+                    onChanged: (value) {
+                      setState(() {
+                        searchText = value;
+                      });
+                    },
                     decoration: InputDecoration(
                       hintText: 'Search Name',
                       prefixIcon: const Icon(Icons.search_sharp),
@@ -654,70 +632,124 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                     ),
                   ),
                 ),
-
-                Flexible(
-                  child: SizedBox(
-                    height: 300,
-                    child: ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      itemCount: searchArray.length,
-                      padding: EdgeInsets.all(12.sp),
-                      itemBuilder: (context, index) {
-                        return Card(
-                          color: Colors.black54,
-                          child: ListTile(
-                            title: StyledText(
-                                searchArray[index].toString().titleCase, 16.sp,
-                                fontWeight: FontWeight.w500),
-                            leading: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  if (tempArray.contains(
-                                      searchArray[index].toString())) {
-                                    tempArray
-                                        .remove(searchArray[index].toString());
-                                  } else {
-                                    tempArray
-                                        .add(searchArray[index].toString());
-                                  }
-                                  isFirstTIme = false;
-                                });
-                              },
-                              child: Container(
-                                height: 40.h,
-                                width: 100.w,
-                                decoration: BoxDecoration(
-                                  color: tempArray.contains(
-                                          searchArray[index].toString())
-                                      ? Colors.red
-                                      : Colors.green,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Center(
-                                  child: StyledText(
-                                      tempArray.contains(
-                                              searchArray[index].toString())
-                                          ? "REMOVE"
-                                          : "ADD",
-                                      18.sp,
-                                      fontWeight: FontWeight.bold),
+                StreamBuilder<QuerySnapshot>(
+                  stream: documentStream,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      //documentIDs = [];
+                      userDetails = [];
+                      var users = snapshot.data?.docs.toList();
+                      var docsmapshot = snapshot.data!;
+                      if (searchText.isNotEmpty) {
+                        users = users!.where((element) {
+                          return element
+                              .get('name')
+                              .toString()
+                              .toLowerCase()
+                              .contains(searchText.toLowerCase());
+                        }).toList();
+                        for (var user in users) {
+                          var data = user.data();
+                          //documentIDs.add(user['name']);
+                          userDetails.add(data as Map<String, dynamic>);
+                        }
+                        if (userDetails.isEmpty) {
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Center(
+                                child: Text(
+                                  'No results Found!',
+                                  style: TextStyle(
+                                    color: Colors.purpleAccent,
+                                    fontSize: 45.sp,
+                                  ),
+                                  textAlign: TextAlign.center,
                                 ),
                               ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+                            ],
+                          );
+                        }
+                      } else {
+                        for (var i = 0; i < users!.length; i++) {
+                          documentIDs.add(users[i]['name']);
+                          var data = docsmapshot.docs[i].data()
+                              as Map<String, dynamic>;
+                          userDetails.add(data);
+                        }
+                        filter();
+                      }
+                    }
+                    return Flexible(
+                      child: SizedBox(
+                        height: 300,
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemCount: userDetails.length,
+                          padding: EdgeInsets.all(12.sp),
+                          itemBuilder: (context, index) {
+                            return Card(
+                              color: Colors.black54,
+                              child: ListTile(
+                                title: StyledText(
+                                    userDetails[index]['name']
+                                        .toString()
+                                        .titleCase,
+                                    16.sp,
+                                    fontWeight: FontWeight.w500),
+                                leading: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      if (tempArray.contains(userDetails[index]
+                                              ['name']
+                                          .toString())) {
+                                        tempArray.remove(userDetails[index]
+                                                ['name']
+                                            .toString());
+                                      } else {
+                                        tempArray.add(userDetails[index]['name']
+                                            .toString());
+                                      }
+                                      isFirstTIme = false;
+                                    });
+                                  },
+                                  child: Container(
+                                    height: 40.h,
+                                    width: 100.w,
+                                    decoration: BoxDecoration(
+                                      color: tempArray.contains(
+                                              userDetails[index]['name']
+                                                  .toString())
+                                          ? Colors.red
+                                          : Colors.green,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Center(
+                                      child: StyledText(
+                                          tempArray.contains(userDetails[index]
+                                                      ['name']
+                                                  .toString())
+                                              ? "REMOVE"
+                                              : "ADD",
+                                          18.sp,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    );
+                  },
                 ),
-
                 SizedBox(
                   height: 30.h,
                 ),
                 GestureDetector(
-                  onTap: () {
-                    print(userDetails);
-                  }, //addConduct,
+                  onTap: addConduct,
                   child: Container(
                     padding: EdgeInsets.all(10.sp),
                     decoration: BoxDecoration(
