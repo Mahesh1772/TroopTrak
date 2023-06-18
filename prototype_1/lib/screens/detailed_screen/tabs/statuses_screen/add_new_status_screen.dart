@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
+import 'package:easy_autocomplete/easy_autocomplete.dart';
 
 class AddNewStatusScreen extends StatefulWidget {
   AddNewStatusScreen(
@@ -28,6 +29,31 @@ class AddNewStatusScreen extends StatefulWidget {
 
 CollectionReference db = FirebaseFirestore.instance.collection('Users');
 
+List<String> suggestions = [
+  'LD',
+  'RIB (Rest in Bunk)',
+  'Ex RMJ ',
+  'Ex Heavy Loads',
+  'Ex Upper Limb',
+  'Ex Lower Limb',
+  'Ex Boots',
+  'Ex Shoes',
+  'Ex Physical Training',
+  'Ex Field Training',
+  'Ex Outfield',
+  'Ex Dust and Smoke',
+  'Ex FLEGs',
+  'Ex Stay-In',
+  'Ex Dog/K9',
+  'Ex Uniform',
+  'Ex Prolonged Standing/Proning/Squatting/Sitting/Cross-Legged Sitting',
+  'Ex Sunlight/High Temperature/High Humidity',
+  'Ex Pushup',
+  'Ex Situp',
+  'Ex Sunlight',
+  'Ex grass',
+];
+
 class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
   final _formKey = GlobalKey<FormState>();
 
@@ -46,8 +72,7 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
   void _showStartDatePicker() {
     showDatePicker(
       context: context,
-      initialDate:
-          DateTime.now(), //DateFormat("d MMM yyyy").parse(widget.startDate),
+      initialDate: DateTime.now(),
       firstDate: DateTime(1960),
       lastDate: DateTime(2030),
     ).then((value) {
@@ -63,8 +88,7 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
   void _showEndDatePicker() {
     showDatePicker(
       context: context,
-      initialDate:
-          DateTime.now(), //DateFormat("d MMM yyyy").parse(widget.endDate),
+      initialDate: DateTime.now(),
       firstDate: DateTime(1960),
       lastDate: DateTime(2030),
     ).then((value) {
@@ -82,11 +106,7 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
     widget.selectedStatusType = sType;
     widget.endDate = eDate;
     widget.startDate = sDate;
-    db
-        .doc(widget.docID)
-        .collection('Statuses')
-        //.doc(sName.text.trim())
-        .add({
+    db.doc(widget.docID).collection('Statuses').add({
       //User map formatting
       'statusName': widget.statusName.text.trim(), //sName.text.trim(),
       'statusType': widget.selectedStatusType, //sType,
@@ -112,7 +132,6 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
@@ -210,14 +229,33 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
                     ),
                     child: Padding(
                       padding: EdgeInsets.only(left: 20.w),
-                      child: TextFormField(
+                      child: EasyAutocomplete(
+                        suggestions: suggestions,
+                        suggestionBuilder: (data) {
+                          return Container(
+                            margin: const EdgeInsets.all(1),
+                            padding: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: Colors.black45,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Text(
+                              data,
+                              style: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          );
+                        },
                         validator: (value) {
                           if (value!.isEmpty) {
                             return "Oi can enter the status type please?";
                           }
                           return null;
                         },
-                        style: GoogleFonts.poppins(
+                        inputTextStyle: GoogleFonts.poppins(
                           color: Colors.white,
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w500,
@@ -326,8 +364,7 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
                             snackBarStyle: const SnackBarStyle() // this one
                             );
                         addUserStatus();
-                      }
-                      else {
+                      } else {
                         IconSnackBar.show(
                             direction: DismissDirection.horizontal,
                             context: context,
