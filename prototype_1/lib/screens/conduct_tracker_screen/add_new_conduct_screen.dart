@@ -132,8 +132,8 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
             .then((querySnapshot) {
           querySnapshot.docs.forEach((result) {
             Map<String, dynamic> data = result.data();
-            if (DateFormat("d MMM yyyy")
-                .parse(data['endDate'])
+            DateTime end = DateFormat("d MMM yyyy").parse(data['endDate']);
+            if (DateTime(end.year, end.month, end.day + 1)
                 .isAfter(DateTime.now())) {
               statusList.add(data);
               statusList[i].addEntries({'Name': snapshot.id}.entries);
@@ -337,9 +337,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
   }
 
   Future addConductDetails() async {
-    await FirebaseFirestore.instance
-        .collection('Conducts')
-        .add({
+    await FirebaseFirestore.instance.collection('Conducts').add({
       //User map formatting
       'conductName': widget.conductName.text.trim(),
       'conductType': widget.selectedConductType,

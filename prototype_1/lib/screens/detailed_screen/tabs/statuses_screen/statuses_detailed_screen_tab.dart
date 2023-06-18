@@ -63,7 +63,7 @@ class _StatusesTabState extends State<StatusesTab> {
               for (var status in userCurrentStatus) {
                 DateTime end =
                     DateFormat("d MMM yyyy").parse(status['endDate']);
-                if (DateTime(end.year, end.month + 1, end.day)
+                if (DateTime(end.year, end.month , end.day + 1)
                     .isBefore(DateTime.now())) {
                   userPastStatus.add(status);
                   toRemove.add(status);
