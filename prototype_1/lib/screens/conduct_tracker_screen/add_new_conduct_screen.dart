@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -361,6 +361,8 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final _formKey = GlobalKey<FormState>();
+    final _formKey1 = GlobalKey<FormState>();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
@@ -400,42 +402,52 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                   height: 40.h,
                 ),
                 //Status type drop down menu
-                Container(
-                  height: 70.h,
-                  decoration: BoxDecoration(
-                    color: Colors.black54,
-                    border: Border.all(color: Colors.white),
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
-                  child: Center(
-                    child: DropdownButtonFormField<String>(
-                      alignment: Alignment.center,
-                      dropdownColor: Colors.black54,
-                      value: widget.selectedConductType,
-                      icon: const Icon(
-                        Icons.arrow_downward_sharp,
-                        color: Colors.white,
-                      ),
-                      style: const TextStyle(color: Colors.black54),
-                      items: _conductTypes
-                          .map(
-                            (item) => DropdownMenuItem<String>(
-                              value: item,
-                              child: AutoSizeText(
-                                item,
-                                maxLines: 1,
-                                style: GoogleFonts.poppins(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.white),
+                Form(
+                  key: _formKey,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  child: Container(
+                    height: 70.h,
+                    decoration: BoxDecoration(
+                      color: Colors.black54,
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(12.r),
+                    ),
+                    child: Center(
+                      child: DropdownButtonFormField<String>(
+                        validator: (value) {
+                          if (value == "Select conduct...") {
+                            return 'Bruh select!';
+                          }
+                          return null;
+                        },
+                        alignment: Alignment.center,
+                        dropdownColor: Colors.black54,
+                        value: widget.selectedConductType,
+                        icon: const Icon(
+                          Icons.arrow_downward_sharp,
+                          color: Colors.white,
+                        ),
+                        style: const TextStyle(color: Colors.black54),
+                        items: _conductTypes
+                            .map(
+                              (item) => DropdownMenuItem<String>(
+                                value: item,
+                                child: AutoSizeText(
+                                  item,
+                                  maxLines: 1,
+                                  style: GoogleFonts.poppins(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.white),
+                                ),
                               ),
-                            ),
-                          )
-                          .toList(),
-                      onChanged: (String? item) async => setState(() {
-                        widget.selectedConductType = item;
-                        isFirstTIme = true;
-                      }),
+                            )
+                            .toList(),
+                        onChanged: (String? item) async => setState(() {
+                          widget.selectedConductType = item;
+                          isFirstTIme = true;
+                        }),
+                      ),
                     ),
                   ),
                 ),
@@ -443,28 +455,38 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                   height: 30.h,
                 ),
                 //Name of status textfield
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.black54,
-                    border: Border.all(color: Colors.white),
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 20.w),
-                    child: TextField(
-                      style: GoogleFonts.poppins(
-                        color: Colors.white,
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      controller: widget.conductName,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        labelText: 'Enter Conduct Name:',
-                        labelStyle: GoogleFonts.poppins(
+                Form(
+                  key: _formKey1,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black54,
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(12.r),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 20.w),
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Oi can conduct please?";
+                          }
+                          return null;
+                        },
+                        style: GoogleFonts.poppins(
                           color: Colors.white,
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w500,
+                        ),
+                        controller: widget.conductName,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          labelText: 'Enter Conduct Name:',
+                          labelStyle: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ),
@@ -733,7 +755,31 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                   height: 30.h,
                 ),
                 GestureDetector(
-                  onTap: addConduct,
+                  onTap: () {
+                    if (_formKey.currentState!.validate() &&
+                        _formKey1.currentState!.validate() &&
+                        widget.endTime != "End Time:" &&
+                        widget.startTime != "Start Time:" &&
+                        widget.startTime != "Date:") {
+                      IconSnackBar.show(
+                          duration: const Duration(seconds: 1),
+                          direction: DismissDirection.horizontal,
+                          context: context,
+                          snackBarType: SnackBarType.save,
+                          label: 'Conduct added successfully!',
+                          snackBarStyle: const SnackBarStyle() // this one
+                          );
+                      addConduct();
+                    } else {
+                      IconSnackBar.show(
+                          direction: DismissDirection.horizontal,
+                          context: context,
+                          snackBarType: SnackBarType.alert,
+                          label: 'Details missing',
+                          snackBarStyle: const SnackBarStyle() // this one
+                          );
+                    }
+                  },
                   child: Container(
                     padding: EdgeInsets.all(10.sp),
                     decoration: BoxDecoration(
