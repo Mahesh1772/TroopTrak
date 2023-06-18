@@ -39,6 +39,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
   late Stream<QuerySnapshot> documentStream;
   // List to store all user data, whilst also mapping to name
   List<Map<String, dynamic>> userDetails = [];
+  // To check if the type is changed inorder to change the tempArray
   bool type_changed = false;
   ParticipantAutoSelect parts = ParticipantAutoSelect(conductType: null);
   // Boolean value for checking if it is first time or not
@@ -60,6 +61,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
     //else if(widget.selectedConductType!.isNotEmpty) {
     //  tempArray = parts.auto_filter();
     //}
+    print(isFirstTIme);
   }
 
   // All this was supposed to be in another file
@@ -162,6 +164,8 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
   }
 
   void auto_filter() {
+    //getDocIDs();
+    non_participants = [];
     switch (widget.selectedConductType) {
       case 'Run':
         for (var status in statusList) {
