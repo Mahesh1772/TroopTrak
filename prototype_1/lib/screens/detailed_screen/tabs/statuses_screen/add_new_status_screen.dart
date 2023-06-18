@@ -47,7 +47,7 @@ List<String> suggestions = [
   'Ex Dog/K9',
   'Ex Uniform',
   'Ex Prolonged Standing/Proning/Squatting/Sitting/Cross-Legged Sitting',
-  'Ex Sunlight/High Temperature/High Humidity',
+  'Ex High Temperature/High Humidity',
   'Ex Pushup',
   'Ex Situp',
   'Ex Sunlight',
