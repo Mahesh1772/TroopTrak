@@ -46,22 +46,13 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
   bool isFirstTIme = true;
   // To store text being searched
   String searchText = '';
+
   Future filter() async {
     //tempArray = [];
     if (isFirstTIme) {
       auto_filter();
-      //documentIDs
-      //    .removeWhere((element) => soldierStatusArray.contains(element));
-      //tempArray = documentIDs;
-      //if (widget.selectedConductType!.isNotEmpty) {
-      //tempArray = parts.auto_filter();
-      //}
       tempArray = documentIDs;
     }
-    //else if(widget.selectedConductType!.isNotEmpty) {
-    //  tempArray = parts.auto_filter();
-    //}
-    print(isFirstTIme);
   }
 
   // All this was supposed to be in another file
@@ -164,7 +155,6 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
   }
 
   void auto_filter() {
-    //getDocIDs();
     non_participants = [];
     switch (widget.selectedConductType) {
       case 'Run':
@@ -275,7 +265,6 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
         }
     }
     documentIDs.removeWhere((element) => non_participants.contains(element));
-    //return documentIDs;
   }
 
   @override
@@ -309,7 +298,6 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
         if (value != null) {
           widget.startDate = DateFormat('d MMM yyyy').format(value);
         }
-        //addUserDetails();
       });
     });
   }
@@ -351,7 +339,6 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
   Future addConductDetails() async {
     await FirebaseFirestore.instance
         .collection('Conducts')
-        //.doc(widget.conductName.text)
         .add({
       //User map formatting
       'conductName': widget.conductName.text.trim(),
@@ -376,10 +363,6 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    type_changed = false;
-    // Instance of a class
-    final ParticipantAutoSelect part =
-        ParticipantAutoSelect(conductType: widget.selectedConductType);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
@@ -641,7 +624,6 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       documentIDs = [];
-                      //tempArray = [];
                       userDetails = [];
                       var users = snapshot.data?.docs.toList();
                       var docsmapshot = snapshot.data!;
@@ -655,7 +637,6 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                         }).toList();
                         for (var user in users) {
                           var data = user.data();
-                          //documentIDs.add(user['name']);
                           userDetails.add(data as Map<String, dynamic>);
                         }
                         if (userDetails.isEmpty) {
@@ -685,7 +666,6 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                         }
                         filter();
                       }
-                      print(tempArray);
                     }
                     return Flexible(
                       child: SizedBox(

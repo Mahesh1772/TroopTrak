@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
+import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 
 class AddNewStatusScreen extends StatefulWidget {
   AddNewStatusScreen(
@@ -111,13 +112,6 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //void initState() {
-    //  widget.statusName = sName;
-    //  widget.endDate = eDate;
-    //  widget.selectedStatusType = sType;
-    //  widget.startDate = sDate;
-    //  super.initState();
-    //}
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -128,6 +122,7 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
             padding: EdgeInsets.symmetric(horizontal: 12.w),
             child: Form(
               key: _formKey,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -191,10 +186,14 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
                           )
                           .toList(),
                       onChanged: (String? item) async => setState(() {
-                        //widget.selectedStatusType = item;
                         sType = item!;
-                        //addUserStatus();
                       }),
+                      validator: (value) {
+                        if (value == "Select status type...") {
+                          return 'Bruh select Dei!';
+                        }
+                        return null;
+                      },
                     ),
                   ),
 
@@ -212,6 +211,12 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
                     child: Padding(
                       padding: EdgeInsets.only(left: 20.w),
                       child: TextFormField(
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Oi can enter the status type please?";
+                          }
+                          return null;
+                        },
                         style: GoogleFonts.poppins(
                           color: Colors.white,
                           fontSize: 16.sp,
@@ -249,7 +254,6 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
                           padding: EdgeInsets.symmetric(
                               horizontal: 15.w, vertical: 15.h),
                           child: AutoSizeText(
-                            //widget.startDate,
                             sDate,
                             style: GoogleFonts.poppins(
                                 color: Colors.white, fontSize: 16.sp),
@@ -286,7 +290,6 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
                           padding: EdgeInsets.symmetric(
                               horizontal: 15.w, vertical: 15.h),
                           child: AutoSizeText(
-                            //widget.endDate,
                             eDate,
                             style: GoogleFonts.poppins(
                                 color: Colors.white, fontSize: 16.sp),
@@ -312,7 +315,28 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
                   ),
 
                   GestureDetector(
-                    onTap: addUserStatus,
+                    onTap: () {
+                      if (_formKey.currentState!.validate()) {
+                        IconSnackBar.show(
+                            duration: Duration(seconds: 1),
+                            direction: DismissDirection.horizontal,
+                            context: context,
+                            snackBarType: SnackBarType.save,
+                            label: 'Status added successfully!',
+                            snackBarStyle: const SnackBarStyle() // this one
+                            );
+                        addUserStatus();
+                      }
+                      else {
+                        IconSnackBar.show(
+                            direction: DismissDirection.horizontal,
+                            context: context,
+                            snackBarType: SnackBarType.alert,
+                            label: 'Details missing',
+                            snackBarStyle: const SnackBarStyle() // this one
+                            );
+                      }
+                    },
                     child: Container(
                       padding: EdgeInsets.all(10.sp),
                       decoration: BoxDecoration(

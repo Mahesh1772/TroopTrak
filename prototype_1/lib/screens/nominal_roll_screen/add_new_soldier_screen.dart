@@ -343,7 +343,6 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                                 .toList(),
                             onChanged: (item) => setState(() {
                               widget.selectedItem = item;
-                              //addUserDetails();
                             }),
                           ),
                         ),
@@ -396,7 +395,6 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                               .toList(),
                           onChanged: (String? item) async => setState(() {
                             widget.selectedRank = item;
-                            //addUserDetails();
                           }),
                         ),
                       ),
