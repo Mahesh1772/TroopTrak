@@ -68,7 +68,6 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
     'Ex Sunlight',
     'Ex grass',
     'Ex Outfield',
-    'Ex Outfield',
     'Ex Uniform',
     'Ex Boots'
   ];
