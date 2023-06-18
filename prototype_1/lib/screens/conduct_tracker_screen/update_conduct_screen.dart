@@ -106,7 +106,8 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
 
   void display() {
     //print(sName.text);
-    print(widget.nonParticipants.length);
+    //print(widget.nonParticipants.length);
+    print(_initialParticipants);
   }
 
   @override
@@ -215,6 +216,7 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
                 InkWell(
                   onTap: () {
                     goBackWithoutChanges();
+                    //display();
                     Navigator.pop(context);
                   },
                   child: Icon(
