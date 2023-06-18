@@ -46,6 +46,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
   // To store text being searched
   String searchText = '';
   Future filter() async {
+    //tempArray = [];
     if (isFirstTIme) {
       auto_filter();
       //documentIDs
@@ -161,7 +162,6 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
   }
 
   void auto_filter() {
-    //documentIDs = [];
     switch (widget.selectedConductType) {
       case 'Run':
         for (var status in statusList) {
@@ -636,7 +636,8 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                   stream: documentStream,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      //documentIDs = [];
+                      documentIDs = [];
+                      //tempArray = [];
                       userDetails = [];
                       var users = snapshot.data?.docs.toList();
                       var docsmapshot = snapshot.data!;
@@ -680,6 +681,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                         }
                         filter();
                       }
+                      print(tempArray);
                     }
                     return Flexible(
                       child: SizedBox(
