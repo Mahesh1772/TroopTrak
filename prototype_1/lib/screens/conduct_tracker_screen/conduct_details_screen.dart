@@ -83,6 +83,7 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
   }
 
   List<String> nonparticipantlist() {
+    //getDocIDs();
     documentIDs.removeWhere(
         (element) => conductData['participants'].contains(element));
     return documentIDs;
@@ -125,6 +126,10 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                           }
                         }
                       }
+                      print(documentIDs);
+                      documentIDs.removeWhere((element) =>
+                          conductData['participants'].contains(element));
+                      print(documentIDs);
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,8 +171,8 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                                                           'conductType'],
                                                   //widget.conductType,
                                                   nonParticipants:
-                                                      //nonparticipantlist(),
-                                                      nonParticipants,
+                                                      nonparticipantlist(),
+                                                      //nonParticipants,
                                                   conductName:
                                                       TextEditingController(
                                                     text: conductData[
@@ -314,7 +319,6 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                     stream: documentStream,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        documentIDs = [];
                         userDetails = [];
                         nonParticipants = [];
                         //var users = widget.participants;

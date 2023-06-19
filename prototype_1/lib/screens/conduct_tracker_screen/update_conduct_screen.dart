@@ -109,12 +109,6 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
     });
   }
 
-  void display() {
-    //print(sName.text);
-    //print(widget.nonParticipants.length);
-    print(_initialParticipants);
-  }
-
   @override
   void dispose() {
     widget.conductName.clear();
@@ -123,11 +117,12 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
 
   void filter() {
     if (isFirstTIme) {
-      for (var participant in widget.nonParticipants) {
-        soldierStatusArray.add(participant['name']);
-      }
-      documentIDs
-          .removeWhere((element) => soldierStatusArray.contains(element));
+      //for (var participant in widget.nonParticipants) {
+      //  soldierStatusArray.add(participant['name']);
+      //}
+      //documentIDs
+      //    .removeWhere((element) => soldierStatusArray.contains(element));
+      documentIDs.removeWhere((element) => widget.nonParticipants.contains(element));
       tempArray = documentIDs;
     }
     print(tempArray);
@@ -165,7 +160,6 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
         if (value != null) {
           widget.startDate = DateFormat('d MMM yyyy').format(value);
         }
-        //addUserDetails();
       });
     });
   }
@@ -474,7 +468,7 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
                     if (snapshot.hasData) {
                       documentIDs = [];
                       userDetails = [];
-                      var users = snapshot.data?.docs.toList();
+                      var users = snapshot.data?.docs.toList(); 
                       var docsmapshot = snapshot.data!;
                       if (searchText.isNotEmpty) {
                         users = users!.where((element) {
