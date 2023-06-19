@@ -29,9 +29,15 @@ class ConductDetailsScreen extends StatefulWidget {
   State<ConductDetailsScreen> createState() => _ConductDetailsScreenState();
 }
 
+//Map that contains conduct Details
+Map<String, dynamic> conductData = {};
+
 class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
   //This is what the stream builder is waiting for
   late Stream<QuerySnapshot> documentStream;
+
+  //This is what the stream builder is waiting for
+  late Stream<QuerySnapshot> conductStream;
 
   // The list of all document IDs,
   //which have access to each their own personal information
@@ -58,16 +64,28 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
     Navigator.pop(context);
   }
 
-  Future getUserBooks(String name) async {
+  Future getDocIDs() async {
     FirebaseFirestore.instance
-        .collection("Users")
-        .doc(name).collection('Statuses').get();
+        .collection('Users')
+        .get()
+        .then((value) => value.docs.forEach((element) {
+              documentIDs.add(element['name']);
+            }));
   }
 
   @override
   void initState() {
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
+    conductStream =
+        FirebaseFirestore.instance.collection('Conducts').snapshots();
+    getDocIDs();
     super.initState();
+  }
+
+  List<String> nonparticipantlist() {
+    documentIDs.removeWhere(
+        (element) => conductData['participants'].contains(element));
+    return documentIDs;
   }
 
   @override
@@ -90,141 +108,178 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                 ),
               ),
               child: SafeArea(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 10.w, vertical: 20.h),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                child: StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('Conducts')
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        var conducts = snapshot.data?.docs.toList();
+                        for (var conduct in conducts!) {
+                          if (conduct.reference.id == widget.conductID) {
+                            Map<String, dynamic> data =
+                                conduct.data() as Map<String, dynamic>;
+                            conductData = data;
+                            conductData.addEntries(
+                                {'ID': conduct.reference.id}.entries);
+                          }
+                        }
+                      }
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Icon(
-                                  Icons.arrow_back_sharp,
-                                  color: Colors.white,
-                                  size: 25.sp,
-                                ),
-                              ),
-                              Row(
-                                children: [
-                                  InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              UpdateConductScreen(
-                                            conductID: widget.conductID,
-                                            selectedConductType:
-                                                widget.conductType,
-                                            nonParticipants: nonParticipants,
-                                            conductName: TextEditingController(
-                                                text: widget.conductName),
-                                            startDate: widget.startDate,
-                                            startTime: widget.startTime,
-                                            endTime: widget.endTime,
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10.w, vertical: 20.h),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Icon(
+                                        Icons.arrow_back_sharp,
+                                        color: Colors.white,
+                                        size: 25.sp,
+                                      ),
+                                    ),
+                                    Row(
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    UpdateConductScreen(
+                                                  conductID: conductData[
+                                                      'ID'], //widget.conductID,
+                                                  selectedConductType:
+                                                      conductData[
+                                                          'conductType'],
+                                                  //widget.conductType,
+                                                  nonParticipants:
+                                                      //nonparticipantlist(),
+                                                      nonParticipants,
+                                                  conductName:
+                                                      TextEditingController(
+                                                    text: conductData[
+                                                        'conductName'],
+                                                    //text: widget
+                                                    //.conductName
+                                                  ),
+                                                  startDate: conductData[
+                                                      'startDate'], //widget.startDate,
+                                                  startTime: conductData[
+                                                      'startTime'], //widget.startTime,
+                                                  endTime: conductData[
+                                                      'endTime'], //widget.endTime,
+                                                ),
+                                              ),
+                                            ).then((value) => setState(() {}));
+                                          },
+                                          child: Icon(
+                                            Icons.edit,
+                                            color: Colors.white,
+                                            size: 25.sp,
                                           ),
                                         ),
-                                      );
-                                    },
-                                    child: Icon(
-                                      Icons.edit,
-                                      color: Colors.white,
-                                      size: 25.sp,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 40.w,
-                                  ),
-                                  InkWell(
-                                    onTap: () {
-                                      deleteConduct();
-                                    },
-                                    child: Icon(
-                                      Icons.delete_forever,
-                                      color: Colors.white,
-                                      size: 25.sp,
-                                    ),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: 20.h,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                                left: 20.0.w, right: 20.0.w, top: 20.0.h),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        widget.conductType.toUpperCase(),
-                                        maxLines: 2,
-                                        style: GoogleFonts.poppins(
-                                          color: Colors.white,
-                                          fontSize: 24.sp,
-                                          fontWeight: FontWeight.w500,
-                                          letterSpacing: 1.5,
+                                        SizedBox(
+                                          width: 40.w,
                                         ),
-                                      ),
-                                      SizedBox(
-                                        height: 5.h,
-                                      ),
-                                      Text(
-                                        widget.conductName,
-                                        maxLines: 3,
-                                        style: GoogleFonts.poppins(
-                                          color: Colors.white,
-                                          fontSize: 35.sp,
-                                          fontWeight: FontWeight.bold,
-                                          letterSpacing: 1.5,
+                                        InkWell(
+                                          onTap: () {
+                                            deleteConduct();
+                                          },
+                                          child: Icon(
+                                            Icons.delete_forever,
+                                            color: Colors.white,
+                                            size: 25.sp,
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 20.h,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      left: 20.0.w, right: 20.0.w, top: 20.0.h),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              conductData['conductType']
+                                                  .toUpperCase(),
+                                              //widget.conductType.toUpperCase(),
+                                              maxLines: 2,
+                                              style: GoogleFonts.poppins(
+                                                color: Colors.white,
+                                                fontSize: 24.sp,
+                                                fontWeight: FontWeight.w500,
+                                                letterSpacing: 1.5,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 5.h,
+                                            ),
+                                            Text(
+                                              conductData['conductName'],
+                                              //widget.conductName,
+                                              maxLines: 3,
+                                              style: GoogleFonts.poppins(
+                                                color: Colors.white,
+                                                fontSize: 35.sp,
+                                                fontWeight: FontWeight.bold,
+                                                letterSpacing: 1.5,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
+                                SizedBox(
+                                  height: 20.h,
+                                ),
+                                Center(
+                                  child: Text(
+                                    conductData['startDate'].toUpperCase(),
+                                    //widget.startDate.toUpperCase(),
+                                    maxLines: 2,
+                                    style: GoogleFonts.poppins(
+                                      color: Colors.white,
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1.5,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 20.h,
+                                ),
                               ],
                             ),
                           ),
-                          SizedBox(
-                            height: 20.h,
-                          ),
-                          Center(
-                            child: Text(
-                              widget.startDate.toUpperCase(),
-                              maxLines: 2,
-                              style: GoogleFonts.poppins(
-                                color: Colors.white,
-                                fontSize: 18.sp,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 1.5,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20.h,
-                          ),
                         ],
-                      ),
-                    ),
-                  ],
-                ),
+                      );
+                    }),
               ),
             ),
             Padding(
@@ -274,7 +329,8 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                           }).toList();
                           for (var user in users) {
                             var data = user.data();
-                            if (widget.participants.contains(user['name'])) {
+                            if (conductData['participants']
+                                .contains(user['name'])) {
                               userDetails.add(data as Map<String, dynamic>);
                             } else {
                               nonParticipants.add(data as Map<String, dynamic>);
@@ -302,7 +358,8 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                         } else {
                           for (var user in users!) {
                             var data = user.data();
-                            if (widget.participants.contains(user['name'])) {
+                            if (conductData['participants']
+                                .contains(user['name'])) {
                               userDetails.add(data as Map<String, dynamic>);
                             } else {
                               nonParticipants.add(data as Map<String, dynamic>);
@@ -315,7 +372,7 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
 
                       nonParticipants
                           .removeWhere((element) => toRemove.contains(element));
-                      print(nonParticipants.length);
+                      //print(nonParticipants.length);
 
                       return Column(
                         mainAxisSize: MainAxisSize.min,

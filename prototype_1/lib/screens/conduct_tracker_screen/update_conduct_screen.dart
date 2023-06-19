@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:prototype_1/screens/conduct_tracker_screen/conduct_tracker_screen.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:recase/recase.dart';
 
@@ -76,7 +77,12 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
 
   void editConduct() {
     editConductDetails();
-    Navigator.pop(context);
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => const ConductTrackerScreen()),
+      (Route<dynamic> route) => false,
+    );
+    //Navigator.pop(context);
   }
 
   Future goBackWithoutChanges() async {
@@ -87,9 +93,8 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
       'startDate': _inititialSDate,
       'startTime': _intitialSTime,
       'endTime': _intitialETime,
-      'participants' : _initialParticipants,
+      'participants': _initialParticipants,
     });
-  
   }
 
   Future editConductDetails() async {
