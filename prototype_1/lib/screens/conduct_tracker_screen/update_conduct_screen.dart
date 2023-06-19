@@ -82,7 +82,6 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
       MaterialPageRoute(builder: (context) => const ConductTrackerScreen()),
       (Route<dynamic> route) => false,
     );
-    //Navigator.pop(context);
   }
 
   Future goBackWithoutChanges() async {
@@ -117,12 +116,8 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
 
   void filter() {
     if (isFirstTIme) {
-      //for (var participant in widget.nonParticipants) {
-      //  soldierStatusArray.add(participant['name']);
-      //}
-      //documentIDs
-      //    .removeWhere((element) => soldierStatusArray.contains(element));
-      documentIDs.removeWhere((element) => widget.nonParticipants.contains(element));
+      documentIDs
+          .removeWhere((element) => widget.nonParticipants.contains(element));
       tempArray = documentIDs;
     }
     print(tempArray);
@@ -131,7 +126,6 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
   @override
   void initState() {
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
-    //getUserBooks();
     getInitialValues();
     super.initState();
   }
@@ -275,7 +269,6 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
                           .toList(),
                       onChanged: (String? item) async => setState(() {
                         widget.selectedConductType = item;
-                        //addUserDetails();
                       }),
                     ),
                   ),
@@ -468,7 +461,7 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
                     if (snapshot.hasData) {
                       documentIDs = [];
                       userDetails = [];
-                      var users = snapshot.data?.docs.toList(); 
+                      var users = snapshot.data?.docs.toList();
                       var docsmapshot = snapshot.data!;
                       if (searchText.isNotEmpty) {
                         users = users!.where((element) {
@@ -510,7 +503,6 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
                         }
                       }
                       filter();
-                      print(documentIDs);
                     }
                     return Flexible(
                       child: SizedBox(

@@ -126,10 +126,8 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                           }
                         }
                       }
-                      print(documentIDs);
                       documentIDs.removeWhere((element) =>
                           conductData['participants'].contains(element));
-                      print(documentIDs);
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,31 +162,33 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                                               MaterialPageRoute(
                                                 builder: (context) =>
                                                     UpdateConductScreen(
-                                                  conductID: conductData[
-                                                      'ID'], //widget.conductID,
+                                                  conductID: conductData['ID'],
                                                   selectedConductType:
                                                       conductData[
                                                           'conductType'],
-                                                  //widget.conductType,
                                                   nonParticipants:
                                                       nonparticipantlist(),
-                                                      //nonParticipants,
                                                   conductName:
                                                       TextEditingController(
                                                     text: conductData[
                                                         'conductName'],
-                                                    //text: widget
-                                                    //.conductName
                                                   ),
-                                                  startDate: conductData[
-                                                      'startDate'], //widget.startDate,
-                                                  startTime: conductData[
-                                                      'startTime'], //widget.startTime,
-                                                  endTime: conductData[
-                                                      'endTime'], //widget.endTime,
+                                                  startDate:
+                                                      conductData['startDate'],
+                                                  startTime:
+                                                      conductData['startTime'],
+                                                  endTime:
+                                                      conductData['endTime'],
                                                 ),
                                               ),
-                                            ).then((value) => setState(() {}));
+                                            ).then((value) => setState(() {
+                                                  Navigator.pushReplacement(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (BuildContext
+                                                                  context) =>
+                                                              super.widget));
+                                                }));
                                           },
                                           child: Icon(
                                             Icons.edit,
@@ -231,7 +231,6 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                                             Text(
                                               conductData['conductType']
                                                   .toUpperCase(),
-                                              //widget.conductType.toUpperCase(),
                                               maxLines: 2,
                                               style: GoogleFonts.poppins(
                                                 color: Colors.white,
@@ -245,7 +244,6 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                                             ),
                                             Text(
                                               conductData['conductName'],
-                                              //widget.conductName,
                                               maxLines: 3,
                                               style: GoogleFonts.poppins(
                                                 color: Colors.white,
@@ -266,7 +264,6 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                                 Center(
                                   child: Text(
                                     conductData['startDate'].toUpperCase(),
-                                    //widget.startDate.toUpperCase(),
                                     maxLines: 2,
                                     style: GoogleFonts.poppins(
                                       color: Colors.white,
@@ -321,7 +318,7 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                       if (snapshot.hasData) {
                         userDetails = [];
                         nonParticipants = [];
-                        //var users = widget.participants;
+
                         var users = snapshot.data?.docs.toList();
                         if (searchText.isNotEmpty) {
                           users = users!.where((element) {
@@ -376,7 +373,6 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
 
                       nonParticipants
                           .removeWhere((element) => toRemove.contains(element));
-                      //print(nonParticipants.length);
 
                       return Column(
                         mainAxisSize: MainAxisSize.min,
