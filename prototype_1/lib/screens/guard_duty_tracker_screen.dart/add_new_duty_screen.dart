@@ -237,7 +237,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                         ),
                         StyledText(typeOfDay, 30.sp,
                             fontWeight: FontWeight.w500),
-                        StyledText("${points.toString()} Points", 36.sp,
+                        StyledText("${points.toString()} Points", 32.sp,
                             fontWeight: FontWeight.bold),
                       ],
                     ),
