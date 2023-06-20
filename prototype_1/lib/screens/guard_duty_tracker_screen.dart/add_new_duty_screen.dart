@@ -126,6 +126,9 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.dutyDate != "Date of Duty:") {
+      pointsAssignment(DateFormat("d MMM yyyy").parse(widget.dutyDate));
+    }
     final _formKey = GlobalKey<FormState>();
     final _formKey1 = GlobalKey<FormState>();
     return Scaffold(
