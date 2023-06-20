@@ -469,7 +469,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                       child: TextFormField(
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return "Oi can conduct please?";
+                            return "Oi can add conduct please?";
                           }
                           return null;
                         },

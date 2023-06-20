@@ -61,6 +61,7 @@ dependencies:
   horizontal_center_date_picker: ^2.1.1
   syncfusion_flutter_datagrid: ^21.2.10
   easy_autocomplete: ^1.6.0
+  popup_card: ^0.1.0
 
 dev_dependencies:
   flutter_test:

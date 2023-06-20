@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/add_new_duty_screen.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/util/duty_personnel_data_source.dart';
 import 'package:prototype_1/util/constants.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
@@ -56,6 +57,25 @@ class _GuardDutyTrackerScreenState extends State<GuardDutyTrackerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AddNewDutyScreen(
+                dutyDate: "Date of Duty:",
+                dutyStartTime: "Start Time:",
+                dutyEndTime: "End Time:",
+              ),
+            ),
+          );
+        },
+        backgroundColor: Colors.deepPurple,
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+      ),
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
       body: SingleChildScrollView(
