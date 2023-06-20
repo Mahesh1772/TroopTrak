@@ -187,7 +187,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                     duration: const Duration(milliseconds: 200),
                     padding: EdgeInsets.all(16.0.sp),
                     width: double.maxFinite,
-                    height: 230.h,
+                    height: 200.h,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.r),
                       gradient: const LinearGradient(
@@ -228,8 +228,11 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                         SizedBox(
                           height: 20.h,
                         ),
-                        StyledText(typeOfDay, 30.sp,
+                        StyledText(typeOfDay, 24.sp,
                             fontWeight: FontWeight.w500),
+                        SizedBox(
+                          height: 10.h,
+                        ),
                         StyledText("${points.toString()} Points", 32.sp,
                             fontWeight: FontWeight.bold),
                       ],

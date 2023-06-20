@@ -25,8 +25,8 @@ class OrgChartTile extends StatelessWidget {
         );
       },
       child: Container(
-        width: 95.w,
-        height: 95.h,
+        width: 100.w,
+        height: 100.h,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.r),
           gradient: const LinearGradient(
@@ -57,7 +57,7 @@ class OrgChartTile extends StatelessWidget {
               child: AutoSizeText(
                 name,
                 maxLines: 2,
-                minFontSize: 12,
+                maxFontSize: 12,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.poppins(
                     fontWeight: FontWeight.w500, color: Colors.white),
