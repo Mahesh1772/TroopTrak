@@ -57,7 +57,7 @@ class OrgChartTile extends StatelessWidget {
               child: AutoSizeText(
                 name,
                 maxLines: 2,
-                minFontSize: 12.sp,
+                minFontSize: 12,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.poppins(
                     fontWeight: FontWeight.w500, color: Colors.white),
