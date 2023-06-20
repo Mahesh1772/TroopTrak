@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:prototype_1/screens/conduct_tracker_screen/conduct_tracker_screen.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:recase/recase.dart';
 
@@ -76,7 +77,11 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
 
   void editConduct() {
     editConductDetails();
-    Navigator.pop(context);
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => const ConductTrackerScreen()),
+      (Route<dynamic> route) => false,
+    );
   }
 
   Future goBackWithoutChanges() async {
@@ -87,9 +92,8 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
       'startDate': _inititialSDate,
       'startTime': _intitialSTime,
       'endTime': _intitialETime,
-      'participants' : _initialParticipants,
+      'participants': _initialParticipants,
     });
-  
   }
 
   Future editConductDetails() async {
@@ -104,12 +108,6 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
     });
   }
 
-  void display() {
-    //print(sName.text);
-    //print(widget.nonParticipants.length);
-    print(_initialParticipants);
-  }
-
   @override
   void dispose() {
     widget.conductName.clear();
@@ -118,11 +116,8 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
 
   void filter() {
     if (isFirstTIme) {
-      for (var participant in widget.nonParticipants) {
-        soldierStatusArray.add(participant['name']);
-      }
       documentIDs
-          .removeWhere((element) => soldierStatusArray.contains(element));
+          .removeWhere((element) => widget.nonParticipants.contains(element));
       tempArray = documentIDs;
     }
     print(tempArray);
@@ -131,7 +126,6 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
   @override
   void initState() {
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
-    //getUserBooks();
     getInitialValues();
     super.initState();
   }
@@ -160,7 +154,6 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
         if (value != null) {
           widget.startDate = DateFormat('d MMM yyyy').format(value);
         }
-        //addUserDetails();
       });
     });
   }
@@ -276,7 +269,6 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
                           .toList(),
                       onChanged: (String? item) async => setState(() {
                         widget.selectedConductType = item;
-                        //addUserDetails();
                       }),
                     ),
                   ),
@@ -511,7 +503,6 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
                         }
                       }
                       filter();
-                      print(documentIDs);
                     }
                     return Flexible(
                       child: SizedBox(
