@@ -60,10 +60,9 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
 
   void _showStartDatePicker() {
     var initialDate;
-    if (widget.dutyDate == "Date of Duty:" ) {
+    if (widget.dutyDate == "Date of Duty:") {
       initialDate = DateTime.now();
-    }
-    else {
+    } else {
       initialDate = DateFormat("d MMM yyyy").parse(widget.dutyDate);
     }
     showDatePicker(
@@ -118,6 +117,9 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.dutyDate != "Date of Duty:") {
+      pointsAssignment(DateFormat("d MMM yyyy").parse(widget.dutyDate));
+    }
     final _formKey = GlobalKey<FormState>();
     final _formKey1 = GlobalKey<FormState>();
     return Scaffold(
