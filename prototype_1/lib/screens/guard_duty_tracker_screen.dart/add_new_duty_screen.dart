@@ -200,23 +200,23 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                         BoxShadow(
                           color: const Color.fromARGB(255, 130, 60, 229)
                               .withOpacity(0.6),
-                          spreadRadius: 1,
-                          blurRadius: 16,
-                          offset: const Offset(8, 0),
+                          spreadRadius: 1.r,
+                          blurRadius: 16.r,
+                          offset: Offset(8.w, 0.h),
                         ),
                         BoxShadow(
                           color: const Color.fromARGB(255, 72, 30, 229)
                               .withOpacity(0.2),
-                          spreadRadius: 8,
-                          blurRadius: 8,
-                          offset: const Offset(-8, 0),
+                          spreadRadius: 8.r,
+                          blurRadius: 8.r,
+                          offset: Offset(-8.w, 0.h),
                         ),
                         BoxShadow(
                           color: const Color.fromARGB(255, 130, 60, 229)
                               .withOpacity(0.2),
-                          spreadRadius: 8,
-                          blurRadius: 8,
-                          offset: const Offset(8, 0),
+                          spreadRadius: 8.r,
+                          blurRadius: 8.r,
+                          offset: Offset(8.w, 0.h),
                         ),
                       ],
                     ),

@@ -41,23 +41,23 @@ class OrgChartTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(8.0.sp),
               child: CircleAvatar(
                 backgroundColor: Colors.black,
                 child: Image.asset(
                   "lib/assets/army-ranks/${rank.toLowerCase().toString()}.png",
-                  width: 20,
+                  width: 20.w,
                   color: Colors.white,
                 ),
               ),
             ),
             SizedBox(
-              width: 90,
-              height: 20,
+              width: 90.w,
+              height: 20.h,
               child: AutoSizeText(
                 name,
                 maxLines: 2,
-                minFontSize: 12,
+                minFontSize: 12.sp,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.poppins(
                     fontWeight: FontWeight.w500, color: Colors.white),
