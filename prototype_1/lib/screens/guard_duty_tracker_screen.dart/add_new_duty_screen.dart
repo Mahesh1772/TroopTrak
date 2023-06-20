@@ -32,6 +32,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
   @override
   void initState() {
     pointsAssignment(DateTime.now());
+    populateHeroTagArray();
     super.initState();
   }
 
@@ -60,10 +61,9 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
 
   void _showStartDatePicker() {
     var initialDate;
-    if (widget.dutyDate == "Date of Duty:" ) {
+    if (widget.dutyDate == "Date of Duty:") {
       initialDate = DateTime.now();
-    }
-    else {
+    } else {
       initialDate = DateFormat("d MMM yyyy").parse(widget.dutyDate);
     }
     showDatePicker(
@@ -116,6 +116,14 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
     );
   }
 
+  List<String> heroAddDutySoldiers = [];
+
+  void populateHeroTagArray() {
+    for (var i = 0; i < 10; i++) {
+      heroAddDutySoldiers.add('add-duty-soldiers-hero-$i');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
@@ -155,9 +163,17 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                 Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: const [
-                      OrgChartTile(rank: "3SG", name: "Aakash Ramaswamy"),
-                      OrgChartTile(rank: "2SG", name: "Sivagnanam Maheshwaran"),
+                    children: [
+                      OrgChartTile(
+                        rank: "3SG",
+                        name: "Aakash Ramaswamy",
+                        heroTag: heroAddDutySoldiers[0],
+                      ),
+                      OrgChartTile(
+                        rank: "2SG",
+                        name: "Sivagnanam Maheshwaran",
+                        heroTag: heroAddDutySoldiers[1],
+                      ),
                     ],
                   ),
                 ),
@@ -166,11 +182,27 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: const [
-                    OrgChartTile(rank: "LCP", name: "Aakash Ramaswamy"),
-                    OrgChartTile(rank: "LCP", name: "John Doe"),
-                    OrgChartTile(rank: "CPL", name: "Aakash Ramaswamy"),
-                    OrgChartTile(rank: "PTE", name: "John Doe"),
+                  children: [
+                    OrgChartTile(
+                      rank: "LCP",
+                      name: "Aakash Ramaswamy",
+                      heroTag: heroAddDutySoldiers[2],
+                    ),
+                    OrgChartTile(
+                      rank: "LCP",
+                      name: "John Doe",
+                      heroTag: heroAddDutySoldiers[3],
+                    ),
+                    OrgChartTile(
+                      rank: "CPL",
+                      name: "Aakash Ramaswamy",
+                      heroTag: heroAddDutySoldiers[4],
+                    ),
+                    OrgChartTile(
+                      rank: "PTE",
+                      name: "John Doe",
+                      heroTag: heroAddDutySoldiers[5],
+                    ),
                   ],
                 ),
                 SizedBox(
@@ -178,11 +210,27 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: const [
-                    OrgChartTile(rank: "LCP", name: "Aakash Ramaswamy"),
-                    OrgChartTile(rank: "CPL", name: "John Doe"),
-                    OrgChartTile(rank: "PTE", name: "Aakash Ramaswamy"),
-                    OrgChartTile(rank: "CFC", name: "John Doe"),
+                  children: [
+                    OrgChartTile(
+                      rank: "LCP",
+                      name: "Aakash Ramaswamy",
+                      heroTag: heroAddDutySoldiers[6],
+                    ),
+                    OrgChartTile(
+                      rank: "LCP",
+                      name: "John Doe",
+                      heroTag: heroAddDutySoldiers[7],
+                    ),
+                    OrgChartTile(
+                      rank: "CPL",
+                      name: "Aakash Ramaswamy",
+                      heroTag: heroAddDutySoldiers[8],
+                    ),
+                    OrgChartTile(
+                      rank: "PTE",
+                      name: "John Doe",
+                      heroTag: heroAddDutySoldiers[9],
+                    ),
                   ],
                 ),
                 SizedBox(
@@ -194,7 +242,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                     duration: const Duration(milliseconds: 200),
                     padding: EdgeInsets.all(16.0.sp),
                     width: double.maxFinite,
-                    height: 200.h,
+                    height: 216.h,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.r),
                       gradient: const LinearGradient(

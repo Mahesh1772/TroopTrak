@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/add_new_duty_screen.dart';
+import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/util/custom_rect_tween.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/util/duty_personnel_data_source.dart';
 import 'package:prototype_1/util/constants.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
@@ -51,6 +52,9 @@ class _GuardDutyTrackerScreenState extends State<GuardDutyTrackerScreen> {
   @override
   void initState() {
     super.initState();
+    dutyPersonnel = getDutyPersonnel();
+    dutyPersonnelDataSource =
+        DutyPersonnelDataSource(dutyPersonnel: dutyPersonnel);
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
   }
 
@@ -155,7 +159,6 @@ class _GuardDutyTrackerScreenState extends State<GuardDutyTrackerScreen> {
                         var data = user.data();
                         userDetails.add(data as Map<String, dynamic>);
                       }
-
                       dutyPersonnel = getDutyPersonnel();
                       dutyPersonnelDataSource =
                           DutyPersonnelDataSource(dutyPersonnel: dutyPersonnel);

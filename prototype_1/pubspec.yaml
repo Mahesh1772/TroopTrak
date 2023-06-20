@@ -62,6 +62,8 @@ dependencies:
   syncfusion_flutter_datagrid: ^21.2.10
   easy_autocomplete: ^1.6.0
   popup_card: ^0.1.0
+  font_awesome_flutter: ^10.4.0
+  roundcheckbox: ^2.0.5
 
 dev_dependencies:
   flutter_test:
