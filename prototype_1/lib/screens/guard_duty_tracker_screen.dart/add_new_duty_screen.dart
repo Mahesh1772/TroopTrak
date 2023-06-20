@@ -59,9 +59,16 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
   }
 
   void _showStartDatePicker() {
+    var initialDate;
+    if (widget.dutyDate == "Date of Duty:" ) {
+      initialDate = DateTime.now();
+    }
+    else {
+      initialDate = DateFormat("d MMM yyyy").parse(widget.dutyDate);
+    }
     showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: initialDate,
       firstDate: DateTime(1960),
       lastDate: DateTime(2030),
     ).then((value) {
