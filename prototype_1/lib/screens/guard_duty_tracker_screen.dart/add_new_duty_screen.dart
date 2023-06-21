@@ -143,8 +143,6 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
     if (widget.dutyDate != "Date of Duty:") {
       pointsAssignment(DateFormat("d MMM yyyy").parse(widget.dutyDate));
     }
-    final _formKey = GlobalKey<FormState>();
-    final _formKey1 = GlobalKey<FormState>();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
@@ -314,140 +312,132 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                 SizedBox(
                   height: 50.h,
                 ),
-                Form(
-                  key: _formKey,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  child: Column(
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          _showStartDatePicker();
-                        },
-                        child: Container(
-                          height: 70.h,
-                          width: double.maxFinite,
-                          decoration: BoxDecoration(
-                            color: Colors.black54,
-                            border: Border.all(color: Colors.white),
-                            borderRadius: BorderRadius.circular(12.r),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 15.w, vertical: 15.h),
-                                child: AutoSizeText(
-                                  widget.dutyDate,
-                                  style: GoogleFonts.poppins(
-                                      color: Colors.white, fontSize: 16.sp),
-                                ),
+                Column(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        _showStartDatePicker();
+                      },
+                      child: Container(
+                        height: 70.h,
+                        width: double.maxFinite,
+                        decoration: BoxDecoration(
+                          color: Colors.black54,
+                          border: Border.all(color: Colors.white),
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 15.w, vertical: 15.h),
+                              child: AutoSizeText(
+                                widget.dutyDate,
+                                style: GoogleFonts.poppins(
+                                    color: Colors.white, fontSize: 16.sp),
                               ),
-                              Padding(
-                                padding: EdgeInsets.all(8.0.sp),
-                                child: const Icon(
-                                  Icons.date_range_rounded,
-                                  color: Colors.white,
-                                ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(8.0.sp),
+                              child: const Icon(
+                                Icons.date_range_rounded,
+                                color: Colors.white,
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
-                      SizedBox(
-                        height: 30.h,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              _showStartTimePicker();
-                            },
-                            child: Container(
-                              height: 70.h,
-                              width: 200.w,
-                              decoration: BoxDecoration(
-                                color: Colors.black54,
-                                border: Border.all(color: Colors.white),
-                                borderRadius: BorderRadius.circular(12.r),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 15.w, vertical: 15.h),
-                                    child: AutoSizeText(
-                                      widget.dutyStartTime,
-                                      style: GoogleFonts.poppins(
-                                          color: Colors.white, fontSize: 16.sp),
-                                    ),
+                    ),
+                    SizedBox(
+                      height: 30.h,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            _showStartTimePicker();
+                          },
+                          child: Container(
+                            height: 70.h,
+                            width: 200.w,
+                            decoration: BoxDecoration(
+                              color: Colors.black54,
+                              border: Border.all(color: Colors.white),
+                              borderRadius: BorderRadius.circular(12.r),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 15.w, vertical: 15.h),
+                                  child: AutoSizeText(
+                                    widget.dutyStartTime,
+                                    style: GoogleFonts.poppins(
+                                        color: Colors.white, fontSize: 16.sp),
                                   ),
-                                  Padding(
-                                    padding: EdgeInsets.all(8.0.sp),
-                                    child: const Icon(
-                                      Icons.access_time_filled_rounded,
-                                      color: Colors.white,
-                                    ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(8.0.sp),
+                                  child: const Icon(
+                                    Icons.access_time_filled_rounded,
+                                    color: Colors.white,
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
-                          SizedBox(
-                            width: 20.w,
-                          ),
-                          InkWell(
-                            onTap: () {
-                              _showEndTimePicker();
-                            },
-                            child: Container(
-                              height: 70.h,
-                              width: 200.w,
-                              decoration: BoxDecoration(
-                                color: Colors.black54,
-                                border: Border.all(color: Colors.white),
-                                borderRadius: BorderRadius.circular(12.r),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 15.w, vertical: 15.h),
-                                    child: AutoSizeText(
-                                      widget.dutyEndTime,
-                                      style: GoogleFonts.poppins(
-                                          color: Colors.white, fontSize: 16.sp),
-                                    ),
+                        ),
+                        SizedBox(
+                          width: 20.w,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            _showEndTimePicker();
+                          },
+                          child: Container(
+                            height: 70.h,
+                            width: 200.w,
+                            decoration: BoxDecoration(
+                              color: Colors.black54,
+                              border: Border.all(color: Colors.white),
+                              borderRadius: BorderRadius.circular(12.r),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 15.w, vertical: 15.h),
+                                  child: AutoSizeText(
+                                    widget.dutyEndTime,
+                                    style: GoogleFonts.poppins(
+                                        color: Colors.white, fontSize: 16.sp),
                                   ),
-                                  Padding(
-                                    padding: EdgeInsets.all(8.0.sp),
-                                    child: const Icon(
-                                      Icons.access_time_filled_rounded,
-                                      color: Colors.white,
-                                    ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(8.0.sp),
+                                  child: const Icon(
+                                    Icons.access_time_filled_rounded,
+                                    color: Colors.white,
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
                 SizedBox(
                   height: 30.h,
                 ),
                 GestureDetector(
                   onTap: () {
-                    if (_formKey.currentState!.validate() &&
-                        _formKey1.currentState!.validate() &&
-                        widget.dutyEndTime != "End Time:" &&
+                    if (widget.dutyEndTime != "End Time:" &&
                         widget.dutyStartTime != "Start Time:" &&
                         widget.dutyDate != "Date of Duty:") {
                       IconSnackBar.show(
