@@ -25,6 +25,8 @@ class AddNewDutyScreen extends StatefulWidget {
   State<AddNewDutyScreen> createState() => _AddNewDutyScreenState();
 }
 
+List<List<String>> dutySoldiersAndRanks = [];
+
 class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
   double points = 0;
   late String typeOfDay;
@@ -245,7 +247,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                     duration: const Duration(milliseconds: 200),
                     padding: EdgeInsets.all(16.0.sp),
                     width: double.maxFinite,
-                    height: 216.h,
+                    height: 230.h,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.r),
                       gradient: const LinearGradient(

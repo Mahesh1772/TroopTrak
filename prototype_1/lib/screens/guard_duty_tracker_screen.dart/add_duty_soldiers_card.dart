@@ -18,36 +18,39 @@ class AddDutySoldiersCard extends StatefulWidget {
 }
 
 // Store all the names in conduct
-List<String> tempArray = [];
+List<List<String>> tempArray = [];
 // List of all names
 List<String> documentIDs = [];
 // Name of soldiers not included
 List<dynamic> soldierStatusArray = [];
 
+//This is what the stream builder is waiting for
+late Stream<QuerySnapshot> documentStream;
+
+// List to store all user data, whilst also mapping to name
+List<Map<String, dynamic>> userDetails = [];
+
+// To store text being searched
+String searchText = '';
+
+List<Map<String, dynamic>> statusList = [];
+
+List<String> non_participants = [];
+
+List<String> guardDuty = ['Ex Uniform', 'Ex Boots'];
+
 class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
-  //This is what the stream builder is waiting for
-  late Stream<QuerySnapshot> documentStream;
-
-  // List to store all user data, whilst also mapping to name
-  List<Map<String, dynamic>> userDetails = [];
-
-  // To store text being searched
-  String searchText = '';
-
-  List<Map<String, dynamic>> statusList = [];
-
-  List<String> guardDuty = ['Ex Uniform', 'Ex Boots'];
-
   @override
   void initState() {
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
     getDocIDs();
     getUserBooks();
+    autoFilter();
     super.initState();
   }
 
   int i = 0;
-  List<String> non_participants = [];
+
   Future getUserBooks() async {
     FirebaseFirestore.instance
         .collection("Users")
@@ -84,7 +87,7 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
             }));
   }
 
-  void auto_filter() {
+  void autoFilter() {
     for (var status in statusList) {
       if (status['statusType'] == 'Excuse') {
         if (guardDuty.contains(status['statusName'])) {
@@ -98,10 +101,9 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
 
   @override
   Widget build(BuildContext context) {
-    bool checkBoxValue = false;
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0.sp),
         child: Hero(
           tag: widget.heroTag,
           createRectTween: (begin, end) {
@@ -114,16 +116,16 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 32.0, horizontal: 16.0),
+                padding:
+                    EdgeInsets.symmetric(vertical: 32.0.h, horizontal: 16.0.w),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     StyledText("ADD A NEW SOLDIER", 24.sp,
                         fontWeight: FontWeight.w600),
-                    const Divider(
+                    Divider(
                       color: Colors.white,
-                      thickness: 0.2,
+                      thickness: 0.2.h,
                     ),
                     Padding(
                       padding: EdgeInsets.all(20.0.sp),
@@ -138,16 +140,20 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
                           hintStyle: GoogleFonts.poppins(
                             color: Colors.white,
                           ),
+                          focusColor: Colors.white,
                           prefixIcon: const Icon(
                             Icons.search_sharp,
                             color: Colors.white,
                           ),
-                          prefixIconColor: Colors.indigo.shade900,
-                          fillColor: Color.fromARGB(255, 72, 30, 229),
+                          prefixIconColor: Colors.white,
+                          fillColor: const Color.fromARGB(255, 72, 30, 229),
                           filled: true,
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.r),
                               borderSide: BorderSide.none),
+                        ),
+                        style: GoogleFonts.poppins(
+                          color: Colors.white,
                         ),
                       ),
                     ),
@@ -196,12 +202,12 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
                                   as Map<String, dynamic>;
                               userDetails.add(data);
                             }
-                            //filter();
+                            autoFilter();
                           }
                         }
                         return Flexible(
                           child: SizedBox(
-                            height: 300,
+                            height: 300.h,
                             child: ListView.builder(
                               scrollDirection: Axis.vertical,
                               itemCount: userDetails.length,
