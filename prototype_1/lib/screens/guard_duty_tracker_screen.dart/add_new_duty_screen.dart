@@ -25,13 +25,13 @@ class AddNewDutyScreen extends StatefulWidget {
   State<AddNewDutyScreen> createState() => _AddNewDutyScreenState();
 }
 
-List<List<String>> dutySoldiersAndRanks = [];
+Map<String, String> dutySoldiersAndRanks = {};
 
 void populateDutySoldiersAndRanksArray() {
   var length = dutySoldiersAndRanks.length;
 
   for (var i = length; i < 10; i++) {
-    dutySoldiersAndRanks.add(["NA", "NA"]);
+    dutySoldiersAndRanks.addEntries({'NA$i': 'NA'}.entries);
   }
 
   print(dutySoldiersAndRanks);
@@ -182,13 +182,13 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       OrgChartTile(
-                        rank: dutySoldiersAndRanks[0][1],
-                        name: dutySoldiersAndRanks[0][0],
+                        rank: dutySoldiersAndRanks.values.elementAt(0),
+                        name: dutySoldiersAndRanks.keys.elementAt(0),
                         heroTag: heroAddDutySoldiers[0],
                       ),
                       OrgChartTile(
-                        rank: dutySoldiersAndRanks[1][1],
-                        name: dutySoldiersAndRanks[1][0],
+                        rank: dutySoldiersAndRanks.values.elementAt(1),
+                        name: dutySoldiersAndRanks.keys.elementAt(1),
                         heroTag: heroAddDutySoldiers[1],
                       ),
                     ],
@@ -201,23 +201,23 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     OrgChartTile(
-                      rank: dutySoldiersAndRanks[2][1],
-                      name: dutySoldiersAndRanks[2][0],
+                      rank: dutySoldiersAndRanks.values.elementAt(2),
+                      name: dutySoldiersAndRanks.keys.elementAt(2),
                       heroTag: heroAddDutySoldiers[2],
                     ),
                     OrgChartTile(
-                      rank: dutySoldiersAndRanks[3][1],
-                      name: dutySoldiersAndRanks[3][0],
+                      rank: dutySoldiersAndRanks.values.elementAt(3),
+                      name: dutySoldiersAndRanks.keys.elementAt(3),
                       heroTag: heroAddDutySoldiers[3],
                     ),
                     OrgChartTile(
-                      rank: dutySoldiersAndRanks[4][1],
-                      name: dutySoldiersAndRanks[4][0],
+                      rank: dutySoldiersAndRanks.values.elementAt(4),
+                      name: dutySoldiersAndRanks.keys.elementAt(4),
                       heroTag: heroAddDutySoldiers[4],
                     ),
                     OrgChartTile(
-                      rank: dutySoldiersAndRanks[5][1],
-                      name: dutySoldiersAndRanks[5][0],
+                      rank: dutySoldiersAndRanks.values.elementAt(5),
+                      name: dutySoldiersAndRanks.keys.elementAt(5),
                       heroTag: heroAddDutySoldiers[5],
                     ),
                   ],
@@ -229,23 +229,23 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     OrgChartTile(
-                      rank: dutySoldiersAndRanks[6][1],
-                      name: dutySoldiersAndRanks[6][0],
+                      rank: dutySoldiersAndRanks.values.elementAt(6),
+                      name: dutySoldiersAndRanks.keys.elementAt(6),
                       heroTag: heroAddDutySoldiers[6],
                     ),
                     OrgChartTile(
-                      rank: dutySoldiersAndRanks[7][1],
-                      name: dutySoldiersAndRanks[7][0],
+                      rank: dutySoldiersAndRanks.values.elementAt(7),
+                      name: dutySoldiersAndRanks.keys.elementAt(7),
                       heroTag: heroAddDutySoldiers[7],
                     ),
                     OrgChartTile(
-                      rank: dutySoldiersAndRanks[8][1],
-                      name: dutySoldiersAndRanks[8][0],
+                      rank: dutySoldiersAndRanks.values.elementAt(8),
+                      name: dutySoldiersAndRanks.keys.elementAt(8),
                       heroTag: heroAddDutySoldiers[8],
                     ),
                     OrgChartTile(
-                      rank: dutySoldiersAndRanks[9][1],
-                      name: dutySoldiersAndRanks[9][0],
+                      rank: dutySoldiersAndRanks.values.elementAt(9),
+                      name: dutySoldiersAndRanks.keys.elementAt(9),
                       heroTag: heroAddDutySoldiers[9],
                     ),
                   ],

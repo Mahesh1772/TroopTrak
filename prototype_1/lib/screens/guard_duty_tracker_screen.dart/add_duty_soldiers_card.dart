@@ -19,7 +19,7 @@ class AddDutySoldiersCard extends StatefulWidget {
 }
 
 // Store all the names in conduct
-List<List<String>> tempArray = [];
+Map<String, String> tempArray = {};
 // List of all names
 List<String> documentIDs = [];
 // Name of soldiers not included
@@ -51,7 +51,7 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
     getUserBooks();
     //non_participants = [];
     autoFilter();
-    tempArray = [];
+    tempArray = {};
     super.initState();
   }
 
@@ -94,6 +94,7 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
   }
 
   void autoFilter() {
+    non_participants = [];
     for (var status in statusList) {
       if (status['statusType'] == 'Excuse') {
         if (guardDuty.contains(status['statusName'])) {
@@ -208,7 +209,7 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
                                   as Map<String, dynamic>;
                               userDetails.add(data);
                             }
-                            autoFilter();
+                            //autoFilter();
                           }
                         }
                         return Flexible(
@@ -235,13 +236,14 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        dutySoldiersAndRanks = [];
+                        dutySoldiersAndRanks = {};
 
                         for (var i = 0; i < tempArray.length; i++) {
-                          dutySoldiersAndRanks.add(tempArray[i]);
+                          dutySoldiersAndRanks.addAll(tempArray);
                         }
 
                         Navigator.pop(context);
+                        setState(() {});
                         print(dutySoldiersAndRanks);
                       },
                       child: Container(

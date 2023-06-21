@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -141,21 +142,19 @@ class _AddSoldierToDutyTileState extends State<AddSoldierToDutyTile> {
                 borderColor: Colors.white54,
                 uncheckedColor: Colors.transparent,
                 onTap: (selected) {
-                  if (tempArray.contains(
-                      [widget.name.toString(), widget.rank.toString()])) {
-                    tempArray.remove(
-                        [widget.name.toString(), widget.rank.toString()]);
+                  if (tempArray.containsKey(widget.name)) {
+                    tempArray.remove(widget.name);
                   } else {
-                    tempArray
-                        .add([widget.name.toString(), widget.rank.toString()]);
+                    tempArray.addAll(
+                        {widget.name.toString(): widget.rank.toString()});
                   }
 
-                  if (tempArray.contains(
-                      [widget.name.toString(), widget.rank.toString()])) {
-                    selected = true;
-                  } else {
-                    selected = false;
-                  }
+                  // if (tempArray.contains(
+                  //     [widget.name.toString(), widget.rank.toString()])) {
+                  //   selected = true;
+                  // } else {
+                  //   selected = false;
+                  // }
 
                   print(tempArray);
                 },

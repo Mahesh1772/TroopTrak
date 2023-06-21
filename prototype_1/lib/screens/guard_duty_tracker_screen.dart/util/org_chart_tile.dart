@@ -14,7 +14,7 @@ class OrgChartTile extends StatefulWidget {
       required this.name,
       required this.heroTag});
 
-  final String? rank;
+  final String rank;
   final String? name;
   final String heroTag;
 
@@ -61,7 +61,7 @@ class _OrgChartTileState extends State<OrgChartTile> {
               ],
             ),
           ),
-          child: widget.name == "NA"
+          child: widget.name!.contains("NA")
               ? Center(
                   child: Icon(
                     Icons.add,
@@ -78,7 +78,7 @@ class _OrgChartTileState extends State<OrgChartTile> {
                       child: CircleAvatar(
                         backgroundColor: Colors.black,
                         child: Image.asset(
-                          "lib/assets/army-ranks/${widget.rank!.toLowerCase().toString()}.png",
+                          "lib/assets/army-ranks/${widget.rank.toLowerCase().toString()}.png",
                           width: 20.w,
                           color: Colors.white,
                         ),
