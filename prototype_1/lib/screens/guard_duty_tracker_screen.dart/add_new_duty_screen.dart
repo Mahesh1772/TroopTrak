@@ -55,20 +55,20 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
 
       if (nowDay < 5) {
         points = 1;
-        typeOfDay = "Weekday Duty";
+        typeOfDay = "Weekday Duty 🫣";
       } else if (nowDay == 5) {
         points = 1.5;
-        typeOfDay = "Weekday (Friday) Duty";
+        typeOfDay = "Weekday (Friday) Duty 😖";
       } else if (nowDay == 6) {
         points = 2.5;
-        typeOfDay = "Weekend (Saturday) Duty";
+        typeOfDay = "Weekend (Saturday) Duty 😵‍💫";
       } else if (nowDay == 7) {
         points = 2;
-        typeOfDay = "Weekday (Sunday) Duty";
+        typeOfDay = "Weekday (Sunday) Duty 🤧";
       }
     } else {
       points = 0;
-      typeOfDay = "Select duty date to view expected points";
+      typeOfDay = "Select a duty date! 😄";
     }
   }
 
@@ -259,7 +259,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                     duration: const Duration(milliseconds: 200),
                     padding: EdgeInsets.all(16.0.sp),
                     width: double.maxFinite,
-                    height: 230.h,
+                    height: 215.h,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.r),
                       gradient: const LinearGradient(
@@ -298,7 +298,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                         StyledText("EXPECTED POINTS PER PERSON", 14.sp,
                             fontWeight: FontWeight.w400),
                         SizedBox(
-                          height: 20.h,
+                          height: 15.h,
                         ),
                         StyledText(typeOfDay, 24.sp,
                             fontWeight: FontWeight.w500),
