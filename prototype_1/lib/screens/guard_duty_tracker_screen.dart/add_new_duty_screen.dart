@@ -37,6 +37,8 @@ void populateDutySoldiersAndRanksArray() {
   print(dutySoldiersAndRanks);
 }
 
+List<String> heroAddDutySoldiers = [];
+
 class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
   double points = 0;
   late String typeOfDay;
@@ -50,6 +52,12 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
     super.initState();
   }
 
+  callBack(finalArray) {
+    setState(() {
+      dutySoldiersAndRanks = finalArray;
+    });
+  }
+
   Widget displayTiles() {
     return Column(
       children: [
@@ -61,11 +69,13 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                 rank: dutySoldiersAndRanks.values.elementAt(0),
                 name: dutySoldiersAndRanks.keys.elementAt(0),
                 heroTag: heroAddDutySoldiers[0],
+                callbackFunction: callBack,
               ),
               OrgChartTile(
                 rank: dutySoldiersAndRanks.values.elementAt(1),
                 name: dutySoldiersAndRanks.keys.elementAt(1),
                 heroTag: heroAddDutySoldiers[1],
+                callbackFunction: callBack,
               ),
             ],
           ),
@@ -80,21 +90,25 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
               rank: dutySoldiersAndRanks.values.elementAt(2),
               name: dutySoldiersAndRanks.keys.elementAt(2),
               heroTag: heroAddDutySoldiers[2],
+              callbackFunction: callBack,
             ),
             OrgChartTile(
               rank: dutySoldiersAndRanks.values.elementAt(3),
               name: dutySoldiersAndRanks.keys.elementAt(3),
               heroTag: heroAddDutySoldiers[3],
+              callbackFunction: callBack,
             ),
             OrgChartTile(
               rank: dutySoldiersAndRanks.values.elementAt(4),
               name: dutySoldiersAndRanks.keys.elementAt(4),
               heroTag: heroAddDutySoldiers[4],
+              callbackFunction: callBack,
             ),
             OrgChartTile(
               rank: dutySoldiersAndRanks.values.elementAt(5),
               name: dutySoldiersAndRanks.keys.elementAt(5),
               heroTag: heroAddDutySoldiers[5],
+              callbackFunction: callBack,
             ),
           ],
         ),
@@ -108,21 +122,25 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
               rank: dutySoldiersAndRanks.values.elementAt(6),
               name: dutySoldiersAndRanks.keys.elementAt(6),
               heroTag: heroAddDutySoldiers[6],
+              callbackFunction: callBack,
             ),
             OrgChartTile(
               rank: dutySoldiersAndRanks.values.elementAt(7),
               name: dutySoldiersAndRanks.keys.elementAt(7),
               heroTag: heroAddDutySoldiers[7],
+              callbackFunction: callBack,
             ),
             OrgChartTile(
               rank: dutySoldiersAndRanks.values.elementAt(8),
               name: dutySoldiersAndRanks.keys.elementAt(8),
               heroTag: heroAddDutySoldiers[8],
+              callbackFunction: callBack,
             ),
             OrgChartTile(
               rank: dutySoldiersAndRanks.values.elementAt(9),
               name: dutySoldiersAndRanks.keys.elementAt(9),
               heroTag: heroAddDutySoldiers[9],
+              callbackFunction: callBack,
             ),
           ],
         ),
@@ -209,8 +227,6 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
       }),
     );
   }
-
-  List<String> heroAddDutySoldiers = [];
 
   void populateHeroTagArray() {
     for (var i = 0; i < 10; i++) {

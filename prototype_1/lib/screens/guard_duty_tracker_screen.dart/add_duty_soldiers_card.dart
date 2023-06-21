@@ -10,12 +10,14 @@ import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/util/add_soldier_to_duty_tile.dart';
 
 class AddDutySoldiersCard extends StatefulWidget {
-  const AddDutySoldiersCard({super.key, required this.heroTag});
+  const AddDutySoldiersCard(
+      {super.key, required this.heroTag, required this.callbackFunction});
 
   @override
   State<AddDutySoldiersCard> createState() => _AddDutySoldiersCardState();
 
   final String heroTag;
+  final Function callbackFunction;
 }
 
 // Store all the names in conduct
@@ -91,6 +93,16 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
         .then((value) => value.docs.forEach((element) {
               documentIDs.add(element['name']);
             }));
+  }
+
+  void populateDutySoldiersAndRanksArray() {
+    var length = dutySoldiersAndRanks.length;
+
+    for (var i = length; i < 10; i++) {
+      dutySoldiersAndRanks.addEntries({'NA$i': 'NA'}.entries);
+    }
+
+    print(dutySoldiersAndRanks);
   }
 
   void autoFilter() {
@@ -242,9 +254,10 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
                           dutySoldiersAndRanks.addAll(tempArray);
                         }
 
+                        populateDutySoldiersAndRanksArray();
+
+                        widget.callbackFunction(dutySoldiersAndRanks);
                         Navigator.pop(context);
-                        setState(() {});
-                        print(dutySoldiersAndRanks);
                       },
                       child: Container(
                         padding: EdgeInsets.all(10.sp),

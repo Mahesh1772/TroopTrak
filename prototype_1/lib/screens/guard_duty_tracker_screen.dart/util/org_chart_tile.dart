@@ -2,7 +2,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/add_new_duty_screen.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/util/custom_rect_tween.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/util/hero_dialog_route.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/add_duty_soldiers_card.dart';
@@ -12,38 +11,33 @@ class OrgChartTile extends StatefulWidget {
       {super.key,
       required this.rank,
       required this.name,
-      required this.heroTag});
+      required this.heroTag,
+      required this.callbackFunction});
 
   final String rank;
   final String? name;
   final String heroTag;
+  final Function callbackFunction;
 
   @override
   State<OrgChartTile> createState() => _OrgChartTileState();
 }
 
 class _OrgChartTileState extends State<OrgChartTile> {
-  _stateUpdate() {
-    setState(() {
-      populateDutySoldiersAndRanksArray();
-    });
-    print("Refresh completed!");
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () async {
-        await Navigator.of(context).push(
+      onTap: () {
+        Navigator.of(context).push(
           HeroDialogRoute(
             builder: (context) {
               return AddDutySoldiersCard(
                 heroTag: widget.heroTag,
+                callbackFunction: widget.callbackFunction,
               );
             },
           ),
         );
-        _stateUpdate();
       },
       child: Hero(
         tag: widget.heroTag,
