@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/add_new_duty_screen.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/util/custom_rect_tween.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/util/add_soldier_to_duty_tile.dart';
@@ -37,6 +38,9 @@ List<Map<String, dynamic>> statusList = [];
 
 List<String> non_participants = [];
 
+// Boolean value for checking if it is first time or not
+bool isFirstTIme = true;
+
 List<String> guardDuty = ['Ex Uniform', 'Ex Boots'];
 
 class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
@@ -45,7 +49,9 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
     getDocIDs();
     getUserBooks();
+    //non_participants = [];
     autoFilter();
+    tempArray = [];
     super.initState();
   }
 
@@ -228,7 +234,16 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
                       height: 30.h,
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        dutySoldiersAndRanks = [];
+
+                        for (var i = 0; i < tempArray.length; i++) {
+                          dutySoldiersAndRanks.add(tempArray[i]);
+                        }
+
+                        Navigator.pop(context);
+                        print(dutySoldiersAndRanks);
+                      },
                       child: Container(
                         padding: EdgeInsets.all(10.sp),
                         decoration: BoxDecoration(

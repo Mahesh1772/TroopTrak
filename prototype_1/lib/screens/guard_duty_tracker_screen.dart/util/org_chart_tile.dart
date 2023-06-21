@@ -2,11 +2,12 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/add_new_duty_screen.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/util/custom_rect_tween.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/util/hero_dialog_route.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/add_duty_soldiers_card.dart';
 
-class OrgChartTile extends StatelessWidget {
+class OrgChartTile extends StatefulWidget {
   const OrgChartTile(
       {super.key,
       required this.rank,
@@ -18,6 +19,18 @@ class OrgChartTile extends StatelessWidget {
   final String heroTag;
 
   @override
+  State<OrgChartTile> createState() => _OrgChartTileState();
+}
+
+class _OrgChartTileState extends State<OrgChartTile> {
+  _stateUpdate() {
+    setState(() {
+      populateDutySoldiersAndRanksArray();
+    });
+    print("Refresh completed!");
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
@@ -25,14 +38,14 @@ class OrgChartTile extends StatelessWidget {
           HeroDialogRoute(
             builder: (context) {
               return AddDutySoldiersCard(
-                heroTag: heroTag,
+                heroTag: widget.heroTag,
               );
             },
           ),
-        );
+        ).then((value) => _stateUpdate());
       },
       child: Hero(
-        tag: heroTag,
+        tag: widget.heroTag,
         createRectTween: (begin, end) {
           return CustomRectTween(begin: begin!, end: end!);
         },
@@ -48,7 +61,7 @@ class OrgChartTile extends StatelessWidget {
               ],
             ),
           ),
-          child: name == null
+          child: widget.name == "NA"
               ? Center(
                   child: Icon(
                     Icons.add,
@@ -65,7 +78,7 @@ class OrgChartTile extends StatelessWidget {
                       child: CircleAvatar(
                         backgroundColor: Colors.black,
                         child: Image.asset(
-                          "lib/assets/army-ranks/${rank!.toLowerCase().toString()}.png",
+                          "lib/assets/army-ranks/${widget.rank!.toLowerCase().toString()}.png",
                           width: 20.w,
                           color: Colors.white,
                         ),
@@ -75,7 +88,7 @@ class OrgChartTile extends StatelessWidget {
                       width: 90.w,
                       height: 20.h,
                       child: AutoSizeText(
-                        name!,
+                        widget.name!,
                         maxLines: 2,
                         maxFontSize: 12,
                         textAlign: TextAlign.center,

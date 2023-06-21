@@ -27,6 +27,16 @@ class AddNewDutyScreen extends StatefulWidget {
 
 List<List<String>> dutySoldiersAndRanks = [];
 
+void populateDutySoldiersAndRanksArray() {
+  var length = dutySoldiersAndRanks.length;
+
+  for (var i = length; i < 10; i++) {
+    dutySoldiersAndRanks.add(["NA", "NA"]);
+  }
+
+  print(dutySoldiersAndRanks);
+}
+
 class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
   double points = 0;
   late String typeOfDay;
@@ -35,6 +45,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
   void initState() {
     pointsAssignment(DateTime.now());
     populateHeroTagArray();
+    populateDutySoldiersAndRanksArray();
     super.initState();
   }
 
@@ -128,6 +139,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(dutySoldiersAndRanks);
     if (widget.dutyDate != "Date of Duty:") {
       pointsAssignment(DateFormat("d MMM yyyy").parse(widget.dutyDate));
     }
@@ -170,13 +182,13 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       OrgChartTile(
-                        rank: "3SG",
-                        name: "Aakash Ramaswamy",
+                        rank: dutySoldiersAndRanks[0][1],
+                        name: dutySoldiersAndRanks[0][0],
                         heroTag: heroAddDutySoldiers[0],
                       ),
                       OrgChartTile(
-                        rank: "2SG",
-                        name: "Sivagnanam Maheshwaran",
+                        rank: dutySoldiersAndRanks[1][1],
+                        name: dutySoldiersAndRanks[1][0],
                         heroTag: heroAddDutySoldiers[1],
                       ),
                     ],
@@ -189,23 +201,23 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     OrgChartTile(
-                      rank: "LCP",
-                      name: "Aakash Ramaswamy",
+                      rank: dutySoldiersAndRanks[2][1],
+                      name: dutySoldiersAndRanks[2][0],
                       heroTag: heroAddDutySoldiers[2],
                     ),
                     OrgChartTile(
-                      rank: "LCP",
-                      name: "John Doe",
+                      rank: dutySoldiersAndRanks[3][1],
+                      name: dutySoldiersAndRanks[3][0],
                       heroTag: heroAddDutySoldiers[3],
                     ),
                     OrgChartTile(
-                      rank: "CPL",
-                      name: "Aakash Ramaswamy",
+                      rank: dutySoldiersAndRanks[4][1],
+                      name: dutySoldiersAndRanks[4][0],
                       heroTag: heroAddDutySoldiers[4],
                     ),
                     OrgChartTile(
-                      rank: "PTE",
-                      name: "John Doe",
+                      rank: dutySoldiersAndRanks[5][1],
+                      name: dutySoldiersAndRanks[5][0],
                       heroTag: heroAddDutySoldiers[5],
                     ),
                   ],
@@ -217,23 +229,23 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     OrgChartTile(
-                      rank: "LCP",
-                      name: "Aakash Ramaswamy",
+                      rank: dutySoldiersAndRanks[6][1],
+                      name: dutySoldiersAndRanks[6][0],
                       heroTag: heroAddDutySoldiers[6],
                     ),
                     OrgChartTile(
-                      rank: "LCP",
-                      name: "John Doe",
+                      rank: dutySoldiersAndRanks[7][1],
+                      name: dutySoldiersAndRanks[7][0],
                       heroTag: heroAddDutySoldiers[7],
                     ),
                     OrgChartTile(
-                      rank: "CPL",
-                      name: "Aakash Ramaswamy",
+                      rank: dutySoldiersAndRanks[8][1],
+                      name: dutySoldiersAndRanks[8][0],
                       heroTag: heroAddDutySoldiers[8],
                     ),
                     OrgChartTile(
-                      rank: "PTE",
-                      name: "John Doe",
+                      rank: dutySoldiersAndRanks[9][1],
+                      name: dutySoldiersAndRanks[9][0],
                       heroTag: heroAddDutySoldiers[9],
                     ),
                   ],
