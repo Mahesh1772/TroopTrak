@@ -33,8 +33,8 @@ class _OrgChartTileState extends State<OrgChartTile> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.of(context).push(
+      onTap: () async {
+        await Navigator.of(context).push(
           HeroDialogRoute(
             builder: (context) {
               return AddDutySoldiersCard(
@@ -42,7 +42,8 @@ class _OrgChartTileState extends State<OrgChartTile> {
               );
             },
           ),
-        ).then((value) => _stateUpdate());
+        );
+        _stateUpdate();
       },
       child: Hero(
         tag: widget.heroTag,
