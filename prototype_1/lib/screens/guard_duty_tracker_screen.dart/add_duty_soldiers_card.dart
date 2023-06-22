@@ -46,6 +46,7 @@ bool isFirstTIme = true;
 List<String> guardDuty = ['Ex Uniform', 'Ex Boots'];
 
 class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
+  
   @override
   void initState() {
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
