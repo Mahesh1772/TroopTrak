@@ -1,6 +1,8 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -37,14 +39,126 @@ void populateDutySoldiersAndRanksArray() {
   print(dutySoldiersAndRanks);
 }
 
+<<<<<<< Updated upstream
 List<String> heroAddDutySoldiers = [];
+=======
+List documentIDs = [];
+  List<String> heroAddDutySoldiers = [];
+
+Widget displayTiles() {
+  return Column(
+    children: [
+      Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            OrgChartTile(
+              rank: dutySoldiersAndRanks.values.elementAt(0),
+              name: dutySoldiersAndRanks.keys.elementAt(0),
+              heroTag: heroAddDutySoldiers[0],
+            ),
+            OrgChartTile(
+              rank: dutySoldiersAndRanks.values.elementAt(1),
+              name: dutySoldiersAndRanks.keys.elementAt(1),
+              heroTag: heroAddDutySoldiers[1],
+            ),
+          ],
+        ),
+      ),
+      SizedBox(
+        height: 40.h,
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          OrgChartTile(
+            rank: dutySoldiersAndRanks.values.elementAt(2),
+            name: dutySoldiersAndRanks.keys.elementAt(2),
+            heroTag: heroAddDutySoldiers[2],
+          ),
+          OrgChartTile(
+            rank: dutySoldiersAndRanks.values.elementAt(3),
+            name: dutySoldiersAndRanks.keys.elementAt(3),
+            heroTag: heroAddDutySoldiers[3],
+          ),
+          OrgChartTile(
+            rank: dutySoldiersAndRanks.values.elementAt(4),
+            name: dutySoldiersAndRanks.keys.elementAt(4),
+            heroTag: heroAddDutySoldiers[4],
+          ),
+          OrgChartTile(
+            rank: dutySoldiersAndRanks.values.elementAt(5),
+            name: dutySoldiersAndRanks.keys.elementAt(5),
+            heroTag: heroAddDutySoldiers[5],
+          ),
+        ],
+      ),
+      SizedBox(
+        height: 40.h,
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          OrgChartTile(
+            rank: dutySoldiersAndRanks.values.elementAt(6),
+            name: dutySoldiersAndRanks.keys.elementAt(6),
+            heroTag: heroAddDutySoldiers[6],
+          ),
+          OrgChartTile(
+            rank: dutySoldiersAndRanks.values.elementAt(7),
+            name: dutySoldiersAndRanks.keys.elementAt(7),
+            heroTag: heroAddDutySoldiers[7],
+          ),
+          OrgChartTile(
+            rank: dutySoldiersAndRanks.values.elementAt(8),
+            name: dutySoldiersAndRanks.keys.elementAt(8),
+            heroTag: heroAddDutySoldiers[8],
+          ),
+          OrgChartTile(
+            rank: dutySoldiersAndRanks.values.elementAt(9),
+            name: dutySoldiersAndRanks.keys.elementAt(9),
+            heroTag: heroAddDutySoldiers[9],
+          ),
+        ],
+      ),
+    ],
+  );
+}
+>>>>>>> Stashed changes
 
 class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
   double points = 0;
   late String typeOfDay;
 
+  Future getDocIDs() async {
+    FirebaseFirestore.instance
+        .collection('Users')
+        .get()
+        .then((value) => value.docs.forEach((element) {
+              documentIDs.add(element['name']);
+            }));
+  }
+
+  Future addGaurdDuty() async {
+    var keys = dutySoldiersAndRanks.keys.toList();
+    var notKeys = dutySoldiersAndRanks.keys.toList();
+    notKeys.removeWhere((element) => documentIDs.contains(element));
+    keys.removeWhere((element) => notKeys.contains(element));
+    await FirebaseFirestore.instance.collection('Duties').add({
+      //User map formatting
+      'points': points,
+      'dayType': typeOfDay,
+      'dutyDate': widget.dutyDate,
+      'startTime': widget.dutyStartTime,
+      'endTime': widget.dutyEndTime,
+      'participants': keys,
+    });
+    Navigator.pop(context);
+  }
+
   @override
   void initState() {
+    getDocIDs();
     pointsAssignment(DateTime.now());
     populateHeroTagArray();
     populateDutySoldiersAndRanksArray();
@@ -52,6 +166,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
     super.initState();
   }
 
+<<<<<<< Updated upstream
   callBack(finalArray) {
     setState(() {
       dutySoldiersAndRanks = finalArray;
@@ -146,6 +261,12 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
         ),
       ],
     );
+=======
+  @override
+  void dispose() {
+    dutySoldiersAndRanks.clear();
+    super.dispose();
+>>>>>>> Stashed changes
   }
 
   void pointsAssignment(DateTime value) {
@@ -473,6 +594,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                           label: 'Conduct added successfully!',
                           snackBarStyle: const SnackBarStyle() // this one
                           );
+                      addGaurdDuty();
                     } else {
                       IconSnackBar.show(
                           direction: DismissDirection.horizontal,
