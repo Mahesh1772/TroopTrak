@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/add_new_duty_screen.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/util/duty_personnel_data_source.dart';
 import 'package:prototype_1/util/constants.dart';
@@ -60,18 +61,6 @@ class _GuardDutyTrackerScreenState extends State<GuardDutyTrackerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<Map<String, dynamic>> upcomingDuties = [
-      {
-        'dutyDate': '9 Mar 2023',
-        'startTime': '08:00',
-        'endTime': '07:30 (Next day)'
-      },
-      {
-        'dutyDate': '12 Mar 2023',
-        'startTime': '08:00',
-        'endTime': '07:30 (Next day)'
-      }
-    ];
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -233,10 +222,25 @@ class _GuardDutyTrackerScreenState extends State<GuardDutyTrackerScreen> {
                     fontWeight: FontWeight.w600),
               ),
               SizedBox(
-                height: 10.h,
+                height: 20.h,
               ),
-              SfCalendar(
-                view: CalendarView.schedule,
+              SfCalendarTheme(
+                data: SfCalendarThemeData(
+                  brightness: Brightness.dark,
+                  backgroundColor: Colors.transparent,
+                  todayTextStyle: GoogleFonts.poppins(
+                    color: Colors.white,
+                  ),
+                  headerTextStyle: GoogleFonts.poppins(
+                    color: Colors.white,
+                  ),
+                ),
+                child: SfCalendar(
+                  view: CalendarView.schedule,
+                  appointmentTextStyle: GoogleFonts.poppins(
+                    color: Colors.white,
+                  ),
+                ),
               ),
               SizedBox(
                 height: 30.h,
