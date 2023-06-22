@@ -1,5 +1,4 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -34,7 +33,7 @@ class _AddSoldierToDutyTileState extends State<AddSoldierToDutyTile> {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.r),
-            color: const Color.fromARGB(255, 29, 32, 43).withOpacity(0.2),
+            color: const Color.fromARGB(255, 29, 32, 43).withOpacity(0.35),
           ),
           child: Padding(
             padding: EdgeInsets.all(10.0.sp),
@@ -43,12 +42,12 @@ class _AddSoldierToDutyTileState extends State<AddSoldierToDutyTile> {
               children: [
                 CircleAvatar(
                   backgroundColor:
-                      const Color.fromARGB(255, 53, 59, 79).withOpacity(0.2),
+                      const Color.fromARGB(255, 53, 59, 79).withOpacity(0.35),
                   minRadius: 30.w,
                   child: Image.asset(
                     "lib/assets/army-ranks/${widget.rank.toString().toLowerCase()}.png",
                     width: 30.w,
-                    color: Colors.white,
+                    color: Colors.white.withOpacity(0.35),
                   ),
                 ),
                 SizedBox(
@@ -63,16 +62,16 @@ class _AddSoldierToDutyTileState extends State<AddSoldierToDutyTile> {
                         widget.name,
                         minFontSize: 16,
                         style: GoogleFonts.poppins(
-                          color: Colors.white.withOpacity(0.2),
+                          color: Colors.white.withOpacity(0.35),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
                     AutoSizeText(
-                      widget.appointment,
+                      "Ineligible: ",
                       maxFontSize: 12,
                       style: GoogleFonts.poppins(
-                          color: Colors.white70.withOpacity(0.2),
+                          color: Colors.white70.withOpacity(0.35),
                           fontWeight: FontWeight.w400),
                     ),
                   ],

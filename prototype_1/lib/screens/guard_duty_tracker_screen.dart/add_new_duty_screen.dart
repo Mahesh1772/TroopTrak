@@ -486,15 +486,36 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                   child: Container(
                     padding: EdgeInsets.all(10.sp),
                     decoration: BoxDecoration(
-                      gradient: LinearGradient(
+                      borderRadius: BorderRadius.circular(10.r),
+                      gradient: const LinearGradient(
                         colors: [
-                          Colors.deepPurple.shade400,
-                          Colors.deepPurple.shade700,
+                          Color.fromARGB(255, 72, 30, 229),
+                          Color.fromARGB(255, 130, 60, 229),
                         ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
                       ),
-                      borderRadius: BorderRadius.circular(12.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color.fromARGB(255, 130, 60, 229)
+                              .withOpacity(0.6),
+                          spreadRadius: 1.r,
+                          blurRadius: 16.r,
+                          offset: Offset(8.w, 0.h),
+                        ),
+                        BoxShadow(
+                          color: const Color.fromARGB(255, 72, 30, 229)
+                              .withOpacity(0.2),
+                          spreadRadius: 8.r,
+                          blurRadius: 8.r,
+                          offset: Offset(-8.w, 0.h),
+                        ),
+                        BoxShadow(
+                          color: const Color.fromARGB(255, 130, 60, 229)
+                              .withOpacity(0.2),
+                          spreadRadius: 8.r,
+                          blurRadius: 8.r,
+                          offset: Offset(8.w, 0.h),
+                        ),
+                      ],
                     ),
                     child: Center(
                       child: Row(

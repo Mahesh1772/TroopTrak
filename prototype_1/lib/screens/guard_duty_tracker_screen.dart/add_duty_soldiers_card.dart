@@ -233,10 +233,11 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
                               padding: EdgeInsets.all(12.sp),
                               itemBuilder: (context, index) {
                                 return AddSoldierToDutyTile(
-                                    rank: userDetails[index]['rank'],
-                                    name: userDetails[index]['name'],
-                                    appointment: userDetails[index]
-                                        ['appointment']);
+                                  rank: userDetails[index]['rank'],
+                                  name: userDetails[index]['name'],
+                                  appointment: userDetails[index]
+                                      ['appointment'],
+                                );
                               },
                             ),
                           ),

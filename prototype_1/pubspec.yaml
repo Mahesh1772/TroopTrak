@@ -27,6 +27,8 @@ environment:
 # dependencies can be manually updated by changing the version numbers below to
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
+
+
 dependencies:
   flutter:
     sdk: flutter
@@ -64,6 +66,7 @@ dependencies:
   popup_card: ^0.1.0
   font_awesome_flutter: ^10.4.0
   roundcheckbox: ^2.0.5
+  syncfusion_flutter_calendar: ^21.2.3
 
 dev_dependencies:
   flutter_test:

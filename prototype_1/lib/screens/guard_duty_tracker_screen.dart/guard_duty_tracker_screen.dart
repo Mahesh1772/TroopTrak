@@ -2,12 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/add_new_duty_screen.dart';
-import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/util/custom_rect_tween.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/util/duty_personnel_data_source.dart';
 import 'package:prototype_1/util/constants.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class GuardDutyTrackerScreen extends StatefulWidget {
   const GuardDutyTrackerScreen({super.key});
@@ -60,6 +60,18 @@ class _GuardDutyTrackerScreenState extends State<GuardDutyTrackerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    List<Map<String, dynamic>> upcomingDuties = [
+      {
+        'dutyDate': '9 Mar 2023',
+        'startTime': '08:00',
+        'endTime': '07:30 (Next day)'
+      },
+      {
+        'dutyDate': '12 Mar 2023',
+        'startTime': '08:00',
+        'endTime': '07:30 (Next day)'
+      }
+    ];
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -215,6 +227,20 @@ class _GuardDutyTrackerScreenState extends State<GuardDutyTrackerScreen> {
                   },
                 ),
               ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0.w),
+                child: StyledText("Upcoming Duties", 24.sp,
+                    fontWeight: FontWeight.w600),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              SfCalendar(
+                view: CalendarView.schedule,
+              ),
+              SizedBox(
+                height: 30.h,
+              )
             ],
           ),
         ),
