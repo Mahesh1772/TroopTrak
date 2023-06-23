@@ -37,7 +37,7 @@ class _UpcomingDutiesState extends State<UpcomingDuties> {
       },
     ];
     return Container(
-      margin: EdgeInsets.only(top: 20.h),
+      margin: EdgeInsets.only(top: 50.h),
       child: Column(
         children: [
           Padding(
@@ -46,7 +46,7 @@ class _UpcomingDutiesState extends State<UpcomingDuties> {
                 fontWeight: FontWeight.w600),
           ),
           SizedBox(
-            height: 20.h,
+            height: 15.h,
           ),
           ListView.builder(
             shrinkWrap: true,
@@ -63,7 +63,7 @@ class _UpcomingDutiesState extends State<UpcomingDuties> {
             },
           ),
           SizedBox(
-            height: 30.h,
+            height: 10.h,
           )
         ],
       ),

@@ -32,9 +32,16 @@ List<String> documentIDs = [];
 // List to store all user data, whilst also mapping to name
 List<Map<String, dynamic>> userDetails = [];
 
+//Information for column of data
 List<DutyPersonnel> dutyPersonnel = <DutyPersonnel>[];
 
 late DutyPersonnelDataSource dutyPersonnelDataSource;
+
+//All information on Duties
+List<Map<dynamic, dynamic>> dutyInfo = [];
+
+//To have a points table
+Map<dynamic, double> pointsTable = {};
 
 List<DutyPersonnel> getDutyPersonnel() {
   List<DutyPersonnel> array = [];
@@ -47,6 +54,42 @@ List<DutyPersonnel> getDutyPersonnel() {
 }
 
 class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
+  Future getDutyInfo() async {
+    //dutyInfo = [];
+    FirebaseFirestore.instance
+        .collection("Duties")
+        .get()
+        .then((querySnapshot) async {
+      for (var snapshot in querySnapshot.docs) {
+        Map<String, dynamic> data = snapshot.data();
+        //print(data);
+        dutyInfo.add(data);
+      }
+    });
+    print(dutyInfo);
+  }
+
+  Future getDocIDs() async {
+    FirebaseFirestore.instance
+        .collection('Users')
+        .get()
+        .then((value) => value.docs.forEach((element) {
+              Map<String, dynamic> data = element.data();
+              documentIDs.add(element['name']);
+              pointsTable.addEntries({data['name']: 0.0}.entries);
+            }));
+  }
+
+  void getDutyPoints() {
+    for (var info in dutyInfo) {
+      for (var person in info['participants']) {
+        print(person + ' ');
+        //pointsTable[person] =  (pointsTable[person]! + info['points']);
+      }
+      print('');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -54,117 +97,128 @@ class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
     dutyPersonnelDataSource =
         DutyPersonnelDataSource(dutyPersonnel: dutyPersonnel);
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
+    getDutyInfo();
+    getDocIDs();
+    //getDutyPoints();
+    print(dutyInfo.length);
+  }
+
+  @override
+  void dispose() {
+    dutyInfo.clear();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 20.0.h),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(
-                padding: EdgeInsets.all(defaultPadding.sp),
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black54,
-                        offset: Offset(10.0.w, 10.0.h),
-                        blurRadius: 2.0.r,
-                        spreadRadius: 2.0.r),
-                  ],
-                  gradient: const LinearGradient(
-                    colors: [
-                      Color.fromARGB(255, 72, 30, 229),
-                      Color.fromARGB(255, 130, 60, 229),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  padding: EdgeInsets.all(defaultPadding.sp),
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black54,
+                          offset: Offset(10.0.w, 10.0.h),
+                          blurRadius: 2.0.r,
+                          spreadRadius: 2.0.r),
                     ],
+                    gradient: const LinearGradient(
+                      colors: [
+                        Color.fromARGB(255, 72, 30, 229),
+                        Color.fromARGB(255, 130, 60, 229),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(10.r)),
                   ),
-                  borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                  child: const Icon(Icons.leaderboard_rounded,
+                      color: Colors.white),
                 ),
-                child:
-                    const Icon(Icons.leaderboard_rounded, color: Colors.white),
-              ),
-              SizedBox(
-                width: 20.w,
-              ),
-              StyledText("Points Leaderboard", 24.sp,
-                  fontWeight: FontWeight.bold),
-            ],
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 30.0.h),
-            child: StreamBuilder<QuerySnapshot>(
-              stream: documentStream,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  documentIDs = [];
-                  userDetails = [];
-                  var users = snapshot.data?.docs.toList();
+                SizedBox(
+                  width: 20.w,
+                ),
+                StyledText("Points Leaderboard", 24.sp,
+                    fontWeight: FontWeight.bold),
+              ],
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 30.0.h),
+              child: StreamBuilder<QuerySnapshot>(
+                stream: documentStream,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    documentIDs = [];
+                    userDetails = [];
+                    var users = snapshot.data?.docs.toList();
 
-                  for (var user in users!) {
-                    var data = user.data();
-                    userDetails.add(data as Map<String, dynamic>);
+                    for (var user in users!) {
+                      var data = user.data();
+                      userDetails.add(data as Map<String, dynamic>);
+                    }
+                    dutyPersonnel = getDutyPersonnel();
+                    dutyPersonnelDataSource =
+                        DutyPersonnelDataSource(dutyPersonnel: dutyPersonnel);
                   }
-                  dutyPersonnel = getDutyPersonnel();
-                  dutyPersonnelDataSource =
-                      DutyPersonnelDataSource(dutyPersonnel: dutyPersonnel);
-                }
-                return Padding(
-                  padding: EdgeInsets.all(8.0.sp),
-                  child: SizedBox(
-                    width: double.maxFinite,
-                    height: 630.h,
-                    child: SfDataGridTheme(
-                      data: SfDataGridThemeData(
-                          sortIconColor: Colors.white,
-                          filterIconColor: Colors.white,
-                          headerColor: Colors.deepPurple.shade700),
-                      child: SfDataGrid(
-                        rowHeight: 100.h,
-                        allowSorting: true,
-                        //allowFiltering: true,
-                        source: dutyPersonnelDataSource,
-                        columnWidthMode: ColumnWidthMode.fill,
-                        columns: <GridColumn>[
-                          GridColumn(
-                            columnName: 'rank',
-                            label: Container(
-                              padding: EdgeInsets.all(16.0.sp),
-                              alignment: Alignment.center,
-                              child: StyledText("Rank", 20.sp,
-                                  fontWeight: FontWeight.w600),
+                  return Padding(
+                    padding: EdgeInsets.all(8.0.sp),
+                    child: SizedBox(
+                      width: double.maxFinite,
+                      height: 630.h,
+                      child: SfDataGridTheme(
+                        data: SfDataGridThemeData(
+                            sortIconColor: Colors.white,
+                            filterIconColor: Colors.white,
+                            headerColor: Colors.deepPurple.shade700),
+                        child: SfDataGrid(
+                          rowHeight: 100.h,
+                          allowSorting: true,
+                          //allowFiltering: true,
+                          source: dutyPersonnelDataSource,
+                          columnWidthMode: ColumnWidthMode.fill,
+                          columns: <GridColumn>[
+                            GridColumn(
+                              columnName: 'rank',
+                              label: Container(
+                                padding: EdgeInsets.all(16.0.sp),
+                                alignment: Alignment.center,
+                                child: StyledText("Rank", 20.sp,
+                                    fontWeight: FontWeight.w600),
+                              ),
                             ),
-                          ),
-                          GridColumn(
-                            columnName: 'name',
-                            label: Container(
-                              padding: EdgeInsets.all(16.0.sp),
-                              alignment: Alignment.center,
-                              child: StyledText("Name", 20.sp,
-                                  fontWeight: FontWeight.w600),
+                            GridColumn(
+                              columnName: 'name',
+                              label: Container(
+                                padding: EdgeInsets.all(16.0.sp),
+                                alignment: Alignment.center,
+                                child: StyledText("Name", 20.sp,
+                                    fontWeight: FontWeight.w600),
+                              ),
                             ),
-                          ),
-                          GridColumn(
-                            columnName: 'points',
-                            label: Container(
-                              padding: EdgeInsets.all(16.0.sp),
-                              alignment: Alignment.center,
-                              child: StyledText("Points", 20.sp,
-                                  fontWeight: FontWeight.w600),
+                            GridColumn(
+                              columnName: 'points',
+                              label: Container(
+                                padding: EdgeInsets.all(16.0.sp),
+                                alignment: Alignment.center,
+                                child: StyledText("Points", 20.sp,
+                                    fontWeight: FontWeight.w600),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
