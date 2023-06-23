@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_project_1/screens/authenticate/forgot_password_page.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +28,7 @@ class _SignInState extends State<SignIn> {
         email: _emailId.text.trim(),
         password: _password.text.trim(),
       );
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException {
       AnimatedSnackBar(
         builder: ((context) {
           return SafeArea(
@@ -35,9 +37,9 @@ class _SignInState extends State<SignIn> {
               color: Colors.redAccent,
               height: 50,
               width: 1000,
-              child: Expanded(
+              child: const Expanded(
                 child: Row(
-                  children: const [
+                  children: [
                     Icon(Icons.error_outline_outlined),
                     SizedBox(
                       width: 20,
@@ -69,7 +71,7 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
 
     String? validateEmail(String val) {
       if (val.isEmpty) {
@@ -114,7 +116,7 @@ class _SignInState extends State<SignIn> {
         child: SingleChildScrollView(
           child: Center(
             child: Form(
-              key: _formKey,
+              key: formKey,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -247,7 +249,7 @@ class _SignInState extends State<SignIn> {
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: GestureDetector(
                       onTap: () {
-                        if (_formKey.currentState!.validate()) {
+                        if (formKey.currentState!.validate()) {
                           isSignedIn();
                         }
                       },

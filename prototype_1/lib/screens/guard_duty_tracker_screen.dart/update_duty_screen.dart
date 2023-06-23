@@ -207,7 +207,7 @@ class _UpdateDutyScreenState extends State<UpdateDutyScreen> {
   }
 
   void _showStartDatePicker() {
-    var initialDate;
+    DateTime initialDate;
     if (widget.dutyDate == "Date of Duty:") {
       initialDate = DateTime.now();
     } else {

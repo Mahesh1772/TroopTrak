@@ -61,7 +61,7 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
 
     String? validateEmail(String val) {
       if (val.isEmpty) {
@@ -106,7 +106,7 @@ class _SignInState extends State<SignIn> {
         child: SingleChildScrollView(
           child: Center(
             child: Form(
-              key: _formKey,
+              key: formKey,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -239,7 +239,7 @@ class _SignInState extends State<SignIn> {
                     padding: EdgeInsets.symmetric(horizontal: 25.0.w),
                     child: GestureDetector(
                       onTap: () {
-                        if (_formKey.currentState!.validate()) {
+                        if (formKey.currentState!.validate()) {
                           isSignedIn();
                         } else {
                           IconSnackBar.show(

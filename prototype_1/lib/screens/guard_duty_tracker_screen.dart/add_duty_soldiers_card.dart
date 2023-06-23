@@ -65,14 +65,14 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
         .collection("Users")
         .get()
         .then((querySnapshot) async {
-      querySnapshot.docs.forEach((snapshot) {
+      for (var snapshot in querySnapshot.docs) {
         FirebaseFirestore.instance
             .collection("Users")
             .doc(snapshot.id)
             .collection("Statuses")
             .get()
             .then((querySnapshot) {
-          querySnapshot.docs.forEach((result) {
+          for (var result in querySnapshot.docs) {
             Map<String, dynamic> data = result.data();
             DateTime end = DateFormat("d MMM yyyy").parse(data['endDate']);
             if (DateTime(end.year, end.month, end.day + 1)
@@ -81,9 +81,9 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
               statusList[i].addEntries({'Name': snapshot.id}.entries);
               i++;
             }
-          });
+          }
         });
-      });
+      }
     });
   }
 

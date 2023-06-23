@@ -125,14 +125,14 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
         .collection("Users")
         .get()
         .then((querySnapshot) async {
-      querySnapshot.docs.forEach((snapshot) {
+      for (var snapshot in querySnapshot.docs) {
         FirebaseFirestore.instance
             .collection("Users")
             .doc(snapshot.id)
             .collection("Statuses")
             .get()
             .then((querySnapshot) {
-          querySnapshot.docs.forEach((result) {
+          for (var result in querySnapshot.docs) {
             Map<String, dynamic> data = result.data();
             DateTime end = DateFormat("d MMM yyyy").parse(data['endDate']);
             if (DateTime(end.year, end.month, end.day + 1)
@@ -141,9 +141,9 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
               statusList[i].addEntries({'Name': snapshot.id}.entries);
               i++;
             }
-          });
+          }
         });
-      });
+      }
     });
   }
 
@@ -363,8 +363,8 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
-    final _formKey1 = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
+    final formKey1 = GlobalKey<FormState>();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
@@ -405,7 +405,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                 ),
                 //Status type drop down menu
                 Form(
-                  key: _formKey,
+                  key: formKey,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   child: Container(
                     height: 70.h,
@@ -458,7 +458,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                 ),
                 //Name of status textfield
                 Form(
-                  key: _formKey1,
+                  key: formKey1,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   child: Container(
                     decoration: BoxDecoration(
@@ -758,8 +758,8 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    if (_formKey.currentState!.validate() &&
-                        _formKey1.currentState!.validate() &&
+                    if (formKey.currentState!.validate() &&
+                        formKey1.currentState!.validate() &&
                         widget.endTime != "End Time:" &&
                         widget.startTime != "Start Time:" &&
                         widget.startTime != "Date:") {

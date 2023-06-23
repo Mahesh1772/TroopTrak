@@ -37,15 +37,10 @@ class ReadUserName extends StatelessWidget {
       builder: (context, snapshot) {
         //IF connection with the firebase is ensured, then we execute
         if (snapshot.hasData) {
-
           //We are trying to map the key and values pairs
           //to a variable called "data" of Type Map
-          Map<String, dynamic> data =
-              snapshot.data!.data() as Map<String, dynamic>;
 
-          return Text(
-            docIDs
-          );
+          return Text(docIDs);
           //return data;
         }
         return const Text('Loading......');

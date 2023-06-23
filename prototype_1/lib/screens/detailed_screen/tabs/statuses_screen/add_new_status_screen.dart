@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -356,7 +358,7 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
                     onTap: () {
                       if (_formKey.currentState!.validate()) {
                         IconSnackBar.show(
-                            duration: Duration(seconds: 1),
+                            duration: const Duration(seconds: 1),
                             direction: DismissDirection.horizontal,
                             context: context,
                             snackBarType: SnackBarType.save,

@@ -82,6 +82,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
     });
   }
 
+  @override
   void initState() {
     if (isFirstTIme) {
       _name = widget.name.text.trim();

@@ -678,7 +678,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                       //print(widget.selectedItem);
                       if (_formKey.currentState!.validate()) {
                         IconSnackBar.show(
-                            duration: Duration(seconds: 2),
+                            duration: const Duration(seconds: 2),
                             direction: DismissDirection.horizontal,
                             context: context,
                             snackBarType: SnackBarType.save,

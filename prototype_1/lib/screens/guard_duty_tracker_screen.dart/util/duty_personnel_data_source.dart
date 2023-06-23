@@ -1,5 +1,5 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/guard_duty_tracker_screen.dart';
+import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/tabs/points_leaderboard.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:recase/recase.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';

@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 List<String> documentIDs = [];
@@ -79,14 +78,14 @@ class ParticipantAutoSelect {
         .collection("Users")
         .get()
         .then((querySnapshot) async {
-      querySnapshot.docs.forEach((snapshot) {
+      for (var snapshot in querySnapshot.docs) {
         FirebaseFirestore.instance
             .collection("Users")
             .doc(snapshot.id)
             .collection("Statuses")
             .get()
             .then((querySnapshot) {
-          querySnapshot.docs.forEach((result) {
+          for (var result in querySnapshot.docs) {
             Map<String, dynamic> data = result.data();
             if (DateFormat("d MMM yyyy")
                 .parse(data['endDate'])
@@ -95,9 +94,9 @@ class ParticipantAutoSelect {
               statusList[i].addEntries({'Name': snapshot.id}.entries);
               i++;
             }
-          });
+          }
         });
-      });
+      }
     });
   }
 

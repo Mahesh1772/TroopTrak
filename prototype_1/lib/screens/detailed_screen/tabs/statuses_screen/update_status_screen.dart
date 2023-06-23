@@ -47,6 +47,7 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
     "Medical Appointment",
   ];
 
+  @override
   void initState() {
     sName = widget.statusName;
     if (isFirstTIme) {

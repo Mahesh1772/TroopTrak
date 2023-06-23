@@ -35,8 +35,8 @@ class GuardDutyTile extends StatelessWidget {
         padding: EdgeInsets.all(defaultPadding.sp),
         decoration: BoxDecoration(
           border: Border.all(width: 2.w, color: Colors.white.withOpacity(0.15)),
-          borderRadius: const BorderRadius.all(
-            Radius.circular(defaultPadding),
+          borderRadius: BorderRadius.all(
+            Radius.circular(defaultPadding.r),
           ),
         ),
         child: ExpansionTile(
@@ -82,7 +82,7 @@ class GuardDutyTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: 200,
+                    width: 200.w,
                     child: AutoSizeText(
                       '$startTime - $endTime (Next day)',
                       maxLines: 1,
@@ -93,7 +93,7 @@ class GuardDutyTile extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    width: 200,
+                    width: 200.w,
                     child: AutoSizeText(
                       dutyDate,
                       maxLines: 1,
@@ -141,7 +141,7 @@ class GuardDutyTile extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              padding: EdgeInsets.symmetric(horizontal: 8.0.w),
               child: GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -193,7 +193,7 @@ class GuardDutyTile extends StatelessWidget {
               height: 20.h,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              padding: EdgeInsets.symmetric(horizontal: 8.0.w),
               child: GestureDetector(
                 onTap: () {},
                 child: Container(
