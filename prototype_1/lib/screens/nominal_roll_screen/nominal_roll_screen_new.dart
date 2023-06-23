@@ -17,6 +17,9 @@ class NominalRollNewScreen extends StatefulWidget {
   State<NominalRollNewScreen> createState() => _NominalRollNewScreenState();
 }
 
+// List to store all user data, whilst also mapping to name
+List<Map<String, dynamic>> userDetails = [];
+
 class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
   // The DocID or the name of the current user is saved in here
   final name = FirebaseAuth.instance.currentUser!.displayName.toString();
@@ -29,9 +32,6 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
   // The list of all document IDs,
   //which have access to each their own personal information
   List<String> documentIDs = [];
-
-  // List to store all user data, whilst also mapping to name
-  List<Map<String, dynamic>> userDetails = [];
 
   // To store text being searched
   String searchText = '';

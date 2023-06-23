@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/screens/detailed_screen/soldier_detailed_screen.dart';
 
-class DashboardSoldierTile extends StatelessWidget {
+class ExpandedDutyParticipantsTile extends StatelessWidget {
   final String soldierName;
   final String soldierRank;
   final String company;
@@ -16,7 +16,7 @@ class DashboardSoldierTile extends StatelessWidget {
   final String enlistmentDate;
   final String ordDate;
 
-  const DashboardSoldierTile(
+  const ExpandedDutyParticipantsTile(
       {super.key,
       required this.soldierName,
       required this.soldierRank,
@@ -110,7 +110,9 @@ class DashboardSoldierTile extends StatelessWidget {
                     offset: Offset(10.w, 10.h),
                     color: Colors.black54)
               ],
-              color: soldierColorGenerator(soldierRank),
+              color: soldierColorGenerator(
+                "lib/assets/army-ranks/${soldierRank.toString().toLowerCase()}.png",
+              ),
               borderRadius: BorderRadius.circular(12.r)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,13 +124,13 @@ class DashboardSoldierTile extends StatelessWidget {
                   Image.asset(
                     soldierIconGenerator(
                         "lib/assets/army-ranks/${soldierRank.toString().toLowerCase()}.png"),
-                    width: 50.w,
+                    width: 60.w,
                   ),
 
                   //rank insignia
                   Image.asset(
-                    soldierRank,
-                    width: 30,
+                    "lib/assets/army-ranks/${soldierRank.toString().toLowerCase()}.png",
+                    width: 30.w,
                   ),
                 ],
               ),

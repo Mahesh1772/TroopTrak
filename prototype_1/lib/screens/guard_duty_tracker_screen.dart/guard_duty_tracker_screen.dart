@@ -1,14 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/add_new_duty_screen.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/util/duty_personnel_data_source.dart';
+import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/util/guard_duty_main_page_tiles.dart';
 import 'package:prototype_1/util/constants.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class GuardDutyTrackerScreen extends StatefulWidget {
   const GuardDutyTrackerScreen({super.key});
@@ -61,6 +60,29 @@ class _GuardDutyTrackerScreenState extends State<GuardDutyTrackerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    List<Map<String, dynamic>> upcomingDuties = [
+      {
+        'dutyDate': '14 Jul 2023',
+        'startTime': '8:00 AM',
+        'endTime': '8:00 AM',
+        'dutyType': 'Weekend (Saturday, 24hrs) Duty',
+        'points': 2.5
+      },
+      {
+        'dutyDate': '30 Jun 2023',
+        'startTime': '5:00 PM',
+        'endTime': '8:00 AM',
+        'dutyType': 'Weekday (12hrs) Duty',
+        'points': 1.0
+      },
+      {
+        'dutyDate': '14 Aug 2023',
+        'startTime': '8:00 AM',
+        'endTime': '8:00 AM',
+        'dutyType': 'Weekend (Sunday, 24hrs) Duty',
+        'points': 2.0
+      },
+    ];
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -224,23 +246,19 @@ class _GuardDutyTrackerScreenState extends State<GuardDutyTrackerScreen> {
               SizedBox(
                 height: 20.h,
               ),
-              SfCalendarTheme(
-                data: SfCalendarThemeData(
-                  brightness: Brightness.dark,
-                  backgroundColor: Colors.transparent,
-                  todayTextStyle: GoogleFonts.poppins(
-                    color: Colors.white,
-                  ),
-                  headerTextStyle: GoogleFonts.poppins(
-                    color: Colors.white,
-                  ),
-                ),
-                child: SfCalendar(
-                  view: CalendarView.schedule,
-                  appointmentTextStyle: GoogleFonts.poppins(
-                    color: Colors.white,
-                  ),
-                ),
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: upcomingDuties.length,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                      onTap: () {},
+                      child: GuardDutyTile(
+                          dutyDate: upcomingDuties[index]['dutyDate'],
+                          startTime: upcomingDuties[index]['startTime'],
+                          endTime: upcomingDuties[index]['endTime'],
+                          dutyType: upcomingDuties[index]['dutyType'],
+                          numberOfPoints: upcomingDuties[index]['points']));
+                },
               ),
               SizedBox(
                 height: 30.h,
