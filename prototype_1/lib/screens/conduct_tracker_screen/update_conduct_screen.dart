@@ -19,6 +19,7 @@ class UpdateConductScreen extends StatefulWidget {
     required this.endTime,
     required this.nonParticipants,
     required this.conductID,
+    required this.callbackFunction,
   });
 
   late TextEditingController conductName;
@@ -28,6 +29,7 @@ class UpdateConductScreen extends StatefulWidget {
   late String endTime;
   late String conductID;
   late List nonParticipants;
+ Function callbackFunction;
 
   @override
   State<UpdateConductScreen> createState() => _UpdateConductScreenState();
@@ -77,11 +79,8 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
 
   void editConduct() {
     editConductDetails();
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => const ConductTrackerScreen()),
-      (Route<dynamic> route) => false,
-    );
+    widget.callbackFunction();
+    Navigator.pop(context);
   }
 
   Future goBackWithoutChanges() async {

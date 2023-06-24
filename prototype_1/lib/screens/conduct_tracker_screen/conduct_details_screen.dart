@@ -82,6 +82,14 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
     super.initState();
   }
 
+  callback(userDetails, nonParticipants) {
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (BuildContext context) => super.widget));
+    documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
+    conductStream =
+        FirebaseFirestore.instance.collection('Conducts').snapshots();
+  }
+
   List<String> nonparticipantlist() {
     //getDocIDs();
     documentIDs.removeWhere(
@@ -110,9 +118,7 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
               ),
               child: SafeArea(
                 child: StreamBuilder<QuerySnapshot>(
-                    stream: FirebaseFirestore.instance
-                        .collection('Conducts')
-                        .snapshots(),
+                    stream: conductStream,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         var conducts = snapshot.data?.docs.toList();
@@ -179,9 +185,19 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                                                       conductData['startTime'],
                                                   endTime:
                                                       conductData['endTime'],
+                                                  callbackFunction: callback,
                                                 ),
                                               ),
                                             ).then((value) => setState(() {
+                                                  documentStream =
+                                                      FirebaseFirestore.instance
+                                                          .collection('Users')
+                                                          .snapshots();
+                                                  conductStream =
+                                                      FirebaseFirestore.instance
+                                                          .collection(
+                                                              'Conducts')
+                                                          .snapshots();
                                                   Navigator.pushReplacement(
                                                       context,
                                                       MaterialPageRoute(
@@ -367,121 +383,126 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                             }
                           }
                         }
+                        userDetails.removeWhere(
+                            (element) => toRemove.contains(element));
+
+                        nonParticipants.removeWhere(
+                            (element) => toRemove.contains(element));
+
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            StyledText("Participants", 24.sp,
+                                fontWeight: FontWeight.w500),
+                            SizedBox(
+                              height: 250,
+                              child: ListView.builder(
+                                  itemCount: userDetails.length,
+                                  itemBuilder: (context, index) {
+                                    return Container(
+                                      padding: EdgeInsets.all(16.0.sp),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsets.all(20.0.sp),
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.transparent,
+                                              border: Border.all(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            child: Center(
+                                              child: Image.asset(
+                                                "lib/assets/army-ranks/${userDetails[index]['rank'].toString().toLowerCase()}.png",
+                                                width: 20,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(16.0),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                StyledText(
+                                                    userDetails[index]['name']
+                                                        .toString()
+                                                        .titleCase,
+                                                    18,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  }),
+                            ),
+                            SizedBox(
+                              height: 20.h,
+                            ),
+                            StyledText("Non-Participants", 24.sp,
+                                fontWeight: FontWeight.w500),
+                            SizedBox(
+                              height: 250,
+                              child: ListView.builder(
+                                  itemCount: nonParticipants.length,
+                                  itemBuilder: (context, index) {
+                                    return Container(
+                                      padding: EdgeInsets.all(16.0.sp),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsets.all(20.0.sp),
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.transparent,
+                                              border: Border.all(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            child: Center(
+                                              child: Image.asset(
+                                                "lib/assets/army-ranks/${nonParticipants[index]['rank'].toString().toLowerCase()}.png",
+                                                width: 20,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(16.0),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                StyledText(
+                                                    nonParticipants[index]
+                                                            ['name']
+                                                        .toString()
+                                                        .titleCase,
+                                                    18,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                                const StyledText(
+                                                    "Reason: Ex RMJ", 14,
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  }),
+                            ),
+                          ],
+                        );
                       }
-                      userDetails
-                          .removeWhere((element) => toRemove.contains(element));
-
-                      nonParticipants
-                          .removeWhere((element) => toRemove.contains(element));
-
-                      return Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          StyledText("Participants", 24.sp,
-                              fontWeight: FontWeight.w500),
-                          SizedBox(
-                            height: 250,
-                            child: ListView.builder(
-                                itemCount: userDetails.length,
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                    padding: EdgeInsets.all(16.0.sp),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          padding: EdgeInsets.all(20.0.sp),
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: Colors.transparent,
-                                            border: Border.all(
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                          child: Center(
-                                            child: Image.asset(
-                                              "lib/assets/army-ranks/${userDetails[index]['rank'].toString().toLowerCase()}.png",
-                                              width: 20,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(16.0),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              StyledText(
-                                                  userDetails[index]['name']
-                                                      .toString()
-                                                      .titleCase,
-                                                  18,
-                                                  fontWeight: FontWeight.w600),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  );
-                                }),
-                          ),
-                          SizedBox(
-                            height: 20.h,
-                          ),
-                          StyledText("Non-Participants", 24.sp,
-                              fontWeight: FontWeight.w500),
-                          SizedBox(
-                            height: 250,
-                            child: ListView.builder(
-                                itemCount: nonParticipants.length,
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                    padding: EdgeInsets.all(16.0.sp),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          padding: EdgeInsets.all(20.0.sp),
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: Colors.transparent,
-                                            border: Border.all(
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                          child: Center(
-                                            child: Image.asset(
-                                              "lib/assets/army-ranks/${nonParticipants[index]['rank'].toString().toLowerCase()}.png",
-                                              width: 20,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(16.0),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              StyledText(
-                                                  nonParticipants[index]['name']
-                                                      .toString()
-                                                      .titleCase,
-                                                  18,
-                                                  fontWeight: FontWeight.w600),
-                                              const StyledText(
-                                                  "Reason: Ex RMJ", 14,
-                                                  fontWeight: FontWeight.w400),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  );
-                                }),
-                          ),
-                        ],
-                      );
+                      return const Text('Loading.....');
                     },
                   ),
                 ],
