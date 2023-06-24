@@ -38,34 +38,36 @@ class _UpcomingDutiesState extends State<UpcomingDuties> {
     ];
     return Container(
       margin: EdgeInsets.only(top: 50.h),
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.0.w),
-            child: StyledText("Upcoming Duties", 24.sp,
-                fontWeight: FontWeight.w600),
-          ),
-          SizedBox(
-            height: 15.h,
-          ),
-          ListView.builder(
-            shrinkWrap: true,
-            itemCount: upcomingDuties.length,
-            itemBuilder: (context, index) {
-              return InkWell(
-                  onTap: () {},
-                  child: GuardDutyTile(
-                      dutyDate: upcomingDuties[index]['dutyDate'],
-                      startTime: upcomingDuties[index]['startTime'],
-                      endTime: upcomingDuties[index]['endTime'],
-                      dutyType: upcomingDuties[index]['dutyType'],
-                      numberOfPoints: upcomingDuties[index]['points']));
-            },
-          ),
-          SizedBox(
-            height: 10.h,
-          )
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.0.w),
+              child: StyledText("Upcoming Duties", 24.sp,
+                  fontWeight: FontWeight.w600),
+            ),
+            SizedBox(
+              height: 15.h,
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: upcomingDuties.length,
+              itemBuilder: (context, index) {
+                return InkWell(
+                    onTap: () {},
+                    child: GuardDutyTile(
+                        dutyDate: upcomingDuties[index]['dutyDate'],
+                        startTime: upcomingDuties[index]['startTime'],
+                        endTime: upcomingDuties[index]['endTime'],
+                        dutyType: upcomingDuties[index]['dutyType'],
+                        numberOfPoints: upcomingDuties[index]['points']));
+              },
+            ),
+            SizedBox(
+              height: 10.h,
+            )
+          ],
+        ),
       ),
     );
   }

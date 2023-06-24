@@ -35,6 +35,9 @@ List<Map<String, dynamic>> userDetails = [];
 //Information for column of data
 List<DutyPersonnel> dutyPersonnel = <DutyPersonnel>[];
 
+//bool value,
+bool isFirstTIme = true;
+
 late DutyPersonnelDataSource dutyPersonnelDataSource;
 
 //All information on Duties
@@ -45,28 +48,33 @@ Map<dynamic, double> pointsTable = {};
 
 List<DutyPersonnel> getDutyPersonnel() {
   List<DutyPersonnel> array = [];
-  for (int i = 0; i < userDetails.length; i += 1) {
-    array.add(DutyPersonnel(userDetails[i]['name'],
-        "lib/assets/army-ranks/solider.png", userDetails[i]['rank'], i));
+  if (userDetails.isNotEmpty) {
+    for (int i = 0; i < userDetails.length; i += 1) {
+      array.add(DutyPersonnel(
+          userDetails[i]['name'],
+          "lib/assets/army-ranks/solider.png",
+          userDetails[i]['rank'],
+          pointsTable[userDetails[i]['name']]!.toInt()));
+      print(pointsTable[userDetails[i]['name']]);
+    }
+    print(userDetails.length);
   }
-
   return array;
 }
 
 class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
   Future getDutyInfo() async {
-    //dutyInfo = [];
-    FirebaseFirestore.instance
-        .collection("Duties")
-        .get()
-        .then((querySnapshot) async {
-      for (var snapshot in querySnapshot.docs) {
-        Map<String, dynamic> data = snapshot.data();
-        //print(data);
-        dutyInfo.add(data);
-      }
-    });
-    print(dutyInfo);
+    if (isFirstTIme) {
+      FirebaseFirestore.instance
+          .collection("Duties")
+          .get()
+          .then((querySnapshot) async {
+        for (var snapshot in querySnapshot.docs) {
+          Map<String, dynamic> data = snapshot.data();
+          dutyInfo.add(data);
+        }
+      });
+    }
   }
 
   Future getDocIDs() async {
@@ -76,36 +84,33 @@ class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
         .then((value) => value.docs.forEach((element) {
               Map<String, dynamic> data = element.data();
               documentIDs.add(element['name']);
-              pointsTable.addEntries({data['name']: 0.0}.entries);
+              if (isFirstTIme) {
+                pointsTable.addEntries({data['name']: 0.0}.entries);
+              }
             }));
   }
 
   void getDutyPoints() {
     for (var info in dutyInfo) {
       for (var person in info['participants']) {
-        print(person + ' ');
-        //pointsTable[person] =  (pointsTable[person]! + info['points']);
+        if (isFirstTIme) {
+          pointsTable[person] = (pointsTable[person]! + info['points']);
+        }
       }
-      print('');
     }
   }
 
   @override
   void initState() {
     super.initState();
-    dutyPersonnel = getDutyPersonnel();
-    dutyPersonnelDataSource =
-        DutyPersonnelDataSource(dutyPersonnel: dutyPersonnel);
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
     getDutyInfo();
     getDocIDs();
     //getDutyPoints();
-    print(dutyInfo.length);
-  }
-
-  @override
-  void dispose() {
-    dutyInfo.clear();
+    //print(pointsTable);
+    dutyPersonnel = getDutyPersonnel();
+    dutyPersonnelDataSource =
+        DutyPersonnelDataSource(dutyPersonnel: dutyPersonnel);
   }
 
   @override
@@ -153,10 +158,11 @@ class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
                 stream: documentStream,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
+                    getDutyPoints();
+                    isFirstTIme = false;
                     documentIDs = [];
                     userDetails = [];
                     var users = snapshot.data?.docs.toList();
-
                     for (var user in users!) {
                       var data = user.data();
                       userDetails.add(data as Map<String, dynamic>);
@@ -178,7 +184,7 @@ class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
                         child: SfDataGrid(
                           rowHeight: 100.h,
                           allowSorting: true,
-                          //allowFiltering: true,
+                          allowFiltering: true,
                           source: dutyPersonnelDataSource,
                           columnWidthMode: ColumnWidthMode.fill,
                           columns: <GridColumn>[
