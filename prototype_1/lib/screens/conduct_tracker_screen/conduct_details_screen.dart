@@ -82,16 +82,18 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
     super.initState();
   }
 
-  callback(userDetails, nonParticipants) {
+  callback(listofusers, nonparts) {
     Navigator.pushReplacement(context,
         MaterialPageRoute(builder: (BuildContext context) => super.widget));
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
     conductStream =
         FirebaseFirestore.instance.collection('Conducts').snapshots();
+        listofusers = userDetails;
+        nonparts = nonParticipants;
+    WidgetsBinding.instance.addPostFrameCallback((_) => build);
   }
 
   List<String> nonparticipantlist() {
-    //getDocIDs();
     documentIDs.removeWhere(
         (element) => conductData['participants'].contains(element));
     return documentIDs;
@@ -204,6 +206,9 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                                                           builder: (BuildContext
                                                                   context) =>
                                                               super.widget));
+                                                  WidgetsBinding.instance
+                                                      .addPostFrameCallback(
+                                                          (_) => build);
                                                 }));
                                           },
                                           child: Icon(

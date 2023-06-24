@@ -4,8 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
-import 'package:prototype_1/screens/conduct_tracker_screen/conduct_tracker_screen.dart';
+import 'package:intl/intl.dart' show DateFormat;
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:recase/recase.dart';
 
@@ -29,7 +28,7 @@ class UpdateConductScreen extends StatefulWidget {
   late String endTime;
   late String conductID;
   late List nonParticipants;
- Function callbackFunction;
+  Function callbackFunction;
 
   @override
   State<UpdateConductScreen> createState() => _UpdateConductScreenState();
@@ -79,7 +78,11 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
 
   void editConduct() {
     editConductDetails();
-    widget.callbackFunction();
+    var listofusers =
+        userDetails.where((element) => tempArray.contains(element['name']));
+    var nonparts = userDetails
+        .removeWhere((element) => listofusers.contains(element['name']));
+    widget.callbackFunction(listofusers, nonparts);
     Navigator.pop(context);
   }
 
