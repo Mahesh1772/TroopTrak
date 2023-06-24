@@ -131,7 +131,7 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                             conductData = data;
                             conductData.addEntries(
                                 {'ID': conduct.reference.id}.entries);
-                          }
+                          } 
                         }
                       }
                       documentIDs.removeWhere((element) =>
