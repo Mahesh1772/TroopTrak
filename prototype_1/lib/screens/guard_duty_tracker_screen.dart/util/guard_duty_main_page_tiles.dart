@@ -47,14 +47,15 @@ class GuardDutyTile extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(right: 30.0.w),
                 child: Container(
-                  height: 70.h,
-                  width: 70.w,
+                  height: 75.h,
+                  width: 75.w,
                   decoration: BoxDecoration(
                     color: const Color.fromARGB(255, 53, 14, 145),
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                   child: Center(
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
                           padding: EdgeInsets.only(top: 8.0.h),
