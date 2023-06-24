@@ -16,11 +16,15 @@ class UpdateDutyScreen extends StatefulWidget {
     required this.dutyDate,
     required this.dutyStartTime,
     required this.dutyEndTime,
+    required this.docID,
+    required this.participants,
   });
 
   late String dutyDate;
   late String dutyStartTime;
   late String dutyEndTime;
+  final String docID;
+  final List<String> participants;
 
   @override
   State<UpdateDutyScreen> createState() => _UpdateDutyScreenState();
@@ -28,20 +32,23 @@ class UpdateDutyScreen extends StatefulWidget {
 
 Map<String, String> dutySoldiersAndRanks = {};
 
-void populateDutySoldiersAndRanksArray() {
-  var length = dutySoldiersAndRanks.length;
-
-  for (var i = length; i < 10; i++) {
-    dutySoldiersAndRanks.addEntries({'NA$i': 'NA'}.entries);
-  }
-
-  print(dutySoldiersAndRanks);
-}
-
 List<String> heroAddDutySoldiers = [];
 List documentIDs = [];
 
 class _UpdateDutyScreenState extends State<UpdateDutyScreen> {
+  void populateDutySoldiersAndRanksArray() {
+    for (var participant in widget.participants) {
+      dutySoldiersAndRanks.addEntries({participant.toString(): 'NA'}.entries);
+    }
+
+    var length = dutySoldiersAndRanks.length;
+
+    for (var i = length; i < 10; i++) {
+      dutySoldiersAndRanks.addEntries({'NA$i': 'NA'}.entries);
+    }
+    print(dutySoldiersAndRanks);
+  }
+
   double points = 0;
   late String typeOfDay;
 
