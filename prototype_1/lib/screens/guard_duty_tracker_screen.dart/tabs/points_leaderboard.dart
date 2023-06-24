@@ -191,27 +191,27 @@ class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
                             GridColumn(
                               columnName: 'rank',
                               label: Container(
-                                padding: EdgeInsets.all(16.0.sp),
+                                padding: EdgeInsets.all(8.0.sp),
                                 alignment: Alignment.center,
-                                child: StyledText("Rank", 20.sp,
+                                child: StyledText("Rank", 18.sp,
                                     fontWeight: FontWeight.w600),
                               ),
                             ),
                             GridColumn(
                               columnName: 'name',
                               label: Container(
-                                padding: EdgeInsets.all(16.0.sp),
+                                padding: EdgeInsets.all(8.0.sp),
                                 alignment: Alignment.center,
-                                child: StyledText("Name", 20.sp,
+                                child: StyledText("Name", 18.sp,
                                     fontWeight: FontWeight.w600),
                               ),
                             ),
                             GridColumn(
                               columnName: 'points',
                               label: Container(
-                                padding: EdgeInsets.all(16.0.sp),
+                                padding: EdgeInsets.all(8.0.sp),
                                 alignment: Alignment.center,
-                                child: StyledText("Points", 20.sp,
+                                child: StyledText("Points", 18.sp,
                                     fontWeight: FontWeight.w600),
                               ),
                             ),
