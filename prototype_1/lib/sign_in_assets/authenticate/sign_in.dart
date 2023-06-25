@@ -8,6 +8,26 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:email_validator/email_validator.dart';
 
+@visibleForTesting
+String? validateEmail(String val) {
+  if (val.isEmpty) {
+    return "Email can not be empty";
+  } else if (!EmailValidator.validate(val, true)) {
+    return "Invalid Email Address";
+  }
+  return '';
+}
+
+@visibleForTesting
+String? validatePassword(String val) {
+  if (val.isEmpty) {
+    return "Password can not be empty";
+  } else if (val.length < 8) {
+    return "Password should be at least 8 characters long";
+  }
+  return '';
+}
+
 class SignIn extends StatefulWidget {
   final VoidCallback showRegisterPage;
   const SignIn({Key? key, required this.showRegisterPage}) : super(key: key);
@@ -63,15 +83,6 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormState>();
 
-    String? validateEmail(String val) {
-      if (val.isEmpty) {
-        return "Email can not be empty";
-      } else if (!EmailValidator.validate(val, true)) {
-        return "Invalid Email Address";
-      }
-      return '';
-    }
-
     bool _isvalidaEmail(String val) {
       if (val.isEmpty) {
         return false;
@@ -79,15 +90,6 @@ class _SignInState extends State<SignIn> {
         return false;
       }
       return true;
-    }
-
-    String? validatePassword(String val) {
-      if (val.isEmpty) {
-        return "Password can not be empty";
-      } else if (val.length < 8) {
-        return "Password should be atleast 8 charecters long";
-      }
-      return '';
     }
 
     bool _isvalidPassword(String val) {

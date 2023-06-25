@@ -132,7 +132,7 @@ class _BasicInfoTabState extends State<BasicInfoTab> {
                     ),
                   ),
                   SizedBox(
-                    height: 10.h,
+                    height: 20.h,
                   ),
                   Center(
                     child: TextButton(
@@ -161,6 +161,9 @@ class _BasicInfoTabState extends State<BasicInfoTab> {
                             ),
                             StyledText("DELETE SOLDIER DETAILS", 18.sp,
                                 fontWeight: FontWeight.bold),
+                            SizedBox(
+                              height: 30.h,
+                            )
                           ],
                         ),
                       ),

@@ -88,18 +88,16 @@ class GuardDutyTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: 200.w,
+                    width: 195.w,
                     child: AutoSizeText(
                       '$startTime - $endTime (Next day)',
                       maxLines: 1,
                       style: GoogleFonts.poppins(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white),
+                          fontWeight: FontWeight.w500, color: Colors.white),
                     ),
                   ),
                   SizedBox(
-                    width: 200.w,
+                    width: 195.w,
                     child: AutoSizeText(
                       dutyDate,
                       maxLines: 1,

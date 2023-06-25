@@ -19,7 +19,7 @@ class DutyPersonnel {
   final String name;
   final String image;
   final String rank;
-  final int points;
+  final int? points;
 }
 
 //This is what the stream builder is waiting for
@@ -119,7 +119,6 @@ class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
       margin: EdgeInsets.only(top: 20.0.h),
       child: SingleChildScrollView(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -170,55 +169,59 @@ class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
                     dutyPersonnel = getDutyPersonnel();
                     dutyPersonnelDataSource =
                         DutyPersonnelDataSource(dutyPersonnel: dutyPersonnel);
-                  }
-                  return Padding(
-                    padding: EdgeInsets.all(8.0.sp),
-                    child: SizedBox(
-                      width: double.maxFinite,
-                      height: 630.h,
-                      child: SfDataGridTheme(
-                        data: SfDataGridThemeData(
-                            sortIconColor: Colors.white,
-                            filterIconColor: Colors.white,
-                            headerColor: Colors.deepPurple.shade700),
-                        child: SfDataGrid(
-                          rowHeight: 100.h,
-                          allowSorting: true,
-                          allowFiltering: true,
-                          source: dutyPersonnelDataSource,
-                          columnWidthMode: ColumnWidthMode.fill,
-                          columns: <GridColumn>[
-                            GridColumn(
-                              columnName: 'rank',
-                              label: Container(
-                                padding: EdgeInsets.all(8.0.sp),
-                                alignment: Alignment.center,
-                                child: StyledText("Rank", 18.sp,
-                                    fontWeight: FontWeight.w600),
+
+                    return Padding(
+                      padding: EdgeInsets.all(8.0.sp),
+                      child: SizedBox(
+                        width: double.maxFinite,
+                        height: 630.h,
+                        child: SfDataGridTheme(
+                          data: SfDataGridThemeData(
+                              sortIconColor: Colors.white,
+                              filterIconColor: Colors.white,
+                              headerColor: Colors.deepPurple.shade700),
+                          child: SfDataGrid(
+                            rowHeight: 100.h,
+                            allowSorting: true,
+                            allowFiltering: true,
+                            source: dutyPersonnelDataSource,
+                            columnWidthMode: ColumnWidthMode.fill,
+                            columns: <GridColumn>[
+                              GridColumn(
+                                columnName: 'rank',
+                                label: Container(
+                                  padding: EdgeInsets.all(8.0.sp),
+                                  alignment: Alignment.center,
+                                  child: StyledText("Rank", 18.sp,
+                                      fontWeight: FontWeight.w600),
+                                ),
                               ),
-                            ),
-                            GridColumn(
-                              columnName: 'name',
-                              label: Container(
-                                padding: EdgeInsets.all(8.0.sp),
-                                alignment: Alignment.center,
-                                child: StyledText("Name", 18.sp,
-                                    fontWeight: FontWeight.w600),
+                              GridColumn(
+                                columnName: 'name',
+                                label: Container(
+                                  padding: EdgeInsets.all(8.0.sp),
+                                  alignment: Alignment.center,
+                                  child: StyledText("Name", 18.sp,
+                                      fontWeight: FontWeight.w600),
+                                ),
                               ),
-                            ),
-                            GridColumn(
-                              columnName: 'points',
-                              label: Container(
-                                padding: EdgeInsets.all(8.0.sp),
-                                alignment: Alignment.center,
-                                child: StyledText("Points", 18.sp,
-                                    fontWeight: FontWeight.w600),
+                              GridColumn(
+                                columnName: 'points',
+                                label: Container(
+                                  padding: EdgeInsets.all(8.0.sp),
+                                  alignment: Alignment.center,
+                                  child: StyledText("Points", 18.sp,
+                                      fontWeight: FontWeight.w600),
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
+                    );
+                  }
+                  return CircularProgressIndicator(
+                    color: Colors.deepPurple.shade400,
                   );
                 },
               ),
