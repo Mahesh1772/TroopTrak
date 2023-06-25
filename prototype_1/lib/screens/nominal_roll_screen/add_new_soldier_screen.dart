@@ -272,18 +272,22 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                     children: [
                       //Date of birth date picker
                       Container(
+                        width: 130.w,
+                        height: 60.h,
                         decoration: BoxDecoration(
                           color: Colors.black54,
                           border: Border.all(color: Colors.white),
                           borderRadius: BorderRadius.circular(12.r),
                         ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 15.w, vertical: 15.h),
-                          child: Text(
-                            widget.dob,
-                            style: GoogleFonts.poppins(
-                                color: Colors.white, fontSize: 16.sp),
+                        child: Center(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 15.w, vertical: 15.h),
+                            child: AutoSizeText(
+                              widget.dob,
+                              style: GoogleFonts.poppins(
+                                  color: Colors.white, fontSize: 16.sp),
+                            ),
                           ),
                         ),
                       ),
@@ -311,39 +315,41 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                             border: Border.all(color: Colors.white),
                             borderRadius: BorderRadius.circular(12.r),
                           ),
-                          child: DropdownButtonFormField<String>(
-                            validator: (value) {
-                              if (value == "Select your ration type...") {
-                                return 'Walao what food you eat?';
-                              }
-                              return null;
-                            },
-                            alignment: Alignment.center,
-                            dropdownColor: Colors.black54,
-                            value: widget.selectedItem,
-                            icon: const Icon(
-                              Icons.arrow_downward_sharp,
-                              color: Colors.white,
-                            ),
-                            style: GoogleFonts.poppins(color: Colors.black54),
-                            items: _rationTypes
-                                .map(
-                                  (item) => DropdownMenuItem<String>(
-                                    value: item,
-                                    child: AutoSizeText(
-                                      item,
-                                      maxLines: 1,
-                                      style: GoogleFonts.poppins(
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.white),
+                          child: Center(
+                            child: DropdownButtonFormField<String>(
+                              validator: (value) {
+                                if (value == "Select your ration type...") {
+                                  return 'Walao what food you eat?';
+                                }
+                                return null;
+                              },
+                              alignment: Alignment.center,
+                              dropdownColor: Colors.black54,
+                              value: widget.selectedItem,
+                              icon: const Icon(
+                                Icons.arrow_downward_sharp,
+                                color: Colors.white,
+                              ),
+                              style: GoogleFonts.poppins(color: Colors.black54),
+                              items: _rationTypes
+                                  .map(
+                                    (item) => DropdownMenuItem<String>(
+                                      value: item,
+                                      child: AutoSizeText(
+                                        item,
+                                        maxLines: 1,
+                                        style: GoogleFonts.poppins(
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.white),
+                                      ),
                                     ),
-                                  ),
-                                )
-                                .toList(),
-                            onChanged: (item) => setState(() {
-                              widget.selectedItem = item;
-                            }),
+                                  )
+                                  .toList(),
+                              onChanged: (item) => setState(() {
+                                widget.selectedItem = item;
+                              }),
+                            ),
                           ),
                         ),
                       ),
@@ -602,22 +608,26 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
 
                   //Enlistment Date picker
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       SizedBox(
-                        width: 150.w,
+                        width: 160.w,
+                        height: 60.h,
                         child: Container(
                           decoration: BoxDecoration(
                             color: Colors.black54,
                             border: Border.all(color: Colors.white),
                             borderRadius: BorderRadius.circular(12.r),
                           ),
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 15.w, vertical: 15.h),
-                            child: Text(
-                              widget.enlistment,
-                              style: GoogleFonts.poppins(
-                                  color: Colors.white, fontSize: 16.sp),
+                          child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 15.w, vertical: 15.h),
+                              child: AutoSizeText(
+                                widget.enlistment,
+                                style: GoogleFonts.poppins(
+                                    color: Colors.white, fontSize: 16.sp),
+                              ),
                             ),
                           ),
                         ),
