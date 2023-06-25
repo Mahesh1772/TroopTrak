@@ -15,14 +15,19 @@ class GuardDutyTile extends StatelessWidget {
   final String endTime;
   final String dutyType;
   final double numberOfPoints;
+  final String docID;
+  final List participants;
 
-  const GuardDutyTile(
-      {super.key,
-      required this.dutyDate,
-      required this.startTime,
-      required this.endTime,
-      required this.dutyType,
-      required this.numberOfPoints});
+  const GuardDutyTile({
+    super.key,
+    required this.dutyDate,
+    required this.startTime,
+    required this.endTime,
+    required this.dutyType,
+    required this.numberOfPoints,
+    required this.docID,
+    required this.participants,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -146,12 +151,16 @@ class GuardDutyTile extends StatelessWidget {
               child: GestureDetector(
                 onTap: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => UpdateDutyScreen(
-                              dutyDate: dutyDate,
-                              dutyStartTime: startTime,
-                              dutyEndTime: endTime)));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => UpdateDutyScreen(
+                          docID: docID,
+                          participants: participants.cast<String>(),
+                          dutyDate: dutyDate,
+                          dutyStartTime: startTime,
+                          dutyEndTime: endTime),
+                    ),
+                  );
                 },
                 child: Container(
                   padding: EdgeInsets.all(10.sp),
