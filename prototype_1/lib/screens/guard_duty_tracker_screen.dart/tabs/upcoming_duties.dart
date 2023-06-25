@@ -57,7 +57,6 @@ class _UpcomingDutiesState extends State<UpcomingDuties> {
                         dutyDetails[i]
                             .addEntries({'ID': duties[i].reference.id}.entries);
                       }
-                      print(dutyDetails);
                     }
                     return ListView.builder(
                       shrinkWrap: true,

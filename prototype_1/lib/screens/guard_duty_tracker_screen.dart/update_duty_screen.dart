@@ -30,15 +30,33 @@ class UpdateDutyScreen extends StatefulWidget {
   State<UpdateDutyScreen> createState() => _UpdateDutyScreenState();
 }
 
-Map<String, String> dutySoldiersAndRanks = {};
+Map<String, dynamic> dutySoldiersAndRanks = {};
 
 List<String> heroAddDutySoldiers = [];
+
+List<Map<String, dynamic>> listOfPersonal = [];
+
 List documentIDs = [];
 
 class _UpdateDutyScreenState extends State<UpdateDutyScreen> {
+  Future getListOfUsers() async {
+    FirebaseFirestore.instance
+        .collection("Users")
+        .get()
+        .then((querySnapshot) async {
+      for (var snapshot in querySnapshot.docs) {
+        Map<String, dynamic> data = snapshot.data();
+        listOfPersonal.add(data);
+      }
+    });
+  }
+
   void populateDutySoldiersAndRanksArray() {
-    for (var participant in widget.participants) {
-      dutySoldiersAndRanks.addEntries({participant.toString(): 'NA'}.entries);
+    var newList = listOfPersonal.where((element) => widget.participants.contains(element['name']));
+    print(newList);
+    for (var participant in newList) {
+      dutySoldiersAndRanks.addEntries(
+          {participant['name'].toString(): participant['rank']}.entries);
     }
 
     var length = dutySoldiersAndRanks.length;
@@ -66,7 +84,7 @@ class _UpdateDutyScreenState extends State<UpdateDutyScreen> {
     var notKeys = dutySoldiersAndRanks.keys.toList();
     notKeys.removeWhere((element) => documentIDs.contains(element));
     keys.removeWhere((element) => notKeys.contains(element));
-    await FirebaseFirestore.instance.collection('Duties').add({
+    await FirebaseFirestore.instance.collection('Duties').doc(widget.docID).set({
       //User map formatting
       'points': points,
       'dayType': typeOfDay,
@@ -81,6 +99,7 @@ class _UpdateDutyScreenState extends State<UpdateDutyScreen> {
   @override
   void initState() {
     getDocIDs();
+    getListOfUsers();
     pointsAssignment(DateTime.now());
     populateHeroTagArray();
     populateDutySoldiersAndRanksArray();
@@ -512,7 +531,7 @@ class _UpdateDutyScreenState extends State<UpdateDutyScreen> {
                           direction: DismissDirection.horizontal,
                           context: context,
                           snackBarType: SnackBarType.save,
-                          label: 'Conduct added successfully!',
+                          label: 'Duty added successfully!',
                           snackBarStyle: const SnackBarStyle() // this one
                           );
                       addGaurdDuty();
