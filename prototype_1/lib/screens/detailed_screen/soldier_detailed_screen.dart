@@ -197,7 +197,7 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
                 ),
                 SizedBox(
                   width: double.maxFinite,
-                  height: 700.h,
+                  height: 750.h,
                   child: TabBarView(
                     controller: tabController,
                     children: [

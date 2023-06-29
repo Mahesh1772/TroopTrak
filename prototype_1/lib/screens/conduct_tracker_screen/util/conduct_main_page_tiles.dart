@@ -46,7 +46,7 @@ class ConductTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                width: 230,
+                width: 230.w,
                 child: AutoSizeText(
                   conductType,
                   maxLines: 1,
@@ -57,7 +57,7 @@ class ConductTile extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                width: 230,
+                width: 230.w,
                 child: AutoSizeText(
                   conductName,
                   maxLines: 1,
