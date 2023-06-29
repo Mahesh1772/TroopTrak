@@ -3,29 +3,30 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/add_new_duty_screen.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/util/custom_rect_tween.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/util/add_soldier_to_duty_tile.dart';
 
 class AddDutySoldiersCard extends StatefulWidget {
-  const AddDutySoldiersCard(
-      {super.key, required this.heroTag, required this.callbackFunction});
+  const AddDutySoldiersCard({
+    super.key,
+    required this.heroTag,
+    required this.callbackFunction,
+    required this.nonParticipants,
+  });
 
   @override
   State<AddDutySoldiersCard> createState() => _AddDutySoldiersCardState();
 
   final String heroTag;
   final Function callbackFunction;
+  final List nonParticipants;
 }
 
-// Store all the names in conduct
 Map<String, String> tempArray = {};
 // List of all names
 List<String> documentIDs = [];
-// Name of soldiers not included
-List<dynamic> soldierStatusArray = [];
 
 //This is what the stream builder is waiting for
 late Stream<QuerySnapshot> documentStream;
@@ -36,55 +37,14 @@ List<Map<String, dynamic>> userDetails = [];
 // To store text being searched
 String searchText = '';
 
-List<Map<String, dynamic>> statusList = [];
-
-List<String> non_participants = [];
-
-// Boolean value for checking if it is first time or not
-bool isFirstTIme = true;
-
-List<String> guardDuty = ['Ex Uniform', 'Ex Boots'];
-
 class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
-  
   @override
   void initState() {
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
     getDocIDs();
-    getUserBooks();
-    //non_participants = [];
-    autoFilter();
     tempArray = {};
+
     super.initState();
-  }
-
-  int i = 0;
-
-  Future getUserBooks() async {
-    FirebaseFirestore.instance
-        .collection("Users")
-        .get()
-        .then((querySnapshot) async {
-      for (var snapshot in querySnapshot.docs) {
-        FirebaseFirestore.instance
-            .collection("Users")
-            .doc(snapshot.id)
-            .collection("Statuses")
-            .get()
-            .then((querySnapshot) {
-          for (var result in querySnapshot.docs) {
-            Map<String, dynamic> data = result.data();
-            DateTime end = DateFormat("d MMM yyyy").parse(data['endDate']);
-            if (DateTime(end.year, end.month, end.day + 1)
-                .isAfter(DateTime.now())) {
-              statusList.add(data);
-              statusList[i].addEntries({'Name': snapshot.id}.entries);
-              i++;
-            }
-          }
-        });
-      }
-    });
   }
 
   Future getDocIDs() async {
@@ -104,19 +64,6 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
     }
 
     print(dutySoldiersAndRanks);
-  }
-
-  void autoFilter() {
-    non_participants = [];
-    for (var status in statusList) {
-      if (status['statusType'] == 'Excuse') {
-        if (guardDuty.contains(status['statusName'])) {
-          non_participants.add(status['Name']);
-        }
-      } else if (status['statusType'] == 'Leave') {
-        non_participants.add(status['Name']);
-      }
-    }
   }
 
   @override
@@ -234,11 +181,15 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
                               padding: EdgeInsets.all(12.sp),
                               itemBuilder: (context, index) {
                                 return AddSoldierToDutyTile(
-                                  rank: userDetails[index]['rank'],
-                                  name: userDetails[index]['name'],
-                                  appointment: userDetails[index]
-                                      ['appointment'],
-                                );
+                                    rank: userDetails[index]['rank'],
+                                    name: userDetails[index]['name'],
+                                    appointment: userDetails[index]
+                                        ['appointment'],
+                                    nonParticipants: widget.nonParticipants,
+                                    selectedSoldiers: tempArray,
+                                    isTileSelected: dutySoldiersAndRanks
+                                        .containsKey(userDetails[index]['name']
+                                            .toString()));
                               },
                             ),
                           ),
@@ -258,7 +209,8 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
 
                         populateDutySoldiersAndRanksArray();
 
-                        widget.callbackFunction(dutySoldiersAndRanks);
+                        widget.callbackFunction(
+                            dutySoldiersAndRanks, tempArray);
                         Navigator.pop(context);
                       },
                       child: Container(

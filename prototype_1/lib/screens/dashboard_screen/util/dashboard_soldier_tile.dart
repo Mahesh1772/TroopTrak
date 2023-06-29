@@ -110,7 +110,9 @@ class DashboardSoldierTile extends StatelessWidget {
                     offset: Offset(10.w, 10.h),
                     color: Colors.black54)
               ],
-              color: soldierColorGenerator(soldierRank),
+              color: soldierColorGenerator(
+                "lib/assets/army-ranks/${soldierRank.toString().toLowerCase()}.png",
+              ),
               borderRadius: BorderRadius.circular(12.r)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,13 +124,13 @@ class DashboardSoldierTile extends StatelessWidget {
                   Image.asset(
                     soldierIconGenerator(
                         "lib/assets/army-ranks/${soldierRank.toString().toLowerCase()}.png"),
-                    width: 50.w,
+                    width: 60.w,
                   ),
 
                   //rank insignia
                   Image.asset(
-                    soldierRank,
-                    width: 30,
+                    "lib/assets/army-ranks/${soldierRank.toString().toLowerCase()}.png",
+                    width: 30.w,
                   ),
                 ],
               ),

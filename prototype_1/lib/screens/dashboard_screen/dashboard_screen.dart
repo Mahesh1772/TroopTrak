@@ -1,99 +1,16 @@
 // ignore_for_file: must_be_immutable
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:prototype_1/screens/detailed_screen/soldier_detailed_screen.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/util/constants.dart';
 import 'package:prototype_1/screens/dashboard_screen/util/pie_chart/current_strength_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:prototype_1/screens/dashboard_screen/util/dashboard_soldier_tile.dart';
 
-List unitSoldiers = [
-  //[ soldierName, soldierRank, tileColour, soldierAttendance, soldierIcon, soldierAppointment, companyName, platoonName, sectionNumber, dateOfBirth, rationType, bloodType, enlistmentDate, ordDate]
-
-  [
-    "Wei John Koh",
-    "lib/assets/army-ranks/3sg.png",
-    Colors.brown.shade800,
-    "IN CAMP",
-    "lib/assets/army-ranks/soldier.png",
-    "section commander",
-    "Alpha",
-    "4",
-    "3",
-    "04 May 2001",
-    "VC",
-    "AB+",
-    "11 Aug 2020",
-    "10 Aug 2022",
-  ],
-  [
-    "Sivagnanam Maheshwaran",
-    "lib/assets/army-ranks/3sg.png",
-    Colors.indigo.shade800,
-    "IN CAMP",
-    "lib/assets/army-ranks/soldier.png",
-    "LOGISTICS SPECIALIST",
-    "Bravo",
-    "1",
-    "2",
-    "05 Apr 2001",
-    "VI",
-    "AB+",
-    "11 Aug 2019",
-    "10 Aug 2021",
-  ],
-  [
-    "Aakash Ramaswamy",
-    "lib/assets/army-ranks/3sg.png",
-    Colors.indigo.shade400,
-    "NOT IN CAMP",
-    "lib/assets/army-ranks/soldier.png",
-    "MARKSMAN TEAM COMMANDER",
-    "Charlie",
-    "HQ",
-    "MM",
-    "02 Apr 2002",
-    "VI",
-    "O+",
-    "11 Aug 2020",
-    "10 Aug 2022",
-  ],
-  [
-    "Nikhil Babu",
-    "lib/assets/army-ranks/cfc.png",
-    Colors.teal.shade800,
-    "IN CAMP",
-    "lib/assets/army-ranks/men.png",
-    "section 2IC",
-    "Bn HQ",
-    "2",
-    "4",
-    "03 Sept 2000",
-    "M",
-    "B+",
-    "10 Aug 2020",
-    "09 Aug 2022",
-  ],
-  [
-    "John Doe",
-    "lib/assets/army-ranks/lcp.png",
-    Colors.teal.shade400,
-    "NOT IN CAMP",
-    "lib/assets/army-ranks/men.png",
-    "1st MATADOR / LAW GUNNER",
-    "Support",
-    "3",
-    "3",
-    "04 Jul 2003",
-    "NM",
-    "A+",
-    "11 Jul 2021",
-    "10 Jul 2023",
-  ],
-];
+import '../detailed_screen/tabs/user_profile_tabs/user_profile_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -102,8 +19,47 @@ class DashboardScreen extends StatefulWidget {
   State<DashboardScreen> createState() => _DashboardScreenState();
 }
 
+// List to store all user data, whilst also mapping to name
+List<Map<String, dynamic>> userDetails = [];
+
+Map<String, dynamic> currentUserData = {};
+
+//This is what the stream builder is waiting for
+late Stream<QuerySnapshot> documentStream;
+
+// The list of all document IDs,
+//which have access to each their own personal information
+List<String> documentIDs = [];
+
 class _DashboardScreenState extends State<DashboardScreen> {
+  final name = FirebaseAuth.instance.currentUser!.displayName.toString();
+
   String fname = FirebaseAuth.instance.currentUser!.displayName.toString();
+
+  Future getCurrentUserData() async {
+    var data = FirebaseFirestore.instance.collection('Users').doc(name);
+    data.get().then((DocumentSnapshot doc) {
+      currentUserData = doc.data() as Map<String, dynamic>;
+      // ...
+    });
+  }
+
+  Future getDocIDs() async {
+    FirebaseFirestore.instance
+        .collection('Users')
+        .get()
+        .then((value) => value.docs.forEach((element) {
+              documentIDs.add(element['name']);
+            }));
+  }
+
+  @override
+  void initState() {
+    documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
+    getCurrentUserData();
+    getDocIDs();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -158,21 +114,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   InkWell(
                     onTap: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SoldierDetailedScreen(
-                                    soldierName: unitSoldiers[1][0],
-                                    soldierRank: unitSoldiers[1][1],
-                                    soldierAppointment: unitSoldiers[1][5],
-                                    company: unitSoldiers[1][6],
-                                    platoon: unitSoldiers[1][7],
-                                    section: unitSoldiers[1][8],
-                                    dateOfBirth: unitSoldiers[1][9],
-                                    rationType: unitSoldiers[1][10],
-                                    bloodType: unitSoldiers[1][11],
-                                    enlistmentDate: unitSoldiers[1][12],
-                                    ordDate: unitSoldiers[1][13],
-                                  )));
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UserProfileScreen(
+                            soldierName: currentUserData['name'],
+                            soldierRank:
+                                "lib/assets/army-ranks/${currentUserData['rank'].toString().toLowerCase()}.png",
+                            soldierAppointment: currentUserData['appointment'],
+                            company: currentUserData['company'],
+                            platoon: currentUserData['platoon'],
+                            section: currentUserData['section'],
+                            dateOfBirth: currentUserData['dob'],
+                            rationType: currentUserData['rationType'],
+                            bloodType: currentUserData['bloodgroup'],
+                            enlistmentDate: currentUserData['enlistment'],
+                            ordDate: currentUserData['ord'],
+                          ),
+                        ),
+                      );
                     },
                     child: Padding(
                       padding: EdgeInsets.all(12.0.sp),
@@ -367,29 +326,44 @@ class CurrentStrengthBreakdownTile extends StatelessWidget {
         ),
         collapsedIconColor: Colors.white,
         children: [
-          SizedBox(
-            height: 220.h,
-            child: ListView.builder(
-              itemCount: unitSoldiers.length,
-              padding: EdgeInsets.all(12.sp),
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return DashboardSoldierTile(
-                  soldierName: unitSoldiers[index][0],
-                  soldierRank: unitSoldiers[index][1],
-                  soldierAppointment: unitSoldiers[index][5],
-                  company: unitSoldiers[index][6],
-                  platoon: unitSoldiers[index][7],
-                  section: unitSoldiers[index][8],
-                  dateOfBirth: unitSoldiers[index][9],
-                  rationType: unitSoldiers[index][10],
-                  bloodType: unitSoldiers[index][11],
-                  enlistmentDate: unitSoldiers[index][12],
-                  ordDate: unitSoldiers[index][13],
+          StreamBuilder<QuerySnapshot>(
+              stream: documentStream,
+              builder: (context, snapshot) {
+                documentIDs = [];
+                userDetails = [];
+                List? users = snapshot.data?.docs.toList();
+                var docsmapshot = snapshot.data!;
+
+                for (var i = 0; i < users!.length; i++) {
+                  documentIDs.add(users[i]['name']);
+                  var data = docsmapshot.docs[i].data() as Map<String, dynamic>;
+                  userDetails.add(data);
+                }
+
+                return SizedBox(
+                  height: 220.h,
+                  child: ListView.builder(
+                    itemCount: userDetails.length,
+                    padding: EdgeInsets.all(12.sp),
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return DashboardSoldierTile(
+                        soldierName: userDetails[index]['name'],
+                        soldierRank: userDetails[index]['rank'],
+                        soldierAppointment: userDetails[index]['appointment'],
+                        company: userDetails[index]['company'],
+                        platoon: userDetails[index]['platoon'],
+                        section: userDetails[index]['section'],
+                        dateOfBirth: userDetails[index]['dob'],
+                        rationType: userDetails[index]['rationType'],
+                        bloodType: userDetails[index]['bloodgroup'],
+                        enlistmentDate: userDetails[index]['enlistment'],
+                        ordDate: userDetails[index]['ord'],
+                      );
+                    },
+                  ),
                 );
-              },
-            ),
-          ),
+              }),
         ],
       ),
     );

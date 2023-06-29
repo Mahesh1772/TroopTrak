@@ -93,8 +93,9 @@ class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
   void getDutyPoints() {
     for (var info in dutyInfo) {
       for (var person in info['participants']) {
-        if (isFirstTIme) {
-          pointsTable[person] = (pointsTable[person]! + info['points']);
+        var pointsPerPerson = pointsTable[person];
+        if (isFirstTIme && pointsPerPerson != null) {
+          pointsPerPerson = (pointsPerPerson + info['points']);
         }
       }
     }

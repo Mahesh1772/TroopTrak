@@ -9,22 +9,22 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 
 var fname = FirebaseAuth.instance.currentUser!.displayName.toString();
-var soldierStatuses = [
-  //soldierStatuses - [statusType, statusName, startDate, endDate]
-  ["Excuse", "Ex FLEGs", "13 Jul 2021", "12 Jul 2022"],
-  ["Leave", "MC", "10 Jun 2021", "12 Jul 2021"],
-  ["Medical Appointment", "National Skin Centre", "5 Apr 2021", "5 Apr 2021"],
-];
+// var soldierStatuses = [
+//   //soldierStatuses - [statusType, statusName, startDate, endDate]
+//   ["Excuse", "Ex FLEGs", "13 Jul 2021", "12 Jul 2022"],
+//   ["Leave", "MC", "10 Jun 2021", "12 Jul 2021"],
+//   ["Medical Appointment", "National Skin Centre", "5 Apr 2021", "5 Apr 2021"],
+// ];
 
-var pastStatuses = [
-  //soldierStatuses - [statusType, statusName, startDate, endDate]
-  ["Excuse", "Ex FLEGs", "13 Jul 2021", "12 Jul 2022"],
-  ["Leave", "MC", "10 Jun 2021", "12 Jul 2021"],
-  ["Medical Appointment", "National Skin Centre", "5 Apr 2021", "5 Apr 2021"],
-  ["Excuse", "Ex FLEGs", "13 Jul 2021", "12 Jul 2022"],
-  ["Leave", "MC", "10 Jun 2021", "12 Jul 2021"],
-  ["Medical Appointment", "National Skin Centre", "5 Apr 2021", "5 Apr 2021"],
-];
+// var pastStatuses = [
+//   //soldierStatuses - [statusType, statusName, startDate, endDate]
+//   ["Excuse", "Ex FLEGs", "13 Jul 2021", "12 Jul 2022"],
+//   ["Leave", "MC", "10 Jun 2021", "12 Jul 2021"],
+//   ["Medical Appointment", "National Skin Centre", "5 Apr 2021", "5 Apr 2021"],
+//   ["Excuse", "Ex FLEGs", "13 Jul 2021", "12 Jul 2022"],
+//   ["Leave", "MC", "10 Jun 2021", "12 Jul 2021"],
+//   ["Medical Appointment", "National Skin Centre", "5 Apr 2021", "5 Apr 2021"],
+// ];
 
 class UserProfileStatusesTab extends StatefulWidget {
   const UserProfileStatusesTab({
@@ -108,7 +108,7 @@ class _UserProfileStatusesTabState extends State<UserProfileStatusesTab> {
                   SizedBox(
                     height: 250.h,
                     child: ListView.builder(
-                      itemCount: soldierStatuses.length,
+                      itemCount: userCurrentStatus.length,
                       padding: EdgeInsets.all(12.sp),
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
@@ -148,15 +148,15 @@ class _UserProfileStatusesTabState extends State<UserProfileStatusesTab> {
                   Expanded(
                     child: ListView.builder(
                       scrollDirection: Axis.vertical,
-                      itemCount: pastStatuses.length,
+                      itemCount: userPastStatus.length,
                       itemBuilder: (context, index) {
                         return PastSoldierStatusTile(
                             statusID: '',
                             docID: widget.docID,
-                            statusType: pastStatuses[index][0],
-                            statusName: pastStatuses[index][1],
-                            startDate: pastStatuses[index][2],
-                            endDate: pastStatuses[index][3]);
+                            statusType: userPastStatus[index]['ID'],
+                            statusName: userPastStatus[index]['statusType'],
+                            startDate: userPastStatus[index]['startDate'],
+                            endDate: userPastStatus[index]['endDate']);
                       },
                     ),
                   ),

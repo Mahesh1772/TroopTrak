@@ -35,7 +35,7 @@ void populateDutySoldiersAndRanksArray() {
     dutySoldiersAndRanks.addEntries({'NA$i': 'NA'}.entries);
   }
 
-  print(dutySoldiersAndRanks);
+  //print(dutySoldiersAndRanks);
 }
 
 List<String> heroAddDutySoldiers = [];
@@ -44,6 +44,17 @@ List documentIDs = [];
 class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
   double points = 0;
   late String typeOfDay;
+
+  List<String> non_participants = [];
+
+  Map<String, String> tempArray = {};
+
+  List<Map<String, dynamic>> statusList = [];
+
+// Boolean value for checking if it is first time or not
+//bool isFirstTIme = true;
+
+  List<String> guardDuty = ['Ex Uniform', 'Ex Boots'];
 
   Future getDocIDs() async {
     FirebaseFirestore.instance
@@ -71,6 +82,47 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
     Navigator.pop(context);
   }
 
+  void autoFilter() {
+    print(statusList);
+    for (var status in statusList) {
+      if (status['statusType'] == 'Excuse') {
+        if (guardDuty.contains(status['statusName'])) {
+          non_participants.add(status['Name']);
+        }
+      } else if (status['statusType'] == 'Leave') {
+        non_participants.add(status['Name']);
+      }
+    }
+  }
+
+  Future getUserBooks() async {
+    int i = 0;
+    FirebaseFirestore.instance
+        .collection("Users")
+        .get()
+        .then((querySnapshot) async {
+      for (var snapshot in querySnapshot.docs) {
+        FirebaseFirestore.instance
+            .collection("Users")
+            .doc(snapshot.id)
+            .collection("Statuses")
+            .get()
+            .then((querySnapshot) {
+          for (var result in querySnapshot.docs) {
+            Map<String, dynamic> data = result.data();
+            DateTime end = DateFormat("d MMM yyyy").parse(data['endDate']);
+            if (DateTime(end.year, end.month, end.day + 1)
+                .isAfter(DateTime.now())) {
+              statusList.add(data);
+              statusList[i].addEntries({'Name': snapshot.id}.entries);
+              i++;
+            }
+          }
+        });
+      }
+    });
+  }
+
   @override
   void initState() {
     getDocIDs();
@@ -78,12 +130,17 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
     populateHeroTagArray();
     populateDutySoldiersAndRanksArray();
     displayTiles();
+    getUserBooks();
+    print(statusList);
+    autoFilter();
+    print(non_participants);
     super.initState();
   }
 
-  callBack(finalArray) {
+  callBack(finalArray, selectionArray) {
     setState(() {
       dutySoldiersAndRanks = finalArray;
+      tempArray = selectionArray;
     });
   }
 
@@ -99,12 +156,14 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                 name: dutySoldiersAndRanks.keys.elementAt(0),
                 heroTag: heroAddDutySoldiers[0],
                 callbackFunction: callBack,
+                nonParticipants: non_participants,
               ),
               OrgChartTile(
                 rank: dutySoldiersAndRanks.values.elementAt(1),
                 name: dutySoldiersAndRanks.keys.elementAt(1),
                 heroTag: heroAddDutySoldiers[1],
                 callbackFunction: callBack,
+                nonParticipants: non_participants,
               ),
             ],
           ),
@@ -120,24 +179,28 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
               name: dutySoldiersAndRanks.keys.elementAt(2),
               heroTag: heroAddDutySoldiers[2],
               callbackFunction: callBack,
+              nonParticipants: non_participants,
             ),
             OrgChartTile(
               rank: dutySoldiersAndRanks.values.elementAt(3),
               name: dutySoldiersAndRanks.keys.elementAt(3),
               heroTag: heroAddDutySoldiers[3],
               callbackFunction: callBack,
+              nonParticipants: non_participants,
             ),
             OrgChartTile(
               rank: dutySoldiersAndRanks.values.elementAt(4),
               name: dutySoldiersAndRanks.keys.elementAt(4),
               heroTag: heroAddDutySoldiers[4],
               callbackFunction: callBack,
+              nonParticipants: non_participants,
             ),
             OrgChartTile(
               rank: dutySoldiersAndRanks.values.elementAt(5),
               name: dutySoldiersAndRanks.keys.elementAt(5),
               heroTag: heroAddDutySoldiers[5],
               callbackFunction: callBack,
+              nonParticipants: non_participants,
             ),
           ],
         ),
@@ -152,24 +215,28 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
               name: dutySoldiersAndRanks.keys.elementAt(6),
               heroTag: heroAddDutySoldiers[6],
               callbackFunction: callBack,
+              nonParticipants: non_participants,
             ),
             OrgChartTile(
               rank: dutySoldiersAndRanks.values.elementAt(7),
               name: dutySoldiersAndRanks.keys.elementAt(7),
               heroTag: heroAddDutySoldiers[7],
               callbackFunction: callBack,
+              nonParticipants: non_participants,
             ),
             OrgChartTile(
               rank: dutySoldiersAndRanks.values.elementAt(8),
               name: dutySoldiersAndRanks.keys.elementAt(8),
               heroTag: heroAddDutySoldiers[8],
               callbackFunction: callBack,
+              nonParticipants: non_participants,
             ),
             OrgChartTile(
               rank: dutySoldiersAndRanks.values.elementAt(9),
               name: dutySoldiersAndRanks.keys.elementAt(9),
               heroTag: heroAddDutySoldiers[9],
               callbackFunction: callBack,
+              nonParticipants: non_participants,
             ),
           ],
         ),
@@ -271,7 +338,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(dutySoldiersAndRanks);
+    //print(dutySoldiersAndRanks);
     if (widget.dutyDate != "Date of Duty:") {
       pointsAssignment(DateFormat("d MMM yyyy").parse(widget.dutyDate));
     }
