@@ -59,6 +59,8 @@ class _UpcomingDutiesState extends State<UpcomingDuties> {
                       }
                     }
                     return ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      physics: const PageScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: dutyDetails.length,
                       itemBuilder: (context, index) {
@@ -78,7 +80,7 @@ class _UpcomingDutiesState extends State<UpcomingDuties> {
                     );
                   }),
               SizedBox(
-                height: 10.h,
+                height: 50.h,
               )
             ],
           ),

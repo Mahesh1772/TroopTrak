@@ -6,6 +6,7 @@ import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/update_duty_s
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/util/expanded_view_duty_participants_tile.dart';
 import 'package:prototype_1/util/constants.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../nominal_roll_screen/nominal_roll_screen_new.dart';
 
@@ -28,6 +29,17 @@ class GuardDutyTile extends StatelessWidget {
     required this.docID,
     required this.participants,
   });
+
+  Future deleteDutyDetails() async {
+    await FirebaseFirestore.instance
+        .collection('Duties')
+        .doc(docID)
+        .delete();
+  }
+
+  deleteDuty() {
+    deleteDutyDetails();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +64,8 @@ class GuardDutyTile extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(right: 30.0.w),
                 child: Container(
-                  height: 80.h,
-                  width: 80.w,
+                  height: 85.h,
+                  width: 85.w,
                   decoration: BoxDecoration(
                     color: const Color.fromARGB(255, 53, 14, 145),
                     borderRadius: BorderRadius.circular(10.r),
@@ -203,7 +215,7 @@ class GuardDutyTile extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.0.w),
               child: GestureDetector(
-                onTap: () {},
+                onTap: deleteDuty,
                 child: Container(
                   padding: EdgeInsets.all(10.sp),
                   decoration: BoxDecoration(
