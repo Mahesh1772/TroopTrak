@@ -55,9 +55,9 @@ List<DutyPersonnel> getDutyPersonnel() {
           "lib/assets/army-ranks/solider.png",
           userDetails[i]['rank'],
           pointsTable[userDetails[i]['name']]!.toInt()));
-      print(pointsTable[userDetails[i]['name']]);
+      //print(pointsTable[userDetails[i]['name']]);
     }
-    print(userDetails.length);
+    //print(userDetails.length);
   }
   return array;
 }
