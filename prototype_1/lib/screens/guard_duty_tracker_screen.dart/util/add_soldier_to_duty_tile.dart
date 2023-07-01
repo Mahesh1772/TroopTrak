@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,18 +8,22 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:roundcheckbox/roundcheckbox.dart';
 
-import '../add_duty_soldiers_card.dart';
-
 class AddSoldierToDutyTile extends StatefulWidget {
-  const AddSoldierToDutyTile(
+  AddSoldierToDutyTile(
       {super.key,
       required this.rank,
       required this.name,
-      required this.appointment});
+      required this.appointment,
+      required this.nonParticipants,
+      required this.selectedSoldiers,
+      required this.isTileSelected});
 
   final String rank;
   final String name;
   final String appointment;
+  final List nonParticipants;
+  final bool isTileSelected;
+  var selectedSoldiers;
 
   @override
   State<AddSoldierToDutyTile> createState() => _AddSoldierToDutyTileState();
@@ -26,8 +32,8 @@ class AddSoldierToDutyTile extends StatefulWidget {
 class _AddSoldierToDutyTileState extends State<AddSoldierToDutyTile> {
   @override
   Widget build(BuildContext context) {
-    print(non_participants);
-    if (non_participants.contains(widget.name)) {
+    print(widget.nonParticipants);
+    if (widget.nonParticipants.contains(widget.name)) {
       return Padding(
         padding: EdgeInsets.all(8.0.sp),
         child: Container(
@@ -137,18 +143,19 @@ class _AddSoldierToDutyTileState extends State<AddSoldierToDutyTile> {
                 ],
               ),
               RoundCheckBox(
+                isChecked: widget.isTileSelected,
                 size: 30.0.sp,
                 borderColor: Colors.white54,
                 uncheckedColor: Colors.transparent,
                 onTap: (selected) {
-                  if (tempArray.containsKey(widget.name)) {
-                    tempArray.remove(widget.name);
+                  if (widget.selectedSoldiers.containsKey(widget.name)) {
+                    widget.selectedSoldiers.remove(widget.name);
                   } else {
-                    tempArray.addAll(
+                    widget.selectedSoldiers.addAll(
                         {widget.name.toString(): widget.rank.toString()});
                   }
 
-                  print(tempArray);
+                  print(widget.selectedSoldiers);
                 },
                 checkedWidget: Container(
                   decoration: const BoxDecoration(

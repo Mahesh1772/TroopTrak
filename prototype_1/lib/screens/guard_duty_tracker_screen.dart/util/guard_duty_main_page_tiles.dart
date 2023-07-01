@@ -31,10 +31,7 @@ class GuardDutyTile extends StatelessWidget {
   });
 
   Future deleteDutyDetails() async {
-    await FirebaseFirestore.instance
-        .collection('Duties')
-        .doc(docID)
-        .delete();
+    await FirebaseFirestore.instance.collection('Duties').doc(docID).delete();
   }
 
   deleteDuty() {
@@ -100,16 +97,19 @@ class GuardDutyTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: 195.w,
+                    width: 190.w,
                     child: AutoSizeText(
-                      '$startTime - $endTime (Next day)',
-                      maxLines: 1,
+                      '$startTime - $endTime\n(Next day)',
+                      maxLines: 2,
                       style: GoogleFonts.poppins(
                           fontWeight: FontWeight.w500, color: Colors.white),
                     ),
                   ),
                   SizedBox(
-                    width: 195.w,
+                    height: 10.h,
+                  ),
+                  SizedBox(
+                    width: 190.w,
                     child: AutoSizeText(
                       dutyDate,
                       maxLines: 1,

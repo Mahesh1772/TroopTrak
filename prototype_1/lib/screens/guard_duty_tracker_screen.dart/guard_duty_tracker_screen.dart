@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -5,6 +7,8 @@ import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/add_new_duty_
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/tabs/points_leaderboard.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/tabs/upcoming_duties.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
+
+import '../detailed_screen/tabs/user_profile_tabs/user_profile_screen.dart';
 
 class GuardDutyTrackerScreen extends StatefulWidget {
   const GuardDutyTrackerScreen({super.key});
@@ -15,6 +19,25 @@ class GuardDutyTrackerScreen extends StatefulWidget {
 
 class _GuardDutyTrackerScreenState extends State<GuardDutyTrackerScreen>
     with TickerProviderStateMixin {
+  // The DocID or the name of the current user is saved in here
+  final name = FirebaseAuth.instance.currentUser!.displayName.toString();
+
+  Map<String, dynamic> currentUserData = {};
+
+  Future getCurrentUserData() async {
+    var data = FirebaseFirestore.instance.collection('Users').doc(name);
+    data.get().then((DocumentSnapshot doc) {
+      currentUserData = doc.data() as Map<String, dynamic>;
+      // ...
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUserData();
+  }
+
   @override
   Widget build(BuildContext context) {
     TabController tabController = TabController(length: 2, vsync: this);
@@ -59,7 +82,27 @@ class _GuardDutyTrackerScreenState extends State<GuardDutyTrackerScreen>
                     ),
                   ),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UserProfileScreen(
+                            soldierName: currentUserData['name'],
+                            soldierRank:
+                                "lib/assets/army-ranks/${currentUserData['rank'].toString().toLowerCase()}.png",
+                            soldierAppointment: currentUserData['appointment'],
+                            company: currentUserData['company'],
+                            platoon: currentUserData['platoon'],
+                            section: currentUserData['section'],
+                            dateOfBirth: currentUserData['dob'],
+                            rationType: currentUserData['rationType'],
+                            bloodType: currentUserData['bloodgroup'],
+                            enlistmentDate: currentUserData['enlistment'],
+                            ordDate: currentUserData['ord'],
+                          ),
+                        ),
+                      );
+                    },
                     child: Padding(
                       padding: EdgeInsets.all(12.0.sp),
                       child: Image.asset(

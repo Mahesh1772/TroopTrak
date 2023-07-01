@@ -39,6 +39,55 @@ List<Map<String, dynamic>> listOfPersonal = [];
 List documentIDs = [];
 
 class _UpdateDutyScreenState extends State<UpdateDutyScreen> {
+  List<String> non_participants = [];
+
+  List<Map<String, dynamic>> statusList = [];
+
+  List<String> guardDuty = ['Ex Uniform', 'Ex Boots'];
+
+  void autoFilter() {
+    //non_participants = [];
+    print(statusList);
+    for (var status in statusList) {
+      if (status['statusType'] == 'Excuse') {
+        if (guardDuty.contains(status['statusName'])) {
+          non_participants.add(status['Name']);
+        }
+      } else if (status['statusType'] == 'Leave') {
+        non_participants.add(status['Name']);
+      }
+    }
+  }
+
+  int i = 0;
+
+  Future getUserBooks() async {
+    FirebaseFirestore.instance
+        .collection("Users")
+        .get()
+        .then((querySnapshot) async {
+      for (var snapshot in querySnapshot.docs) {
+        FirebaseFirestore.instance
+            .collection("Users")
+            .doc(snapshot.id)
+            .collection("Statuses")
+            .get()
+            .then((querySnapshot) {
+          for (var result in querySnapshot.docs) {
+            Map<String, dynamic> data = result.data();
+            DateTime end = DateFormat("d MMM yyyy").parse(data['endDate']);
+            if (DateTime(end.year, end.month, end.day + 1)
+                .isAfter(DateTime.now())) {
+              statusList.add(data);
+              statusList[i].addEntries({'Name': snapshot.id}.entries);
+              i++;
+            }
+          }
+        });
+      }
+    });
+  }
+
   Future getListOfUsers() async {
     FirebaseFirestore.instance
         .collection("Users")
@@ -52,7 +101,8 @@ class _UpdateDutyScreenState extends State<UpdateDutyScreen> {
   }
 
   void populateDutySoldiersAndRanksArray() {
-    var newList = listOfPersonal.where((element) => widget.participants.contains(element['name']));
+    var newList = listOfPersonal
+        .where((element) => widget.participants.contains(element['name']));
     print(newList);
     for (var participant in newList) {
       dutySoldiersAndRanks.addEntries(
@@ -84,7 +134,10 @@ class _UpdateDutyScreenState extends State<UpdateDutyScreen> {
     var notKeys = dutySoldiersAndRanks.keys.toList();
     notKeys.removeWhere((element) => documentIDs.contains(element));
     keys.removeWhere((element) => notKeys.contains(element));
-    await FirebaseFirestore.instance.collection('Duties').doc(widget.docID).set({
+    await FirebaseFirestore.instance
+        .collection('Duties')
+        .doc(widget.docID)
+        .set({
       //User map formatting
       'points': points,
       'dayType': typeOfDay,
@@ -125,12 +178,14 @@ class _UpdateDutyScreenState extends State<UpdateDutyScreen> {
                 name: dutySoldiersAndRanks.keys.elementAt(0),
                 heroTag: heroAddDutySoldiers[0],
                 callbackFunction: callBack,
+                nonParticipants: non_participants,
               ),
               OrgChartTile(
                 rank: dutySoldiersAndRanks.values.elementAt(1),
                 name: dutySoldiersAndRanks.keys.elementAt(1),
                 heroTag: heroAddDutySoldiers[1],
                 callbackFunction: callBack,
+                nonParticipants: non_participants,
               ),
             ],
           ),
@@ -146,24 +201,28 @@ class _UpdateDutyScreenState extends State<UpdateDutyScreen> {
               name: dutySoldiersAndRanks.keys.elementAt(2),
               heroTag: heroAddDutySoldiers[2],
               callbackFunction: callBack,
+              nonParticipants: non_participants,
             ),
             OrgChartTile(
               rank: dutySoldiersAndRanks.values.elementAt(3),
               name: dutySoldiersAndRanks.keys.elementAt(3),
               heroTag: heroAddDutySoldiers[3],
               callbackFunction: callBack,
+              nonParticipants: non_participants,
             ),
             OrgChartTile(
               rank: dutySoldiersAndRanks.values.elementAt(4),
               name: dutySoldiersAndRanks.keys.elementAt(4),
               heroTag: heroAddDutySoldiers[4],
               callbackFunction: callBack,
+              nonParticipants: non_participants,
             ),
             OrgChartTile(
               rank: dutySoldiersAndRanks.values.elementAt(5),
               name: dutySoldiersAndRanks.keys.elementAt(5),
               heroTag: heroAddDutySoldiers[5],
               callbackFunction: callBack,
+              nonParticipants: non_participants,
             ),
           ],
         ),
@@ -178,24 +237,28 @@ class _UpdateDutyScreenState extends State<UpdateDutyScreen> {
               name: dutySoldiersAndRanks.keys.elementAt(6),
               heroTag: heroAddDutySoldiers[6],
               callbackFunction: callBack,
+              nonParticipants: non_participants,
             ),
             OrgChartTile(
               rank: dutySoldiersAndRanks.values.elementAt(7),
               name: dutySoldiersAndRanks.keys.elementAt(7),
               heroTag: heroAddDutySoldiers[7],
               callbackFunction: callBack,
+              nonParticipants: non_participants,
             ),
             OrgChartTile(
               rank: dutySoldiersAndRanks.values.elementAt(8),
               name: dutySoldiersAndRanks.keys.elementAt(8),
               heroTag: heroAddDutySoldiers[8],
               callbackFunction: callBack,
+              nonParticipants: non_participants,
             ),
             OrgChartTile(
               rank: dutySoldiersAndRanks.values.elementAt(9),
               name: dutySoldiersAndRanks.keys.elementAt(9),
               heroTag: heroAddDutySoldiers[9],
               callbackFunction: callBack,
+              nonParticipants: non_participants,
             ),
           ],
         ),

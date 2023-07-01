@@ -41,7 +41,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
   Future getCurrentUserData() async {
     var data = FirebaseFirestore.instance.collection('Users').doc(name);
     data.get().then((DocumentSnapshot doc) {
-      currentUserData = doc.data() as Map<String, dynamic>;
+      currentUserData = doc.data()! as Map<String, dynamic>;
       // ...
     });
   }

@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:prototype_1/screens/nominal_roll_screen/add_new_soldier_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:prototype_1/screens/detailed_screen/tabs/user_profile_tabs/user_profile_screen.dart';
-import 'package:prototype_1/util/constants.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/screens/nominal_roll_screen/util/solider_tile.dart';
 import 'package:intl/intl.dart';
@@ -94,36 +93,6 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                       'Nominal Roll',
                       26.sp,
                       fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 25.0.w),
-                    child: InkWell(
-                      onTap: () {
-                        print(userDetails);
-                        //FirebaseAuth.instance.signOut();
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.black54,
-                                offset: Offset(10.0.w, 10.0.h),
-                                blurRadius: 2.0.r,
-                                spreadRadius: 2.0.r),
-                          ],
-                          color: Colors.deepPurple.shade400,
-                          borderRadius: BorderRadius.all(Radius.circular(10.r)),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.all(defaultPadding.sp),
-                          child: Icon(
-                            Icons.exit_to_app_rounded,
-                            color: Colors.white,
-                            size: 35.sp,
-                          ),
-                        ),
-                      ),
                     ),
                   ),
                   InkWell(

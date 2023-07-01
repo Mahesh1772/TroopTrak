@@ -12,12 +12,14 @@ class OrgChartTile extends StatefulWidget {
       required this.rank,
       required this.name,
       required this.heroTag,
-      required this.callbackFunction});
+      required this.callbackFunction,
+      required this.nonParticipants});
 
   final String rank;
   final String? name;
   final String heroTag;
   final Function callbackFunction;
+  final List nonParticipants;
 
   @override
   State<OrgChartTile> createState() => _OrgChartTileState();
@@ -34,6 +36,7 @@ class _OrgChartTileState extends State<OrgChartTile> {
               return AddDutySoldiersCard(
                 heroTag: widget.heroTag,
                 callbackFunction: widget.callbackFunction,
+                nonParticipants: widget.nonParticipants,
               );
             },
           ),

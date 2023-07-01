@@ -197,7 +197,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                 ),
                 SizedBox(
                   width: double.maxFinite,
-                  height: 650.h,
+                  height: 750.h,
                   child: TabBarView(
                     controller: tabController,
                     children: [

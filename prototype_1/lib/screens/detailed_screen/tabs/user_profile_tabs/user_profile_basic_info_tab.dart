@@ -193,6 +193,9 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab> {
                     ),
                   ),
                 ),
+                SizedBox(
+                  height: 30.h,
+                )
               ],
             );
           }
