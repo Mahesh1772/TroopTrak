@@ -16,14 +16,16 @@ class AddSoldierToDutyTile extends StatefulWidget {
       required this.appointment,
       required this.nonParticipants,
       required this.selectedSoldiers,
-      required this.isTileSelected});
+      required this.isTileSelected,
+      required this.tileSelectionCallback});
 
   final String rank;
   final String name;
   final String appointment;
   final List nonParticipants;
   final bool isTileSelected;
-  var selectedSoldiers;
+  final Map<String, String> selectedSoldiers;
+  final Function tileSelectionCallback;
 
   @override
   State<AddSoldierToDutyTile> createState() => _AddSoldierToDutyTileState();
@@ -154,6 +156,8 @@ class _AddSoldierToDutyTileState extends State<AddSoldierToDutyTile> {
                     widget.selectedSoldiers.addAll(
                         {widget.name.toString(): widget.rank.toString()});
                   }
+
+                  widget.tileSelectionCallback(widget.selectedSoldiers);
 
                   print(widget.selectedSoldiers);
                 },

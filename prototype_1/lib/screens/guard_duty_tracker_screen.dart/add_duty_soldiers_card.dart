@@ -42,9 +42,14 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
   void initState() {
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
     getDocIDs();
-    tempArray = {};
 
     super.initState();
+  }
+
+  void tileSelectionCallback(selection) {
+    setState(() {
+      tempArray = selection;
+    });
   }
 
   Future getDocIDs() async {
@@ -186,7 +191,9 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
                                     appointment: userDetails[index]
                                         ['appointment'],
                                     nonParticipants: widget.nonParticipants,
-                                    selectedSoldiers: tempArray,
+                                    selectedSoldiers: dutySoldiersAndRanks,
+                                    tileSelectionCallback:
+                                        tileSelectionCallback,
                                     isTileSelected: dutySoldiersAndRanks
                                         .containsKey(userDetails[index]['name']
                                             .toString()));
