@@ -22,8 +22,12 @@ class AddDutySoldiersCard extends StatefulWidget {
 
 // Store all the names in conduct
 Map<String, String> tempArray = {};
+
 // List of all names
 List<String> documentIDs = [];
+
+List<String> docIDs = [];
+
 // Name of soldiers not included
 List<dynamic> soldierStatusArray = [];
 
@@ -36,8 +40,6 @@ List<Map<String, dynamic>> userDetails = [];
 // To store text being searched
 String searchText = '';
 
-List<Map<String, dynamic>> statusList = [];
-
 List<String> non_participants = [];
 
 // Boolean value for checking if it is first time or not
@@ -46,13 +48,15 @@ bool isFirstTIme = true;
 List<String> guardDuty = ['Ex Uniform', 'Ex Boots'];
 
 class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
-  
+  List<Map<String, dynamic>> statusList = [];
+
   @override
   void initState() {
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
-    getDocIDs();
+    //getDocIDs();
     getUserBooks();
     //non_participants = [];
+    //print(docIDs);
     autoFilter();
     tempArray = {};
     super.initState();
@@ -80,6 +84,7 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
               statusList.add(data);
               statusList[i].addEntries({'Name': snapshot.id}.entries);
               i++;
+              print(statusList);
             }
           }
         });
@@ -92,8 +97,9 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
         .collection('Users')
         .get()
         .then((value) => value.docs.forEach((element) {
-              documentIDs.add(element['name']);
+              docIDs.add(element['name']);
             }));
+    print(docIDs);
   }
 
   void populateDutySoldiersAndRanksArray() {
@@ -103,11 +109,11 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
       dutySoldiersAndRanks.addEntries({'NA$i': 'NA'}.entries);
     }
 
-    print(dutySoldiersAndRanks);
+    //print(dutySoldiersAndRanks);
   }
 
   void autoFilter() {
-    non_participants = [];
+    //non_participants = [];
     for (var status in statusList) {
       if (status['statusType'] == 'Excuse') {
         if (guardDuty.contains(status['statusName'])) {
@@ -121,6 +127,7 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
 
   @override
   Widget build(BuildContext context) {
+    getUserBooks();
     return Center(
       child: Padding(
         padding: EdgeInsets.all(16.0.sp),

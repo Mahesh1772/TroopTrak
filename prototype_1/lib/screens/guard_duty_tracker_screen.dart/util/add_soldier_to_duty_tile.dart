@@ -148,13 +148,6 @@ class _AddSoldierToDutyTileState extends State<AddSoldierToDutyTile> {
                         {widget.name.toString(): widget.rank.toString()});
                   }
 
-                  // if (tempArray.contains(
-                  //     [widget.name.toString(), widget.rank.toString()])) {
-                  //   selected = true;
-                  // } else {
-                  //   selected = false;
-                  // }
-
                   print(tempArray);
                 },
                 checkedWidget: Container(
