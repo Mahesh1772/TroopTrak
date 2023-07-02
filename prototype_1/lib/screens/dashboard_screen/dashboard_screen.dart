@@ -1,16 +1,18 @@
 // ignore_for_file: must_be_immutable
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flip_card/flip_card_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:prototype_1/screens/dashboard_screen/util/calendar/dashboard_calendar.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/util/constants.dart';
 import 'package:prototype_1/screens/dashboard_screen/util/pie_chart/current_strength_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:prototype_1/screens/dashboard_screen/util/dashboard_soldier_tile.dart';
-
 import '../detailed_screen/tabs/user_profile_tabs/user_profile_screen.dart';
+import 'package:flip_card/flip_card.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -53,11 +55,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
             }));
   }
 
+  void cardFlipAnimations() {
+    _controller.hint(
+      duration: const Duration(seconds: 2),
+      total: const Duration(seconds: 4),
+    );
+  }
+
+  late FlipCardController _controller;
+
   @override
   void initState() {
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
     getCurrentUserData();
     getDocIDs();
+    _controller = FlipCardController();
+    cardFlipAnimations();
     super.initState();
   }
 
@@ -157,88 +170,138 @@ class _DashboardScreenState extends State<DashboardScreen> {
               SizedBox(
                 height: 20.h,
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: defaultPadding.w),
-                child: Container(
-                  padding: EdgeInsets.all(defaultPadding.sp),
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black54,
-                          offset: Offset(10.0.w, 10.0.h),
-                          blurRadius: 2.0.r,
-                          spreadRadius: 2.0.r),
-                    ],
-                    color: const Color.fromARGB(255, 32, 36, 51),
-                    borderRadius: BorderRadius.all(Radius.circular(10.r)),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Strength In-Camp",
-                            style: GoogleFonts.poppins(
-                                fontSize: 24.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white),
-                          ),
-                          const InkWell(
-                            child: Icon(
-                              Icons.more_vert_sharp,
-                              color: Colors.white,
+              FlipCard(
+                front: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: defaultPadding.w),
+                  child: Container(
+                    padding: EdgeInsets.all(defaultPadding.sp),
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black54,
+                            offset: Offset(10.0.w, 10.0.h),
+                            blurRadius: 2.0.r,
+                            spreadRadius: 2.0.r),
+                      ],
+                      color: const Color.fromARGB(255, 32, 36, 51),
+                      borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Strength In-Camp",
+                                  style: GoogleFonts.poppins(
+                                      fontSize: 24.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white),
+                                ),
+                                Text(
+                                  "As of ${DateFormat('yMMMMd').add_Hm().format(DateTime.now())}",
+                                  style: GoogleFonts.poppins(
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white.withOpacity(0.45)),
+                                ),
+                              ],
                             ),
-                          )
-                        ],
-                      ),
-                      Text(
-                        "As of ${DateFormat('yMMMMd').add_Hm().format(DateTime.now())}",
-                        style: GoogleFonts.poppins(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white.withOpacity(0.45)),
-                      ),
-                      SizedBox(
-                        height: (defaultPadding + 2).h,
-                      ),
-                      CurrentStrengthChart(),
-                      SizedBox(
-                        height: defaultPadding.h,
-                      ),
-                      const CurrentStrengthBreakdownTile(
-                        title: "Total Officers",
-                        imgSrc: "lib/assets/icons8-medals-64.png",
-                        currentNumOfSoldiers: 6,
-                        totalNumOfSoldiers: 9,
-                        imgColor: Colors.red,
-                      ),
-                      const CurrentStrengthBreakdownTile(
-                        title: "Total WOSEs",
-                        imgSrc: "lib/assets/icons8-soldier-man-64.png",
-                        currentNumOfSoldiers: 74,
-                        totalNumOfSoldiers: 117,
-                        imgColor: Colors.blue,
-                      ),
-                      const CurrentStrengthBreakdownTile(
-                        title: "On Status",
-                        imgSrc: "lib/assets/icons8-error-64.png",
-                        currentNumOfSoldiers: 25,
-                        totalNumOfSoldiers: 126,
-                        imgColor: Colors.yellow,
-                      ),
-                      const CurrentStrengthBreakdownTile(
-                        title: "On MA",
-                        imgSrc: "lib/assets/icons8-doctors-folder-64.png",
-                        currentNumOfSoldiers: 1,
-                        totalNumOfSoldiers: 126,
-                        imgColor: Colors.lightBlueAccent,
-                      ),
-                    ],
+                            Container(
+                              margin: EdgeInsets.only(
+                                top: 16.0.h,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      _controller.toggleCard();
+                                    },
+                                    child: Icon(
+                                      Icons.date_range_rounded,
+                                      color: Colors.white,
+                                      size: 30.sp,
+                                    ),
+                                  ),
+                                  StyledText("Show Calendar", 14.sp,
+                                      fontWeight: FontWeight.w400),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: (defaultPadding + 2).h,
+                        ),
+                        CurrentStrengthChart(),
+                        SizedBox(
+                          height: defaultPadding.h,
+                        ),
+                        const CurrentStrengthBreakdownTile(
+                          title: "Total Officers",
+                          imgSrc: "lib/assets/icons8-medals-64.png",
+                          currentNumOfSoldiers: 6,
+                          totalNumOfSoldiers: 9,
+                          imgColor: Colors.red,
+                        ),
+                        const CurrentStrengthBreakdownTile(
+                          title: "Total WOSEs",
+                          imgSrc: "lib/assets/icons8-soldier-man-64.png",
+                          currentNumOfSoldiers: 74,
+                          totalNumOfSoldiers: 117,
+                          imgColor: Colors.blue,
+                        ),
+                        const CurrentStrengthBreakdownTile(
+                          title: "On Status",
+                          imgSrc: "lib/assets/icons8-error-64.png",
+                          currentNumOfSoldiers: 25,
+                          totalNumOfSoldiers: 126,
+                          imgColor: Colors.yellow,
+                        ),
+                        const CurrentStrengthBreakdownTile(
+                          title: "On MA",
+                          imgSrc: "lib/assets/icons8-doctors-folder-64.png",
+                          currentNumOfSoldiers: 1,
+                          totalNumOfSoldiers: 126,
+                          imgColor: Colors.lightBlueAccent,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                back: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: defaultPadding.w),
+                  child: Container(
+                    padding: EdgeInsets.all(defaultPadding.sp),
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black54,
+                            offset: Offset(10.0.w, 10.0.h),
+                            blurRadius: 2.0.r,
+                            spreadRadius: 2.0.r),
+                      ],
+                      color: const Color.fromARGB(255, 32, 36, 51),
+                      borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                    ),
+                    child: const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        DashboardCalendar(),
+                      ],
+                    ),
                   ),
                 ),
               ),
+              SizedBox(
+                height: 40.h,
+              )
             ],
           ),
         ),
