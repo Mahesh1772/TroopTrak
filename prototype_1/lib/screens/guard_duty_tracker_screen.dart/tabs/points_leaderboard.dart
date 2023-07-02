@@ -54,10 +54,8 @@ List<DutyPersonnel> getDutyPersonnel() {
           userDetails[i]['name'],
           "lib/assets/army-ranks/solider.png",
           userDetails[i]['rank'],
-          pointsTable[userDetails[i]['name']]!.toInt()));
-      //print(pointsTable[userDetails[i]['name']]);
+          pointsTable[userDetails[i]['name']]!.toInt()));      
     }
-    //print(pointsTable);
   }
   return array;
 }
@@ -96,9 +94,6 @@ class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
         var pointsPerPerson = pointsTable[person];
         if (isFirstTIme && pointsPerPerson != null) {
           pointsTable[person] = (pointsPerPerson + info['points']);
-          //print(pointsPerPerson);
-          //print('Get duty points');
-          //print(info['points']);
         }
       }
     }
@@ -115,7 +110,6 @@ class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
     dutyPersonnel = getDutyPersonnel();
     dutyPersonnelDataSource =
         DutyPersonnelDataSource(dutyPersonnel: dutyPersonnel);
-    //isFirstTIme = false;
   }
 
   @override
