@@ -57,7 +57,7 @@ List<DutyPersonnel> getDutyPersonnel() {
           pointsTable[userDetails[i]['name']]!.toInt()));
       //print(pointsTable[userDetails[i]['name']]);
     }
-    //print(userDetails.length);
+    //print(pointsTable);
   }
   return array;
 }
@@ -95,7 +95,10 @@ class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
       for (var person in info['participants']) {
         var pointsPerPerson = pointsTable[person];
         if (isFirstTIme && pointsPerPerson != null) {
-          pointsPerPerson = (pointsPerPerson + info['points']);
+          pointsTable[person] = (pointsPerPerson + info['points']);
+          //print(pointsPerPerson);
+          //print('Get duty points');
+          //print(info['points']);
         }
       }
     }
@@ -107,11 +110,12 @@ class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
     getDutyInfo();
     getDocIDs();
-    //getDutyPoints();
-    //print(pointsTable);
+    print(pointsTable);
+    getDutyPoints();
     dutyPersonnel = getDutyPersonnel();
     dutyPersonnelDataSource =
         DutyPersonnelDataSource(dutyPersonnel: dutyPersonnel);
+    //isFirstTIme = false;
   }
 
   @override
