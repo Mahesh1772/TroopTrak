@@ -14,6 +14,7 @@ class AddDutySoldiersCard extends StatefulWidget {
     required this.heroTag,
     required this.callbackFunction,
     required this.nonParticipants,
+    required this.dutySoldiersAndRanks,
   });
 
   @override
@@ -22,9 +23,9 @@ class AddDutySoldiersCard extends StatefulWidget {
   final String heroTag;
   final Function callbackFunction;
   final List nonParticipants;
+  final Map<dynamic, dynamic> dutySoldiersAndRanks;
 }
 
-Map<String, String> tempArray = {};
 // List of all names
 List<String> documentIDs = [];
 
@@ -48,7 +49,7 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
 
   void tileSelectionCallback(selection) {
     setState(() {
-      tempArray = selection;
+      dutySoldiersAndRanks = selection;
     });
   }
 
@@ -61,14 +62,17 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
             }));
   }
 
-  void populateDutySoldiersAndRanksArray() {
-    var length = dutySoldiersAndRanks.length;
-
-    for (var i = length; i < 10; i++) {
-      dutySoldiersAndRanks.addEntries({'NA$i': 'NA'}.entries);
+  reverseMapAndRemoveExcess(Map<String, String> map) {
+    Map<String, String> newmap = {};
+    for (var _key in map.keys.toList()) {
+      if (map[_key]!.contains("NA")) {
+        continue;
+      } else {
+        newmap.addAll({_key: map[_key]!});
+      }
     }
-
-    print(dutySoldiersAndRanks);
+    print(newmap);
+    return newmap;
   }
 
   @override
@@ -208,16 +212,11 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        dutySoldiersAndRanks = {};
+                        print(dutySoldiersAndRanks);
+                        dutySoldiersAndRanks =
+                            reverseMapAndRemoveExcess(dutySoldiersAndRanks);
+                        widget.callbackFunction(dutySoldiersAndRanks);
 
-                        for (var i = 0; i < tempArray.length; i++) {
-                          dutySoldiersAndRanks.addAll(tempArray);
-                        }
-
-                        populateDutySoldiersAndRanksArray();
-
-                        widget.callbackFunction(
-                            dutySoldiersAndRanks, tempArray);
                         Navigator.pop(context);
                       },
                       child: Container(

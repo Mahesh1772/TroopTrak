@@ -137,10 +137,10 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
     super.initState();
   }
 
-  callBack(finalArray, selectionArray) {
+  callBack(finalArray) {
     setState(() {
       dutySoldiersAndRanks = finalArray;
-      tempArray = selectionArray;
+      populateDutySoldiersAndRanksArray();
     });
   }
 
@@ -157,6 +157,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                 heroTag: heroAddDutySoldiers[0],
                 callbackFunction: callBack,
                 nonParticipants: non_participants,
+                dutySoldiersAndRanks: dutySoldiersAndRanks,
               ),
               OrgChartTile(
                 rank: dutySoldiersAndRanks.values.elementAt(1),
@@ -164,6 +165,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                 heroTag: heroAddDutySoldiers[1],
                 callbackFunction: callBack,
                 nonParticipants: non_participants,
+                dutySoldiersAndRanks: dutySoldiersAndRanks,
               ),
             ],
           ),
@@ -180,6 +182,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
               heroTag: heroAddDutySoldiers[2],
               callbackFunction: callBack,
               nonParticipants: non_participants,
+              dutySoldiersAndRanks: dutySoldiersAndRanks,
             ),
             OrgChartTile(
               rank: dutySoldiersAndRanks.values.elementAt(3),
@@ -187,6 +190,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
               heroTag: heroAddDutySoldiers[3],
               callbackFunction: callBack,
               nonParticipants: non_participants,
+              dutySoldiersAndRanks: dutySoldiersAndRanks,
             ),
             OrgChartTile(
               rank: dutySoldiersAndRanks.values.elementAt(4),
@@ -194,6 +198,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
               heroTag: heroAddDutySoldiers[4],
               callbackFunction: callBack,
               nonParticipants: non_participants,
+              dutySoldiersAndRanks: dutySoldiersAndRanks,
             ),
             OrgChartTile(
               rank: dutySoldiersAndRanks.values.elementAt(5),
@@ -201,6 +206,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
               heroTag: heroAddDutySoldiers[5],
               callbackFunction: callBack,
               nonParticipants: non_participants,
+              dutySoldiersAndRanks: dutySoldiersAndRanks,
             ),
           ],
         ),
@@ -216,6 +222,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
               heroTag: heroAddDutySoldiers[6],
               callbackFunction: callBack,
               nonParticipants: non_participants,
+              dutySoldiersAndRanks: dutySoldiersAndRanks,
             ),
             OrgChartTile(
               rank: dutySoldiersAndRanks.values.elementAt(7),
@@ -223,6 +230,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
               heroTag: heroAddDutySoldiers[7],
               callbackFunction: callBack,
               nonParticipants: non_participants,
+              dutySoldiersAndRanks: dutySoldiersAndRanks,
             ),
             OrgChartTile(
               rank: dutySoldiersAndRanks.values.elementAt(8),
@@ -230,6 +238,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
               heroTag: heroAddDutySoldiers[8],
               callbackFunction: callBack,
               nonParticipants: non_participants,
+              dutySoldiersAndRanks: dutySoldiersAndRanks,
             ),
             OrgChartTile(
               rank: dutySoldiersAndRanks.values.elementAt(9),
@@ -237,6 +246,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
               heroTag: heroAddDutySoldiers[9],
               callbackFunction: callBack,
               nonParticipants: non_participants,
+              dutySoldiersAndRanks: dutySoldiersAndRanks,
             ),
           ],
         ),

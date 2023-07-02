@@ -13,13 +13,15 @@ class OrgChartTile extends StatefulWidget {
       required this.name,
       required this.heroTag,
       required this.callbackFunction,
-      required this.nonParticipants});
+      required this.nonParticipants,
+      required this.dutySoldiersAndRanks});
 
   final String rank;
   final String? name;
   final String heroTag;
   final Function callbackFunction;
   final List nonParticipants;
+  final Map<dynamic, dynamic> dutySoldiersAndRanks;
 
   @override
   State<OrgChartTile> createState() => _OrgChartTileState();
@@ -37,6 +39,7 @@ class _OrgChartTileState extends State<OrgChartTile> {
                 heroTag: widget.heroTag,
                 callbackFunction: widget.callbackFunction,
                 nonParticipants: widget.nonParticipants,
+                dutySoldiersAndRanks: widget.dutySoldiersAndRanks,
               );
             },
           ),
