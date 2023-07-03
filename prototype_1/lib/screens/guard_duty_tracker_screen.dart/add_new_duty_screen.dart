@@ -574,9 +574,15 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                 ),
                 GestureDetector(
                   onTap: () {
+                    var dummyarray;
+                    for (var i = dutySoldiersAndRanks.length; i < 10; i++) {
+                      dummyarray.addEntries({'NA$i': 'NA'}.entries);
+                    }
+
                     if (widget.dutyEndTime != "End Time:" &&
                         widget.dutyStartTime != "Start Time:" &&
-                        widget.dutyDate != "Date of Duty:") {
+                        widget.dutyDate != "Date of Duty:" &&
+                        dummyarray == dutySoldiersAndRanks) {
                       IconSnackBar.show(
                           duration: const Duration(seconds: 1),
                           direction: DismissDirection.horizontal,

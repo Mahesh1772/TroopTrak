@@ -114,7 +114,6 @@ class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
 
   @override
   Widget build(BuildContext context) {
-    print(pointsTable);
     return Container(
       margin: EdgeInsets.only(top: 20.0.h),
       child: SingleChildScrollView(
