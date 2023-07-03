@@ -805,7 +805,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         numericCharCount: 1,
                         specialCharCount: 1,
                         width: 400.w,
-                        height: 150.h,
+                        height: 175.h,
                         onSuccess: () {
                           IconSnackBar.show(
                               direction: DismissDirection.horizontal,

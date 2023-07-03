@@ -33,7 +33,7 @@ class _ForgotPassword extends State<ForgotPassword> {
             ),
           );
         },
-      );
+      ).then((value) => Navigator.pop(context));
     } on FirebaseAuthException catch (e) {
       //print(e);
       showDialog(
