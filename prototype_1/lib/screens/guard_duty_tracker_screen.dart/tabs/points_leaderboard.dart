@@ -54,7 +54,7 @@ List<DutyPersonnel> getDutyPersonnel() {
           userDetails[i]['name'],
           "lib/assets/army-ranks/solider.png",
           userDetails[i]['rank'],
-          pointsTable[userDetails[i]['name']]!.toInt()));      
+          pointsTable[userDetails[i]['name']]!.toInt()));
     }
   }
   return array;
@@ -94,6 +94,7 @@ class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
         var pointsPerPerson = pointsTable[person];
         if (isFirstTIme && pointsPerPerson != null) {
           pointsTable[person] = (pointsPerPerson + info['points']);
+          print(pointsPerPerson);
         }
       }
     }
@@ -105,7 +106,6 @@ class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
     getDutyInfo();
     getDocIDs();
-    print(pointsTable);
     getDutyPoints();
     dutyPersonnel = getDutyPersonnel();
     dutyPersonnelDataSource =
@@ -114,6 +114,7 @@ class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
 
   @override
   Widget build(BuildContext context) {
+    print(pointsTable);
     return Container(
       margin: EdgeInsets.only(top: 20.0.h),
       child: SingleChildScrollView(
