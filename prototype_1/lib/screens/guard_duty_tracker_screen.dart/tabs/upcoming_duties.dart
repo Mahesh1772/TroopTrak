@@ -50,7 +50,7 @@ class _UpcomingDutiesState extends State<UpcomingDuties> {
                     if (snapshot.hasData) {
                       dutyDetails = [];
                       var duties = snapshot.data?.docs.toList();
-            
+
                       for (var i = 0; i < duties!.length; i++) {
                         var data = duties[i].data();
                         dutyDetails.add(data as Map<String, dynamic>);
