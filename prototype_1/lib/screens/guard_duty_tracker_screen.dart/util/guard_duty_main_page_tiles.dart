@@ -8,8 +8,6 @@ import 'package:prototype_1/util/constants.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../nominal_roll_screen/nominal_roll_screen_new.dart';
-
 class GuardDutyTile extends StatelessWidget {
   final String dutyDate;
   final String startTime;
@@ -17,7 +15,7 @@ class GuardDutyTile extends StatelessWidget {
   final String dutyType;
   final double numberOfPoints;
   final String docID;
-  final List participants;
+  final Map<String, dynamic> participants;
 
   const GuardDutyTile({
     super.key,
@@ -133,29 +131,29 @@ class GuardDutyTile extends StatelessWidget {
               fontWeight: FontWeight.w500,
               textAlign: TextAlign.left,
             ),
-            SizedBox(
-              height: 220.h,
-              child: ListView.builder(
-                itemCount: userDetails.length,
-                padding: EdgeInsets.all(12.sp),
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  return ExpandedDutyParticipantsTile(
-                    soldierName: userDetails[index]['name'],
-                    soldierRank: userDetails[index]['rank'],
-                    soldierAppointment: userDetails[index]['appointment'],
-                    company: userDetails[index]['company'],
-                    platoon: userDetails[index]['platoon'],
-                    section: userDetails[index]['section'],
-                    dateOfBirth: userDetails[index]['dob'],
-                    rationType: userDetails[index]['rationType'],
-                    bloodType: userDetails[index]['bloodgroup'],
-                    enlistmentDate: userDetails[index]['enlistment'],
-                    ordDate: userDetails[index]['ord'],
-                  );
-                },
-              ),
-            ),
+            // SizedBox(
+            //   height: 220.h,
+            //   child: ListView.builder(
+            //     itemCount: participants.length,
+            //     padding: EdgeInsets.all(12.sp),
+            //     scrollDirection: Axis.horizontal,
+            //     itemBuilder: (context, index) {
+            //       return ExpandedDutyParticipantsTile(
+            //         soldierName: participants[index]['name'],
+            //         soldierRank: participants[index]['rank'],
+            //         soldierAppointment: participants[index]['appointment'],
+            //         company: participants[index]['company'],
+            //         platoon: participants[index]['platoon'],
+            //         section: participants[index]['section'],
+            //         dateOfBirth: participants[index]['dob'],
+            //         rationType: participants[index]['rationType'],
+            //         bloodType: participants[index]['bloodgroup'],
+            //         enlistmentDate: participants[index]['enlistment'],
+            //         ordDate: participants[index]['ord'],
+            //       );
+            //     },
+            //   ),
+            // ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.0.w),
               child: GestureDetector(
@@ -165,7 +163,7 @@ class GuardDutyTile extends StatelessWidget {
                     MaterialPageRoute(
                       builder: (context) => UpdateDutyScreen(
                           docID: docID,
-                          participants: participants.cast<String>(),
+                          participants: participants,
                           dutyDate: dutyDate,
                           dutyStartTime: startTime,
                           dutyEndTime: endTime),

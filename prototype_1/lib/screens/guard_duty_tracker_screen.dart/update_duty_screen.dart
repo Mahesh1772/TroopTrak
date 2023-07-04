@@ -24,7 +24,7 @@ class UpdateDutyScreen extends StatefulWidget {
   late String dutyStartTime;
   late String dutyEndTime;
   final String docID;
-  final List<String> participants;
+  final Map<String, dynamic> participants;
 
   @override
   State<UpdateDutyScreen> createState() => _UpdateDutyScreenState();
@@ -101,14 +101,7 @@ class _UpdateDutyScreenState extends State<UpdateDutyScreen> {
   }
 
   void populateDutySoldiersAndRanksArray() {
-    var newList = listOfPersonal
-        .where((element) => widget.participants.contains(element['name']));
-    print(newList);
-    for (var participant in newList) {
-      dutySoldiersAndRanks.addEntries({
-        participant['name'].toString(): participant['rank'].entries
-      } as Iterable<MapEntry>);
-    }
+    dutySoldiersAndRanks = widget.participants;
 
     var length = dutySoldiersAndRanks.length;
 

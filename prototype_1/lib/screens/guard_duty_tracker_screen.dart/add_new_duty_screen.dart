@@ -66,10 +66,16 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
   }
 
   Future addGaurdDuty() async {
-    var keys = dutySoldiersAndRanks.keys.toList();
-    var notKeys = dutySoldiersAndRanks.keys.toList();
-    notKeys.removeWhere((element) => documentIDs.contains(element));
-    keys.removeWhere((element) => notKeys.contains(element));
+    // var keys = dutySoldiersAndRanks.keys.toList();
+    // var notKeys = dutySoldiersAndRanks.keys.toList();
+    // notKeys.removeWhere((element) => documentIDs.contains(element));
+    // keys.removeWhere((element) => notKeys.contains(element));
+
+    // var values = dutySoldiersAndRanks.values.toList();
+    // var notValues = dutySoldiersAndRanks.values.toList();
+    // notValues.removeWhere((element) => documentIDs.contains(element));
+    // values.removeWhere((element) => notValues.contains(element));
+
     await FirebaseFirestore.instance.collection('Duties').add({
       //User map formatting
       'points': points,
@@ -77,7 +83,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
       'dutyDate': widget.dutyDate,
       'startTime': widget.dutyStartTime,
       'endTime': widget.dutyEndTime,
-      'participants': keys,
+      'participants': dutySoldiersAndRanks
     });
     Navigator.pop(context);
   }
@@ -588,11 +594,10 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                           direction: DismissDirection.horizontal,
                           context: context,
                           snackBarType: SnackBarType.save,
-                          label: 'Conduct added successfully!',
+                          label: 'Guard duty added successfully!',
                           snackBarStyle: const SnackBarStyle() // this one
                           );
                       addGaurdDuty();
-                      Navigator.pop(context);
                     } else {
                       IconSnackBar.show(
                           direction: DismissDirection.horizontal,
