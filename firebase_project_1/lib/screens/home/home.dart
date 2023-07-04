@@ -2,9 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_project_1/screens/home/edit_user.dart';
 import 'package:firebase_project_1/screens/home/update_profile.dart';
-import 'package:firebase_project_1/services/calender.dart';
+import 'package:firebase_project_1/user_model/user_model.dart';
 import 'package:firebase_project_1/user_model/user_profile_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -45,6 +46,9 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    final userModel = Provider.of<UserData>(context);
+    userModel.getUserData();
+    print(userModel.userDetails);
     return MaterialApp(
       home: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -95,28 +99,64 @@ class _HomeState extends State<Home> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: TextField(
-                  onChanged: (value) {
-                    setState(() {
-                      searchText = value;
-                    });
-                  },
-                  decoration: InputDecoration(
-                    hintText: 'Search Name',
-                    prefixIcon: const Icon(Icons.search_sharp),
-                    prefixIconColor: Colors.indigo.shade900,
-                    fillColor: Colors.amber,
-                    filled: true,
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: ListView.builder(
+                    itemCount: userModel.userDetails.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const EditUserDetails(),
+                              ),
+                            );
+                          },
+                          child: ListTile(
+                            shape: BeveledRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              side: const BorderSide(
+                                width: 2,
+                                color: Colors.indigo,
+                              ),
+                            ),
+                            title: Text(userModel.userDetails[index]['name']),
+                            subtitle:
+                                Text(userModel.userDetails[index]['rank']),
+                            tileColor: Colors.indigo.shade300,
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),
+              //Padding(
+              //  padding: const EdgeInsets.all(20.0),
+              //  child: TextField(
+              //    onChanged: (value) {
+              //      setState(() {
+              //        searchText = value;
+              //      });
+              //    },
+              //    decoration: InputDecoration(
+              //      hintText: 'Search Name',
+              //      prefixIcon: const Icon(Icons.search_sharp),
+              //      prefixIconColor: Colors.indigo.shade900,
+              //      fillColor: Colors.amber,
+              //      filled: true,
+              //      border: OutlineInputBorder(
+              //          borderRadius: BorderRadius.circular(10),
+              //          borderSide: BorderSide.none),
+              //    ),
+              //  ),
+              //),
 
-              StreamBuilder<QuerySnapshot>(
+              /*StreamBuilder<QuerySnapshot>(
                 stream: documentStream,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
@@ -199,28 +239,23 @@ class _HomeState extends State<Home> {
                   );
                 },
               ),
-
-              MaterialButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const Calender(),
-                    ),
-                  );
-                },
-                child: const Text('Calender'),
-              )
+*/
 
               // This has a FutureBuilder as it needs
               // to wait for executiion of getDocIDs function to finish execution
+              //userModel.getUserData();
             ],
           ),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const UpdateProfile()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const UpdateProfile())).then((value) {
+              userModel.userDetails = [];
+              userModel.getUserData();
+            });
           },
           backgroundColor: Colors.tealAccent,
           child: const Icon(Icons.edit),

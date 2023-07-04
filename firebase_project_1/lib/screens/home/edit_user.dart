@@ -126,10 +126,10 @@ class _EditUserDetails extends State<EditUserDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          SingleChildScrollView(
-            child: SafeArea(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SafeArea(
               child: StreamBuilder(
                 stream: FirebaseFirestore.instance
                     .collection('Users')
@@ -141,7 +141,7 @@ class _EditUserDetails extends State<EditUserDetails> {
                     //to a variable called "data" of Type Map
                     Map<String, dynamic> data =
                         snapshot.data!.data() as Map<String, dynamic>;
-
+      
                     // Populating the controllers with pre-existing value
                     _rank = TextEditingController(text: data['rank']);
                     _appointment =
@@ -157,7 +157,7 @@ class _EditUserDetails extends State<EditUserDetails> {
                     _ord = TextEditingController(text: data['ord']);
                     _attendence =
                         TextEditingController(text: data['attendence']);
-
+      
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -209,7 +209,7 @@ class _EditUserDetails extends State<EditUserDetails> {
                           ),
                         ),
                         const SizedBox(height: 10),
-
+      
                         // Appointment
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -231,7 +231,7 @@ class _EditUserDetails extends State<EditUserDetails> {
                           ),
                         ),
                         const SizedBox(height: 10),
-
+      
                         // ration type
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -253,7 +253,7 @@ class _EditUserDetails extends State<EditUserDetails> {
                           ),
                         ),
                         const SizedBox(height: 10),
-
+      
                         // status
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -275,7 +275,7 @@ class _EditUserDetails extends State<EditUserDetails> {
                           ),
                         ),
                         const SizedBox(height: 10),
-
+      
                         // mobile number
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -297,7 +297,7 @@ class _EditUserDetails extends State<EditUserDetails> {
                           ),
                         ),
                         const SizedBox(height: 10),
-
+      
                         // blood type
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -319,7 +319,7 @@ class _EditUserDetails extends State<EditUserDetails> {
                           ),
                         ),
                         const SizedBox(height: 10),
-
+      
                         // Date of Birth
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -341,7 +341,7 @@ class _EditUserDetails extends State<EditUserDetails> {
                           ),
                         ),
                         const SizedBox(height: 10),
-
+      
                         // ORD date
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -363,7 +363,7 @@ class _EditUserDetails extends State<EditUserDetails> {
                           ),
                         ),
                         const SizedBox(height: 10),
-
+      
                         // Attendence to create the percentage indicator
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -385,7 +385,7 @@ class _EditUserDetails extends State<EditUserDetails> {
                           ),
                         ),
                         const SizedBox(height: 10),
-
+      
                         // sign in
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -426,46 +426,46 @@ class _EditUserDetails extends State<EditUserDetails> {
                 },
               ),
             ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: ListView.builder(
-                itemCount: documentIDs.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const EditUserDetails(),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: ListView.builder(
+                  itemCount: documentIDs.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const EditUserDetails(),
+                            ),
+                          );
+                        },
+                        child: ListTile(
+                          shape: BeveledRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: const BorderSide(
+                              width: 2,
+                              color: Colors.indigo,
+                            ),
                           ),
-                        );
-                      },
-                      child: ListTile(
-                        shape: BeveledRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          side: const BorderSide(
-                            width: 2,
-                            color: Colors.indigo,
-                          ),
+                          title: ReadUserStatus(
+                              docIDs: docIDs, statusID: documentIDs[index]),
+                          //subtitle: ReadUserRank(
+                          //    docIDs: updated_documentIDs[index]),
+                          tileColor: Colors.indigo.shade300,
                         ),
-                        title: ReadUserStatus(
-                            docIDs: docIDs, statusID: documentIDs[index]),
-                        //subtitle: ReadUserRank(
-                        //    docIDs: updated_documentIDs[index]),
-                        tileColor: Colors.indigo.shade300,
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 15),
-        ],
+            const SizedBox(height: 15),
+          ],
+        ),
       ),
     );
   }

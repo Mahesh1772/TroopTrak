@@ -1,57 +1,29 @@
-import 'package:json_annotation/json_annotation.dart';
-import 'package:cloud_firestore_odm/cloud_firestore_odm.dart';
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-@JsonSerializable(explicitToJson: true)
-class User {
-  User({
-    required this.rank,
-    required this.appointment,
-    required this.rationType,
-    required this.status,
-    required this.mobileNumber,
-    required this.bloodgroup,
-    required this.dob,
-    required this.ord,
-    required this.attendence,
-  });
+class UserData extends ChangeNotifier {
+  // The list of all document IDs,
+  //which have access to each their own personal information
+  List<String> documentIDs = [];
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      rank: json['rank'],
-      appointment: json['appointment'],
-      rationType: json['rationType'],
-      status: json['status'],
-      mobileNumber: json['mobileNumber'],
-      bloodgroup: json['bloodgroup'],
-      dob: json['dob'],
-      ord: json['ord'],
-      attendence: json['attendence'],
-    );
+  // DocumentReference<Map<String, dynamic>>(Users/8bu245T440NIuQnJhm81)
+  // This is the sample output, to get IDs we just do .id
+  List<Map<String, dynamic>> userDetails = [];
+
+  Future futuremethod() async {
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .get()
+        .then((querySnapshot) {
+      for (var result in querySnapshot.docs) {
+        Map<String, dynamic> data = result.data();
+        userDetails.add(data);
+      }
+    });
   }
 
-  final String rank;
-  final String appointment;
-  final String rationType;
-  final String status;
-  final String mobileNumber;
-  final String bloodgroup;
-  final String dob;
-  final String ord;
-  final String attendence;
-
-  Map<String, Object?> toJson() {
-    return {
-      'rank'        :  rank,
-      'appointment' :  appointment,
-      'rationType'  :  rationType,  
-      'status'      :  status,  
-      'mobileNumber':  mobileNumber,          
-      'bloodgroup'  :  bloodgroup,        
-      'dob'         :  dob,      
-      'ord'         :  ord,  
-      'attendence'  :  attendence,
-    };
+  List<Map<String, dynamic>> getUserData() {
+    futuremethod();
+    return userDetails;
   }
-
-  List<Map> listOfUsers = [];
 }
