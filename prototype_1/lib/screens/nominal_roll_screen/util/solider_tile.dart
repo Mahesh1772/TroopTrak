@@ -1,8 +1,10 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/screens/detailed_screen/soldier_detailed_screen.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -45,6 +47,14 @@ class SoldierTile extends StatefulWidget {
 class _SoldierTileState extends State<SoldierTile> {
   bool loading = false;
   String inCampStatusText = '';
+
+  Future addAttendanceDetails() async {
+    await FirebaseFirestore.instance.collection('Users').doc(widget.soldierName).collection('Attendance').add({
+      //User map formatting
+      'isInsideCamp' : widget.isInsideCamp,
+      'date&time' : DateFormat('E d MMM yyyy HH:mm:ss').format(DateTime.now()),
+    });
+  }
 
   @override
   void initState() {
@@ -128,7 +138,7 @@ class _SoldierTileState extends State<SoldierTile> {
     Color tileColor = soldierColorGenerator(
         "lib/assets/army-ranks/${widget.soldierRank.toString().toLowerCase()}.png");
     return Padding(
-      padding: EdgeInsets.all(12.0.sp),
+      padding: EdgeInsets.all(1.0.sp),
       child: InkWell(
         onTap: () {
           Navigator.push(
@@ -234,6 +244,7 @@ class _SoldierTileState extends State<SoldierTile> {
                   setState(() {
                     widget.isInsideCamp = i;
                     inCampStatusText = inCampStatusTextChanger(i);
+                    addAttendanceDetails();
                   });
                 },
                 iconBuilder: rollingIconBuilder,
