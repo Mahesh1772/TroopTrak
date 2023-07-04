@@ -2,6 +2,7 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/screens/nominal_roll_screen/add_new_soldier_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:prototype_1/screens/detailed_screen/tabs/user_profile_tabs/user_profile_screen.dart';
@@ -76,7 +77,7 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
               ),
             );
           },
-          backgroundColor: Colors.deepPurple,
+          backgroundColor: const Color.fromARGB(255, 95, 57, 232),
           child: const Icon(Icons.add),
         ),
         backgroundColor: const Color.fromARGB(255, 21, 25, 34),
@@ -151,13 +152,23 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                   },
                   decoration: InputDecoration(
                     hintText: 'Search Name',
-                    prefixIcon: const Icon(Icons.search_sharp),
-                    prefixIconColor: Colors.indigo.shade900,
-                    fillColor: Colors.amber,
+                    hintStyle: GoogleFonts.poppins(
+                      color: Colors.white,
+                    ),
+                    focusColor: Colors.white,
+                    prefixIcon: const Icon(
+                      Icons.search_sharp,
+                      color: Colors.white,
+                    ),
+                    prefixIconColor: Colors.white,
+                    fillColor: const Color.fromARGB(255, 72, 30, 229),
                     filled: true,
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.r),
                         borderSide: BorderSide.none),
+                  ),
+                  style: GoogleFonts.poppins(
+                    color: Colors.white,
                   ),
                 ),
               ),
@@ -224,6 +235,7 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                           bloodType: userDetails[index]['bloodgroup'],
                           enlistmentDate: userDetails[index]['enlistment'],
                           ordDate: userDetails[index]['ord'],
+                          isInsideCamp: false,
                         );
                       },
                     ),

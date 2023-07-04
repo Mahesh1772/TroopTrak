@@ -55,8 +55,8 @@ class _GNavMainScreen extends State<GNavMainScreen> {
                 activeColor: Colors.white,
                 tabBackgroundGradient: LinearGradient(
                   colors: [
+                    const Color.fromARGB(255, 72, 30, 229),
                     Colors.deepPurple.shade600,
-                    Colors.deepPurple.shade300,
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,

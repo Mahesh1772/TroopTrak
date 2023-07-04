@@ -76,6 +76,10 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
     // notValues.removeWhere((element) => documentIDs.contains(element));
     // values.removeWhere((element) => notValues.contains(element));
 
+    dutySoldiersAndRanks.removeWhere((key, value) => (key.contains("NA")));
+
+    print(dutySoldiersAndRanks);
+
     await FirebaseFirestore.instance.collection('Duties').add({
       //User map formatting
       'points': points,
@@ -580,15 +584,14 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    var dummyarray;
-                    for (var i = dutySoldiersAndRanks.length; i < 10; i++) {
-                      dummyarray.addEntries({'NA$i': 'NA'}.entries);
-                    }
+                    // var dummyarray;
+                    // for (var i = dutySoldiersAndRanks.length; i < 10; i++) {
+                    //   dummyarray.addEntries({'NA$i': 'NA'}.entries);
+                    // }
 
                     if (widget.dutyEndTime != "End Time:" &&
                         widget.dutyStartTime != "Start Time:" &&
-                        widget.dutyDate != "Date of Duty:" &&
-                        dummyarray == dutySoldiersAndRanks) {
+                        widget.dutyDate != "Date of Duty:") {
                       IconSnackBar.show(
                           duration: const Duration(seconds: 1),
                           direction: DismissDirection.horizontal,

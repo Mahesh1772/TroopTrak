@@ -69,6 +69,7 @@ dependencies:
   syncfusion_flutter_calendar: ^21.2.3
   mockito: ^5.4.2
   flip_card: ^0.7.0
+  animated_toggle_switch: ^0.7.0
 
 dev_dependencies:
   flutter_test:

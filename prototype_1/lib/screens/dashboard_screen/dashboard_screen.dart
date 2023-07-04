@@ -33,6 +33,8 @@ late Stream<QuerySnapshot> documentStream;
 //which have access to each their own personal information
 List<String> documentIDs = [];
 
+final FlipCardController _controller = FlipCardController();
+
 class _DashboardScreenState extends State<DashboardScreen> {
   final name = FirebaseAuth.instance.currentUser!.displayName.toString();
 
@@ -62,15 +64,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  late FlipCardController _controller;
-
   @override
   void initState() {
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
     getCurrentUserData();
     getDocIDs();
-    _controller = FlipCardController();
-    cardFlipAnimations();
+
     super.initState();
   }
 
@@ -171,6 +170,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 height: 20.h,
               ),
               FlipCard(
+                controller: _controller,
                 front: Padding(
                   padding: EdgeInsets.symmetric(horizontal: defaultPadding.w),
                   child: Container(

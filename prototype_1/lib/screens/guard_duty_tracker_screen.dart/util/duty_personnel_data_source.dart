@@ -68,5 +68,11 @@ rankColorPicker(String rank) {
       rank == '2SG' ||
       rank == '1SG' ||
       rank == 'SSG' ||
-      rank == 'MSG');
+      rank == 'MSG' ||
+      rank == '3WO' ||
+      rank == '2WO' ||
+      rank == '1WO' ||
+      rank == 'MWO' ||
+      rank == 'SWO' ||
+      rank == 'CWO');
 }
