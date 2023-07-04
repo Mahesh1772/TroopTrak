@@ -131,29 +131,20 @@ class GuardDutyTile extends StatelessWidget {
               fontWeight: FontWeight.w500,
               textAlign: TextAlign.left,
             ),
-            // SizedBox(
-            //   height: 220.h,
-            //   child: ListView.builder(
-            //     itemCount: participants.length,
-            //     padding: EdgeInsets.all(12.sp),
-            //     scrollDirection: Axis.horizontal,
-            //     itemBuilder: (context, index) {
-            //       return ExpandedDutyParticipantsTile(
-            //         soldierName: participants[index]['name'],
-            //         soldierRank: participants[index]['rank'],
-            //         soldierAppointment: participants[index]['appointment'],
-            //         company: participants[index]['company'],
-            //         platoon: participants[index]['platoon'],
-            //         section: participants[index]['section'],
-            //         dateOfBirth: participants[index]['dob'],
-            //         rationType: participants[index]['rationType'],
-            //         bloodType: participants[index]['bloodgroup'],
-            //         enlistmentDate: participants[index]['enlistment'],
-            //         ordDate: participants[index]['ord'],
-            //       );
-            //     },
-            //   ),
-            // ),
+            SizedBox(
+              height: 220.h,
+              child: ListView.builder(
+                itemCount: participants.length,
+                padding: EdgeInsets.all(12.sp),
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  return ExpandedDutyParticipantsTile(
+                    soldierName: participants.keys.elementAt(index),
+                    soldierRank: participants.values.elementAt(index),
+                  );
+                },
+              ),
+            ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.0.w),
               child: GestureDetector(

@@ -124,10 +124,10 @@ class _UpdateDutyScreenState extends State<UpdateDutyScreen> {
   }
 
   Future addGaurdDuty() async {
-    var keys = dutySoldiersAndRanks.keys.toList();
-    var notKeys = dutySoldiersAndRanks.keys.toList();
-    notKeys.removeWhere((element) => documentIDs.contains(element));
-    keys.removeWhere((element) => notKeys.contains(element));
+    dutySoldiersAndRanks.removeWhere((key, value) => (key.contains("NA")));
+
+    print(dutySoldiersAndRanks);
+
     await FirebaseFirestore.instance
         .collection('Duties')
         .doc(widget.docID)
@@ -138,9 +138,8 @@ class _UpdateDutyScreenState extends State<UpdateDutyScreen> {
       'dutyDate': widget.dutyDate,
       'startTime': widget.dutyStartTime,
       'endTime': widget.dutyEndTime,
-      'participants': keys,
+      'participants': dutySoldiersAndRanks
     });
-    Navigator.pop(context);
   }
 
   @override
@@ -150,7 +149,6 @@ class _UpdateDutyScreenState extends State<UpdateDutyScreen> {
     pointsAssignment(DateTime.now());
     populateHeroTagArray();
     populateDutySoldiersAndRanksArray();
-    displayTiles();
     super.initState();
   }
 
@@ -158,116 +156,6 @@ class _UpdateDutyScreenState extends State<UpdateDutyScreen> {
     setState(() {
       dutySoldiersAndRanks = finalArray;
     });
-  }
-
-  Widget displayTiles() {
-    return Column(
-      children: [
-        Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              OrgChartTile(
-                rank: dutySoldiersAndRanks.values.elementAt(0),
-                name: dutySoldiersAndRanks.keys.elementAt(0),
-                heroTag: heroAddDutySoldiers[0],
-                callbackFunction: callBack,
-                nonParticipants: non_participants,
-                dutySoldiersAndRanks: dutySoldiersAndRanks,
-              ),
-              OrgChartTile(
-                rank: dutySoldiersAndRanks.values.elementAt(1),
-                name: dutySoldiersAndRanks.keys.elementAt(1),
-                heroTag: heroAddDutySoldiers[1],
-                callbackFunction: callBack,
-                nonParticipants: non_participants,
-                dutySoldiersAndRanks: dutySoldiersAndRanks,
-              ),
-            ],
-          ),
-        ),
-        SizedBox(
-          height: 40.h,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            OrgChartTile(
-              rank: dutySoldiersAndRanks.values.elementAt(2),
-              name: dutySoldiersAndRanks.keys.elementAt(2),
-              heroTag: heroAddDutySoldiers[2],
-              callbackFunction: callBack,
-              nonParticipants: non_participants,
-              dutySoldiersAndRanks: dutySoldiersAndRanks,
-            ),
-            OrgChartTile(
-              rank: dutySoldiersAndRanks.values.elementAt(3),
-              name: dutySoldiersAndRanks.keys.elementAt(3),
-              heroTag: heroAddDutySoldiers[3],
-              callbackFunction: callBack,
-              nonParticipants: non_participants,
-              dutySoldiersAndRanks: dutySoldiersAndRanks,
-            ),
-            OrgChartTile(
-              rank: dutySoldiersAndRanks.values.elementAt(4),
-              name: dutySoldiersAndRanks.keys.elementAt(4),
-              heroTag: heroAddDutySoldiers[4],
-              callbackFunction: callBack,
-              nonParticipants: non_participants,
-              dutySoldiersAndRanks: dutySoldiersAndRanks,
-            ),
-            OrgChartTile(
-              rank: dutySoldiersAndRanks.values.elementAt(5),
-              name: dutySoldiersAndRanks.keys.elementAt(5),
-              heroTag: heroAddDutySoldiers[5],
-              callbackFunction: callBack,
-              nonParticipants: non_participants,
-              dutySoldiersAndRanks: dutySoldiersAndRanks,
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 40.h,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            OrgChartTile(
-              rank: dutySoldiersAndRanks.values.elementAt(6),
-              name: dutySoldiersAndRanks.keys.elementAt(6),
-              heroTag: heroAddDutySoldiers[6],
-              callbackFunction: callBack,
-              nonParticipants: non_participants,
-              dutySoldiersAndRanks: dutySoldiersAndRanks,
-            ),
-            OrgChartTile(
-              rank: dutySoldiersAndRanks.values.elementAt(7),
-              name: dutySoldiersAndRanks.keys.elementAt(7),
-              heroTag: heroAddDutySoldiers[7],
-              callbackFunction: callBack,
-              nonParticipants: non_participants,
-              dutySoldiersAndRanks: dutySoldiersAndRanks,
-            ),
-            OrgChartTile(
-              rank: dutySoldiersAndRanks.values.elementAt(8),
-              name: dutySoldiersAndRanks.keys.elementAt(8),
-              heroTag: heroAddDutySoldiers[8],
-              callbackFunction: callBack,
-              nonParticipants: non_participants,
-              dutySoldiersAndRanks: dutySoldiersAndRanks,
-            ),
-            OrgChartTile(
-              rank: dutySoldiersAndRanks.values.elementAt(9),
-              name: dutySoldiersAndRanks.keys.elementAt(9),
-              heroTag: heroAddDutySoldiers[9],
-              callbackFunction: callBack,
-              nonParticipants: non_participants,
-              dutySoldiersAndRanks: dutySoldiersAndRanks,
-            ),
-          ],
-        ),
-      ],
-    );
   }
 
   @override
@@ -400,7 +288,109 @@ class _UpdateDutyScreenState extends State<UpdateDutyScreen> {
                 SizedBox(
                   height: 30.h,
                 ),
-                displayTiles(),
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      OrgChartTile(
+                        rank: dutySoldiersAndRanks.values.elementAt(0),
+                        name: dutySoldiersAndRanks.keys.elementAt(0),
+                        heroTag: heroAddDutySoldiers[0],
+                        callbackFunction: callBack,
+                        nonParticipants: non_participants,
+                        dutySoldiersAndRanks: dutySoldiersAndRanks,
+                      ),
+                      OrgChartTile(
+                        rank: dutySoldiersAndRanks.values.elementAt(1),
+                        name: dutySoldiersAndRanks.keys.elementAt(1),
+                        heroTag: heroAddDutySoldiers[1],
+                        callbackFunction: callBack,
+                        nonParticipants: non_participants,
+                        dutySoldiersAndRanks: dutySoldiersAndRanks,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 40.h,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    OrgChartTile(
+                      rank: dutySoldiersAndRanks.values.elementAt(2),
+                      name: dutySoldiersAndRanks.keys.elementAt(2),
+                      heroTag: heroAddDutySoldiers[2],
+                      callbackFunction: callBack,
+                      nonParticipants: non_participants,
+                      dutySoldiersAndRanks: dutySoldiersAndRanks,
+                    ),
+                    OrgChartTile(
+                      rank: dutySoldiersAndRanks.values.elementAt(3),
+                      name: dutySoldiersAndRanks.keys.elementAt(3),
+                      heroTag: heroAddDutySoldiers[3],
+                      callbackFunction: callBack,
+                      nonParticipants: non_participants,
+                      dutySoldiersAndRanks: dutySoldiersAndRanks,
+                    ),
+                    OrgChartTile(
+                      rank: dutySoldiersAndRanks.values.elementAt(4),
+                      name: dutySoldiersAndRanks.keys.elementAt(4),
+                      heroTag: heroAddDutySoldiers[4],
+                      callbackFunction: callBack,
+                      nonParticipants: non_participants,
+                      dutySoldiersAndRanks: dutySoldiersAndRanks,
+                    ),
+                    OrgChartTile(
+                      rank: dutySoldiersAndRanks.values.elementAt(5),
+                      name: dutySoldiersAndRanks.keys.elementAt(5),
+                      heroTag: heroAddDutySoldiers[5],
+                      callbackFunction: callBack,
+                      nonParticipants: non_participants,
+                      dutySoldiersAndRanks: dutySoldiersAndRanks,
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 40.h,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    OrgChartTile(
+                      rank: dutySoldiersAndRanks.values.elementAt(6),
+                      name: dutySoldiersAndRanks.keys.elementAt(6),
+                      heroTag: heroAddDutySoldiers[6],
+                      callbackFunction: callBack,
+                      nonParticipants: non_participants,
+                      dutySoldiersAndRanks: dutySoldiersAndRanks,
+                    ),
+                    OrgChartTile(
+                      rank: dutySoldiersAndRanks.values.elementAt(7),
+                      name: dutySoldiersAndRanks.keys.elementAt(7),
+                      heroTag: heroAddDutySoldiers[7],
+                      callbackFunction: callBack,
+                      nonParticipants: non_participants,
+                      dutySoldiersAndRanks: dutySoldiersAndRanks,
+                    ),
+                    OrgChartTile(
+                      rank: dutySoldiersAndRanks.values.elementAt(8),
+                      name: dutySoldiersAndRanks.keys.elementAt(8),
+                      heroTag: heroAddDutySoldiers[8],
+                      callbackFunction: callBack,
+                      nonParticipants: non_participants,
+                      dutySoldiersAndRanks: dutySoldiersAndRanks,
+                    ),
+                    OrgChartTile(
+                      rank: dutySoldiersAndRanks.values.elementAt(9),
+                      name: dutySoldiersAndRanks.keys.elementAt(9),
+                      heroTag: heroAddDutySoldiers[9],
+                      callbackFunction: callBack,
+                      nonParticipants: non_participants,
+                      dutySoldiersAndRanks: dutySoldiersAndRanks,
+                    ),
+                  ],
+                ),
                 SizedBox(
                   height: 50.h,
                 ),
@@ -652,7 +642,7 @@ class _UpdateDutyScreenState extends State<UpdateDutyScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
-                            Icons.add_moderator_rounded,
+                            Icons.edit_calendar_rounded,
                             color: Colors.white,
                             size: 30.sp,
                           ),
@@ -660,7 +650,7 @@ class _UpdateDutyScreenState extends State<UpdateDutyScreen> {
                             width: 20.w,
                           ),
                           AutoSizeText(
-                            'ADD GUARD DUTY',
+                            'UPDATE GUARD DUTY',
                             style: GoogleFonts.poppins(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
