@@ -1,4 +1,6 @@
 // ignore_for_file: must_be_immutable
+import 'dart:collection';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +11,9 @@ import 'package:prototype_1/screens/detailed_screen/tabs/user_profile_tabs/user_
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/screens/nominal_roll_screen/util/solider_tile.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
+import '../../user_models/user_details.dart';
 
 class NominalRollNewScreen extends StatefulWidget {
   const NominalRollNewScreen({super.key});
@@ -53,6 +58,12 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final userModel = Provider.of<UserData>(context);
+    if (userModel.userDetails.isEmpty) {
+      userModel.getUserData();
+    }
+    //userModel.userDetails = LinkedHashSet<Map<String, dynamic>>.from(userModel.userDetails).toList();
+    print(userModel.userDetails);
     return MaterialApp(
       home: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -75,7 +86,10 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                   selectedBloodType: "Select your blood type...",
                 ),
               ),
-            );
+            ).then((value) {
+              userModel.userDetails = [];
+              userModel.getUserData();
+            });
           },
           backgroundColor: const Color.fromARGB(255, 95, 57, 232),
           child: const Icon(Icons.add),
@@ -172,7 +186,34 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                   ),
                 ),
               ),
-              StreamBuilder<QuerySnapshot>(
+              Expanded(
+                child: GridView.builder(
+                  itemCount: userModel.userDetails.length,
+                  padding: EdgeInsets.all(12.sp),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2, childAspectRatio: 1.w / 1.5.h),
+                  itemBuilder: (context, index) {
+                    return SoldierTile(
+                      soldierName: userModel.userDetails[index]['name'],
+                      soldierRank: userModel.userDetails[index]['rank'],
+                      soldierAppointment: userModel.userDetails[index]
+                          ['appointment'],
+                      company: userModel.userDetails[index]['company'],
+                      platoon: userModel.userDetails[index]['platoon'],
+                      section: userModel.userDetails[index]['section'],
+                      dateOfBirth: userModel.userDetails[index]['dob'],
+                      rationType: userModel.userDetails[index]['rationType'],
+                      bloodType: userModel.userDetails[index]['bloodgroup'],
+                      enlistmentDate: userModel.userDetails[index]
+                          ['enlistment'],
+                      ordDate: userModel.userDetails[index]['ord'],
+                      isInsideCamp: false,
+                    );
+                  },
+                ),
+              ),
+
+/*             StreamBuilder<QuerySnapshot>(
                 stream: documentStream,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
@@ -241,7 +282,7 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                     ),
                   );
                 },
-              ),
+              ),*/
             ],
           ),
         ),

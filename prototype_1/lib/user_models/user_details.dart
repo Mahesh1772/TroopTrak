@@ -1,3 +1,4 @@
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -17,13 +18,16 @@ class UserData extends ChangeNotifier {
         .then((querySnapshot) {
       for (var result in querySnapshot.docs) {
         Map<String, dynamic> data = result.data();
-        userDetails.add(data);
+        if (!userDetails.contains(data)) {
+          userDetails.add(data);
+        }
       }
     });
   }
 
   List<Map<String, dynamic>> getUserData() {
     futuremethod();
-    return userDetails;
+    var newSet = userDetails.distinct();
+    return newSet;
   }
 }
