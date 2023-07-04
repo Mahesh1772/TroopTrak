@@ -27,7 +27,7 @@ function check()
     input=input.trim();
     document.getElementById("password").value=input;
     document.getElementById("count").innerText="Length : " + input.length;
-    if(input.length>=5)
+    if(input.length>7)
     {
         document.getElementById("check0").style.color="green";
     }
@@ -36,7 +36,7 @@ function check()
        document.getElementById("check0").style.color="red"; 
     }
     
-    if(input.length<=45)
+    if(/[A-Z]/.test(input))
     {
         document.getElementById("check1").style.color="green";
     }
@@ -45,7 +45,7 @@ function check()
        document.getElementById("check1").style.color="red"; 
     }
     
-    if(input.match(/[0-9]/i))
+    if((input.length - input.replace(/[a-z]/g, '').length >=3))
     {
         document.getElementById("check2").style.color="green";
     }
@@ -54,7 +54,7 @@ function check()
        document.getElementById("check2").style.color="red"; 
     }
     
-    if(input.match(/[^A-Za-z0-9-' ']/i))
+    if(input.match(/[0-9]/i))
     {
         document.getElementById("check3").style.color="green";
     }
@@ -62,8 +62,8 @@ function check()
     {
        document.getElementById("check3").style.color="red"; 
     }
-    
-    if(input.match(' '))
+    const specialChars = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    if(specialChars.test(input)==false)
     {
         document.getElementById("check4").style.color="red";
     }
