@@ -1,6 +1,4 @@
 // ignore_for_file: must_be_immutable
-import 'dart:collection';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -56,14 +54,30 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
     super.initState();
   }
 
+  List<Map<String, dynamic>> updateList(String value, UserData userModel) {
+    if (value.isNotEmpty) {
+      List<Map<String, dynamic>> newList = userModel.userDetails
+          .where((element) =>
+              element['name'].toLowerCase().contains(value.toLowerCase()))
+          .toList();
+      setState(() {
+        userDetails = newList;
+      });
+      return newList;
+    }
+    return userModel.getUserData();
+  }
+
   @override
   Widget build(BuildContext context) {
     final userModel = Provider.of<UserData>(context);
     if (userModel.userDetails.isEmpty) {
       userModel.getUserData();
     }
-    //userModel.userDetails = LinkedHashSet<Map<String, dynamic>>.from(userModel.userDetails).toList();
-    print(userModel.userDetails);
+    if (searchText.isEmpty) {
+      userDetails = userModel.userDetails;
+    }
+    print(userDetails);
     return MaterialApp(
       home: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -87,8 +101,14 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                 ),
               ),
             ).then((value) {
-              userModel.userDetails = [];
-              userModel.getUserData();
+              setState(() {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => super.widget));
+                WidgetsBinding.instance.addPostFrameCallback((_) => build);
+                userModel.getUserData();
+              });
             });
           },
           backgroundColor: const Color.fromARGB(255, 95, 57, 232),
@@ -163,6 +183,7 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                     setState(() {
                       searchText = value;
                     });
+                    userDetails = updateList(value, userModel);
                   },
                   decoration: InputDecoration(
                     hintText: 'Search Name',
@@ -188,25 +209,23 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
               ),
               Expanded(
                 child: GridView.builder(
-                  itemCount: userModel.userDetails.length,
+                  itemCount: userDetails.length,
                   padding: EdgeInsets.all(12.sp),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2, childAspectRatio: 1.w / 1.5.h),
                   itemBuilder: (context, index) {
                     return SoldierTile(
-                      soldierName: userModel.userDetails[index]['name'],
-                      soldierRank: userModel.userDetails[index]['rank'],
-                      soldierAppointment: userModel.userDetails[index]
-                          ['appointment'],
-                      company: userModel.userDetails[index]['company'],
-                      platoon: userModel.userDetails[index]['platoon'],
-                      section: userModel.userDetails[index]['section'],
-                      dateOfBirth: userModel.userDetails[index]['dob'],
-                      rationType: userModel.userDetails[index]['rationType'],
-                      bloodType: userModel.userDetails[index]['bloodgroup'],
-                      enlistmentDate: userModel.userDetails[index]
-                          ['enlistment'],
-                      ordDate: userModel.userDetails[index]['ord'],
+                      soldierName: userDetails[index]['name'],
+                      soldierRank: userDetails[index]['rank'],
+                      soldierAppointment: userDetails[index]['appointment'],
+                      company: userDetails[index]['company'],
+                      platoon: userDetails[index]['platoon'],
+                      section: userDetails[index]['section'],
+                      dateOfBirth: userDetails[index]['dob'],
+                      rationType: userDetails[index]['rationType'],
+                      bloodType: userDetails[index]['bloodgroup'],
+                      enlistmentDate: userDetails[index]['enlistment'],
+                      ordDate: userDetails[index]['ord'],
                       isInsideCamp: false,
                     );
                   },
