@@ -67,7 +67,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
   @override
   Widget build(BuildContext context) {
     var now = DateTime.now();
-    DateTime startDate = DateTime(2020);
+    DateTime startDate = DateTime(2022);
     DateTime endDate = DateTime(2030);
 
     return Scaffold(
@@ -170,7 +170,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                               showDatePicker(
                                 context: context,
                                 initialDate: _selectedDate,
-                                firstDate: DateTime(2020),
+                                firstDate: DateTime(2022),
                                 lastDate: DateTime(2030),
                               ).then((value) {
                                 setState(() {
