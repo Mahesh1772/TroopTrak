@@ -13,6 +13,9 @@ import 'package:prototype_1/screens/conduct_tracker_screen/util/conduct_main_pag
 
 import 'package:horizontal_center_date_picker/datepicker_controller.dart';
 import 'package:horizontal_center_date_picker/horizontal_date_picker.dart';
+import 'package:provider/provider.dart';
+
+import '../../user_models/user_details.dart';
 
 class ConductTrackerScreen extends StatefulWidget {
   const ConductTrackerScreen({super.key});
@@ -66,6 +69,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final conductModel = Provider.of<UserData>(context);
     var now = DateTime.now();
     DateTime startDate = DateTime(2022);
     DateTime endDate = DateTime(2030);
@@ -76,7 +80,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
       body: SingleChildScrollView(
         child: SafeArea(
           child: StreamBuilder<QuerySnapshot>(
-            stream: conductStream,
+            stream: conductModel.conducts_data,
             builder: (context, snapshot) {
               var conducts = snapshot.data?.docs.toList();
               if (snapshot.hasData) {
@@ -106,9 +110,6 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                 allParticipants.removeWhere(
                   (element) => participants.contains(element),
                 );
-                //print(participants);
-
-                //print(todayConducts);
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,

@@ -8,8 +8,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
+import 'package:provider/provider.dart';
 import 'package:recase/recase.dart';
 import 'package:prototype_1/screens/conduct_tracker_screen/util/filters/participant_auto_selection.dart';
+
+import '../../user_models/user_details.dart';
 
 class AddNewConductScreen extends StatefulWidget {
   AddNewConductScreen({
@@ -363,6 +366,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final userModel = Provider.of<UserData>(context);
     final formKey = GlobalKey<FormState>();
     final formKey1 = GlobalKey<FormState>();
     return Scaffold(
@@ -642,7 +646,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                   ),
                 ),
                 StreamBuilder<QuerySnapshot>(
-                  stream: documentStream,
+                  stream: userModel.data,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       documentIDs = [];

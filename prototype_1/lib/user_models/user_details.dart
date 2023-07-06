@@ -10,30 +10,27 @@ class UserData extends ChangeNotifier {
 
   // DocumentReference<Map<String, dynamic>>(Users/8bu245T440NIuQnJhm81)
   // This is the sample output, to get IDs we just do .id
-      List<Map<String, dynamic>> userDetails = [];
+  List<Map<String, dynamic>> userDetails = [];
 
-  Future futuremethod() async {
-    await FirebaseFirestore.instance
-        .collection('Users')
-        .get()
-        .then((querySnapshot) {
-      for (var result in querySnapshot.docs) {
-        Map<String, dynamic> data = result.data();
-        if (!userDetails.contains(data)) {
-          userDetails.add(data);
-        }
-      }
-    });
+  Stream<QuerySnapshot> stream = Stream.empty();
+
+  Stream<QuerySnapshot> get data {
+    stream = FirebaseFirestore.instance.collection('Users').snapshots();
+    return stream;
+  }
+
+  Stream<QuerySnapshot> get conducts_data {
+    stream = FirebaseFirestore.instance.collection('Conducts').snapshots();
+    return stream;
   }
 
   List<Map<String, dynamic>> getUserData() {
     List<Map<String, dynamic>> newSet = [];
-    futuremethod();
+    //futuremethod();
     for (var user in userDetails) {
       if (newSet.isNotEmpty && !newSet.contains(user)) {
         newSet.add(user);
-      }
-      else {
+      } else {
         newSet = userDetails;
       }
     }

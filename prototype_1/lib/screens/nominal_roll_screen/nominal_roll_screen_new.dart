@@ -71,13 +71,6 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
   @override
   Widget build(BuildContext context) {
     final userModel = Provider.of<UserData>(context);
-    if (userModel.userDetails.isEmpty) {
-      userModel.getUserData();
-    }
-    if (searchText.isEmpty) {
-      userDetails = userModel.userDetails;
-    }
-    print(userDetails);
     return MaterialApp(
       home: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -107,7 +100,6 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                     MaterialPageRoute(
                         builder: (BuildContext context) => super.widget));
                 WidgetsBinding.instance.addPostFrameCallback((_) => build);
-                userModel.getUserData();
               });
             });
           },
@@ -183,7 +175,6 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                     setState(() {
                       searchText = value;
                     });
-                    userDetails = updateList(value, userModel);
                   },
                   decoration: InputDecoration(
                     hintText: 'Search Name',
@@ -207,33 +198,8 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                   ),
                 ),
               ),
-              Expanded(
-                child: GridView.builder(
-                  itemCount: userDetails.length,
-                  padding: EdgeInsets.all(12.sp),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2, childAspectRatio: 1.w / 1.5.h),
-                  itemBuilder: (context, index) {
-                    return SoldierTile(
-                      soldierName: userDetails[index]['name'],
-                      soldierRank: userDetails[index]['rank'],
-                      soldierAppointment: userDetails[index]['appointment'],
-                      company: userDetails[index]['company'],
-                      platoon: userDetails[index]['platoon'],
-                      section: userDetails[index]['section'],
-                      dateOfBirth: userDetails[index]['dob'],
-                      rationType: userDetails[index]['rationType'],
-                      bloodType: userDetails[index]['bloodgroup'],
-                      enlistmentDate: userDetails[index]['enlistment'],
-                      ordDate: userDetails[index]['ord'],
-                      isInsideCamp: false,
-                    );
-                  },
-                ),
-              ),
-
-/*             StreamBuilder<QuerySnapshot>(
-                stream: documentStream,
+              StreamBuilder<QuerySnapshot>(
+                stream: userModel.data,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     documentIDs = [];
@@ -301,7 +267,7 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                     ),
                   );
                 },
-              ),*/
+              ),
             ],
           ),
         ),

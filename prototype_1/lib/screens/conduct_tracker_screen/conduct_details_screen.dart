@@ -4,7 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/screens/conduct_tracker_screen/update_conduct_screen.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
+import 'package:provider/provider.dart';
 import 'package:recase/recase.dart';
+
+import '../../user_models/user_details.dart';
 
 class ConductDetailsScreen extends StatefulWidget {
   const ConductDetailsScreen({
@@ -101,6 +104,7 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final conductModel = Provider.of<UserData>(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
@@ -120,7 +124,7 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
               ),
               child: SafeArea(
                 child: StreamBuilder<QuerySnapshot>(
-                    stream: conductStream,
+                    stream: conductModel.conducts_data,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         var conducts = snapshot.data?.docs.toList();
@@ -334,7 +338,7 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                     ),
                   ),
                   StreamBuilder(
-                    stream: documentStream,
+                    stream: conductModel.data,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         userDetails = [];

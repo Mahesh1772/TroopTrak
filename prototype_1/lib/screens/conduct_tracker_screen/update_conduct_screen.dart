@@ -6,7 +6,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:prototype_1/util/text_styles/text_style.dart';
+import 'package:provider/provider.dart';
 import 'package:recase/recase.dart';
+
+import '../../user_models/user_details.dart';
 
 class UpdateConductScreen extends StatefulWidget {
   UpdateConductScreen({
@@ -196,6 +199,7 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final userModel = Provider.of<UserData>(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
@@ -211,7 +215,6 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
                 InkWell(
                   onTap: () {
                     goBackWithoutChanges();
-                    //display();
                     Navigator.pop(context);
                   },
                   child: Icon(
@@ -458,7 +461,7 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
                   ),
                 ),
                 StreamBuilder<QuerySnapshot>(
-                  stream: documentStream,
+                  stream: userModel.data,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       documentIDs = [];
