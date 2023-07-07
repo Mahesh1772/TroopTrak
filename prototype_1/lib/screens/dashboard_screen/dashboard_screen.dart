@@ -130,8 +130,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         MaterialPageRoute(
                           builder: (context) => UserProfileScreen(
                             soldierName: currentUserData['name'],
-                            soldierRank:
-                                "lib/assets/army-ranks/${currentUserData['rank'].toString().toLowerCase()}.png",
+                            soldierRank: currentUserData['rank']
+                                .toString()
+                                .toLowerCase(),
                             soldierAppointment: currentUserData['appointment'],
                             company: currentUserData['company'],
                             platoon: currentUserData['platoon'],
