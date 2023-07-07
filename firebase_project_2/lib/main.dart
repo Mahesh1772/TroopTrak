@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_project_2/src/utils/themes/thems.dart';
+import 'package:firebase_project_2/sign_in_assets/home/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+import 'package:firebase_project_2/firebase_options.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:firebase_project_2/user_models/user_details.dart';
+import 'package:provider/provider.dart';
 
-void main() async {
+Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -17,66 +20,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.system,
-      home: const AppHome(),
-    );
-  }
-}
-
-class AppHome extends StatelessWidget {
-  const AppHome({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(".appable/"),
-        leading: const Icon(Icons.ondemand_video_rounded),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(
-          Icons.add_shopping_cart_outlined,
+    return ScreenUtilInit(
+      builder: (BuildContext context, child) => ChangeNotifierProvider(
+        create: (context) => UserData(),
+        child: const MaterialApp(
+          home: Wrapper(),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: ListView(
-          children: [
-            Text(
-              "Heading",
-              style: Theme.of(context).textTheme.headlineLarge,
-            ),
-            Text(
-              "Sub-Heading",
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            Text(
-              "Para",
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              child: const Text('Elevated Button'),
-            ),
-            OutlinedButton(
-              onPressed: () {},
-              child: const Text('Outlined Button'),
-            ),
-            const Padding(
-              padding: EdgeInsets.all(20),
-              child: Image(
-                height: 200,
-                width: 200,
-                image: AssetImage('assets/images/books.png'),
-              ),
-            )
-          ],
-        ),
-      ),
+      designSize: const Size(450, 1000),
     );
   }
 }

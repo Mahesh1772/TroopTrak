@@ -33,10 +33,10 @@ class _EditUserDetails extends State<EditUserDetails> {
         .collection('Statuses')
         .get()
         .then((value) {
-      value.docs.forEach((element) {
+      for (var element in value.docs) {
         print(element.data());
         documentIDs.add(element.reference.id);
-      });
+      }
     });
     //.orderBy('rank', descending: false)
     print(documentIDs);

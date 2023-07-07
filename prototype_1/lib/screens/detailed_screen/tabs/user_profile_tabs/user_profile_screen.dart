@@ -43,6 +43,25 @@ class _UserProfileScreenState extends State<UserProfileScreen>
   Widget build(BuildContext context) {
     TabController tabController = TabController(length: 2, vsync: this);
 
+    bool rankColorPicker(String rank) {
+      return (rank == 'REC' ||
+          rank == 'PTE' ||
+          rank == 'LCP' ||
+          rank == 'CPL' ||
+          rank == 'CFC' ||
+          rank == '3SG' ||
+          rank == '2SG' ||
+          rank == '1SG' ||
+          rank == 'SSG' ||
+          rank == 'MSG' ||
+          rank == '3WO' ||
+          rank == '2WO' ||
+          rank == '1WO' ||
+          rank == 'MWO' ||
+          rank == 'SWO' ||
+          rank == 'CWO');
+    }
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
       body: SingleChildScrollView(
@@ -120,9 +139,12 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                   ),
                                 ),
                                 Image.asset(
-                                  widget.soldierRank,
+                                  "lib/assets/army-ranks/${widget.soldierRank.toString().toLowerCase()}.png",
                                   width: 60.w,
-                                  color: Colors.white,
+                                  color: rankColorPicker(
+                                          widget.soldierRank.toUpperCase())
+                                      ? Colors.white
+                                      : null,
                                 )
                               ],
                             ),

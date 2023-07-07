@@ -49,7 +49,7 @@ function handleResetPassword(auth, actionCode, continueUrl, lang) {
     // parameter.
 
     // Verify the password reset code is valid.
-    verifyPasswordResetCode(auth, actionCode).then((email) => {
+    firebase.auth.verifyPasswordResetCode(auth, actionCode).then((email) => {
         const accountEmail = email;
 
         // TODO: Show the reset screen with the user's email and ask the user for
@@ -58,7 +58,7 @@ function handleResetPassword(auth, actionCode, continueUrl, lang) {
         newPassword = check();
 
         // Save the new password.
-        confirmPasswordReset(auth, actionCode, newPassword).then((resp) => {
+        firebase.auth.confirmPasswordReset(auth, actionCode, newPassword).then((resp) => {
             // Password reset has been confirmed and new password updated.
 
             // TODO: Display a link back to the app, or sign-in the user directly

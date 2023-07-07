@@ -67,8 +67,8 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
   @override
   Widget build(BuildContext context) {
     var now = DateTime.now();
-    DateTime startDate = DateTime(2020);
-    DateTime endDate = DateTime(2030);
+    DateTime startDate = DateTime(2022);
+    DateTime endDate = DateTime(2025);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
