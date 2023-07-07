@@ -1,5 +1,4 @@
 //import 'package:fast_immutable_collections/fast_immutable_collections.dart';
-import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -12,29 +11,17 @@ class UserData extends ChangeNotifier {
   // This is the sample output, to get IDs we just do .id
   List<Map<String, dynamic>> userDetails = [];
 
-  Stream<QuerySnapshot> stream = Stream.empty();
+  Stream<QuerySnapshot> soldiers = Stream.empty();
+  Stream<QuerySnapshot> conducts = Stream.empty();
 
   Stream<QuerySnapshot> get data {
-    stream = FirebaseFirestore.instance.collection('Users').snapshots();
-    return stream;
+    soldiers = FirebaseFirestore.instance.collection('Users').snapshots();
+    return soldiers;
   }
 
   Stream<QuerySnapshot> get conducts_data {
-    stream = FirebaseFirestore.instance.collection('Conducts').snapshots();
-    return stream;
+    conducts = FirebaseFirestore.instance.collection('Conducts').snapshots();
+    return conducts;
   }
 
-  List<Map<String, dynamic>> getUserData() {
-    List<Map<String, dynamic>> newSet = [];
-    //futuremethod();
-    for (var user in userDetails) {
-      if (newSet.isNotEmpty && !newSet.contains(user)) {
-        newSet.add(user);
-      } else {
-        newSet = userDetails;
-      }
-    }
-    //notifyListeners();
-    return newSet;
-  }
 }

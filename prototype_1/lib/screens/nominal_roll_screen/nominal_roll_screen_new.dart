@@ -54,20 +54,6 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
     super.initState();
   }
 
-  List<Map<String, dynamic>> updateList(String value, UserData userModel) {
-    if (value.isNotEmpty) {
-      List<Map<String, dynamic>> newList = userModel.userDetails
-          .where((element) =>
-              element['name'].toLowerCase().contains(value.toLowerCase()))
-          .toList();
-      setState(() {
-        userDetails = newList;
-      });
-      return newList;
-    }
-    return userModel.getUserData();
-  }
-
   @override
   Widget build(BuildContext context) {
     final userModel = Provider.of<UserData>(context);
