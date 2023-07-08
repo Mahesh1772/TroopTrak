@@ -51,14 +51,14 @@ class _SoldierTileState extends State<SoldierTile> {
   bool loading = false;
   String inCampStatusText = '';
 
-  Future addAttendanceDetails() async {
+  Future addAttendanceDetails(bool i) async {
     await FirebaseFirestore.instance
         .collection('Users')
         .doc(widget.soldierName)
         .collection('Attendance')
         .add({
       //User map formatting
-      'isInsideCamp': widget.isInsideCamp,
+      'isInsideCamp': i,
       'date&time': DateFormat('E d MMM yyyy HH:mm:ss').format(DateTime.now()),
     });
   }
@@ -150,9 +150,20 @@ class _SoldierTileState extends State<SoldierTile> {
         return Padding(
           padding: EdgeInsets.all(8.0.sp),
           child: StreamBuilder<QuerySnapshot>(
-              stream: userModel.data,
+              stream: userModel.attendance_data(widget.soldierName),
               builder: (context, snapshot) {
-                if (snapshot.hasData) {}
+                if (snapshot.hasData) {
+                 var attendenceData = snapshot.data?.docs.toList();
+                 List<Map<String, dynamic>> all_data = [];
+                  var length = attendenceData!.length;
+                  for (var i = 0; i < length; i++) {
+                     var data = attendenceData[i].data();
+                     all_data.add(data as Map<String, dynamic>);
+                     all_data[i].addEntries({'ID': attendenceData[i].reference.id}.entries);
+                  }
+                  //print(all_data[length-1]);
+                  widget.isInsideCamp = all_data[length-1]['isInsideCamp'];
+                }
                 return Container(
                   decoration: BoxDecoration(
                       boxShadow: [
@@ -239,9 +250,9 @@ class _SoldierTileState extends State<SoldierTile> {
                         values: const [false, true],
                         onChanged: (i) {
                           setState(() {
-                            widget.isInsideCamp = i;
+                            //widget.isInsideCamp = i;
                             inCampStatusText = inCampStatusTextChanger(i);
-                            addAttendanceDetails();
+                            addAttendanceDetails(i);
                           });
                         },
                         iconBuilder: rollingIconBuilder,
