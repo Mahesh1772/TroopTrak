@@ -70,7 +70,11 @@ dependencies:
   mockito: ^5.4.2
   flip_card: ^0.7.0
   animated_toggle_switch: ^0.7.0
+
+  fast_immutable_collections: ^9.1.5
+
   animations: ^2.0.7
+
 
 dev_dependencies:
   flutter_test:

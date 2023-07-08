@@ -7,6 +7,9 @@ import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/add_new_duty_
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/util/custom_rect_tween.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/util/add_soldier_to_duty_tile.dart';
+import 'package:provider/provider.dart';
+
+import '../../user_models/user_details.dart';
 
 class AddDutySoldiersCard extends StatefulWidget {
   const AddDutySoldiersCard({
@@ -77,6 +80,7 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
 
   @override
   Widget build(BuildContext context) {
+    final userModel = Provider.of<UserData>(context);
     return Center(
       child: Padding(
         padding: EdgeInsets.all(16.0.sp),
@@ -134,7 +138,7 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
                       ),
                     ),
                     StreamBuilder<QuerySnapshot>(
-                      stream: documentStream,
+                      stream: userModel.data,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           documentIDs = [];
@@ -178,7 +182,6 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
                                   as Map<String, dynamic>;
                               userDetails.add(data);
                             }
-                            //autoFilter();
                           }
                         }
                         return Flexible(

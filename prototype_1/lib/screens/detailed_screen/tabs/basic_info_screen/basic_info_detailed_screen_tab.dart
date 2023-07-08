@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:prototype_1/screens/detailed_screen/tabs/basic_info_screen/update_soldier_details_screen.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
+import 'package:provider/provider.dart';
+import '../../../../user_models/user_details.dart';
 import '../../util/soldier_detailed_screen_info_template.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -21,25 +23,21 @@ class BasicInfoTab extends StatefulWidget {
 class _BasicInfoTabState extends State<BasicInfoTab> {
   Future deleteUserAccount() async {
     deleteCurrentUser();
-    id.delete();
     Navigator.pop(context);
   }
 
   Future deleteCurrentUser() async {
-    FirebaseFirestore.instance.collection("Users").doc(fname).delete();
+    FirebaseFirestore.instance.collection("Users").doc(widget.docID).delete();
   }
 
   @override
   Widget build(BuildContext context) {
+    final userDetailsModel = Provider.of<UserData>(context);
     return SingleChildScrollView(
       child: SizedBox(
         height: 750.h,
         child: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection('Users')
-              //.where('name')
-              .doc(widget.docID)
-              .snapshots(),
+          stream: userDetailsModel.userData_data(widget.docID),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               //We are trying to map the key and values pairs

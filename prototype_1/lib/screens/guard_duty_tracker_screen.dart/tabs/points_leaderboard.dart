@@ -4,8 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/util/duty_personnel_data_source.dart';
 import 'package:prototype_1/util/constants.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
+
+import '../../../user_models/user_details.dart';
 
 class PointsLeaderBoard extends StatefulWidget {
   const PointsLeaderBoard({super.key});
@@ -21,9 +24,6 @@ class DutyPersonnel {
   final String rank;
   final int? points;
 }
-
-//This is what the stream builder is waiting for
-late Stream<QuerySnapshot> documentStream;
 
 // The list of all document IDs,
 //which have access to each their own personal information
@@ -103,7 +103,6 @@ class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
   @override
   void initState() {
     super.initState();
-    documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
     getDutyInfo();
     getDocIDs();
     getDutyPoints();
@@ -114,6 +113,7 @@ class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
 
   @override
   Widget build(BuildContext context) {
+    final userDetailsModel = Provider.of<UserData>(context);
     return Container(
       margin: EdgeInsets.only(top: 20.0.h),
       child: SingleChildScrollView(
@@ -153,7 +153,7 @@ class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
             Padding(
               padding: EdgeInsets.symmetric(vertical: 30.0.h),
               child: StreamBuilder<QuerySnapshot>(
-                stream: documentStream,
+                stream: userDetailsModel.data,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     getDutyPoints();

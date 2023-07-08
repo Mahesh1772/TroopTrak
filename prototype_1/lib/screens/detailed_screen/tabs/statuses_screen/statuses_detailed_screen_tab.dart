@@ -8,8 +8,9 @@ import 'package:prototype_1/screens/detailed_screen/util/current_status_detailed
 import 'package:prototype_1/screens/detailed_screen/util/past_status_detailed_screen_tile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import '../../../../user_models/user_details.dart';
 
-late Stream<QuerySnapshot> documentStream;
 List<Map<String, dynamic>> userCurrentStatus = [];
 
 class StatusesTab extends StatefulWidget {
@@ -25,20 +26,11 @@ class StatusesTab extends StatefulWidget {
 }
 
 class _StatusesTabState extends State<StatusesTab> {
-  //This is what the stream builder is waiting for
-
-  @override
-  void initState() {
-    documentStream = FirebaseFirestore.instance
-        .collection('Users')
-        .doc(widget.docID)
-        .collection('Statuses')
-        .snapshots();
-    super.initState();
-  }
+  //This is what the stream builder is waiting forF
 
   @override
   Widget build(BuildContext context) {
+    final statusModel = Provider.of<UserData>(context);
     List<Map<String, dynamic>> userPastStatus = [];
     List<Map<String, dynamic>> toRemove = [];
 
@@ -47,7 +39,7 @@ class _StatusesTabState extends State<StatusesTab> {
       body: Padding(
         padding: EdgeInsets.all(30.0.sp),
         child: StreamBuilder<QuerySnapshot>(
-          stream: documentStream,
+          stream: statusModel.status_data(widget.docID),
           builder: (context, snapshot) {
             var users = snapshot.data?.docs.toList();
             if (snapshot.hasData) {
@@ -63,7 +55,7 @@ class _StatusesTabState extends State<StatusesTab> {
               for (var status in userCurrentStatus) {
                 DateTime end =
                     DateFormat("d MMM yyyy").parse(status['endDate']);
-                if (DateTime(end.year, end.month , end.day + 1)
+                if (DateTime(end.year, end.month, end.day + 1)
                     .isBefore(DateTime.now())) {
                   userPastStatus.add(status);
                   toRemove.add(status);

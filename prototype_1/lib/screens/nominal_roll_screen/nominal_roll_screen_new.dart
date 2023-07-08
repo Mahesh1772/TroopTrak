@@ -9,6 +9,12 @@ import 'package:prototype_1/screens/detailed_screen/tabs/user_profile_tabs/user_
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/screens/nominal_roll_screen/util/solider_tile.dart';
 
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
+import '../../user_models/user_details.dart';
+
+
 class NominalRollNewScreen extends StatefulWidget {
   const NominalRollNewScreen({super.key});
 
@@ -52,6 +58,7 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final userModel = Provider.of<UserData>(context);
     return MaterialApp(
       home: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -172,7 +179,7 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                 ),
               ),
               StreamBuilder<QuerySnapshot>(
-                stream: documentStream,
+                stream: userModel.data,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     documentIDs = [];
