@@ -170,7 +170,22 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
       'ord': widget.ord,
       'enlistment': widget.enlistment,
     });
+
+    addAttendanceDetails();
+
     Navigator.pop(context);
+  }
+
+  Future addAttendanceDetails() async {
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(widget.name.text.trim())
+        .collection('Attendance')
+        .add({
+      //User map formatting
+      'isInsideCamp': true,
+      'date&time': DateFormat('E d MMM yyyy HH:mm:ss').format(DateTime.now()),
+    });
   }
 
   @override
