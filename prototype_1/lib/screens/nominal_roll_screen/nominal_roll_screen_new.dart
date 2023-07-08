@@ -8,12 +8,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:prototype_1/screens/detailed_screen/tabs/user_profile_tabs/user_profile_screen.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/screens/nominal_roll_screen/util/solider_tile.dart';
-
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
 import '../../user_models/user_details.dart';
-
 
 class NominalRollNewScreen extends StatefulWidget {
   const NominalRollNewScreen({super.key});

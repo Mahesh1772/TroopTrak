@@ -163,7 +163,7 @@ class _SoldierTileState extends State<SoldierTile> {
                     Container(
                       width: 40.w,
                       height: 40.h,
-                      padding: const EdgeInsets.all(5),
+                      padding: EdgeInsets.all(5.sp),
                       decoration: BoxDecoration(
                         color: Colors.transparent.withOpacity(0.15),
                         borderRadius: BorderRadius.only(
@@ -194,7 +194,7 @@ class _SoldierTileState extends State<SoldierTile> {
                 //name
 
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0.w),
+                  padding: EdgeInsets.symmetric(horizontal: 4.0.w),
                   child: SizedBox(
                     height: 40.h,
                     width: double.maxFinite,
@@ -248,20 +248,20 @@ class _SoldierTileState extends State<SoldierTile> {
                   selectedIconRadius: 13.0.r,
                   borderColor: Colors.transparent,
                   loading: loading,
-                  foregroundBoxShadow: const [
+                  foregroundBoxShadow: [
                     BoxShadow(
                       color: Colors.black26,
-                      spreadRadius: 1,
-                      blurRadius: 2,
-                      offset: Offset(0, 1.5),
+                      spreadRadius: 1.r,
+                      blurRadius: 2.r,
+                      offset: Offset(0.w, 1.5.h),
                     )
                   ],
-                  boxShadow: const [
+                  boxShadow: [
                     BoxShadow(
                       color: Colors.black26,
-                      spreadRadius: 1,
-                      blurRadius: 2,
-                      offset: Offset(0, 1.5),
+                      spreadRadius: 1.r,
+                      blurRadius: 2.r,
+                      offset: Offset(0.w, 1.5.h),
                     )
                   ],
                 ),
@@ -287,7 +287,7 @@ class _SoldierTileState extends State<SoldierTile> {
         );
       },
       closedColor: Colors.transparent,
-      transitionDuration: const Duration(seconds: 1),
+      transitionDuration: const Duration(milliseconds: 50),
     );
   }
 }
