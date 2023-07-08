@@ -151,6 +151,7 @@ class _RegisterPageState extends State<RegisterPage> {
         user.updateDisplayName(_name.text.trim());
         //Adding user details
         addUserDetails();
+        addAttendanceDetails();
       }
       FirebaseAuth.instance.signOut();
     } catch (e) {
@@ -225,6 +226,18 @@ class _RegisterPageState extends State<RegisterPage> {
       'dob': dob,
       'ord': ord,
       'enlistment': enlistment,
+    });
+  }
+
+  Future addAttendanceDetails() async {
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(_name.text.titleCase.trim())
+        .collection('Attendance')
+        .add({
+      //User map formatting
+      'isInsideCamp': true,
+      'date&time': DateFormat('E d MMM yyyy HH:mm:ss').format(DateTime.now()),
     });
   }
 

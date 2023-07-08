@@ -223,7 +223,7 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                       itemCount: userDetails.length,
                       padding: EdgeInsets.all(12.sp),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2, childAspectRatio: 1.w / 1.5.h),
+                          crossAxisCount: 2, childAspectRatio: 1.w / 1.6.h),
                       itemBuilder: (context, index) {
                         return SoldierTile(
                           soldierName: userDetails[index]['name'],

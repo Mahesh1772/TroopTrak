@@ -28,15 +28,24 @@ class UserData extends ChangeNotifier {
   }
 
   Stream<QuerySnapshot> get duty_data {
-  duty = FirebaseFirestore.instance.collection('Duties').snapshots();
-  return duty;
-}
+    duty = FirebaseFirestore.instance.collection('Duties').snapshots();
+    return duty;
+  }
 
   Stream<QuerySnapshot> status_data(String docID) {
     status = FirebaseFirestore.instance
         .collection('Users')
         .doc(docID)
         .collection('Statuses')
+        .snapshots();
+    return status;
+  }
+
+  Stream<QuerySnapshot> attendance_data(String docID) {
+    status = FirebaseFirestore.instance
+        .collection('Users')
+        .doc(docID)
+        .collection('Attendance')
         .snapshots();
     return status;
   }

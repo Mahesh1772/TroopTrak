@@ -10,6 +10,9 @@ import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/screens/detailed_screen/soldier_detailed_screen.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
+import 'package:provider/provider.dart';
+
+import '../../../user_models/user_details.dart';
 
 class SoldierTile extends StatefulWidget {
   final String soldierName;
@@ -140,6 +143,7 @@ class _SoldierTileState extends State<SoldierTile> {
 
   @override
   Widget build(BuildContext context) {
+    final statusModel = Provider.of<UserData>(context);
     Color tileColor = soldierColorGenerator(
         "lib/assets/army-ranks/${widget.soldierRank.toString().toLowerCase()}.png");
     return OpenContainer(
