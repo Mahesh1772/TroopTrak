@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "281065592471",
+    "project_id": "nstrackerapp",
+    "storage_bucket": "nstrackerapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:281065592471:android:5e277fd84d9b84d2a3bbd2",
+        "android_client_info": {
+          "package_name": "com.example.firebase_project_2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "281065592471-c6nn6ik0tcq189uo475ojtdcu981nd13.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPksvuWDjGCym1WoQyQZrjMqn4cYYuigE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "281065592471-c6nn6ik0tcq189uo475ojtdcu981nd13.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "281065592471-vj47j3smfthgqpu61ok3dpsi6qfv7o9a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.prototype1"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:prototype_1/screens/detailed_screen/tabs/attendance_screen/attendance_tab_detailed_screen.dart';
 import 'package:prototype_1/screens/detailed_screen/tabs/basic_info_screen/basic_info_detailed_screen_tab.dart';
 import 'package:prototype_1/screens/detailed_screen/tabs/statuses_screen/statuses_detailed_screen_tab.dart';
 import 'package:recase/recase.dart';
@@ -41,7 +42,7 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
     with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    TabController tabController = TabController(length: 2, vsync: this);
+    TabController tabController = TabController(length: 3, vsync: this);
 
     bool rankColorPicker(String rank) {
       return (rank == 'REC' ||
@@ -194,7 +195,7 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
                 TabBar(
                   labelStyle: GoogleFonts.poppins(
                     color: Colors.white,
-                    fontSize: 16.sp,
+                    fontSize: 15.sp,
                     fontWeight: FontWeight.w500,
                     letterSpacing: 1.5,
                   ),
@@ -214,6 +215,13 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
                         color: Colors.white,
                       ),
                     ),
+                    Tab(
+                      text: "ATTENDANCE",
+                      icon: Icon(
+                        Icons.person_add_alt_1,
+                        color: Colors.white,
+                      ),
+                    ),
                   ],
                 ),
                 SizedBox(
@@ -227,6 +235,10 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
 
                       //Statuses tab
                       StatusesTab(
+                        docID: widget.soldierName,
+                      ),
+
+                      AttendanceTab(
                         docID: widget.soldierName,
                       ),
                     ],

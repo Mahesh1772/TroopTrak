@@ -30,13 +30,47 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  google_fonts: ^4.0.4 
+  flutter_svg: ^2.0.5
+  fl_chart: ^0.62.0
+  provider: ^6.0.5
+  cloud_firestore: ^4.5.3
+  intl: ^0.17.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  google_fonts: ^4.0.4
-  flutter_native_splash: ^2.2.19
+  google_nav_bar: ^5.0.6
+  firebase_core: ^2.12.0
+  
+  permission_handler: ^10.2.0
+  flutter_screenutil: ^5.7.0
+  percent_indicator: ^4.2.3
+  firebase_auth: ^4.6.0
+  recase: ^4.1.0
+  auto_size_text: ^3.0.0
+  
+  flutter_slidable: ^3.0.0
+  animated_snack_bar: ^0.3.1
+  email_validator: ^2.0.1
+  flutter_icon_snackbar: ^1.1.4
+  flutter_pw_validator: ^1.6.0
+  responsive_framework: ^1.0.0
+  liquid_pull_to_refresh: ^3.0.1
+  
+  horizontal_center_date_picker: ^2.1.1
+  syncfusion_flutter_datagrid: ^21.2.10
+  easy_autocomplete: ^1.6.0
+  popup_card: ^0.1.0
+  font_awesome_flutter: ^10.4.0
+  roundcheckbox: ^2.0.5
+  syncfusion_flutter_calendar: ^21.2.3
+  mockito: ^5.4.2
+  flip_card: ^0.7.0
+  animated_toggle_switch: ^0.7.0
+  animations: ^2.0.7
+
+
 
 dev_dependencies:
   flutter_test:
@@ -75,10 +109,42 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/books.png
-    - assets/images/GOW.jpg
-    - assets/images/GOW_icon.jpg
-
+      - lib/assets/user.png
+      - lib/assets/army-ranks/rec.png
+      - lib/assets/army-ranks/pte.png
+      - lib/assets/army-ranks/lcp.png
+      - lib/assets/army-ranks/cpl.png
+      - lib/assets/army-ranks/cfc.png
+      - lib/assets/army-ranks/sct.png
+      - lib/assets/army-ranks/3sg.png
+      - lib/assets/army-ranks/2sg.png
+      - lib/assets/army-ranks/1sg.png
+      - lib/assets/army-ranks/ssg.png
+      - lib/assets/army-ranks/msg.png
+      - lib/assets/army-ranks/3wo.png
+      - lib/assets/army-ranks/2wo.png
+      - lib/assets/army-ranks/1wo.png
+      - lib/assets/army-ranks/mwo.png
+      - lib/assets/army-ranks/swo.png
+      - lib/assets/army-ranks/cwo.png
+      - lib/assets/army-ranks/2lt.png
+      - lib/assets/army-ranks/lta.png
+      - lib/assets/army-ranks/cpt.png
+      - lib/assets/army-ranks/maj.png
+      - lib/assets/army-ranks/ltc.png
+      - lib/assets/army-ranks/sltc.png
+      - lib/assets/army-ranks/col.png
+      - lib/assets/army-ranks/bg.png
+      - lib/assets/army-ranks/mg.png
+      - lib/assets/army-ranks/lg.png
+      - lib/assets/army-ranks/soldier.png
+      - lib/assets/army-ranks/men.png
+      - lib/assets/icons8-medals-64.png
+      - lib/assets/icons8-soldier-man-64.png
+      - lib/assets/icons8-soldiers-64.png
+      - lib/assets/icons8-doctors-folder-64.png
+      - lib/assets/icons8-error-64.png
+      - lib/assets/calendar-images/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

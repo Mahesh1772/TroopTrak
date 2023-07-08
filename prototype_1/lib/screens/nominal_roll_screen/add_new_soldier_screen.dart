@@ -107,7 +107,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
   void _showDatePicker() {
     showDatePicker(
       context: context,
-      initialDate: DateFormat("d MMM yyyy").parse(widget.dob),
+      initialDate: DateTime.now(),
       firstDate: DateTime(1960),
       lastDate: DateTime.now(),
     ).then((value) {
@@ -123,7 +123,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
   void _ordDatePicker() {
     showDatePicker(
       context: context,
-      initialDate: DateFormat("d MMM yyyy").parse(widget.ord),
+      initialDate: DateTime.now(),
       firstDate: DateTime(1960),
       lastDate: DateTime(2030),
     ).then((value) {
@@ -139,7 +139,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
   void _enlistmentDatePicker() {
     showDatePicker(
       context: context,
-      initialDate: DateFormat("d MMM yyyy").parse(widget.enlistment),
+      initialDate: DateTime.now(),
       firstDate: DateTime(1960),
       lastDate: DateTime(2030),
     ).then((value) {
@@ -268,73 +268,77 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                     height: 20.h,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       //Date of birth date picker
+                      InkWell(
+                        onTap: () {
+                          _showDatePicker();
+                        },
+                        child: Container(
+                          height: 70.h,
+                          width: 177.w,
+                          decoration: BoxDecoration(
+                            color: Colors.black54,
+                            border: Border.all(color: Colors.white),
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 15.w, vertical: 15.h),
+                                child: AutoSizeText(
+                                  widget.dob,
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.white, fontSize: 16.sp),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(8.0.sp),
+                                child: const Icon(
+                                  Icons.date_range_rounded,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      //Ration type dropdown menu
                       Container(
-                        width: 130.w,
-                        height: 60.h,
+                        height: 70.h,
+                        width: 240.w,
                         decoration: BoxDecoration(
                           color: Colors.black54,
                           border: Border.all(color: Colors.white),
                           borderRadius: BorderRadius.circular(12.r),
                         ),
                         child: Center(
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 15.w, vertical: 15.h),
-                            child: AutoSizeText(
-                              widget.dob,
-                              style: GoogleFonts.poppins(
-                                  color: Colors.white, fontSize: 16.sp),
+                          child: DropdownButtonFormField<String>(
+                            validator: (value) {
+                              if (value == "Select your ration type...") {
+                                return 'Walao what food you eat?';
+                              }
+                              return null;
+                            },
+                            alignment: Alignment.center,
+                            dropdownColor: Colors.black54,
+                            value: widget.selectedItem,
+                            icon: const Icon(
+                              Icons.arrow_downward_sharp,
+                              color: Colors.white,
                             ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(8.0.sp),
-                        child: InkWell(
-                          onTap: () {
-                            _showDatePicker();
-                          },
-                          child: const Icon(
-                            Icons.date_range_rounded,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-
-                      //Ration type dropdown menu
-                      Padding(
-                        padding: EdgeInsets.only(left: 10.0.w),
-                        child: Container(
-                          width: 240.w,
-                          height: 55.h,
-                          decoration: BoxDecoration(
-                            color: Colors.black54,
-                            border: Border.all(color: Colors.white),
-                            borderRadius: BorderRadius.circular(12.r),
-                          ),
-                          child: Center(
-                            child: DropdownButtonFormField<String>(
-                              validator: (value) {
-                                if (value == "Select your ration type...") {
-                                  return 'Walao what food you eat?';
-                                }
-                                return null;
-                              },
-                              alignment: Alignment.center,
-                              dropdownColor: Colors.black54,
-                              value: widget.selectedItem,
-                              icon: const Icon(
-                                Icons.arrow_downward_sharp,
-                                color: Colors.white,
-                              ),
-                              style: GoogleFonts.poppins(color: Colors.black54),
-                              items: _rationTypes
-                                  .map(
-                                    (item) => DropdownMenuItem<String>(
-                                      value: item,
+                            style: GoogleFonts.poppins(color: Colors.black54),
+                            items: _rationTypes
+                                .map(
+                                  (item) => DropdownMenuItem<String>(
+                                    value: item,
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 8.0.w),
                                       child: AutoSizeText(
                                         item,
                                         maxLines: 1,
@@ -344,12 +348,12 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                                             color: Colors.white),
                                       ),
                                     ),
-                                  )
-                                  .toList(),
-                              onChanged: (item) => setState(() {
-                                widget.selectedItem = item;
-                              }),
-                            ),
+                                  ),
+                                )
+                                .toList(),
+                            onChanged: (item) => setState(() {
+                              widget.selectedItem = item;
+                            }),
                           ),
                         ),
                       ),
@@ -359,63 +363,69 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                     height: 20.h,
                   ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       //Rank dropdown menu
                       Container(
-                        width: 170.w,
-                        height: 55.h,
+                        height: 70.h,
+                        width: 185.w,
                         decoration: BoxDecoration(
                           color: Colors.black54,
                           border: Border.all(color: Colors.white),
                           borderRadius: BorderRadius.circular(12.r),
                         ),
-                        child: DropdownButtonFormField<String>(
-                          validator: (value) {
-                            if (value == "Select your rank...") {
-                              return 'Walao provide rank liao';
-                            }
-                            return null;
-                          },
-                          alignment: Alignment.center,
-                          dropdownColor: Colors.black54,
-                          value: widget.selectedRank,
-                          icon: const Icon(
-                            Icons.arrow_downward_sharp,
-                            color: Colors.white,
-                          ),
-                          style: GoogleFonts.poppins(color: Colors.black54),
-                          items: _ranks
-                              .map(
-                                (item) => DropdownMenuItem<String>(
-                                  value: item,
-                                  child: AutoSizeText(
-                                    item,
-                                    maxLines: 1,
-                                    style: GoogleFonts.poppins(
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.white),
+                        child: Center(
+                          child: DropdownButtonFormField<String>(
+                            validator: (value) {
+                              if (value == "Select your rank...") {
+                                return 'Walao provide rank liao';
+                              }
+                              return null;
+                            },
+                            alignment: Alignment.center,
+                            dropdownColor: Colors.black54,
+                            value: widget.selectedRank,
+                            icon: const Icon(
+                              Icons.arrow_downward_sharp,
+                              color: Colors.white,
+                            ),
+                            style: GoogleFonts.poppins(color: Colors.black54),
+                            items: _ranks
+                                .map(
+                                  (item) => DropdownMenuItem<String>(
+                                    value: item,
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 8.0.w),
+                                      child: AutoSizeText(
+                                        item,
+                                        maxLines: 1,
+                                        style: GoogleFonts.poppins(
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.white),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              )
-                              .toList(),
-                          onChanged: (String? item) async => setState(() {
-                            widget.selectedRank = item;
-                          }),
+                                )
+                                .toList(),
+                            onChanged: (String? item) async => setState(() {
+                              widget.selectedRank = item;
+                            }),
+                          ),
                         ),
                       ),
 
                       //Blood type dropdown menu
-                      Padding(
-                        padding: EdgeInsets.only(left: 20.0.w),
-                        child: Container(
-                          width: 225.w,
-                          height: 55.h,
-                          decoration: BoxDecoration(
-                            color: Colors.black54,
-                            border: Border.all(color: Colors.white),
-                            borderRadius: BorderRadius.circular(12.r),
-                          ),
+                      Container(
+                        height: 70.h,
+                        width: 235.w,
+                        decoration: BoxDecoration(
+                          color: Colors.black54,
+                          border: Border.all(color: Colors.white),
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                        child: Center(
                           child: DropdownButtonFormField<String>(
                             validator: (value) {
                               if (value == "Select your blood type...") {
@@ -435,13 +445,17 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
                                 .map(
                                   (item) => DropdownMenuItem<String>(
                                     value: item,
-                                    child: AutoSizeText(
-                                      item,
-                                      maxLines: 1,
-                                      style: GoogleFonts.poppins(
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.white),
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 8.0.w),
+                                      child: AutoSizeText(
+                                        item,
+                                        maxLines: 1,
+                                        style: GoogleFonts.poppins(
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.white),
+                                      ),
                                     ),
                                   ),
                                 )
@@ -608,71 +622,79 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
 
                   //Enlistment Date picker
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SizedBox(
-                        width: 160.w,
-                        height: 60.h,
+                      InkWell(
+                        onTap: () {
+                          _enlistmentDatePicker();
+                        },
                         child: Container(
+                          height: 70.h,
+                          width: 200.w,
                           decoration: BoxDecoration(
                             color: Colors.black54,
                             border: Border.all(color: Colors.white),
                             borderRadius: BorderRadius.circular(12.r),
                           ),
-                          child: Center(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 15.w, vertical: 15.h),
-                              child: AutoSizeText(
-                                widget.enlistment,
-                                style: GoogleFonts.poppins(
-                                    color: Colors.white, fontSize: 16.sp),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 15.w, vertical: 15.h),
+                                child: AutoSizeText(
+                                  widget.enlistment,
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.white, fontSize: 16.sp),
+                                ),
                               ),
-                            ),
+                              Padding(
+                                padding: EdgeInsets.all(8.0.sp),
+                                child: const Icon(
+                                  Icons.date_range_rounded,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.all(8.0.sp),
-                        child: InkWell(
-                          onTap: () {
-                            _enlistmentDatePicker();
-                          },
-                          child: const Icon(
-                            Icons.date_range_rounded,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
+
+                      //comment
+
                       //ORD picker
-                      SizedBox(
-                        width: 150.w,
+                      InkWell(
+                        onTap: () {
+                          _ordDatePicker();
+                        },
                         child: Container(
+                          height: 70.h,
+                          width: 200.w,
                           decoration: BoxDecoration(
                             color: Colors.black54,
                             border: Border.all(color: Colors.white),
                             borderRadius: BorderRadius.circular(12.r),
                           ),
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 15.w, vertical: 15.h),
-                            child: Text(
-                              widget.ord,
-                              style: GoogleFonts.poppins(
-                                  color: Colors.white, fontSize: 16.sp),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(8.0.sp),
-                        child: InkWell(
-                          onTap: () {
-                            _ordDatePicker();
-                          },
-                          child: const Icon(
-                            Icons.date_range_rounded,
-                            color: Colors.white,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 15.w, vertical: 15.h),
+                                child: AutoSizeText(
+                                  widget.ord,
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.white, fontSize: 16.sp),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(8.0.sp),
+                                child: const Icon(
+                                  Icons.date_range_rounded,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),

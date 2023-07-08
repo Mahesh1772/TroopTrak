@@ -61,10 +61,11 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab> {
     const docIDs = 'Lee Kuan Yew';
 
     return SizedBox(
-      height: 600.h,
+      height: 750.h,
       child: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('Users')
+            //.where('name')
             .doc(docIDs)
             .snapshots(),
         builder: (context, snapshot) {
@@ -78,27 +79,27 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab> {
               children: [
                 SoldierDetailedInfoTemplate(
                   title: "Date Of Birth",
-                  content: profile[9].toUpperCase(),
+                  content: data['dob'].toString().toUpperCase(),
                   icon: Icons.cake_rounded,
                 ),
                 SoldierDetailedInfoTemplate(
                   title: "Ration Type:",
-                  content: profile[10].toUpperCase(),
+                  content: data['rationType'].toUpperCase(),
                   icon: Icons.food_bank_rounded,
                 ),
                 SoldierDetailedInfoTemplate(
                   title: "Blood Type:",
-                  content: profile[11].toUpperCase(),
+                  content: data['bloodgroup'].toString(),
                   icon: Icons.bloodtype_rounded,
                 ),
                 SoldierDetailedInfoTemplate(
                   title: "Enlistment Date:",
-                  content: profile[12].toUpperCase(),
+                  content: data['enlistment'].toString().toUpperCase(),
                   icon: Icons.date_range_rounded,
                 ),
                 SoldierDetailedInfoTemplate(
                   title: "ORD:",
-                  content: profile[13].toUpperCase(),
+                  content: data['ord'].toString().toUpperCase(),
                   icon: Icons.military_tech_rounded,
                 ),
                 SizedBox(
@@ -111,7 +112,7 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => UpdateSoldierDetailsPage(
-                              name: TextEditingController(text: docIDs),
+                              name: TextEditingController(text: data['name']),
                               company:
                                   TextEditingController(text: data['company']),
                               platoon:
@@ -151,7 +152,7 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab> {
                           SizedBox(
                             width: 20.w,
                           ),
-                          StyledText("EDIT USER PROFILE", 18.sp,
+                          StyledText("EDIT SOLDIER DETAILS", 18.sp,
                               fontWeight: FontWeight.bold),
                         ],
                       ),
@@ -159,7 +160,7 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab> {
                   ),
                 ),
                 SizedBox(
-                  height: 10.h,
+                  height: 20.h,
                 ),
                 Center(
                   child: TextButton(
@@ -186,16 +187,16 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab> {
                           SizedBox(
                             width: 20.w,
                           ),
-                          StyledText("DELETE USER PROFILE", 18.sp,
+                          StyledText("DELETE SOLDIER DETAILS", 18.sp,
                               fontWeight: FontWeight.bold),
+                          SizedBox(
+                            height: 30.h,
+                          )
                         ],
                       ),
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 30.h,
-                )
               ],
             );
           }

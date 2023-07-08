@@ -72,7 +72,8 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
     final conductModel = Provider.of<UserData>(context);
     var now = DateTime.now();
     DateTime startDate = DateTime(2022);
-    DateTime endDate = DateTime(2030);
+
+    DateTime endDate = DateTime(2025);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
