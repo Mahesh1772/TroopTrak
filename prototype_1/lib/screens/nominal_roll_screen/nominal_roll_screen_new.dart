@@ -79,15 +79,7 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                   selectedBloodType: "Select your blood type...",
                 ),
               ),
-            ).then((value) {
-              setState(() {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => super.widget));
-                WidgetsBinding.instance.addPostFrameCallback((_) => build);
-              });
-            });
+            );
           },
           backgroundColor: const Color.fromARGB(255, 95, 57, 232),
           child: const Icon(Icons.add),

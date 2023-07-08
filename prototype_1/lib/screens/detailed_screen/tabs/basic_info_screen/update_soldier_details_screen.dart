@@ -7,6 +7,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../user_models/user_details.dart';
 
 class UpdateSoldierDetailsPage extends StatefulWidget {
   UpdateSoldierDetailsPage(
@@ -244,16 +247,14 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
 
   @override
   Widget build(context) {
+    final userDetailsModel = Provider.of<UserData>(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
       body: SingleChildScrollView(
         child: SafeArea(
           child: StreamBuilder(
-            stream: FirebaseFirestore.instance
-                .collection('Users')
-                .doc(widget.name.text.trim())
-                .snapshots(),
+            stream: userDetailsModel.userData_data(widget.name.text.trim()),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 //We are trying to map the key and values pairs

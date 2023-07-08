@@ -6,6 +6,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../user_models/user_details.dart';
 
 class UpdateStatusScreen extends StatefulWidget {
   UpdateStatusScreen({
@@ -138,6 +141,7 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final userStatusModel = Provider.of<UserData>(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
@@ -146,11 +150,7 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
           child: Form(
             key: _formKey,
             child: StreamBuilder(
-                stream: db
-                    .doc(widget.docID)
-                    .collection('Statuses')
-                    .doc(widget.statusID)
-                    .snapshots(),
+                stream: userStatusModel.updateStatus_data(widget.docID, widget.statusID),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     data = snapshot.data!.data() as Map<String, dynamic>;

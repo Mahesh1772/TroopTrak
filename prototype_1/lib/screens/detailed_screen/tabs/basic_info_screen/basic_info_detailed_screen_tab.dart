@@ -23,10 +23,6 @@ class BasicInfoTab extends StatefulWidget {
 class _BasicInfoTabState extends State<BasicInfoTab> {
   Future deleteUserAccount() async {
     deleteCurrentUser();
-    //id.delete();
-    //final userModel = Provider.of<UserData>(context);
-    //userModel.userDetails = [];
-    //userModel.getUserData();
     Navigator.pop(context);
   }
 
@@ -36,15 +32,12 @@ class _BasicInfoTabState extends State<BasicInfoTab> {
 
   @override
   Widget build(BuildContext context) {
+    final userDetailsModel = Provider.of<UserData>(context);
     return SingleChildScrollView(
       child: SizedBox(
         height: 750.h,
         child: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection('Users')
-              //.where('name')
-              .doc(widget.docID)
-              .snapshots(),
+          stream: userDetailsModel.userData_data(widget.docID),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               //We are trying to map the key and values pairs

@@ -3,6 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/util/guard_duty_main_page_tiles.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
+
+import '../../../user_models/user_details.dart';
 
 class UpcomingDuties extends StatefulWidget {
   const UpcomingDuties({super.key});
@@ -22,14 +25,8 @@ int i = 0;
 
 class _UpcomingDutiesState extends State<UpcomingDuties> {
   @override
-  void initState() {
-    super.initState();
-    documentStream =
-        FirebaseFirestore.instance.collection('Duties').snapshots();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final userDetailsModel = Provider.of<UserData>(context);
     return SingleChildScrollView(
       child: Container(
         margin: EdgeInsets.only(top: 50.h),
@@ -45,7 +42,7 @@ class _UpcomingDutiesState extends State<UpcomingDuties> {
                 height: 15.h,
               ),
               StreamBuilder<QuerySnapshot>(
-                  stream: documentStream,
+                  stream: userDetailsModel.duty_data,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       dutyDetails = [];
