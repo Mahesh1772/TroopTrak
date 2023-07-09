@@ -11,6 +11,8 @@ import 'package:prototype_1/util/constants.dart';
 import 'package:prototype_1/screens/dashboard_screen/util/pie_chart/current_strength_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:prototype_1/screens/dashboard_screen/util/dashboard_soldier_tile.dart';
+import 'package:provider/provider.dart';
+import '../../user_models/user_details.dart';
 import '../detailed_screen/tabs/user_profile_tabs/user_profile_screen.dart';
 import 'package:flip_card/flip_card.dart';
 
@@ -326,6 +328,7 @@ class CurrentStrengthBreakdownTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final statusModel = Provider.of<UserData>(context);
     return Container(
       margin: EdgeInsets.only(
         top: defaultPadding.h,
@@ -390,7 +393,7 @@ class CurrentStrengthBreakdownTile extends StatelessWidget {
         collapsedIconColor: Colors.white,
         children: [
           StreamBuilder<QuerySnapshot>(
-              stream: documentStream,
+              stream: statusModel.data,
               builder: (context, snapshot) {
                 documentIDs = [];
                 userDetails = [];
