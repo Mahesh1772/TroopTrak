@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:prototype_1/screens/detailed_screen/util/book_in_out_tile.dart.dart';
 
 late Stream<QuerySnapshot> documentStream;
@@ -51,6 +52,17 @@ class _AttendanceTabState extends State<AttendanceTab> {
                     .addEntries({'ID': users[i].reference.id}.entries);
               }
             }
+            userBookInStatus.sort((m1, m2) {
+              var r = DateFormat("E d MMM yyyy HH:mm:ss")
+                  .parse(m1["date&time"])
+                  .compareTo(DateFormat("E d MMM yyyy HH:mm:ss")
+                      .parse(m2["date&time"]));
+              if (r != 0) return r;
+              return DateFormat("E d MMM yyyy HH:mm:ss")
+                  .parse(m1["date&time"])
+                  .compareTo(DateFormat("E d MMM yyyy HH:mm:ss")
+                      .parse(m2["date&time"]));
+            });
             return Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,6 +97,8 @@ class _AttendanceTabState extends State<AttendanceTab> {
                     scrollDirection: Axis.vertical,
                     itemBuilder: (context, index) {
                       return BookInOutTile(
+                        docID: widget.docID,
+                        attendanceID: userBookInStatus[index]['ID'],
                         timeStamp: userBookInStatus[index]['date&time'],
                         isInsideCamp: userBookInStatus[index]['isInsideCamp'],
                       );

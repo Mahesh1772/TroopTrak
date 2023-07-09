@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,11 +10,14 @@ class BookInOutTile extends StatefulWidget {
     super.key,
     required this.timeStamp,
     required this.isInsideCamp,
-    //required this.docID,
+    required this.docID,
+    required this.attendanceID
   });
 
   final String timeStamp;
   final bool isInsideCamp;
+  final String docID;
+  final String attendanceID;
 
   //final String docID;
 
@@ -22,6 +26,15 @@ class BookInOutTile extends StatefulWidget {
 }
 
 class _BookInOutTileState extends State<BookInOutTile> {
+  Future deletePastStatus() async {
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(widget.docID)
+        .collection('Attendance')
+        .doc(widget.attendanceID)
+        .delete();
+  }
+
   @override
   Widget build(BuildContext context) {
     late IconData? tileIcon;
@@ -36,7 +49,9 @@ class _BookInOutTileState extends State<BookInOutTile> {
           motion: const StretchMotion(),
           children: [
             SlidableAction(
-              onPressed: (context) {},
+              onPressed: (context) {
+                deletePastStatus();
+              },
               icon: Icons.delete_forever_rounded,
               backgroundColor: Colors.red,
               borderRadius: BorderRadius.only(
