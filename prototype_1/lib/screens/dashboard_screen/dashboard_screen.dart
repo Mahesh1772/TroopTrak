@@ -104,6 +104,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   List<String> specialist = [
+    "REC",
+    "PTE",
+    "LCP",
+    "CPL",
+    "CFC",
+    "SCT",
+    "OCT",
     "3SG",
     "2SG",
     "1SG",
@@ -140,6 +147,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     final statusModel = Provider.of<UserData>(context);
+
+    // Your logic here
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
       body: SingleChildScrollView(
@@ -238,180 +247,198 @@ class _DashboardScreenState extends State<DashboardScreen> {
               StreamBuilder<QuerySnapshot>(
                   stream: statusModel.data,
                   builder: (context, snapshot) {
-                    documentIDs = [];
-                    userDetails = [];
-                    List? users = snapshot.data?.docs.toList();
-                    var docsmapshot = snapshot.data!;
+                    if (snapshot.hasData) {
+                      documentIDs = [];
+                      userDetails = [];
+                      List? users = snapshot.data?.docs.toList();
+                      var docsmapshot = snapshot.data!;
 
-                    for (var i = 0; i < users!.length; i++) {
-                      documentIDs.add(users[i]['name']);
-                      var data =
-                          docsmapshot.docs[i].data() as Map<String, dynamic>;
-                      userDetails.add(data);
-                    }
+                      Future.delayed(const Duration(seconds: 2)).then((val) {
+                        // Your logic here
+                      });
 
-                    specDetails = userDetails
-                        .where(
-                            (element) => specialist.contains(element['rank']))
-                        .toList();
+                      for (var i = 0; i < users!.length; i++) {
+                        documentIDs.add(users[i]['name']);
+                        var data =
+                            docsmapshot.docs[i].data() as Map<String, dynamic>;
+                        userDetails.add(data);
+                      }
 
-                    statusDetails = userDetails
-                        .where(
-                            (element) => statusList.contains(element['name']))
-                        .toList();
+                      specDetails = userDetails
+                          .where(
+                              (element) => specialist.contains(element['rank']))
+                          .toList();
 
-                    print(statusDetails);
+                      statusDetails = userDetails
+                          .where(
+                              (element) => statusList.contains(element['name']))
+                          .toList();
 
-                    officerDetails = userDetails
-                        .where((element) => officers.contains(element['rank']))
-                        .toList();
+                      print(statusDetails);
 
-                    var _maDetails = userDetails
-                        .where(
-                            (element) => _maList.contains(element['name']))
-                        .toList();
+                      officerDetails = userDetails
+                          .where(
+                              (element) => officers.contains(element['rank']))
+                          .toList();
 
-                    return FlipCard(
-                      controller: _controller,
-                      front: Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: defaultPadding.w),
-                        child: Container(
-                          padding: EdgeInsets.all(defaultPadding.sp),
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.black54,
-                                  offset: Offset(10.0.w, 10.0.h),
-                                  blurRadius: 2.0.r,
-                                  spreadRadius: 2.0.r),
-                            ],
-                            color: const Color.fromARGB(255, 32, 36, 51),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.r)),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Strength In-Camp",
-                                        style: GoogleFonts.poppins(
-                                            fontSize: 24.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.white),
-                                      ),
-                                      Text(
-                                        "As of ${DateFormat('yMMMMd').add_Hm().format(DateTime.now())}",
-                                        style: GoogleFonts.poppins(
-                                            fontSize: 18.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color:
-                                                Colors.white.withOpacity(0.45)),
-                                      ),
-                                    ],
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(
-                                      top: 16.0.h,
-                                    ),
-                                    child: Column(
+                      var _maDetails = userDetails
+                          .where((element) => _maList.contains(element['name']))
+                          .toList();
+
+                      return FlipCard(
+                        controller: _controller,
+                        front: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: defaultPadding.w),
+                          child: Container(
+                            padding: EdgeInsets.all(defaultPadding.sp),
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.black54,
+                                    offset: Offset(10.0.w, 10.0.h),
+                                    blurRadius: 2.0.r,
+                                    spreadRadius: 2.0.r),
+                              ],
+                              color: const Color.fromARGB(255, 32, 36, 51),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.r)),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        InkWell(
-                                          onTap: () {
-                                            _controller.toggleCard();
-                                          },
-                                          child: Icon(
-                                            Icons.date_range_rounded,
-                                            color: Colors.white,
-                                            size: 30.sp,
-                                          ),
+                                        Text(
+                                          "Strength In-Camp",
+                                          style: GoogleFonts.poppins(
+                                              fontSize: 24.sp,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.white),
                                         ),
-                                        StyledText("Show Calendar", 14.sp,
-                                            fontWeight: FontWeight.w400),
+                                        Text(
+                                          "As of ${DateFormat('yMMMMd').add_Hm().format(DateTime.now())}",
+                                          style: GoogleFonts.poppins(
+                                              fontSize: 18.sp,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.white
+                                                  .withOpacity(0.45)),
+                                        ),
                                       ],
                                     ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: (defaultPadding + 2).h,
-                              ),
-                              CurrentStrengthChart(),
-                              SizedBox(
-                                height: defaultPadding.h,
-                              ),
-                              CurrentStrengthBreakdownTile(
-                                title: "Total Officers",
-                                imgSrc: "lib/assets/icons8-medals-64.png",
-                                currentNumOfSoldiers: officerDetails.length,
-                                totalNumOfSoldiers: officerDetails.length,
-                                imgColor: Colors.red,
-                                userDetails: officerDetails,
-                              ),
-                              CurrentStrengthBreakdownTile(
-                                title: "Total WOSEs",
-                                imgSrc: "lib/assets/icons8-soldier-man-64.png",
-                                currentNumOfSoldiers: specDetails.length,
-                                totalNumOfSoldiers: specDetails.length,
-                                imgColor: Colors.blue,
-                                userDetails: specDetails,
-                              ),
-                              CurrentStrengthBreakdownTile(
-                                title: "On Status",
-                                imgSrc: "lib/assets/icons8-error-64.png",
-                                currentNumOfSoldiers: 25,
-                                totalNumOfSoldiers: statusDetails.length,
-                                imgColor: Colors.yellow,
-                                userDetails: statusDetails,
-                              ),
-                              CurrentStrengthBreakdownTile(
-                                title: "On MA",
-                                imgSrc:
-                                    "lib/assets/icons8-doctors-folder-64.png",
-                                currentNumOfSoldiers: 1,
-                                totalNumOfSoldiers: 126,
-                                imgColor: Colors.lightBlueAccent,
-                                userDetails: _maDetails,
-                              ),
-                            ],
+                                    Container(
+                                      margin: EdgeInsets.only(
+                                        top: 16.0.h,
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              _controller.toggleCard();
+                                            },
+                                            child: Icon(
+                                              Icons.date_range_rounded,
+                                              color: Colors.white,
+                                              size: 30.sp,
+                                            ),
+                                          ),
+                                          StyledText("Show Calendar", 14.sp,
+                                              fontWeight: FontWeight.w400),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: (defaultPadding + 2).h,
+                                ),
+                                CurrentStrengthChart(
+                                    currentOfficers: officerDetails.length,
+                                    currentWOSEs: specDetails.length,
+                                    currentStatus: statusDetails.length,
+                                    currentMA: _maDetails.length),
+                                SizedBox(
+                                  height: defaultPadding.h,
+                                ),
+                                CurrentStrengthBreakdownTile(
+                                  title: "Total Officers",
+                                  imgSrc: "lib/assets/icons8-medals-64.png",
+                                  currentNumOfSoldiers: officerDetails.length,
+                                  totalNumOfSoldiers: officerDetails.length,
+                                  imgColor: Colors.red,
+                                  userDetails: officerDetails,
+                                ),
+                                CurrentStrengthBreakdownTile(
+                                  title: "Total WOSEs",
+                                  imgSrc:
+                                      "lib/assets/icons8-soldier-man-64.png",
+                                  currentNumOfSoldiers: specDetails.length,
+                                  totalNumOfSoldiers: specDetails.length,
+                                  imgColor: Colors.blue,
+                                  userDetails: specDetails,
+                                ),
+                                CurrentStrengthBreakdownTile(
+                                  title: "On Status",
+                                  imgSrc: "lib/assets/icons8-error-64.png",
+                                  currentNumOfSoldiers: statusDetails.length,
+                                  totalNumOfSoldiers: (officerDetails.length +
+                                      specDetails.length),
+                                  imgColor: Colors.yellow,
+                                  userDetails: statusDetails,
+                                ),
+                                CurrentStrengthBreakdownTile(
+                                  title: "On MA",
+                                  imgSrc:
+                                      "lib/assets/icons8-doctors-folder-64.png",
+                                  currentNumOfSoldiers: _maDetails.length,
+                                  totalNumOfSoldiers: (officerDetails.length +
+                                      specDetails.length),
+                                  imgColor: Colors.lightBlueAccent,
+                                  userDetails: _maDetails,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      back: Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: defaultPadding.w),
-                        child: Container(
-                          padding: EdgeInsets.all(defaultPadding.sp),
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.black54,
-                                  offset: Offset(10.0.w, 10.0.h),
-                                  blurRadius: 2.0.r,
-                                  spreadRadius: 2.0.r),
-                            ],
-                            color: const Color.fromARGB(255, 32, 36, 51),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.r)),
-                          ),
-                          child: const Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              DashboardCalendar(),
-                            ],
+                        back: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: defaultPadding.w),
+                          child: Container(
+                            padding: EdgeInsets.all(defaultPadding.sp),
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.black54,
+                                    offset: Offset(10.0.w, 10.0.h),
+                                    blurRadius: 2.0.r,
+                                    spreadRadius: 2.0.r),
+                              ],
+                              color: const Color.fromARGB(255, 32, 36, 51),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.r)),
+                            ),
+                            child: const Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                DashboardCalendar(),
+                              ],
+                            ),
                           ),
                         ),
+                      );
+                    }
+                    return Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.deepPurple.shade400,
                       ),
                     );
                   }),

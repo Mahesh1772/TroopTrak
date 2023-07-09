@@ -7,29 +7,48 @@ import 'package:prototype_1/util/constants.dart';
 class CurrentStrengthChart extends StatelessWidget {
   CurrentStrengthChart({
     super.key,
+    required this.currentOfficers,
+    required this.currentWOSEs,
+    required this.currentStatus,
+    required this.currentMA,
   });
 
-  final List<PieChartSectionData> pieChartSoldierStrengthIndicators = [
-    PieChartSectionData(
-        color: Colors.red, value: 6, showTitle: false, radius: 25.r),
-    PieChartSectionData(
-        color: Colors.blue, value: 74, showTitle: false, radius: 22.r),
-    PieChartSectionData(
-        color: Colors.yellow, value: 25, showTitle: false, radius: 19.r),
-    PieChartSectionData(
-        color: Colors.lightBlueAccent,
-        value: 1,
-        showTitle: false,
-        radius: 16.r),
-    PieChartSectionData(
-        color: Colors.blue.withOpacity(0.1),
-        value: 44,
-        showTitle: false,
-        radius: 16.r),
-  ];
+  final int currentOfficers;
+  final int currentWOSEs;
+  final int currentStatus;
+  final int currentMA;
 
   @override
   Widget build(BuildContext context) {
+    final List<PieChartSectionData> pieChartSoldierStrengthIndicators = [
+      PieChartSectionData(
+          color: Colors.red,
+          value: currentOfficers.toDouble(),
+          showTitle: false,
+          radius: 25.r),
+      PieChartSectionData(
+          color: Colors.blue,
+          value: currentWOSEs.toDouble(),
+          showTitle: false,
+          radius: 22.r),
+      PieChartSectionData(
+          color: Colors.yellow,
+          value: currentStatus.toDouble(),
+          showTitle: false,
+          radius: 19.r),
+      PieChartSectionData(
+          color: Colors.lightBlueAccent,
+          value: currentMA.toDouble(),
+          showTitle: false,
+          radius: 16.r),
+      PieChartSectionData(
+          color: Colors.blue.withOpacity(0.1),
+          value: (currentOfficers.toDouble() + currentWOSEs.toDouble()) -
+              (currentStatus.toDouble() + currentMA.toDouble()),
+          showTitle: false,
+          radius: 16.r),
+    ];
+
     return SizedBox(
       height: 215.h,
       child: Stack(
@@ -48,7 +67,7 @@ class CurrentStrengthChart extends StatelessWidget {
                 height: defaultPadding,
               ),
               Text(
-                "79",
+                "${(currentOfficers + currentWOSEs)}",
                 style: GoogleFonts.poppins(
                   fontSize: 48.sp,
                   color: Colors.white,
@@ -57,7 +76,7 @@ class CurrentStrengthChart extends StatelessWidget {
                 ),
               ),
               Text(
-                "of 126 soldiers",
+                "of ${(currentOfficers + currentWOSEs)} soldiers",
                 style: GoogleFonts.poppins(
                   fontSize: 14.sp,
                   color: Colors.white,

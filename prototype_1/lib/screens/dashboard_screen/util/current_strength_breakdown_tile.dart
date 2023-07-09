@@ -1,9 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:prototype_1/screens/dashboard_screen/util/dashboard_soldier_tile.dart';
 import 'package:prototype_1/util/constants.dart';
 
@@ -18,12 +17,11 @@ class CurrentStrengthBreakdownTile extends StatelessWidget {
       required this.userDetails});
 
   final String title, imgSrc;
-  final currentNumOfSoldiers, totalNumOfSoldiers;
+  final int currentNumOfSoldiers, totalNumOfSoldiers;
   final Color imgColor;
   final List<Map<String, dynamic>> userDetails;
 
   List<Map<String, dynamic>> dummy = [];
-
 
   @override
   Widget build(BuildContext context) {
