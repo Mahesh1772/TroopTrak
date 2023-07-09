@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -5,15 +6,17 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class BookInOutTile extends StatefulWidget {
-  const BookInOutTile({
-    super.key,
-    required this.timeStamp,
-    required this.isInsideCamp,
-    //required this.docID,
-  });
+  const BookInOutTile(
+      {super.key,
+      required this.timeStamp,
+      required this.isInsideCamp,
+      required this.docID,
+      required this.attendanceID});
 
   final String timeStamp;
   final bool isInsideCamp;
+  final String docID;
+  final String attendanceID;
 
   //final String docID;
 
@@ -22,6 +25,15 @@ class BookInOutTile extends StatefulWidget {
 }
 
 class _BookInOutTileState extends State<BookInOutTile> {
+  Future deletePastStatus() async {
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(widget.docID)
+        .collection('Attendance')
+        .doc(widget.attendanceID)
+        .delete();
+  }
+
   @override
   Widget build(BuildContext context) {
     late IconData? tileIcon;
@@ -36,7 +48,20 @@ class _BookInOutTileState extends State<BookInOutTile> {
           motion: const StretchMotion(),
           children: [
             SlidableAction(
-              onPressed: (context) {},
+              onPressed: (context) {
+                deletePastStatus();
+              },
+              icon: Icons.pending_actions_outlined,
+              backgroundColor: Colors.blue,
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(12.r),
+                bottomRight: Radius.circular(12.r),
+              ),
+            ),
+            SlidableAction(
+              onPressed: (context) {
+                deletePastStatus();
+              },
               icon: Icons.delete_forever_rounded,
               backgroundColor: Colors.red,
               borderRadius: BorderRadius.only(
