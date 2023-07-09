@@ -4,6 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:prototype_1/screens/detailed_screen/util/book_in_out_tile.dart.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../user_models/user_details.dart';
 
 late Stream<QuerySnapshot> documentStream;
 List<Map<String, dynamic>> userBookInStatus = [];
@@ -22,23 +25,14 @@ class AttendanceTab extends StatefulWidget {
 
 class _AttendanceTabState extends State<AttendanceTab> {
   @override
-  void initState() {
-    documentStream = FirebaseFirestore.instance
-        .collection('Users')
-        .doc(widget.docID)
-        .collection('Attendance')
-        .snapshots();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final statusModel = Provider.of<UserData>(context);
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Padding(
         padding: EdgeInsets.all(30.sp),
         child: StreamBuilder<QuerySnapshot>(
-          stream: documentStream,
+          stream: statusModel.attendance_data(widget.docID),
           builder: (context, snapshot) {
             var users = snapshot.data?.docs.toList();
 

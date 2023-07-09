@@ -6,13 +6,12 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class BookInOutTile extends StatefulWidget {
-  const BookInOutTile({
-    super.key,
-    required this.timeStamp,
-    required this.isInsideCamp,
-    required this.docID,
-    required this.attendanceID
-  });
+  const BookInOutTile(
+      {super.key,
+      required this.timeStamp,
+      required this.isInsideCamp,
+      required this.docID,
+      required this.attendanceID});
 
   final String timeStamp;
   final bool isInsideCamp;
@@ -48,6 +47,17 @@ class _BookInOutTileState extends State<BookInOutTile> {
         endActionPane: ActionPane(
           motion: const StretchMotion(),
           children: [
+            SlidableAction(
+              onPressed: (context) {
+                deletePastStatus();
+              },
+              icon: Icons.pending_actions_outlined,
+              backgroundColor: Colors.blue,
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(12.r),
+                bottomRight: Radius.circular(12.r),
+              ),
+            ),
             SlidableAction(
               onPressed: (context) {
                 deletePastStatus();
