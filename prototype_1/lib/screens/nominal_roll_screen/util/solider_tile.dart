@@ -55,7 +55,8 @@ class _SoldierTileState extends State<SoldierTile> {
     await FirebaseFirestore.instance
         .collection('Users')
         .doc(widget.soldierName)
-        .collection('Attendance').doc(DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()))
+        .collection('Attendance')
+        .doc(DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()))
         .set({
       //User map formatting
       'isInsideCamp': i,
@@ -67,6 +68,14 @@ class _SoldierTileState extends State<SoldierTile> {
   void initState() {
     inCampStatusText = inCampStatusTextChanger(widget.isInsideCamp);
     super.initState();
+  }
+
+  int calculateDifference(DateTime date) {
+    DateTime now = DateTime.now();
+    return DateTime(date.year, date.month, date.day, date.hour, date.minute)
+        .difference(
+            DateTime(now.year, now.month, now.day, now.hour, now.minute))
+        .inMinutes;
   }
 
   String inCampStatusTextChanger(bool value) {
@@ -163,19 +172,27 @@ class _SoldierTileState extends State<SoldierTile> {
                         {'ID': attendenceData[i].reference.id}.entries);
                   }
                   //print(all_data[length-1]);
-                  all_data.sort((m1, m2) {
-                    var r = DateFormat("E d MMM yyyy HH:mm:ss")
-                        .parse(m1["date&time"])
-                        .compareTo(DateFormat("E d MMM yyyy HH:mm:ss")
-                            .parse(m2["date&time"]));
-                    if (r != 0) return r;
-                    return DateFormat("E d MMM yyyy HH:mm:ss")
-                        .parse(m1["date&time"])
-                        .compareTo(DateFormat("E d MMM yyyy HH:mm:ss")
-                            .parse(m2["date&time"]));
-                  });
+                  //all_data.sort((m1, m2) {
+                  //  var r = DateFormat("E d MMM yyyy HH:mm:ss")
+                  //      .parse(m1["date&time"])
+                  //      .compareTo(DateFormat("E d MMM yyyy HH:mm:ss")
+                  //          .parse(m2["date&time"]));
+                  //  if (r != 0) return r;
+                  //  return DateFormat("E d MMM yyyy HH:mm:ss")
+                  //      .parse(m1["date&time"])
+                  //      .compareTo(DateFormat("E d MMM yyyy HH:mm:ss")
+                  //          .parse(m2["date&time"]));
+                  //});
+                  all_data = all_data
+                      .where((element) =>
+                          calculateDifference(
+                              DateFormat('E d MMM yyyy HH:mm:ss')
+                                  .parse(element['date&time'])) <=
+                          0)
+                      .toList();
                   widget.isInsideCamp = all_data.last['isInsideCamp'];
-                  inCampStatusText = inCampStatusTextChanger(widget.isInsideCamp);
+                  inCampStatusText =
+                      inCampStatusTextChanger(widget.isInsideCamp);
                 }
                 return Container(
                   decoration: BoxDecoration(
@@ -262,11 +279,8 @@ class _SoldierTileState extends State<SoldierTile> {
                         allowUnlistedValues: true,
                         values: const [false, true],
                         onChanged: (i) {
-                          //setState(() {
-                          //widget.isInsideCamp = i;
                           inCampStatusText = inCampStatusTextChanger(i);
                           addAttendanceDetails(i);
-                          //});
                         },
                         iconBuilder: rollingIconBuilder,
                         borderWidth: 3.0.w,

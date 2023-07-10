@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
@@ -78,7 +79,7 @@ class DashboardSoldierTile extends StatelessWidget {
     }
 
     return Padding(
-      padding: EdgeInsets.all(12.0.sp),
+      padding: EdgeInsets.all(10.0.sp),
       child: InkWell(
         onTap: () {
           Navigator.push(
@@ -101,7 +102,8 @@ class DashboardSoldierTile extends StatelessWidget {
         },
         child: Container(
           width: 200.w,
-          padding: EdgeInsets.all(12.sp),
+          height: 350.h,
+          padding: EdgeInsets.all(10.sp),
           decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
@@ -135,9 +137,19 @@ class DashboardSoldierTile extends StatelessWidget {
                 ],
               ),
               SizedBox(
-                height: 10.h,
+                height: 5.h,
               ),
-              StyledText(soldierName, 20.sp, fontWeight: FontWeight.bold)
+              AutoSizeText(
+                soldierName,
+                style:const  TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+                maxLines: 2,
+                textAlign: TextAlign.center,
+              ),
+              //StyledText(soldierName, 20.sp, fontWeight: FontWeight.bold)
             ],
           ),
         ),

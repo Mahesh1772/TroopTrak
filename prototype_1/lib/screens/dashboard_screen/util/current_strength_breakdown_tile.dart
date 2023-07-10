@@ -10,34 +10,52 @@ import 'package:provider/provider.dart';
 import '../../../user_models/user_details.dart';
 
 class CurrentStrengthBreakdownTile extends StatelessWidget {
-  CurrentStrengthBreakdownTile(
-      {super.key,
-      required this.title,
-      required this.imgSrc,
-      required this.currentNumOfSoldiers,
-      required this.totalNumOfSoldiers,
-      required this.imgColor,
-      required this.userDetails});
+  CurrentStrengthBreakdownTile({
+    super.key,
+    required this.title,
+    required this.imgSrc,
+    required this.currentNumOfSoldiers,
+    required this.totalNumOfSoldiers,
+    required this.imgColor,
+    required this.userDetails,
+    required this.isStatusPersonal,
+    required this.fullList,
+  });
 
   final String title, imgSrc;
   final int currentNumOfSoldiers, totalNumOfSoldiers;
   final Color imgColor;
   final List<Map<String, dynamic>> userDetails;
+  final bool isStatusPersonal;
+  Map<String, dynamic> fullList;
 
   List<Map<String, dynamic>> dummy = [];
 
-  int insideCamp = 0;
-
   @override
   Widget build(BuildContext context) {
-    final userModel = Provider.of<UserData>(context);
-    userModel.last_attendance();
-    print(userModel.fullList);
-    for (var user in userDetails) {
-      if (userModel.fullList[user['name']]) {
-        insideCamp += 1;
+    int insideCamp = 0;
+    //final userModel = Provider.of<UserData>(context);
+    //userModel.inCamp();
+    //Future.delayed(const Duration(milliseconds: 3000), () {
+    //  return const CircularProgressIndicator();
+    //});
+    print(fullList);
+
+    if (fullList.isEmpty) {
+      Future.delayed(const Duration(milliseconds: 3000), () {
+        return const CircularProgressIndicator();
+      });
+    } else {
+      for (var user in userDetails) {
+        if (fullList[user['name']]) {
+          insideCamp += 1;
+        }
       }
     }
+    if (isStatusPersonal) {
+      insideCamp = userDetails.length;
+    }
+
     return Container(
       margin: EdgeInsets.only(
         top: defaultPadding.h,

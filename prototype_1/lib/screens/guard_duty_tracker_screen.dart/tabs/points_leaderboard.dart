@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/util/duty_personnel_data_source.dart';
 import 'package:prototype_1/util/constants.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
@@ -32,6 +33,9 @@ List<String> documentIDs = [];
 // List to store all user data, whilst also mapping to name
 List<Map<String, dynamic>> userDetails = [];
 
+List<Map<String, dynamic>> statusList = [];
+List<String> non_participants = [];
+
 //Information for column of data
 List<DutyPersonnel> dutyPersonnel = <DutyPersonnel>[];
 
@@ -58,6 +62,53 @@ List<DutyPersonnel> getDutyPersonnel() {
     }
   }
   return array;
+}
+
+List<String> guardDuty = ['Ex Uniform', 'Ex Boots'];
+void autoFilter() {
+  if (statusList.isNotEmpty) {
+    for (var status in statusList) {
+      if (status['statusType'] == 'Excuse') {
+        if (guardDuty.contains(status['statusName'])) {
+          non_participants.add(status['Name']);
+        }
+      } else if (status['statusType'] == 'Leave') {
+        non_participants.add(status['Name']);
+      }
+    }
+  }
+}
+
+Future getUserBooks() async {
+  int i = 0;
+  await FirebaseFirestore.instance
+      .collection("Users")
+      .get()
+      .then((querySnapshot) async {
+    for (var snapshot in querySnapshot.docs) {
+      FirebaseFirestore.instance
+          .collection("Users")
+          .doc(snapshot.id)
+          .collection("Statuses")
+          .where('statusType', whereIn: ['Leave', 'Excuse'])
+          .where('statusName', whereIn: ['Ex Boots', 'Ex Uniform'])
+          .get()
+          .then((querySnapshot) {
+            for (var result in querySnapshot.docs) {
+              Map<String, dynamic> data = result.data();
+              DateTime end = DateFormat("d MMM yyyy").parse(data['endDate']);
+              if (DateTime(end.year, end.month, end.day + 1)
+                  .isAfter(DateTime.now())) {
+                statusList.add(data);
+                statusList[i].addEntries({'Name': snapshot.id}.entries);
+                i++;
+                //print(data);
+              }
+            }
+          });
+    }
+  });
+  print(statusList);
 }
 
 class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
@@ -109,6 +160,9 @@ class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
     dutyPersonnel = getDutyPersonnel();
     dutyPersonnelDataSource =
         DutyPersonnelDataSource(dutyPersonnel: dutyPersonnel);
+    getUserBooks();
+    Future.delayed(Duration(seconds: 2));
+    autoFilter();
   }
 
   @override

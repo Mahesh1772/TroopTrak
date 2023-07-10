@@ -47,6 +47,7 @@ class _SoldierStatusTileState extends State<SoldierStatusTile> {
       padding: EdgeInsets.all(15.0.sp),
       child: Container(
         width: 230.w,
+        height: 300.h,
         padding: EdgeInsets.all(12.sp),
         decoration: BoxDecoration(boxShadow: [
           BoxShadow(
@@ -96,12 +97,12 @@ class _SoldierStatusTileState extends State<SoldierStatusTile> {
             //const SizedBox(
             //  height: 5,
             //),
-            StyledText(widget.statusType.toUpperCase(), 18.sp,
+            StyledText(widget.statusType.toUpperCase(), 15.sp,
                 fontWeight: FontWeight.w500),
             //const SizedBox(
             //  height: 5,
             //),
-            StyledText("${widget.startDate} - ${widget.endDate}", 16.sp,
+            StyledText("${widget.startDate} - ${widget.endDate}", 15.sp,
                 fontWeight: FontWeight.bold)
           ],
         ),

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/add_new_duty_screen.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/tabs/points_leaderboard.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/tabs/upcoming_duties.dart';
@@ -40,6 +41,8 @@ class _GuardDutyTrackerScreenState extends State<GuardDutyTrackerScreen>
 
   @override
   Widget build(BuildContext context) {
+    getUserBooks();
+    autoFilter();
     TabController tabController = TabController(length: 2, vsync: this);
 
     return Scaffold(
@@ -52,6 +55,7 @@ class _GuardDutyTrackerScreenState extends State<GuardDutyTrackerScreen>
                 dutyDate: "Date of Duty:",
                 dutyStartTime: "Start Time:",
                 dutyEndTime: "End Time:",
+                listOfNonparts: [],
               ),
             ),
           );

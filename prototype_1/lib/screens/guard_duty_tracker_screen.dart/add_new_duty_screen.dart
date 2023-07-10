@@ -8,7 +8,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/util/org_chart_tile.dart';
+import 'package:prototype_1/user_models/user_details.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
+import 'package:provider/provider.dart';
 
 class AddNewDutyScreen extends StatefulWidget {
   AddNewDutyScreen({
@@ -16,11 +18,13 @@ class AddNewDutyScreen extends StatefulWidget {
     required this.dutyDate,
     required this.dutyStartTime,
     required this.dutyEndTime,
+    required this.listOfNonparts
   });
 
   late String dutyDate;
   late String dutyStartTime;
   late String dutyEndTime;
+  late List<String> listOfNonparts;
 
   @override
   State<AddNewDutyScreen> createState() => _AddNewDutyScreenState();
@@ -78,7 +82,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
 
     dutySoldiersAndRanks.removeWhere((key, value) => (key.contains("NA")));
 
-    print(dutySoldiersAndRanks);
+    //print(dutySoldiersAndRanks);
 
     await FirebaseFirestore.instance.collection('Duties').add({
       //User map formatting
@@ -93,14 +97,16 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
   }
 
   void autoFilter() {
-    print(statusList);
-    for (var status in statusList) {
-      if (status['statusType'] == 'Excuse') {
-        if (guardDuty.contains(status['statusName'])) {
+    getUserBooks();
+    if (statusList.isNotEmpty) {
+      for (var status in statusList) {
+        if (status['statusType'] == 'Excuse') {
+          if (guardDuty.contains(status['statusName'])) {
+            non_participants.add(status['Name']);
+          }
+        } else if (status['statusType'] == 'Leave') {
           non_participants.add(status['Name']);
         }
-      } else if (status['statusType'] == 'Leave') {
-        non_participants.add(status['Name']);
       }
     }
   }
@@ -126,17 +132,18 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
               statusList.add(data);
               statusList[i].addEntries({'Name': snapshot.id}.entries);
               i++;
+              //print(data);
             }
           }
         });
       }
     });
+    //print(statusList);
   }
 
   @override
   void initState() {
     getDocIDs();
-    pointsAssignment(DateTime.now());
     populateHeroTagArray();
     populateDutySoldiersAndRanksArray();
     displayTiles();
@@ -144,6 +151,8 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
     print(statusList);
     autoFilter();
     print(non_participants);
+    non_participants = widget.listOfNonparts;
+    pointsAssignment(DateTime.now());
     super.initState();
   }
 
@@ -358,6 +367,8 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final userModel = Provider.of<UserData>(context);
+    autoFilter();
     //print(dutySoldiersAndRanks);
     if (widget.dutyDate != "Date of Duty:") {
       pointsAssignment(DateFormat("d MMM yyyy").parse(widget.dutyDate));
