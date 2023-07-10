@@ -145,7 +145,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     final statusModel = Provider.of<UserData>(context);
-    print(_maList);
     // Your logic here
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
@@ -169,7 +168,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     padding: EdgeInsets.only(left: 100.0.w),
                     child: InkWell(
                       onTap: () {
-                        //print(fname);
                         FirebaseAuth.instance.signOut();
                       },
                       child: Container(

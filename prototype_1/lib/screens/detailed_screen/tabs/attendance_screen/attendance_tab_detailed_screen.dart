@@ -57,49 +57,53 @@ class _AttendanceTabState extends State<AttendanceTab> {
                   .compareTo(DateFormat("E d MMM yyyy HH:mm:ss")
                       .parse(m2["date&time"]));
             });
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Icon(
-                      Icons.outbond,
-                      color: Colors.white,
-                      size: 30.sp,
-                    ),
-                    SizedBox(
-                      width: 20.w,
-                    ),
-                    Text(
-                      "Book In / Book Out",
-                      maxLines: 2,
-                      style: GoogleFonts.poppins(
+
+            userBookInStatus = userBookInStatus.reversed.toList();
+            return SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.outbond,
                         color: Colors.white,
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: 1.5,
+                        size: 30.sp,
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 400.h,
-                  child: ListView.builder(
-                    itemCount: userBookInStatus.length,
-                    padding: EdgeInsets.all(12.sp),
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (context, index) {
-                      return BookInOutTile(
-                        docID: widget.docID,
-                        attendanceID: userBookInStatus[index]['ID'],
-                        timeStamp: userBookInStatus[index]['date&time'],
-                        isInsideCamp: userBookInStatus[index]['isInsideCamp'],
-                      );
-                    },
+                      SizedBox(
+                        width: 20.w,
+                      ),
+                      Text(
+                        "Book In / Book Out",
+                        maxLines: 2,
+                        style: GoogleFonts.poppins(
+                          color: Colors.white,
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 1.5,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                  SizedBox(
+                    height: 650.h,
+                    child: ListView.builder(
+                      itemCount: userBookInStatus.length,
+                      padding: EdgeInsets.all(12.sp),
+                      scrollDirection: Axis.vertical,
+                      itemBuilder: (context, index) {
+                        return BookInOutTile(
+                          docID: widget.docID,
+                          attendanceID: userBookInStatus[index]['ID'],
+                          timeStamp: userBookInStatus[index]['date&time'],
+                          isInsideCamp: userBookInStatus[index]['isInsideCamp'],
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
             );
           },
         ),
