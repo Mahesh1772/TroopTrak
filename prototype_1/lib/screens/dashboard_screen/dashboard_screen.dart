@@ -152,7 +152,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     final statusModel = Provider.of<UserData>(context);
-    Future.delayed(const Duration(milliseconds: 1000), () {
+    Future.delayed(const Duration(milliseconds: 5000), () {
       return const CircularProgressIndicator();
     });
     // Your logic here
@@ -357,6 +357,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       totalNumOfSoldiers: officerDetails.length,
                                       imgColor: Colors.red,
                                       userDetails: officerDetails,
+                                            isStatusPersonal: false,
                                     ),
                                     CurrentStrengthBreakdownTile(
                                       title: "Total WOSEs",
@@ -366,6 +367,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       totalNumOfSoldiers: specDetails.length,
                                       imgColor: Colors.blue,
                                       userDetails: specDetails,
+                                      isStatusPersonal: false,
                                     ),
                                     CurrentStrengthBreakdownTile(
                                       title: "On Status",
@@ -377,6 +379,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               specDetails.length),
                                       imgColor: Colors.yellow,
                                       userDetails: statusDetails,
+                                      isStatusPersonal: true,
                                     ),
                                     CurrentStrengthBreakdownTile(
                                       title: "On MA",
@@ -388,6 +391,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               specDetails.length),
                                       imgColor: Colors.lightBlueAccent,
                                       userDetails: _maDetails,
+                                      isStatusPersonal: false,
                                     ),
                                   ],
                                 ),

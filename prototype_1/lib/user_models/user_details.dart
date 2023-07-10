@@ -82,27 +82,14 @@ class UserData extends ChangeNotifier {
             .collection("Attendance")
             .get()
             .then((querySnapshot) {
-          for (var result in querySnapshot.docs) {
-            Map<String, dynamic> data = result.data();
-            attendance_list.add(data);
-            attendance_list[i].addEntries({'Name': snapshot.id}.entries);
-            i++;
-          }
+          var lastData = querySnapshot.docs.last.data();
+          attendance_list.add(lastData);
+          attendance_list[i].addEntries({'Name': snapshot.id}.entries);
+          i++;
+          fullList.addAll({snapshot.id:lastData['isInsideCamp']});
         });
       }
     });
-    attendance_list.sort((m1, m2) {
-      var r = DateFormat("E d MMM yyyy HH:mm:ss")
-          .parse(m1["date&time"])
-          .compareTo(
-              DateFormat("E d MMM yyyy HH:mm:ss").parse(m2["date&time"]));
-      if (r != 0) return r;
-      return DateFormat("E d MMM yyyy HH:mm:ss")
-          .parse(m1["date&time"])
-          .compareTo(
-              DateFormat("E d MMM yyyy HH:mm:ss").parse(m2["date&time"]));
-    });
-    attendance_list = attendance_list.reversed.toList();
     return attendance_list;
   }
 
@@ -111,15 +98,52 @@ class UserData extends ChangeNotifier {
 
   void last_attendance() async {
     newList = await inCamp();
-    for (var i = 0; i < attendance_list.length - 1; i++) {
-      String currentEntry = attendance_list[i]['Name'];
-      String nextEntry = attendance_list[i + 1]['Name'];
-      if (i == 0) {
-        fullList.addAll({currentEntry : attendance_list[i]['isInsideCamp']});
-      }
+    //for (var element in attendance_list) {
+    //  fullList.addAll({element['Name']: element['isInsideCamp']});
+    //}
+    print(fullList);
+  }
 
-      if (currentEntry != nextEntry) {
-        fullList.addAll({nextEntry : attendance_list[i]['isInsideCamp']});
+  int j = 0;
+  List<String> guardDuty = ['Ex Uniform', 'Ex Boots'];
+  List<String> non_participants = [];
+  List<Map<String, dynamic>> statusList = [];
+  Future getPeopleOnStatus() async {
+    FirebaseFirestore.instance
+        .collection("Users")
+        .get()
+        .then((querySnapshot) async {
+      for (var snapshot in querySnapshot.docs) {
+        FirebaseFirestore.instance
+            .collection("Users")
+            .doc(snapshot.id)
+            .collection("Statuses")
+            .get()
+            .then((querySnapshot) {
+          for (var result in querySnapshot.docs) {
+            Map<String, dynamic> data = result.data();
+            DateTime end = DateFormat("d MMM yyyy").parse(data['endDate']);
+            if (DateTime(end.year, end.month, end.day + 1)
+                .isAfter(DateTime.now())) {
+              statusList.add(data);
+              statusList[j].addEntries({'Name': snapshot.id}.entries);
+              i++;
+            }
+          }
+        });
+      }
+    });
+  }
+
+  void autoFilter() {
+    print(statusList);
+    for (var status in statusList) {
+      if (status['statusType'] == 'Excuse') {
+        if (guardDuty.contains(status['statusName'])) {
+          non_participants.add(status['Name']);
+        }
+      } else if (status['statusType'] == 'Leave') {
+        non_participants.add(status['Name']);
       }
     }
   }

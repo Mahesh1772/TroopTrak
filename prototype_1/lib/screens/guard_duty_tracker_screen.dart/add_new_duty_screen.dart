@@ -8,7 +8,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/util/org_chart_tile.dart';
+import 'package:prototype_1/user_models/user_details.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
+import 'package:provider/provider.dart';
 
 class AddNewDutyScreen extends StatefulWidget {
   AddNewDutyScreen({
@@ -78,7 +80,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
 
     dutySoldiersAndRanks.removeWhere((key, value) => (key.contains("NA")));
 
-    print(dutySoldiersAndRanks);
+    //print(dutySoldiersAndRanks);
 
     await FirebaseFirestore.instance.collection('Duties').add({
       //User map formatting
@@ -126,11 +128,13 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
               statusList.add(data);
               statusList[i].addEntries({'Name': snapshot.id}.entries);
               i++;
+              //print(data);
             }
           }
         });
       }
     });
+    //print(statusList);
   }
 
   @override
@@ -141,9 +145,9 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
     populateDutySoldiersAndRanksArray();
     displayTiles();
     getUserBooks();
-    print(statusList);
+    //print(statusList);
     autoFilter();
-    print(non_participants);
+    //print(non_participants);
     super.initState();
   }
 
@@ -358,6 +362,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final userModel = Provider.of<UserData>(context);
     //print(dutySoldiersAndRanks);
     if (widget.dutyDate != "Date of Duty:") {
       pointsAssignment(DateFormat("d MMM yyyy").parse(widget.dutyDate));
