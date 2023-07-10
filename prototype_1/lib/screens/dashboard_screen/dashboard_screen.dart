@@ -83,6 +83,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
     });
   }
 
+  Map<String, dynamic> fullList = {};
+  Future inCamp() async {
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .get()
+        .then((querySnapshot) async {
+      for (var snapshot in querySnapshot.docs) {
+        FirebaseFirestore.instance
+            .collection("Users")
+            .doc(snapshot.id)
+            .collection("Attendance")
+            .get()
+            .then((querySnapshot) {
+          //var lastData = querySnapshot.docs.last.data();
+          fullList.addAll(
+              {snapshot.id: querySnapshot.docs.last.data()['isInsideCamp']});
+        });
+      }
+    });
+    //return attendance_list;
+  }
+
   final name = FirebaseAuth.instance.currentUser!.displayName.toString();
 
   String fname = FirebaseAuth.instance.currentUser!.displayName.toString();
@@ -145,6 +167,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     getCurrentUserData();
+    inCamp();
     getStatusList();
     super.initState();
   }
@@ -155,6 +178,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     Future.delayed(const Duration(milliseconds: 5000), () {
       return const CircularProgressIndicator();
     });
+    //print(fullList);
     // Your logic here
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
@@ -357,7 +381,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       totalNumOfSoldiers: officerDetails.length,
                                       imgColor: Colors.red,
                                       userDetails: officerDetails,
-                                            isStatusPersonal: false,
+                                      isStatusPersonal: false,
+                                      fullList: fullList,
                                     ),
                                     CurrentStrengthBreakdownTile(
                                       title: "Total WOSEs",
@@ -368,6 +393,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       imgColor: Colors.blue,
                                       userDetails: specDetails,
                                       isStatusPersonal: false,
+                                      fullList: fullList,
                                     ),
                                     CurrentStrengthBreakdownTile(
                                       title: "On Status",
@@ -380,6 +406,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       imgColor: Colors.yellow,
                                       userDetails: statusDetails,
                                       isStatusPersonal: true,
+                                      fullList: fullList,
                                     ),
                                     CurrentStrengthBreakdownTile(
                                       title: "On MA",
@@ -392,6 +419,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       imgColor: Colors.lightBlueAccent,
                                       userDetails: _maDetails,
                                       isStatusPersonal: false,
+                                      fullList: fullList,
                                     ),
                                   ],
                                 ),

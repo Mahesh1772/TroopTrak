@@ -33,68 +33,16 @@ class _GuardDutyTrackerScreenState extends State<GuardDutyTrackerScreen>
     });
   }
 
-  List<Map<String, dynamic>> statusList = [];
-  List<String> non_participants = [];
-
   @override
   void initState() {
     super.initState();
     getCurrentUserData();
-    //if (isFirstTIme) {
-      getUserBooks();
-      autoFilter();
-    //}
-    print(statusList);
-  }
-
-  List<String> guardDuty = ['Ex Uniform', 'Ex Boots'];
-  void autoFilter() {
-    //getUserBooks();
-    if (statusList.isNotEmpty) {
-      for (var status in statusList) {
-        if (status['statusType'] == 'Excuse') {
-          if (guardDuty.contains(status['statusName'])) {
-            non_participants.add(status['Name']);
-          }
-        } else if (status['statusType'] == 'Leave') {
-          non_participants.add(status['Name']);
-        }
-      }
-    }
-  }
-
-  Future getUserBooks() async {
-    int i = 0;
-    FirebaseFirestore.instance
-        .collection("Users")
-        .get()
-        .then((querySnapshot) async {
-      for (var snapshot in querySnapshot.docs) {
-        FirebaseFirestore.instance
-            .collection("Users")
-            .doc(snapshot.id)
-            .collection("Statuses")
-            .get()
-            .then((querySnapshot) {
-          for (var result in querySnapshot.docs) {
-            Map<String, dynamic> data = result.data();
-            DateTime end = DateFormat("d MMM yyyy").parse(data['endDate']);
-            if (DateTime(end.year, end.month, end.day + 1)
-                .isAfter(DateTime.now())) {
-              statusList.add(data);
-              statusList[i].addEntries({'Name': snapshot.id}.entries);
-              i++;
-              //print(data);
-            }
-          }
-        });
-      }
-    });
-    print(statusList);
   }
 
   @override
   Widget build(BuildContext context) {
+    getUserBooks();
+    autoFilter();
     TabController tabController = TabController(length: 2, vsync: this);
 
     return Scaffold(
@@ -107,7 +55,7 @@ class _GuardDutyTrackerScreenState extends State<GuardDutyTrackerScreen>
                 dutyDate: "Date of Duty:",
                 dutyStartTime: "Start Time:",
                 dutyEndTime: "End Time:",
-                listOfNonparts: non_participants,
+                listOfNonparts: [],
               ),
             ),
           );

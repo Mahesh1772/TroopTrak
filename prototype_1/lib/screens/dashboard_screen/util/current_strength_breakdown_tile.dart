@@ -19,6 +19,7 @@ class CurrentStrengthBreakdownTile extends StatelessWidget {
     required this.imgColor,
     required this.userDetails,
     required this.isStatusPersonal,
+    required this.fullList,
   });
 
   final String title, imgSrc;
@@ -26,26 +27,27 @@ class CurrentStrengthBreakdownTile extends StatelessWidget {
   final Color imgColor;
   final List<Map<String, dynamic>> userDetails;
   final bool isStatusPersonal;
+  Map<String, dynamic> fullList;
 
   List<Map<String, dynamic>> dummy = [];
 
   @override
   Widget build(BuildContext context) {
     int insideCamp = 0;
-    final userModel = Provider.of<UserData>(context);
-    userModel.inCamp();
-    Future.delayed(const Duration(milliseconds: 3000), () {
-      return const CircularProgressIndicator();
-    });
-    print(userModel.fullList);
+    //final userModel = Provider.of<UserData>(context);
+    //userModel.inCamp();
+    //Future.delayed(const Duration(milliseconds: 3000), () {
+    //  return const CircularProgressIndicator();
+    //});
+    print(fullList);
 
-    if (userModel.fullList.isEmpty) {
+    if (fullList.isEmpty) {
       Future.delayed(const Duration(milliseconds: 3000), () {
         return const CircularProgressIndicator();
       });
     } else {
       for (var user in userDetails) {
-        if (userModel.fullList[user['name']]) {
+        if (fullList[user['name']]) {
           insideCamp += 1;
         }
       }

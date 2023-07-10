@@ -83,7 +83,8 @@ class UserData extends ChangeNotifier {
             .get()
             .then((querySnapshot) {
           //var lastData = querySnapshot.docs.last.data();
-          fullList.addAll({snapshot.id:querySnapshot.docs.last.data()['isInsideCamp']});
+          fullList.addAll(
+              {snapshot.id: querySnapshot.docs.last.data()['isInsideCamp']});
         });
       }
     });
@@ -93,12 +94,26 @@ class UserData extends ChangeNotifier {
   List<Map<String, dynamic>> newList = [];
   Map<String, dynamic> fullList = {};
 
-  int j = 0;
-  List<String> guardDuty = ['Ex Uniform', 'Ex Boots'];
   List<String> non_participants = [];
   List<Map<String, dynamic>> statusList = [];
-  Future getPeopleOnStatus() async {
-    FirebaseFirestore.instance
+  List<String> guardDuty = ['Ex Uniform', 'Ex Boots'];
+  void autoFilter() {
+    if (statusList.isNotEmpty) {
+      for (var status in statusList) {
+        if (status['statusType'] == 'Excuse') {
+          if (guardDuty.contains(status['statusName'])) {
+            non_participants.add(status['Name']);
+          }
+        } else if (status['statusType'] == 'Leave') {
+          non_participants.add(status['Name']);
+        }
+      }
+    }
+  }
+
+  Future getUserBooks() async {
+    int i = 0;
+    await FirebaseFirestore.instance
         .collection("Users")
         .get()
         .then((querySnapshot) async {
@@ -107,33 +122,24 @@ class UserData extends ChangeNotifier {
             .collection("Users")
             .doc(snapshot.id)
             .collection("Statuses")
+            .where('statusType', whereIn: ['Leave', 'Excuse'])
+            .where('statusName', whereIn: ['Ex Boots', 'Ex Uniform'])
             .get()
             .then((querySnapshot) {
-          for (var result in querySnapshot.docs) {
-            Map<String, dynamic> data = result.data();
-            DateTime end = DateFormat("d MMM yyyy").parse(data['endDate']);
-            if (DateTime(end.year, end.month, end.day + 1)
-                .isAfter(DateTime.now())) {
-              statusList.add(data);
-              statusList[j].addEntries({'Name': snapshot.id}.entries);
-              i++;
-            }
-          }
-        });
+              for (var result in querySnapshot.docs) {
+                Map<String, dynamic> data = result.data();
+                DateTime end = DateFormat("d MMM yyyy").parse(data['endDate']);
+                if (DateTime(end.year, end.month, end.day + 1)
+                    .isAfter(DateTime.now())) {
+                  statusList.add(data);
+                  statusList[i].addEntries({'Name': snapshot.id}.entries);
+                  i++;
+                  //print(data);
+                }
+              }
+            });
       }
     });
-  }
-
-  void autoFilter() {
     print(statusList);
-    for (var status in statusList) {
-      if (status['statusType'] == 'Excuse') {
-        if (guardDuty.contains(status['statusName'])) {
-          non_participants.add(status['Name']);
-        }
-      } else if (status['statusType'] == 'Leave') {
-        non_participants.add(status['Name']);
-      }
-    }
   }
 }

@@ -122,6 +122,24 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
       'startDate': widget.startDate,
       'endDate': widget.endDate,
     });
+    if (widget.selectedStatusType != 'Excuse') {
+      DateTime end = DateFormat("d MMM yyyy").parse(widget.endDate);
+      DateTime now = DateTime.now();
+      end = DateTime(end.year, end.month, end.day, now.hour, now.minute + 30);
+      addAttendanceDetails(false, end);
+    }
+  }
+
+  Future addAttendanceDetails(bool i, DateTime date) async {
+    db
+        .doc(widget.docID)
+        .collection('Attendance')
+        .doc(DateFormat('yyyy-MM-dd HH:mm:ss').format(date))
+        .set({
+      //User map formatting
+      'isInsideCamp': i,
+      'date&time': DateFormat('E d MMM yyyy HH:mm:ss').format(date),
+    });
   }
 
   void display() {
@@ -150,7 +168,8 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
           child: Form(
             key: _formKey,
             child: StreamBuilder(
-                stream: userStatusModel.updateStatus_data(widget.docID, widget.statusID),
+                stream: userStatusModel.updateStatus_data(
+                    widget.docID, widget.statusID),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     data = snapshot.data!.data() as Map<String, dynamic>;

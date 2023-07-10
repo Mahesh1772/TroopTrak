@@ -81,6 +81,8 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
   @override
   Widget build(BuildContext context) {
     final userModel = Provider.of<UserData>(context);
+    userModel.getUserBooks();
+    userModel.autoFilter();
     return Center(
       child: Padding(
         padding: EdgeInsets.all(16.0.sp),
@@ -183,6 +185,8 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
                               userDetails.add(data);
                             }
                           }
+                          print(userModel.non_participants);
+                          userDetails = userDetails.where((element) => !userModel.non_participants.contains(element['name'])).toList();
                         }
                         return Flexible(
                           child: SizedBox(
