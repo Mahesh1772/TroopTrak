@@ -274,7 +274,6 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
 
   @override
   void initState() {
-    documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
     getDocIDs();
     getUserBooks();
     super.initState();

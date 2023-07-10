@@ -5,6 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/screens/dashboard_screen/util/dashboard_soldier_tile.dart';
 import 'package:prototype_1/util/constants.dart';
+import 'package:provider/provider.dart';
+
+import '../../../user_models/user_details.dart';
 
 class CurrentStrengthBreakdownTile extends StatelessWidget {
   CurrentStrengthBreakdownTile(
@@ -23,8 +26,18 @@ class CurrentStrengthBreakdownTile extends StatelessWidget {
 
   List<Map<String, dynamic>> dummy = [];
 
+  int insideCamp = 0;
+
   @override
   Widget build(BuildContext context) {
+    final userModel = Provider.of<UserData>(context);
+    userModel.last_attendance();
+    print(userModel.fullList);
+    for (var user in userDetails) {
+      if (userModel.fullList[user['name']]) {
+        insideCamp += 1;
+      }
+    }
     return Container(
       margin: EdgeInsets.only(
         top: defaultPadding.h,
@@ -64,7 +77,7 @@ class CurrentStrengthBreakdownTile extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      "$currentNumOfSoldiers In Camp",
+                      "$insideCamp In Camp",
                       style: GoogleFonts.poppins(
                         color: Colors.white.withOpacity(0.45),
                         fontSize: 14.sp,
@@ -78,7 +91,7 @@ class CurrentStrengthBreakdownTile extends StatelessWidget {
               ),
             ),
             Text(
-              "$currentNumOfSoldiers / $totalNumOfSoldiers",
+              "$insideCamp / $totalNumOfSoldiers",
               style: GoogleFonts.poppins(
                   fontSize: 24.sp,
                   fontWeight: FontWeight.w500,

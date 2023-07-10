@@ -55,8 +55,8 @@ class _SoldierTileState extends State<SoldierTile> {
     await FirebaseFirestore.instance
         .collection('Users')
         .doc(widget.soldierName)
-        .collection('Attendance')
-        .add({
+        .collection('Attendance').doc(DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()))
+        .set({
       //User map formatting
       'isInsideCamp': i,
       'date&time': DateFormat('E d MMM yyyy HH:mm:ss').format(DateTime.now()),
