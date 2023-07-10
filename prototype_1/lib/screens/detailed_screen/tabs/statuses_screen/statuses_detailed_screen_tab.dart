@@ -93,6 +93,7 @@ class _StatusesTabState extends State<StatusesTab> {
                 SizedBox(
                   height: 295.h,
                   child: ListView.builder(
+                    shrinkWrap: true,
                     itemCount: userCurrentStatus.length,
                     padding: EdgeInsets.all(12.sp),
                     scrollDirection: Axis.horizontal,

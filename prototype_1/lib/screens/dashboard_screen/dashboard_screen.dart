@@ -5,6 +5,7 @@ import 'package:flip_card/flip_card_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:prototype_1/screens/dashboard_screen/util/calendar/dashboard_calendar.dart';
 import 'package:prototype_1/screens/dashboard_screen/util/current_strength_breakdown_tile.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
@@ -101,6 +102,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
+  Future refreshPage() async {
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (BuildContext context) => super.widget));
+    return await Future.delayed(const Duration(seconds: 2));
+  }
+
   List<String> specialist = [
     "REC",
     "PTE",
@@ -145,272 +152,287 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     final statusModel = Provider.of<UserData>(context);
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      return const CircularProgressIndicator();
+    });
     // Your logic here
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
       body: SingleChildScrollView(
         child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24.0.w),
-                    child: StyledText(
-                      'Dashboard',
-                      26.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => UserProfileScreen(
-                            soldierName: currentUserData['name'],
-                            soldierRank: currentUserData['rank']
-                                .toString()
-                                .toLowerCase(),
-                            soldierAppointment: currentUserData['appointment'],
-                            company: currentUserData['company'],
-                            platoon: currentUserData['platoon'],
-                            section: currentUserData['section'],
-                            dateOfBirth: currentUserData['dob'],
-                            rationType: currentUserData['rationType'],
-                            bloodType: currentUserData['bloodgroup'],
-                            enlistmentDate: currentUserData['enlistment'],
-                            ordDate: currentUserData['ord'],
-                          ),
-                        ),
-                      );
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.all(12.0.sp),
-                      child: Image.asset(
-                        'lib/assets/user.png',
-                        width: 50.w,
+          child: LiquidPullToRefresh(
+            onRefresh: refreshPage,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 24.0.w),
+                      child: StyledText(
+                        'Dashboard',
+                        26.sp,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.0.w),
-                child: StyledText(
-                  'Welcome,\n$fname! 👋',
-                  32.sp,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              StreamBuilder<QuerySnapshot>(
-                  stream: statusModel.data,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      documentIDs = [];
-                      userDetails = [];
-                      List? users = snapshot.data?.docs.toList();
-                      var docsmapshot = snapshot.data!;
-
-                      Future.delayed(const Duration(seconds: 2)).then((val) {
-                        // Your logic here
-                      });
-
-                      for (var i = 0; i < users!.length; i++) {
-                        documentIDs.add(users[i]['name']);
-                        var data =
-                            docsmapshot.docs[i].data() as Map<String, dynamic>;
-                        userDetails.add(data);
-                      }
-
-                      specDetails = userDetails
-                          .where(
-                              (element) => specialist.contains(element['rank']))
-                          .toList();
-
-                      statusDetails = userDetails
-                          .where(
-                              (element) => statusList.contains(element['name']))
-                          .toList();
-
-                      officerDetails = userDetails
-                          .where(
-                              (element) => officers.contains(element['rank']))
-                          .toList();
-
-                      var _maDetails = userDetails
-                          .where((element) => _maList.contains(element['name']))
-                          .toList();
-
-                      return FlipCard(
-                        controller: _controller,
-                        front: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: defaultPadding.w),
-                          child: Container(
-                            padding: EdgeInsets.all(defaultPadding.sp),
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Colors.black54,
-                                    offset: Offset(10.0.w, 10.0.h),
-                                    blurRadius: 2.0.r,
-                                    spreadRadius: 2.0.r),
-                              ],
-                              color: const Color.fromARGB(255, 32, 36, 51),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10.r)),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UserProfileScreen(
+                              soldierName: currentUserData['name'],
+                              soldierRank: currentUserData['rank']
+                                  .toString()
+                                  .toLowerCase(),
+                              soldierAppointment:
+                                  currentUserData['appointment'],
+                              company: currentUserData['company'],
+                              platoon: currentUserData['platoon'],
+                              section: currentUserData['section'],
+                              dateOfBirth: currentUserData['dob'],
+                              rationType: currentUserData['rationType'],
+                              bloodType: currentUserData['bloodgroup'],
+                              enlistmentDate: currentUserData['enlistment'],
+                              ordDate: currentUserData['ord'],
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.all(12.0.sp),
+                        child: Image.asset(
+                          'lib/assets/user.png',
+                          width: 50.w,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24.0.w),
+                  child: StyledText(
+                    'Welcome,\n$fname! 👋',
+                    32.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                StreamBuilder<QuerySnapshot>(
+                    stream: statusModel.data,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        documentIDs = [];
+                        userDetails = [];
+                        List? users = snapshot.data?.docs.toList();
+                        var docsmapshot = snapshot.data!;
+
+                        Future.delayed(const Duration(seconds: 2)).then((val) {
+                          // Your logic here
+                        });
+
+                        for (var i = 0; i < users!.length; i++) {
+                          documentIDs.add(users[i]['name']);
+                          var data = docsmapshot.docs[i].data()
+                              as Map<String, dynamic>;
+                          userDetails.add(data);
+                        }
+
+                        specDetails = userDetails
+                            .where((element) =>
+                                specialist.contains(element['rank']))
+                            .toList();
+
+                        statusDetails = userDetails
+                            .where((element) =>
+                                statusList.contains(element['name']))
+                            .toList();
+
+                        officerDetails = userDetails
+                            .where(
+                                (element) => officers.contains(element['rank']))
+                            .toList();
+
+                        var _maDetails = userDetails
+                            .where(
+                                (element) => _maList.contains(element['name']))
+                            .toList();
+
+                        return LiquidPullToRefresh(
+                          onRefresh: refreshPage,
+                          child: FlipCard(
+                            controller: _controller,
+                            front: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: defaultPadding.w),
+                              child: Container(
+                                padding: EdgeInsets.all(defaultPadding.sp),
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.black54,
+                                        offset: Offset(10.0.w, 10.0.h),
+                                        blurRadius: 2.0.r,
+                                        spreadRadius: 2.0.r),
+                                  ],
+                                  color: const Color.fromARGB(255, 32, 36, 51),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10.r)),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(
-                                          "Strength In-Camp",
-                                          style: GoogleFonts.poppins(
-                                              fontSize: 24.sp,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.white),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Strength In-Camp",
+                                              style: GoogleFonts.poppins(
+                                                  fontSize: 24.sp,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.white),
+                                            ),
+                                            Text(
+                                              "As of ${DateFormat('yMMMMd').add_Hm().format(DateTime.now())}",
+                                              style: GoogleFonts.poppins(
+                                                  fontSize: 18.sp,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.white
+                                                      .withOpacity(0.45)),
+                                            ),
+                                          ],
                                         ),
-                                        Text(
-                                          "As of ${DateFormat('yMMMMd').add_Hm().format(DateTime.now())}",
-                                          style: GoogleFonts.poppins(
-                                              fontSize: 18.sp,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.white
-                                                  .withOpacity(0.45)),
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                            top: 16.0.h,
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              InkWell(
+                                                onTap: () {
+                                                  _controller.toggleCard();
+                                                },
+                                                child: Icon(
+                                                  Icons.date_range_rounded,
+                                                  color: Colors.white,
+                                                  size: 30.sp,
+                                                ),
+                                              ),
+                                              StyledText("Show Calendar", 14.sp,
+                                                  fontWeight: FontWeight.w400),
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                        top: 16.0.h,
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          InkWell(
-                                            onTap: () {
-                                              _controller.toggleCard();
-                                            },
-                                            child: Icon(
-                                              Icons.date_range_rounded,
-                                              color: Colors.white,
-                                              size: 30.sp,
-                                            ),
-                                          ),
-                                          StyledText("Show Calendar", 14.sp,
-                                              fontWeight: FontWeight.w400),
-                                        ],
-                                      ),
+                                    SizedBox(
+                                      height: (defaultPadding + 2).h,
+                                    ),
+                                    CurrentStrengthChart(
+                                        currentOfficers: officerDetails.length,
+                                        currentWOSEs: specDetails.length,
+                                        currentStatus: statusDetails.length,
+                                        currentMA: _maDetails.length),
+                                    SizedBox(
+                                      height: defaultPadding.h,
+                                    ),
+                                    CurrentStrengthBreakdownTile(
+                                      title: "Total Officers",
+                                      imgSrc: "lib/assets/icons8-medals-64.png",
+                                      currentNumOfSoldiers:
+                                          officerDetails.length,
+                                      totalNumOfSoldiers: officerDetails.length,
+                                      imgColor: Colors.red,
+                                      userDetails: officerDetails,
+                                    ),
+                                    CurrentStrengthBreakdownTile(
+                                      title: "Total WOSEs",
+                                      imgSrc:
+                                          "lib/assets/icons8-soldier-man-64.png",
+                                      currentNumOfSoldiers: specDetails.length,
+                                      totalNumOfSoldiers: specDetails.length,
+                                      imgColor: Colors.blue,
+                                      userDetails: specDetails,
+                                    ),
+                                    CurrentStrengthBreakdownTile(
+                                      title: "On Status",
+                                      imgSrc: "lib/assets/icons8-error-64.png",
+                                      currentNumOfSoldiers:
+                                          statusDetails.length,
+                                      totalNumOfSoldiers:
+                                          (officerDetails.length +
+                                              specDetails.length),
+                                      imgColor: Colors.yellow,
+                                      userDetails: statusDetails,
+                                    ),
+                                    CurrentStrengthBreakdownTile(
+                                      title: "On MA",
+                                      imgSrc:
+                                          "lib/assets/icons8-doctors-folder-64.png",
+                                      currentNumOfSoldiers: _maDetails.length,
+                                      totalNumOfSoldiers:
+                                          (officerDetails.length +
+                                              specDetails.length),
+                                      imgColor: Colors.lightBlueAccent,
+                                      userDetails: _maDetails,
                                     ),
                                   ],
                                 ),
-                                SizedBox(
-                                  height: (defaultPadding + 2).h,
+                              ),
+                            ),
+                            back: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: defaultPadding.w),
+                              child: Container(
+                                padding: EdgeInsets.all(defaultPadding.sp),
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.black54,
+                                        offset: Offset(10.0.w, 10.0.h),
+                                        blurRadius: 2.0.r,
+                                        spreadRadius: 2.0.r),
+                                  ],
+                                  color: const Color.fromARGB(255, 32, 36, 51),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10.r)),
                                 ),
-                                CurrentStrengthChart(
-                                    currentOfficers: officerDetails.length,
-                                    currentWOSEs: specDetails.length,
-                                    currentStatus: statusDetails.length,
-                                    currentMA: _maDetails.length),
-                                SizedBox(
-                                  height: defaultPadding.h,
+                                child: const Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    DashboardCalendar(),
+                                  ],
                                 ),
-                                CurrentStrengthBreakdownTile(
-                                  title: "Total Officers",
-                                  imgSrc: "lib/assets/icons8-medals-64.png",
-                                  currentNumOfSoldiers: officerDetails.length,
-                                  totalNumOfSoldiers: officerDetails.length,
-                                  imgColor: Colors.red,
-                                  userDetails: officerDetails,
-                                ),
-                                CurrentStrengthBreakdownTile(
-                                  title: "Total WOSEs",
-                                  imgSrc:
-                                      "lib/assets/icons8-soldier-man-64.png",
-                                  currentNumOfSoldiers: specDetails.length,
-                                  totalNumOfSoldiers: specDetails.length,
-                                  imgColor: Colors.blue,
-                                  userDetails: specDetails,
-                                ),
-                                CurrentStrengthBreakdownTile(
-                                  title: "On Status",
-                                  imgSrc: "lib/assets/icons8-error-64.png",
-                                  currentNumOfSoldiers: statusDetails.length,
-                                  totalNumOfSoldiers: (officerDetails.length +
-                                      specDetails.length),
-                                  imgColor: Colors.yellow,
-                                  userDetails: statusDetails,
-                                ),
-                                CurrentStrengthBreakdownTile(
-                                  title: "On MA",
-                                  imgSrc:
-                                      "lib/assets/icons8-doctors-folder-64.png",
-                                  currentNumOfSoldiers: _maDetails.length,
-                                  totalNumOfSoldiers: (officerDetails.length +
-                                      specDetails.length),
-                                  imgColor: Colors.lightBlueAccent,
-                                  userDetails: _maDetails,
-                                ),
-                              ],
+                              ),
                             ),
                           ),
-                        ),
-                        back: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: defaultPadding.w),
-                          child: Container(
-                            padding: EdgeInsets.all(defaultPadding.sp),
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Colors.black54,
-                                    offset: Offset(10.0.w, 10.0.h),
-                                    blurRadius: 2.0.r,
-                                    spreadRadius: 2.0.r),
-                              ],
-                              color: const Color.fromARGB(255, 32, 36, 51),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10.r)),
-                            ),
-                            child: const Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                DashboardCalendar(),
-                              ],
-                            ),
-                          ),
+                        );
+                      }
+                      return Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.deepPurple.shade400,
                         ),
                       );
-                    }
-                    return Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.deepPurple.shade400,
-                      ),
-                    );
-                  }),
-              SizedBox(
-                height: 40.h,
-              )
-            ],
+                    }),
+                SizedBox(
+                  height: 40.h,
+                )
+              ],
+            ),
           ),
         ),
       ),
