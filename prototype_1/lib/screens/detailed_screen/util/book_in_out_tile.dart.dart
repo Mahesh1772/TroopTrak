@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:prototype_1/screens/detailed_screen/tabs/attendance_screen/update_attendance_screen.dart';
 
 class BookInOutTile extends StatefulWidget {
   const BookInOutTile(
@@ -49,14 +50,16 @@ class _BookInOutTileState extends State<BookInOutTile> {
           children: [
             SlidableAction(
               onPressed: (context) {
-                deletePastStatus();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        UpdateAttendanceScreen(docID: widget.attendanceID),
+                  ),
+                );
               },
               icon: Icons.pending_actions_outlined,
               backgroundColor: Colors.blue,
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(12.r),
-                bottomRight: Radius.circular(12.r),
-              ),
             ),
             SlidableAction(
               onPressed: (context) {
