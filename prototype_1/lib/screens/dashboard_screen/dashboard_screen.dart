@@ -75,8 +75,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
               } else {
                 statusList.add(snapshot.id);
               }
-              //statusList[i].addEntries({'Name': snapshot.id}.entries);
-              //i++;
             }
           }
         });
@@ -147,7 +145,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     final statusModel = Provider.of<UserData>(context);
-
+    print(_maList);
     // Your logic here
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
@@ -273,8 +271,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           .where(
                               (element) => statusList.contains(element['name']))
                           .toList();
-
-                      print(statusDetails);
 
                       officerDetails = userDetails
                           .where(
