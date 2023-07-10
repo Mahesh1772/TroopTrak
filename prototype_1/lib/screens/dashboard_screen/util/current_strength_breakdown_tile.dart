@@ -10,15 +10,16 @@ import 'package:provider/provider.dart';
 import '../../../user_models/user_details.dart';
 
 class CurrentStrengthBreakdownTile extends StatelessWidget {
-  CurrentStrengthBreakdownTile(
-      {super.key,
-      required this.title,
-      required this.imgSrc,
-      required this.currentNumOfSoldiers,
-      required this.totalNumOfSoldiers,
-      required this.imgColor,
-      required this.userDetails,
-      required this.isStatusPersonal,});
+  CurrentStrengthBreakdownTile({
+    super.key,
+    required this.title,
+    required this.imgSrc,
+    required this.currentNumOfSoldiers,
+    required this.totalNumOfSoldiers,
+    required this.imgColor,
+    required this.userDetails,
+    required this.isStatusPersonal,
+  });
 
   final String title, imgSrc;
   final int currentNumOfSoldiers, totalNumOfSoldiers;
@@ -32,7 +33,12 @@ class CurrentStrengthBreakdownTile extends StatelessWidget {
   Widget build(BuildContext context) {
     int insideCamp = 0;
     final userModel = Provider.of<UserData>(context);
-    userModel.last_attendance();
+    userModel.inCamp();
+    Future.delayed(const Duration(milliseconds: 3000), () {
+      return const CircularProgressIndicator();
+    });
+    print(userModel.fullList);
+
     if (userModel.fullList.isEmpty) {
       Future.delayed(const Duration(milliseconds: 3000), () {
         return const CircularProgressIndicator();

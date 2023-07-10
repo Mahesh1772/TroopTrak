@@ -70,8 +70,8 @@ class UserData extends ChangeNotifier {
 
   int i = 0;
   List<Map<String, dynamic>> attendance_list = [];
-  Future<List<Map<String, dynamic>>> inCamp() async {
-    FirebaseFirestore.instance
+  Future inCamp() async {
+    await FirebaseFirestore.instance
         .collection("Users")
         .get()
         .then((querySnapshot) async {
@@ -82,27 +82,16 @@ class UserData extends ChangeNotifier {
             .collection("Attendance")
             .get()
             .then((querySnapshot) {
-          var lastData = querySnapshot.docs.last.data();
-          attendance_list.add(lastData);
-          attendance_list[i].addEntries({'Name': snapshot.id}.entries);
-          i++;
-          fullList.addAll({snapshot.id:lastData['isInsideCamp']});
+          //var lastData = querySnapshot.docs.last.data();
+          fullList.addAll({snapshot.id:querySnapshot.docs.last.data()['isInsideCamp']});
         });
       }
     });
-    return attendance_list;
+    //return attendance_list;
   }
 
   List<Map<String, dynamic>> newList = [];
   Map<String, dynamic> fullList = {};
-
-  void last_attendance() async {
-    newList = await inCamp();
-    //for (var element in attendance_list) {
-    //  fullList.addAll({element['Name']: element['isInsideCamp']});
-    //}
-    print(fullList);
-  }
 
   int j = 0;
   List<String> guardDuty = ['Ex Uniform', 'Ex Boots'];
