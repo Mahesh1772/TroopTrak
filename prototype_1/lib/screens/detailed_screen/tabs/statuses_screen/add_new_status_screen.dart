@@ -115,7 +115,25 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
       'startDate': widget.startDate, //sDate,
       'endDate': widget.endDate, //eDate,
     });
+    if (widget.selectedStatusType != 'Excuse') {
+      DateTime end = DateFormat("d MMM yyyy").parse(widget.endDate);
+      DateTime now = DateTime.now();
+      end = DateTime(end.year, end.month, end.day, now.hour , now.minute + 30);
+      addAttendanceDetails(false, end);
+    }
     Navigator.pop(context);
+  }
+
+  Future addAttendanceDetails(bool i, DateTime date) async {
+    db
+        .doc(widget.docID)
+        .collection('Attendance')
+        .doc(DateFormat('yyyy-MM-dd HH:mm:ss').format(date))
+        .set({
+      //User map formatting
+      'isInsideCamp': i,
+      'date&time': DateFormat('E d MMM yyyy HH:mm:ss').format(date),
+    });
   }
 
   void display() {
