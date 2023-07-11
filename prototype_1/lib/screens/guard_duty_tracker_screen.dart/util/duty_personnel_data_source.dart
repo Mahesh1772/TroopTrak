@@ -14,7 +14,8 @@ class DutyPersonnelDataSource extends DataGridSource {
                 value: e.rank,
               ),
               DataGridCell<String>(columnName: 'name', value: e.name),
-              DataGridCell<double>(columnName: 'points', value: e.points),
+              DataGridCell<String>(
+                  columnName: 'points', value: e.points.toString()),
             ]))
         .toList();
   }

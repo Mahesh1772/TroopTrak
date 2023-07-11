@@ -305,8 +305,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             ? false
                             : true;
                         fullList.addAll({data['name']: val});
-                        getUserStatus(data['name']);
-                        getUseronMA(data['name']);
+                        getUserStatus(data['name'])
+                            .then((value) => getUseronMA(data['name']));
+                        Future.delayed(Duration(seconds: 4));
                       }
 
                       specDetails = userDetails
