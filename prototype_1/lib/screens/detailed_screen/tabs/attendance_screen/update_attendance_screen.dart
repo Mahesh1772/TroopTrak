@@ -25,19 +25,6 @@ class _UpdateAttendanceScreenState extends State<UpdateAttendanceScreen> {
   late String date;
   late String time;
 
-  Future getDate() async {
-    FirebaseFirestore.instance
-        .collection('Users')
-        .doc(widget.docID)
-        .collection('Attendance')
-        .doc(widget.attendanceID)
-        .get()
-        .then((value) {
-      var data = value.data() as Map<String, dynamic>;
-      date = data['date&time'].split(' ');
-    });
-  }
-
   @override
   void initState() {
     super.initState();

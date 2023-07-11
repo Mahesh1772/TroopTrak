@@ -25,6 +25,57 @@ class _GuardDutyTrackerScreenState extends State<GuardDutyTrackerScreen>
 
   Map<String, dynamic> currentUserData = {};
 
+  List<Map<String, dynamic>> statusList = [];
+  List<String> non_participants = [];
+
+  List<String> guardDuty = ['Ex Uniform', 'Ex Boots'];
+  void autoFilter() {
+    if (statusList.isNotEmpty) {
+      for (var element in statusList) {
+        non_participants.add(element['Name']);
+      }
+      //for (var status in statusList) {
+      //  if (status['statusType'] == 'Excuse') {
+      //    if (guardDuty.contains(status['statusName'])) {
+      //      non_participants.add(status['Name']);
+      //    }
+      //  } else if (status['statusType'] == 'Leave') {
+      //    non_participants.add(status['Name']);
+      //  }
+      //}
+    }
+  }
+
+  Future getUserBooks() async {
+    int i = 0;
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .get()
+        .then((querySnapshot) async {
+      for (var snapshot in querySnapshot.docs) {
+        FirebaseFirestore.instance
+            .collection("Users")
+            .doc(snapshot.id)
+            .collection("Statuses")
+            .where('statusType', isEqualTo: 'Excuse')
+            .where('statusName', whereIn: ['Ex Boots', 'Ex Uniform'])
+            .get()
+            .then((querySnapshot) {
+              for (var result in querySnapshot.docs) {
+                Map<String, dynamic> data = result.data();
+                DateTime end = DateFormat("d MMM yyyy").parse(data['endDate']);
+                if (DateTime(end.year, end.month, end.day + 1)
+                    .isAfter(DateTime.now())) {
+                  statusList.add(data);
+                  statusList[i].addEntries({'Name': snapshot.id}.entries);
+                  i++;
+                }
+              }
+            });
+      }
+    });
+  }
+
   Future getCurrentUserData() async {
     var data = FirebaseFirestore.instance.collection('Users').doc(name);
     data.get().then((DocumentSnapshot doc) {
@@ -37,12 +88,17 @@ class _GuardDutyTrackerScreenState extends State<GuardDutyTrackerScreen>
   void initState() {
     super.initState();
     getCurrentUserData();
+    getUserBooks();
+    Future.delayed(Duration(seconds: 2));
+    autoFilter();
+    Future.delayed(Duration(seconds: 2));
+    print(statusList);
   }
 
   @override
   Widget build(BuildContext context) {
     getUserBooks();
-    autoFilter();
+    print(statusList);
     TabController tabController = TabController(length: 2, vsync: this);
 
     return Scaffold(
