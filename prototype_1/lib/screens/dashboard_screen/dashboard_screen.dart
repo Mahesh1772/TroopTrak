@@ -135,27 +135,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
 
     Map<String, dynamic> fullList = {};
-    Future inCamp() async {
-      await FirebaseFirestore.instance
-          .collection("Users")
-          .get()
-          .then((querySnapshot) async {
-        for (var snapshot in querySnapshot.docs) {
-          await FirebaseFirestore.instance
-              .collection("Users")
-              .doc(snapshot.id)
-              .collection("Attendance")
-              .get()
-              .then((querySnapshot) async {
-            //var lastData = querySnapshot.docs.last.data();
-            fullList.addAll(
-                {snapshot.id: querySnapshot.docs.last.data()['isInsideCamp']});
-          });
-        }
-      });
-      Future.delayed(Duration(seconds: 1));
-      //return attendance_list;
-    }
+    //Future inCamp() async {
+    //  await FirebaseFirestore.instance
+    //      .collection("Users")
+    //      .get()
+    //      .then((querySnapshot) async {
+    //    for (var snapshot in querySnapshot.docs) {
+    //      await FirebaseFirestore.instance
+    //          .collection("Users")
+    //          .doc(snapshot.id)
+    //          .collection("Attendance")
+    //          .get()
+    //          .then((querySnapshot) async {
+    //        //var lastData = querySnapshot.docs.last.data();
+    //        fullList.addAll(
+    //            {snapshot.id: querySnapshot.docs.last.data()['isInsideCamp']});
+    //      });
+    //    }
+    //  });
+    //  Future.delayed(Duration(seconds: 1));
+    //  //return attendance_list;
+    //}
 
     final name = FirebaseAuth.instance.currentUser!.displayName.toString();
 
@@ -169,12 +169,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
       });
     }
 
-    inCamp()
-        .then((value) => getStatusList().then((value) => getCurrentUserData()));
+    //inCamp()
+    //    .then((value) => getStatusList().then((value) => getCurrentUserData()));
     Future.delayed(Duration(seconds: 2));
     final statusModel = Provider.of<UserData>(context);
     //print(fullList);
     // Your logic here
+    print(statusList);
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
       body: LiquidPullToRefresh(
@@ -253,6 +254,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     if (snapshot.hasData) {
                       documentIDs = [];
                       userDetails = [];
+                      fullList = {};
                       List? users = snapshot.data?.docs.toList();
                       var docsmapshot = snapshot.data!;
 
@@ -265,10 +267,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         var data =
                             docsmapshot.docs[i].data() as Map<String, dynamic>;
                         userDetails.add(data);
+                        bool val = data['currentAttendance'] == 'Outside' ? false : true;
+                        fullList.addAll({data['name'] : val});
                       }
-                      if (userDetails.length == fullList.length) {
-                        refreshPage();
-                      }
+
                       specDetails = userDetails
                           .where(
                               (element) => specialist.contains(element['rank']))

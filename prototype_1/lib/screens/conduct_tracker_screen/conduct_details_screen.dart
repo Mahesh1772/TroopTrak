@@ -35,6 +35,10 @@ class ConductDetailsScreen extends StatefulWidget {
 //Map that contains conduct Details
 Map<String, dynamic> conductData = {};
 
+String excuseText = "Removed from conduct";
+
+Map<String, dynamic> soldierReason = {};
+
 class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
   //This is what the stream builder is waiting for
   late Stream<QuerySnapshot> documentStream;
@@ -91,8 +95,8 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
     conductStream =
         FirebaseFirestore.instance.collection('Conducts').snapshots();
-        listofusers = userDetails;
-        nonparts = nonParticipants;
+    listofusers = userDetails;
+    nonparts = nonParticipants;
     WidgetsBinding.instance.addPostFrameCallback((_) => build);
   }
 
@@ -135,7 +139,8 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                             conductData = data;
                             conductData.addEntries(
                                 {'ID': conduct.reference.id}.entries);
-                          } 
+                            soldierReason = data['soldierReason'];
+                          }
                         }
                       }
                       documentIDs.removeWhere((element) =>
@@ -496,8 +501,11 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                                                     18,
                                                     fontWeight:
                                                         FontWeight.w600),
-                                                const StyledText(
-                                                    "Reason: Ex RMJ", 14,
+                                                StyledText(
+                                                    soldierReason[
+                                                            nonParticipants[
+                                                                index]['name']] ?? excuseText,
+                                                    14,
                                                     fontWeight:
                                                         FontWeight.w400),
                                               ],
