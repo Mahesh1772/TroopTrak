@@ -168,12 +168,12 @@ class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
                     for (var user in users!) {
                       var data = user.data();
                       userDetails.add(data as Map<String, dynamic>);
-                      pointsTable.addAll({data['name']: data['points'].toDouble()});
+                      pointsTable
+                          .addAll({data['name']: data['points'].toDouble()});
                     }
                     dutyPersonnel = getDutyPersonnel();
                     dutyPersonnelDataSource =
                         DutyPersonnelDataSource(dutyPersonnel: dutyPersonnel);
-
                     return Padding(
                       padding: EdgeInsets.all(8.0.sp),
                       child: SizedBox(
@@ -213,7 +213,7 @@ class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
                                 columnName: 'points',
                                 label: Container(
                                   padding: EdgeInsets.all(8.0.sp),
-                                  alignment: Alignment.center,
+                                  alignment: Alignment.centerRight,
                                   child: StyledText("Points", 18.sp,
                                       fontWeight: FontWeight.w600),
                                 ),
