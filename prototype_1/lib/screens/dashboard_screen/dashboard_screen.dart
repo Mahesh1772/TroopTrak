@@ -125,9 +125,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Future refreshPage() async {
+    await Future.delayed(const Duration(seconds: 3));
     Navigator.pushReplacement(context,
         MaterialPageRoute(builder: (BuildContext context) => super.widget));
-    return await Future.delayed(const Duration(seconds: 5));
   }
 
   List<String> specialist = [
@@ -174,10 +174,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final statusModel = Provider.of<UserData>(context);
     Future.delayed(const Duration(milliseconds: 5000), () {
       return const CircularProgressIndicator();
     });
+    final statusModel = Provider.of<UserData>(context);
     //print(fullList);
     // Your logic here
     return Scaffold(
@@ -185,8 +185,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
       body: LiquidPullToRefresh(
         onRefresh: refreshPage,
         height: 300,
+        springAnimationDurationInMilliseconds: 500,
         color: const Color.fromARGB(255, 32, 36, 51),
-        showChildOpacityTransition: false,
+        showChildOpacityTransition: true,
         child: SingleChildScrollView(
           child: SafeArea(
             child: Column(
