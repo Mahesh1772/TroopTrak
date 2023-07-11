@@ -22,8 +22,32 @@ class BasicInfoTab extends StatefulWidget {
 
 class _BasicInfoTabState extends State<BasicInfoTab> {
   Future deleteUserAccount() async {
+    deleteAttendance();
+    deleteStatuses();
     deleteCurrentUser();
     Navigator.pop(context);
+  }
+
+  Future deleteStatuses() async {
+    var collection = FirebaseFirestore.instance
+        .collection("Users")
+        .doc(widget.docID)
+        .collection('Statuses');
+    var snapshots = await collection.get();
+    for (var doc in snapshots.docs) {
+      await doc.reference.delete();
+    }
+  }
+
+  Future deleteAttendance() async {
+    var collection = FirebaseFirestore.instance
+        .collection("Users")
+        .doc(widget.docID)
+        .collection('Attendance');
+    var snapshots = await collection.get();
+    for (var doc in snapshots.docs) {
+      await doc.reference.delete();
+    }
   }
 
   Future deleteCurrentUser() async {

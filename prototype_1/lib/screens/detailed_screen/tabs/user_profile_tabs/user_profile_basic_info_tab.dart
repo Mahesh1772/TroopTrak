@@ -33,9 +33,33 @@ class UserProfileBasicInfoTab extends StatefulWidget {
 
 class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab> {
   Future deleteUserAccount() async {
+    deleteAttendance();
+    deleteStatuses();
     deleteCurrentUser();
     id.delete();
     Navigator.pop(context);
+  }
+
+  Future deleteStatuses() async {
+    var collection = FirebaseFirestore.instance
+        .collection("Users")
+        .doc(fname)
+        .collection('Statuses');
+    var snapshots = await collection.get();
+    for (var doc in snapshots.docs) {
+      await doc.reference.delete();
+    }
+  }
+
+  Future deleteAttendance() async {
+    var collection = FirebaseFirestore.instance
+        .collection("Users")
+        .doc(fname)
+        .collection('Attendance');
+    var snapshots = await collection.get();
+    for (var doc in snapshots.docs) {
+      await doc.reference.delete();
+    }
   }
 
   Future deleteCurrentUser() async {
