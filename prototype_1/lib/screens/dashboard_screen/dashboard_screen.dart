@@ -127,7 +127,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Future refreshPage() async {
     Navigator.pushReplacement(context,
         MaterialPageRoute(builder: (BuildContext context) => super.widget));
-    return await Future.delayed(const Duration(seconds: 2));
+    return await Future.delayed(const Duration(seconds: 5));
   }
 
   List<String> specialist = [
@@ -182,10 +182,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
     // Your logic here
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: LiquidPullToRefresh(
-            onRefresh: refreshPage,
+      body: LiquidPullToRefresh(
+        onRefresh: refreshPage,
+        height: 300,
+        color: const Color.fromARGB(255, 32, 36, 51),
+        showChildOpacityTransition: false,
+        child: SingleChildScrollView(
+          child: SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

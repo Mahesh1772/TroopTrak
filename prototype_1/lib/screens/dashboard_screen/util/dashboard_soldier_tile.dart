@@ -1,8 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/screens/detailed_screen/soldier_detailed_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class DashboardSoldierTile extends StatelessWidget {
   final String soldierName;
@@ -137,17 +137,17 @@ class DashboardSoldierTile extends StatelessWidget {
                 ],
               ),
               SizedBox(
-                height: 5.h,
+                height: 10.h,
               ),
               AutoSizeText(
                 soldierName,
-                style:const  TextStyle(
+                style: GoogleFonts.poppins(
                   color: Colors.white,
-                  fontSize: 15,
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.bold,
                 ),
                 maxLines: 2,
-                textAlign: TextAlign.center,
+                textAlign: TextAlign.left,
               ),
               //StyledText(soldierName, 20.sp, fontWeight: FontWeight.bold)
             ],

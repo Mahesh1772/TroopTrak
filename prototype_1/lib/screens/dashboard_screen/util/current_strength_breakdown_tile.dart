@@ -5,9 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/screens/dashboard_screen/util/dashboard_soldier_tile.dart';
 import 'package:prototype_1/util/constants.dart';
-import 'package:provider/provider.dart';
-
-import '../../../user_models/user_details.dart';
 
 class CurrentStrengthBreakdownTile extends StatelessWidget {
   CurrentStrengthBreakdownTile({
