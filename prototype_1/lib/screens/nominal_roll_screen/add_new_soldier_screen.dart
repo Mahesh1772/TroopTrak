@@ -181,7 +181,8 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
         .collection('Users')
         .doc(widget.name.text.trim())
         .collection('Attendance')
-        .add({
+        .doc(DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()))
+        .set({
       //User map formatting
       'isInsideCamp': true,
       'date&time': DateFormat('E d MMM yyyy HH:mm:ss').format(DateTime.now()),

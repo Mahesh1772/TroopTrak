@@ -31,13 +31,6 @@ class CurrentStrengthBreakdownTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int insideCamp = 0;
-    //final userModel = Provider.of<UserData>(context);
-    //userModel.inCamp();
-    //Future.delayed(const Duration(milliseconds: 3000), () {
-    //  return const CircularProgressIndicator();
-    //});
-    print(fullList);
-
     if (fullList.isEmpty) {
       Future.delayed(const Duration(milliseconds: 4000), () {
         return const CircularProgressIndicator();

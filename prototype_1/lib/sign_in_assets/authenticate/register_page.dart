@@ -234,7 +234,8 @@ class _RegisterPageState extends State<RegisterPage> {
         .collection('Users')
         .doc(_name.text.titleCase.trim())
         .collection('Attendance')
-        .add({
+        .doc(DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()))
+        .set({
       //User map formatting
       'isInsideCamp': true,
       'date&time': DateFormat('E d MMM yyyy HH:mm:ss').format(DateTime.now()),

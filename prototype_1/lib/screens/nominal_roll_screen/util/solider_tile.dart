@@ -64,6 +64,17 @@ class _SoldierTileState extends State<SoldierTile> {
     });
   }
 
+  Future addFieldDetails(bool i) async {
+    String stat = i == true ? 'Inside Camp' : 'Outside';
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(widget.soldierName)
+        .set({
+      //User map formatting
+      'currentAttendance': stat,
+    }, SetOptions(merge: true));
+  }
+
   @override
   void initState() {
     inCampStatusText = inCampStatusTextChanger(widget.isInsideCamp);
@@ -191,6 +202,7 @@ class _SoldierTileState extends State<SoldierTile> {
                           0)
                       .toList();
                   widget.isInsideCamp = all_data.last['isInsideCamp'];
+                  addFieldDetails(widget.isInsideCamp);
                   inCampStatusText =
                       inCampStatusTextChanger(widget.isInsideCamp);
                 }
@@ -281,6 +293,7 @@ class _SoldierTileState extends State<SoldierTile> {
                         onChanged: (i) {
                           inCampStatusText = inCampStatusTextChanger(i);
                           addAttendanceDetails(i);
+                          addFieldDetails(i);
                         },
                         iconBuilder: rollingIconBuilder,
                         borderWidth: 3.0.w,

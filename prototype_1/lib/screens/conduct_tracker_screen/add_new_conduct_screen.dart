@@ -55,6 +55,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
   Future filter() async {
     //tempArray = [];
     if (isFirstTIme) {
+      soldierReason = {};
       auto_filter();
       tempArray = documentIDs;
     }
@@ -123,6 +124,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
   ];
   int i = 0;
   List<String> non_participants = [];
+  Map<String, String> soldierReason = {};
   Future getUserBooks() async {
     FirebaseFirestore.instance
         .collection("Users")
@@ -167,9 +169,11 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
           if (status['statusType'] == 'Excuse') {
             if (Run.contains(status['statusName'])) {
               non_participants.add(status['Name']);
+              soldierReason.addAll({status['Name']:status['statusName']});
             }
           } else if (status['statusType'] == 'Leave') {
             non_participants.add(status['Name']);
+            soldierReason.addAll({status['Name']:status['statusName']});
           }
         }
         break;
@@ -178,9 +182,11 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
           if (status['statusType'] == 'Excuse') {
             if (RouteMarch.contains(status['statusName'])) {
               non_participants.add(status['Name']);
+              soldierReason.addAll({status['Name']:status['statusName']});
             }
           } else if (status['statusType'] == 'Leave') {
             non_participants.add(status['Name']);
+            soldierReason.addAll({status['Name']:status['statusName']});
           }
         }
         break;
@@ -189,9 +195,11 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
           if (status['statusType'] == 'Excuse') {
             if (Ippt.contains(status['statusName'])) {
               non_participants.add(status['Name']);
+              soldierReason.addAll({status['Name']:status['statusName']});
             }
           } else if (status['statusType'] == 'Leave') {
             non_participants.add(status['Name']);
+            soldierReason.addAll({status['Name']:status['statusName']});
           }
         }
         break;
@@ -200,9 +208,11 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
           if (status['statusType'] == 'Excuse') {
             if (Outfield.contains(status['statusName'])) {
               non_participants.add(status['Name']);
+              soldierReason.addAll({status['Name']:status['statusName']});
             }
           } else if (status['statusType'] == 'Leave') {
             non_participants.add(status['Name']);
+            soldierReason.addAll({status['Name']:status['statusName']});
           }
         }
         break;
@@ -211,9 +221,11 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
           if (status['statusType'] == 'Excuse') {
             if (MetabolicCircuit.contains(status['statusName'])) {
               non_participants.add(status['Name']);
+              soldierReason.addAll({status['Name']:status['statusName']});
             }
           } else if (status['statusType'] == 'Leave') {
             non_participants.add(status['Name']);
+            soldierReason.addAll({status['Name']:status['statusName']});
           }
         }
         break;
@@ -222,9 +234,11 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
           if (status['statusType'] == 'Excuse') {
             if (S_P.contains(status['statusName'])) {
               non_participants.add(status['Name']);
+              soldierReason.addAll({status['Name']:status['statusName']});
             }
           } else if (status['statusType'] == 'Leave') {
             non_participants.add(status['Name']);
+            soldierReason.addAll({status['Name']:status['statusName']});
           }
         }
         break;
@@ -233,9 +247,11 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
           if (status['statusType'] == 'Excuse') {
             if (CombatCircuit.contains(status['statusName'])) {
               non_participants.add(status['Name']);
+              soldierReason.addAll({status['Name']:status['statusName']});
             }
           } else if (status['statusType'] == 'Leave') {
             non_participants.add(status['Name']);
+            soldierReason.addAll({status['Name']:status['statusName']});
           }
         }
         break;
@@ -245,9 +261,11 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
             if (Atp.contains(status['statusName']) ||
                 Imt.contains(status['statusName'])) {
               non_participants.add(status['Name']);
+              soldierReason.addAll({status['Name']:status['statusName']});
             }
           } else if (status['statusType'] == 'Leave') {
             non_participants.add(status['Name']);
+            soldierReason.addAll({status['Name']:status['statusName']});
           }
         }
         break;
@@ -256,9 +274,11 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
           if (status['statusType'] == 'Excuse') {
             if (soc.contains(status['statusName'])) {
               non_participants.add(status['Name']);
+              soldierReason.addAll({status['Name']:status['statusName']});
             }
           } else if (status['statusType'] == 'Leave') {
             non_participants.add(status['Name']);
+            soldierReason.addAll({status['Name']:status['statusName']});
           }
         }
         break;
@@ -266,6 +286,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
         for (var status in statusList) {
           if (status['statusType'] == 'Leave') {
             non_participants.add(status['Name']);
+            soldierReason.addAll({status['Name']:status['statusName']});
           }
         }
     }
@@ -349,6 +370,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
       'startTime': widget.startTime,
       'endTime': widget.endTime,
       'participants': tempArray,
+      'soldierReason' : soldierReason,
     });
   }
 
