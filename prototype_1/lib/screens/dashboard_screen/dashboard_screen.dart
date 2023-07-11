@@ -103,59 +103,40 @@ class _DashboardScreenState extends State<DashboardScreen> {
     "LG",
   ];
 
-  @override
-  Widget build(BuildContext context) {
-    Future getStatusList() async {
-      await FirebaseFirestore.instance
-          .collection("Users")
-          .get()
-          .then((querySnapshot) async {
-        for (var snapshot in querySnapshot.docs) {
-          await FirebaseFirestore.instance
-              .collection("Users")
-              .doc(snapshot.id)
-              .collection("Statuses")
-              .get()
-              .then((querySnapshot) {
-            for (var result in querySnapshot.docs) {
-              Map<String, dynamic> data = result.data();
-              DateTime end = DateFormat("d MMM yyyy").parse(data['endDate']);
-              if (DateTime(end.year, end.month, end.day + 1)
-                  .isAfter(DateTime.now())) {
-                if (data['statusType'] == 'Medical Appointment') {
-                  _maList.add(snapshot.id);
-                } else {
-                  statusList.add(snapshot.id);
-                }
+  Future getStatusList() async {
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .get()
+        .then((querySnapshot) async {
+      for (var snapshot in querySnapshot.docs) {
+        await FirebaseFirestore.instance
+            .collection("Users")
+            .doc(snapshot.id)
+            .collection("Statuses")
+            .get()
+            .then((querySnapshot) {
+          for (var result in querySnapshot.docs) {
+            Map<String, dynamic> data = result.data();
+            DateTime end = DateFormat("d MMM yyyy").parse(data['endDate']);
+            if (DateTime(end.year, end.month, end.day + 1)
+                .isAfter(DateTime.now())) {
+              if (data['statusType'] == 'Medical Appointment') {
+                _maList.add(snapshot.id);
+              } else {
+                statusList.add(snapshot.id);
               }
             }
-          });
-        }
-      });
-    }
+          }
+        });
+      }
+    });
+  }
 
+  @override
+  Widget build(BuildContext context) {
+    statusList = [];
+    getStatusList();
     Map<String, dynamic> fullList = {};
-    //Future inCamp() async {
-    //  await FirebaseFirestore.instance
-    //      .collection("Users")
-    //      .get()
-    //      .then((querySnapshot) async {
-    //    for (var snapshot in querySnapshot.docs) {
-    //      await FirebaseFirestore.instance
-    //          .collection("Users")
-    //          .doc(snapshot.id)
-    //          .collection("Attendance")
-    //          .get()
-    //          .then((querySnapshot) async {
-    //        //var lastData = querySnapshot.docs.last.data();
-    //        fullList.addAll(
-    //            {snapshot.id: querySnapshot.docs.last.data()['isInsideCamp']});
-    //      });
-    //    }
-    //  });
-    //  Future.delayed(Duration(seconds: 1));
-    //  //return attendance_list;
-    //}
 
     final name = FirebaseAuth.instance.currentUser!.displayName.toString();
 
@@ -171,11 +152,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     //inCamp()
     //    .then((value) => getStatusList().then((value) => getCurrentUserData()));
-    Future.delayed(Duration(seconds: 2));
+    Future.delayed(Duration(seconds: 4));
     final statusModel = Provider.of<UserData>(context);
     //print(fullList);
     // Your logic here
-    print(statusList);
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
       body: LiquidPullToRefresh(
@@ -267,8 +247,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         var data =
                             docsmapshot.docs[i].data() as Map<String, dynamic>;
                         userDetails.add(data);
-                        bool val = data['currentAttendance'] == 'Outside' ? false : true;
-                        fullList.addAll({data['name'] : val});
+                        bool val = data['currentAttendance'] == 'Outside'
+                            ? false
+                            : true;
+                        fullList.addAll({data['name']: val});
                       }
 
                       specDetails = userDetails
