@@ -64,7 +64,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Future refreshPage() async {
-    setState(() {});
+    setState(() {
+      Future.delayed(Duration(seconds: 2));
+    });
   }
 
   List<String> specialist = [
@@ -151,6 +153,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           });
         }
       });
+      Future.delayed(Duration(seconds: 1));
       //return attendance_list;
     }
 
@@ -168,7 +171,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     inCamp()
         .then((value) => getStatusList().then((value) => getCurrentUserData()));
-
+    Future.delayed(Duration(seconds: 2));
     final statusModel = Provider.of<UserData>(context);
     //print(fullList);
     // Your logic here
@@ -263,7 +266,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             docsmapshot.docs[i].data() as Map<String, dynamic>;
                         userDetails.add(data);
                       }
-
+                      if (userDetails.length == fullList.length) {
+                        refreshPage();
+                      }
                       specDetails = userDetails
                           .where(
                               (element) => specialist.contains(element['rank']))
