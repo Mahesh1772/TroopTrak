@@ -15,7 +15,6 @@ class CurrentStrengthBreakdownTile extends StatelessWidget {
     required this.totalNumOfSoldiers,
     required this.imgColor,
     required this.userDetails,
-    required this.isStatusPersonal,
     required this.fullList,
   });
 
@@ -23,29 +22,13 @@ class CurrentStrengthBreakdownTile extends StatelessWidget {
   final int currentNumOfSoldiers, totalNumOfSoldiers;
   final Color imgColor;
   final List<Map<String, dynamic>> userDetails;
-  final bool isStatusPersonal;
+
   Map<String, dynamic> fullList;
 
   List<Map<String, dynamic>> dummy = [];
 
   @override
   Widget build(BuildContext context) {
-    int insideCamp = 0;
-    if (fullList.isEmpty) {
-      Future.delayed(const Duration(milliseconds: 4000), () {
-        return const CircularProgressIndicator();
-      });
-    } else {
-      for (var user in userDetails) {
-        if (fullList[user['name']]) {
-          insideCamp += 1;
-        }
-      }
-    }
-    if (isStatusPersonal) {
-      insideCamp = userDetails.length;
-    }
-
     return Container(
       margin: EdgeInsets.only(
         top: defaultPadding.h,
@@ -85,7 +68,7 @@ class CurrentStrengthBreakdownTile extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      "$insideCamp In Camp",
+                      "$currentNumOfSoldiers In Camp",
                       style: GoogleFonts.poppins(
                         color: Colors.white.withOpacity(0.45),
                         fontSize: 14.sp,
@@ -99,7 +82,7 @@ class CurrentStrengthBreakdownTile extends StatelessWidget {
               ),
             ),
             Text(
-              "$insideCamp / $totalNumOfSoldiers",
+              "$currentNumOfSoldiers / $totalNumOfSoldiers",
               style: GoogleFonts.poppins(
                   fontSize: 24.sp,
                   fontWeight: FontWeight.w500,

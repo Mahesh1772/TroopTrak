@@ -150,6 +150,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
       });
     }
 
+    int inCamp(List userDetails, bool isStatusPersonal) {
+      int insideCamp = 0;
+      if (fullList.isEmpty) {
+        Future.delayed(const Duration(milliseconds: 4000), () {
+          return const CircularProgressIndicator();
+        });
+      } else {
+        for (var user in userDetails) {
+          if (fullList[user['name']]) {
+            insideCamp += 1;
+          }
+        }
+      }
+      if (isStatusPersonal) {
+        insideCamp = userDetails.length;
+      }
+      return insideCamp;
+    }
+
     //inCamp()
     //    .then((value) => getStatusList().then((value) => getCurrentUserData()));
     Future.delayed(Duration(seconds: 4));
@@ -350,55 +369,59 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     height: (defaultPadding + 2).h,
                                   ),
                                   CurrentStrengthChart(
-                                      currentOfficers: officerDetails.length,
-                                      currentWOSEs: specDetails.length,
-                                      currentStatus: statusDetails.length,
-                                      currentMA: _maDetails.length),
+                                    currentOfficers:
+                                        inCamp(officerDetails, false),
+                                    currentWOSEs: inCamp(specDetails, false),
+                                    currentStatus: inCamp(statusDetails, true),
+                                    currentMA: inCamp(_maDetails, false),
+                                    totalOfficers: officerDetails.length,
+                                    totalWOSEs: specDetails.length,
+                                  ),
                                   SizedBox(
                                     height: defaultPadding.h,
                                   ),
                                   CurrentStrengthBreakdownTile(
                                     title: "Total Officers",
                                     imgSrc: "lib/assets/icons8-medals-64.png",
-                                    currentNumOfSoldiers: officerDetails.length,
+                                    currentNumOfSoldiers:
+                                        inCamp(officerDetails, false),
                                     totalNumOfSoldiers: officerDetails.length,
                                     imgColor: Colors.red,
                                     userDetails: officerDetails,
-                                    isStatusPersonal: false,
                                     fullList: fullList,
                                   ),
                                   CurrentStrengthBreakdownTile(
                                     title: "Total WOSEs",
                                     imgSrc:
                                         "lib/assets/icons8-soldier-man-64.png",
-                                    currentNumOfSoldiers: specDetails.length,
+                                    currentNumOfSoldiers:
+                                        inCamp(specDetails, false),
                                     totalNumOfSoldiers: specDetails.length,
                                     imgColor: Colors.blue,
                                     userDetails: specDetails,
-                                    isStatusPersonal: false,
                                     fullList: fullList,
                                   ),
                                   CurrentStrengthBreakdownTile(
                                     title: "On Status",
                                     imgSrc: "lib/assets/icons8-error-64.png",
-                                    currentNumOfSoldiers: statusDetails.length,
+                                    currentNumOfSoldiers:
+                                        inCamp(statusDetails, true),
                                     totalNumOfSoldiers: (officerDetails.length +
                                         specDetails.length),
                                     imgColor: Colors.yellow,
                                     userDetails: statusDetails,
-                                    isStatusPersonal: true,
                                     fullList: fullList,
                                   ),
                                   CurrentStrengthBreakdownTile(
                                     title: "On MA",
                                     imgSrc:
                                         "lib/assets/icons8-doctors-folder-64.png",
-                                    currentNumOfSoldiers: _maDetails.length,
+                                    currentNumOfSoldiers:
+                                        inCamp(_maDetails, false),
                                     totalNumOfSoldiers: (officerDetails.length +
                                         specDetails.length),
                                     imgColor: Colors.lightBlueAccent,
                                     userDetails: _maDetails,
-                                    isStatusPersonal: false,
                                     fullList: fullList,
                                   ),
                                 ],

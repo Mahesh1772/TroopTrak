@@ -11,12 +11,16 @@ class CurrentStrengthChart extends StatelessWidget {
     required this.currentWOSEs,
     required this.currentStatus,
     required this.currentMA,
+    required this.totalOfficers,
+    required this.totalWOSEs,
   });
 
   final int currentOfficers;
   final int currentWOSEs;
   final int currentStatus;
   final int currentMA;
+  final int totalOfficers;
+  final int totalWOSEs;
 
   @override
   Widget build(BuildContext context) {
@@ -43,8 +47,11 @@ class CurrentStrengthChart extends StatelessWidget {
           radius: 16.r),
       PieChartSectionData(
           color: Colors.blue.withOpacity(0.1),
-          value: (currentOfficers.toDouble() + currentWOSEs.toDouble()) -
-              (currentStatus.toDouble() + currentMA.toDouble()),
+          value: (totalOfficers.toDouble() +
+                  totalWOSEs.toDouble() +
+                  currentStatus.toDouble() +
+                  currentMA.toDouble()) -
+              (currentOfficers.toDouble() + currentWOSEs.toDouble()),
           showTitle: false,
           radius: 16.r),
     ];
@@ -76,7 +83,7 @@ class CurrentStrengthChart extends StatelessWidget {
                 ),
               ),
               Text(
-                "of ${(currentOfficers + currentWOSEs)} soldiers",
+                "of ${(totalOfficers + totalWOSEs)} soldiers",
                 style: GoogleFonts.poppins(
                   fontSize: 14.sp,
                   color: Colors.white,
