@@ -34,7 +34,7 @@ class AddSoldierToDutyTile extends StatefulWidget {
 class _AddSoldierToDutyTileState extends State<AddSoldierToDutyTile> {
   @override
   Widget build(BuildContext context) {
-    print(widget.nonParticipants);
+    //print(widget.nonParticipants);
     if (widget.nonParticipants.contains(widget.name)) {
       return Padding(
         padding: EdgeInsets.all(8.0.sp),
