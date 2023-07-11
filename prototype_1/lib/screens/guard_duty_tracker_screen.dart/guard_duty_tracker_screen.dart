@@ -111,7 +111,7 @@ class _GuardDutyTrackerScreenState extends State<GuardDutyTrackerScreen>
                 dutyDate: "Date of Duty:",
                 dutyStartTime: "Start Time:",
                 dutyEndTime: "End Time:",
-                listOfNonparts: [],
+                listOfNonparts: non_participants.isNotEmpty ? non_participants : [],
               ),
             ),
           );

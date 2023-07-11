@@ -122,7 +122,7 @@ class UserData extends ChangeNotifier {
             .collection("Users")
             .doc(snapshot.id)
             .collection("Statuses")
-            .where('statusType', whereIn: ['Leave', 'Excuse'])
+            .where('statusType', isEqualTo: 'Excuse')
             .where('statusName', whereIn: ['Ex Boots', 'Ex Uniform'])
             .get()
             .then((querySnapshot) {
