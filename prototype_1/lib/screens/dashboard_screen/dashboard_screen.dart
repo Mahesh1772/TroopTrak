@@ -103,39 +103,50 @@ class _DashboardScreenState extends State<DashboardScreen> {
     "LG",
   ];
 
-  Future getStatusList() async {
+  Future<bool> getUserStatus(String ID) async {
     await FirebaseFirestore.instance
         .collection("Users")
+        .doc(ID)
+        .collection("Statuses")
+        .where('statusType', whereNotIn: ['Medical Appointment'])
         .get()
-        .then((querySnapshot) async {
-      for (var snapshot in querySnapshot.docs) {
-        await FirebaseFirestore.instance
-            .collection("Users")
-            .doc(snapshot.id)
-            .collection("Statuses")
-            .get()
-            .then((querySnapshot) {
+        .then((querySnapshot) {
           for (var result in querySnapshot.docs) {
             Map<String, dynamic> data = result.data();
             DateTime end = DateFormat("d MMM yyyy").parse(data['endDate']);
             if (DateTime(end.year, end.month, end.day + 1)
                 .isAfter(DateTime.now())) {
-              if (data['statusType'] == 'Medical Appointment') {
-                _maList.add(snapshot.id);
-              } else {
-                statusList.add(snapshot.id);
-              }
+              statusList.add(ID);
+              return true;
             }
           }
         });
-      }
-    });
+    return false;
+  }
+
+  Future<bool> getUseronMA(String ID) async {
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(ID)
+        .collection("Statuses")
+        .where('statusType', whereIn: ['Medical Appointment'])
+        .get()
+        .then((querySnapshot) {
+          for (var result in querySnapshot.docs) {
+            Map<String, dynamic> data = result.data();
+            DateTime end = DateFormat("d MMM yyyy").parse(data['endDate']);
+            if (DateTime(end.year, end.month, end.day + 1)
+                .isAfter(DateTime.now())) {
+              _maList.add(ID);
+              return true;
+            }
+          }
+        });
+    return false;
   }
 
   @override
   Widget build(BuildContext context) {
-    statusList = [];
-    getStatusList();
     Map<String, dynamic> fullList = {};
 
     final name = FirebaseAuth.instance.currentUser!.displayName.toString();
@@ -169,12 +180,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       return insideCamp;
     }
 
-    //inCamp()
-    //    .then((value) => getStatusList().then((value) => getCurrentUserData()));
     Future.delayed(Duration(seconds: 4));
     final statusModel = Provider.of<UserData>(context);
-    //print(fullList);
-    // Your logic here
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
       body: LiquidPullToRefresh(
@@ -270,7 +277,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             ? false
                             : true;
                         fullList.addAll({data['name']: val});
+                        getUserStatus(data['name']);
+                        getUseronMA(data['name']);
                       }
+                      print(statusList);
 
                       specDetails = userDetails
                           .where(
@@ -290,6 +300,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       var _maDetails = userDetails
                           .where((element) => _maList.contains(element['name']))
                           .toList();
+
+                      print(statusList);
 
                       return LiquidPullToRefresh(
                         onRefresh: refreshPage,
