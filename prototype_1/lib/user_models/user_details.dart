@@ -97,7 +97,7 @@ class UserData extends ChangeNotifier {
   List<String> non_participants = [];
   List<Map<String, dynamic>> statusList = [];
   List<String> guardDuty = ['Ex Uniform', 'Ex Boots'];
-  void autoFilter() {
+  Future autoFilter() async {
     if (statusList.isNotEmpty) {
       for (var status in statusList) {
         if (status['statusType'] == 'Excuse') {

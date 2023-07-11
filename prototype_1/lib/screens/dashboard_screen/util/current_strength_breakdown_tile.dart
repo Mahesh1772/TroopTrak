@@ -39,7 +39,7 @@ class CurrentStrengthBreakdownTile extends StatelessWidget {
     print(fullList);
 
     if (fullList.isEmpty) {
-      Future.delayed(const Duration(milliseconds: 3000), () {
+      Future.delayed(const Duration(milliseconds: 4000), () {
         return const CircularProgressIndicator();
       });
     } else {

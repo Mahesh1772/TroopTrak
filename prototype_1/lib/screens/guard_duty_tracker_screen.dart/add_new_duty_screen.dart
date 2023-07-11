@@ -13,13 +13,12 @@ import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:provider/provider.dart';
 
 class AddNewDutyScreen extends StatefulWidget {
-  AddNewDutyScreen({
-    super.key,
-    required this.dutyDate,
-    required this.dutyStartTime,
-    required this.dutyEndTime,
-    required this.listOfNonparts
-  });
+  AddNewDutyScreen(
+      {super.key,
+      required this.dutyDate,
+      required this.dutyStartTime,
+      required this.dutyEndTime,
+      required this.listOfNonparts});
 
   late String dutyDate;
   late String dutyStartTime;
@@ -113,12 +112,12 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
 
   Future getUserBooks() async {
     int i = 0;
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection("Users")
         .get()
         .then((querySnapshot) async {
       for (var snapshot in querySnapshot.docs) {
-        FirebaseFirestore.instance
+        await FirebaseFirestore.instance
             .collection("Users")
             .doc(snapshot.id)
             .collection("Statuses")
@@ -151,7 +150,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
     print(statusList);
     autoFilter();
     print(non_participants);
-    non_participants = widget.listOfNonparts;
+    widget.listOfNonparts = non_participants;
     pointsAssignment(DateTime.now());
     super.initState();
   }
@@ -368,7 +367,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
   @override
   Widget build(BuildContext context) {
     final userModel = Provider.of<UserData>(context);
-    autoFilter();
+    //autoFilter();
     //print(dutySoldiersAndRanks);
     if (widget.dutyDate != "Date of Duty:") {
       pointsAssignment(DateFormat("d MMM yyyy").parse(widget.dutyDate));
