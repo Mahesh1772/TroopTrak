@@ -226,6 +226,7 @@ class _RegisterPageState extends State<RegisterPage> {
       'dob': dob,
       'ord': ord,
       'enlistment': enlistment,
+      'points' : 0,
     });
   }
 

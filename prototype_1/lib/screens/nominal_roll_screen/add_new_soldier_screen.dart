@@ -169,6 +169,7 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
       'dob': widget.dob,
       'ord': widget.ord,
       'enlistment': widget.enlistment,
+      'points' : 0,
     });
 
     addAttendanceDetails();
