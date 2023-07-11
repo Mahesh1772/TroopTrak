@@ -111,35 +111,24 @@ class UserData extends ChangeNotifier {
     }
   }
 
-  Future getUserBooks() async {
-    int i = 0;
+  Future<bool> getUserStatus(String ID) async {
     await FirebaseFirestore.instance
         .collection("Users")
+        .doc(ID)
+        .collection("Statuses")
+        .where('statusType', isEqualTo: 'Excuse')
+        .where('statusName', whereIn: ['Ex Boots', 'Ex Uniform'])
         .get()
-        .then((querySnapshot) async {
-      for (var snapshot in querySnapshot.docs) {
-        FirebaseFirestore.instance
-            .collection("Users")
-            .doc(snapshot.id)
-            .collection("Statuses")
-            .where('statusType', isEqualTo: 'Excuse')
-            .where('statusName', whereIn: ['Ex Boots', 'Ex Uniform'])
-            .get()
-            .then((querySnapshot) {
-              for (var result in querySnapshot.docs) {
-                Map<String, dynamic> data = result.data();
-                DateTime end = DateFormat("d MMM yyyy").parse(data['endDate']);
-                if (DateTime(end.year, end.month, end.day + 1)
-                    .isAfter(DateTime.now())) {
-                  statusList.add(data);
-                  statusList[i].addEntries({'Name': snapshot.id}.entries);
-                  i++;
-                  //print(data);
-                }
-              }
-            });
-      }
-    });
-    print(statusList);
+        .then((querySnapshot) {
+          for (var result in querySnapshot.docs) {
+            Map<String, dynamic> data = result.data();
+            DateTime end = DateFormat("d MMM yyyy").parse(data['endDate']);
+            if (DateTime(end.year, end.month, end.day + 1)
+                .isAfter(DateTime.now())) {
+              return true;
+            }
+          }
+        });
+    return false;
   }
 }

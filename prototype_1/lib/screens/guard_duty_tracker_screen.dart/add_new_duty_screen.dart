@@ -90,9 +90,32 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
       'endTime': widget.dutyEndTime,
       'participants': dutySoldiersAndRanks
     });
-
+    addPoints();
     widget.refreshCallback();
     Navigator.pop(context);
+  }
+
+  Future addFieldDetails(String name) async {
+    double currentPoints = 0;
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(name)
+        .get()
+        .then((value) {
+          currentPoints = value['points'];
+        });
+
+    await FirebaseFirestore.instance.collection('Users').doc(name).set({
+      //User map formatting
+      'points': currentPoints + points,
+    }, SetOptions(merge: true));
+  }
+
+  Future addPoints() async {
+    dutySoldiersAndRanks.removeWhere((key, value) => (key.contains("NA")));
+    for (var soldier in dutySoldiersAndRanks.keys) {
+      addFieldDetails(soldier);
+    }
   }
 
   void autoFilter() {

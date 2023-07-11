@@ -22,7 +22,7 @@ class DutyPersonnel {
   final String name;
   final String image;
   final String rank;
-  final int? points;
+  final double? points;
 }
 
 // The list of all document IDs,
@@ -54,7 +54,7 @@ List<DutyPersonnel> getDutyPersonnel() {
           userDetails[i]['name'],
           "lib/assets/army-ranks/solider.png",
           userDetails[i]['rank'],
-          pointsTable[userDetails[i]['name']]!.toInt()));
+          pointsTable[userDetails[i]['name']]!));
     }
   }
   return array;
@@ -163,10 +163,12 @@ class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
                     isFirstTIme = false;
                     documentIDs = [];
                     userDetails = [];
+                    pointsTable = {};
                     var users = snapshot.data?.docs.toList();
                     for (var user in users!) {
                       var data = user.data();
                       userDetails.add(data as Map<String, dynamic>);
+                      pointsTable.addAll({data['name']: data['points'].toDouble()});
                     }
                     dutyPersonnel = getDutyPersonnel();
                     dutyPersonnelDataSource =
