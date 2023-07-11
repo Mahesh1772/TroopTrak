@@ -213,7 +213,7 @@ class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
                                 columnName: 'points',
                                 label: Container(
                                   padding: EdgeInsets.all(8.0.sp),
-                                  alignment: Alignment.centerRight,
+                                  alignment: Alignment.center,
                                   child: StyledText("Points", 18.sp,
                                       fontWeight: FontWeight.w600),
                                 ),
