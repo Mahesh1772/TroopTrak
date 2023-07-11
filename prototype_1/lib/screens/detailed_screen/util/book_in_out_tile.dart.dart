@@ -53,8 +53,8 @@ class _BookInOutTileState extends State<BookInOutTile> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        UpdateAttendanceScreen(docID: widget.attendanceID),
+                    builder: (context) => UpdateAttendanceScreen(
+                        docID: widget.docID, attendanceID: widget.attendanceID),
                   ),
                 );
               },
