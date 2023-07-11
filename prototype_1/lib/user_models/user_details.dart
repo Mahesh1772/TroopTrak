@@ -131,4 +131,17 @@ class UserData extends ChangeNotifier {
         });
     return false;
   }
+
+  Future name() async {
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .get()
+        .then((querySnapshot) async {
+      for (var snapshot in querySnapshot.docs) {
+        Map<String, dynamic> data = snapshot.data();
+        documentIDs.add(data['name']);
+      }
+    });
+    //return attendance_list;
+  }
 }

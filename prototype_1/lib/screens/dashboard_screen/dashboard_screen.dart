@@ -103,6 +103,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
     "LG",
   ];
 
+  Future name() async {
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .get()
+        .then((querySnapshot) async {
+      for (var snapshot in querySnapshot.docs) {
+        Map<String, dynamic> data = snapshot.data();
+        documentIDs.add(data['name']);
+      }
+    });
+    //return attendance_list;
+  }
+
   Future<bool> getUserStatus(String ID) async {
     await FirebaseFirestore.instance
         .collection("Users")
@@ -146,8 +159,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   @override
+  void initState() {
+    name();
+    for (var names in documentIDs) {
+      getUserStatus(names);
+      
+      getUseronMA(names);
+      Future.delayed(Duration(seconds: 2));
+    }
+    Future.delayed(Duration(seconds: 2));
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    Future.delayed(Duration(seconds: 4));
     Map<String, dynamic> fullList = {};
+    print(statusList);
 
     final name = FirebaseAuth.instance.currentUser!.displayName.toString();
 
@@ -280,7 +308,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         getUserStatus(data['name']);
                         getUseronMA(data['name']);
                       }
-                      print(statusList);
 
                       specDetails = userDetails
                           .where(
