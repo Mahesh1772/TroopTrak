@@ -32,6 +32,25 @@ class AddSoldierToDutyTile extends StatefulWidget {
 }
 
 class _AddSoldierToDutyTileState extends State<AddSoldierToDutyTile> {
+  bool rankColorPicker(String rank) {
+    return (rank == 'REC' ||
+        rank == 'PTE' ||
+        rank == 'LCP' ||
+        rank == 'CPL' ||
+        rank == 'CFC' ||
+        rank == '3SG' ||
+        rank == '2SG' ||
+        rank == '1SG' ||
+        rank == 'SSG' ||
+        rank == 'MSG' ||
+        rank == '3WO' ||
+        rank == '2WO' ||
+        rank == '1WO' ||
+        rank == 'MWO' ||
+        rank == 'SWO' ||
+        rank == 'CWO');
+  }
+
   @override
   Widget build(BuildContext context) {
     //print(widget.nonParticipants);
@@ -55,7 +74,7 @@ class _AddSoldierToDutyTileState extends State<AddSoldierToDutyTile> {
                   child: Image.asset(
                     "lib/assets/army-ranks/${widget.rank.toString().toLowerCase()}.png",
                     width: 30.w,
-                    color: Colors.white.withOpacity(0.35),
+                    color: rankColorPicker(widget.rank) ? Colors.white70 : null,
                   ),
                 ),
                 SizedBox(
@@ -116,7 +135,7 @@ class _AddSoldierToDutyTileState extends State<AddSoldierToDutyTile> {
                 child: Image.asset(
                   "lib/assets/army-ranks/${widget.rank.toString().toLowerCase()}.png",
                   width: 30.w,
-                  color: Colors.white,
+                  color: rankColorPicker(widget.rank) ? Colors.white : null,
                 ),
               ),
               SizedBox(
