@@ -59,15 +59,20 @@ class _BarGraphStylingState extends State<BarGraphStyling> {
       }
       return SideTitleWidget(
         axisSide: meta.axisSide,
-        space: 8,
+        space: 2,
+        fitInside: const SideTitleFitInsideData(
+            enabled: true,
+            axisPosition: 20,
+            parentAxisSize: 50,
+            distanceFromEdge: -10),
         child: SizedBox(
-            height: 90,
             child: AutoSizeText(
-              text,
-              style: style,
-              maxLines: 1,
-              minFontSize: 20,
-            )),
+          text,
+          style: style,
+          maxLines: 1,
+          wrapWords: false,
+          overflow: TextOverflow.clip,
+        )),
       );
     }
 

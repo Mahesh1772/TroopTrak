@@ -1,7 +1,6 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/tabs/points_leaderboard.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
-import 'package:recase/recase.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:flutter/material.dart';
 
@@ -49,7 +48,7 @@ class DutyPersonnelDataSource extends DataGridSource {
         padding: EdgeInsets.all(16.0.sp),
         child: Center(
           child: StyledText(
-            dataGridCell.value.toString().titleCase,
+            dataGridCell.value.toString(),
             16.sp,
             fontWeight: FontWeight.w400,
           ),
