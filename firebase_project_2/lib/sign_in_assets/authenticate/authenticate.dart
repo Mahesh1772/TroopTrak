@@ -24,7 +24,7 @@ class _AuthenticateState extends State<Authenticate> {
     if (onSignInPage) {
       return SignIn(showRegisterPage: toggleBetweenScreens);
     } else {
-      return RegisterPage(showLoginPage: toggleBetweenScreens);
+      return const RegisterScreen();
     }
   }
 }

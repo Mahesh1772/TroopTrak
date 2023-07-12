@@ -210,8 +210,7 @@ void verifyOTP(BuildContext context, String otp) async {
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    const GNavMainScreen(),
+                builder: (context) => const GNavMainScreen(),
               ),
               (route) => false);
         } else {
@@ -219,8 +218,7 @@ void verifyOTP(BuildContext context, String otp) async {
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    RegisterPage(showLoginPage: toggleBetweenScreens),
+                builder: (context) => const RegisterScreen(),
               ),
               (route) => false);
         }
