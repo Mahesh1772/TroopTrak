@@ -169,7 +169,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                           ),
                           Padding(
                             padding:
-                                EdgeInsets.only(left: 20.0.w, bottom: 50.0.h),
+                                EdgeInsets.only(left: 20.0.w, bottom: 20.0.h),
                             child: Text(
                               "Platoon ${widget.platoon}, Section ${widget.section}",
                               maxLines: 2,
@@ -184,6 +184,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                           Center(
                             child: GestureDetector(
                               child: Container(
+                                width: 300.w,
+                                padding: EdgeInsets.all(16.sp),
                                 decoration: BoxDecoration(
                                     color: Colors.transparent.withOpacity(0.1),
                                     borderRadius: BorderRadius.circular(20.r)),
@@ -193,18 +195,21 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                     Icon(
                                       Icons.qr_code_2_rounded,
                                       color: Colors.white,
-                                      size: 30.sp,
+                                      size: 35.sp,
                                     ),
                                     SizedBox(
                                       width: 20.w,
                                     ),
-                                    StyledText("SHOW QR CODE", 18.sp,
+                                    StyledText("SHOW QR CODE", 20.sp,
                                         fontWeight: FontWeight.bold),
                                   ],
                                 ),
                               ),
                             ),
-                          )
+                          ),
+                          SizedBox(
+                            height: 30.h,
+                          ),
                         ],
                       ),
                     ),
