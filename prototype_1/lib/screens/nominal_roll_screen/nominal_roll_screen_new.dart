@@ -3,9 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:prototype_1/screens/nominal_roll_screen/add_new_soldier_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:prototype_1/screens/detailed_screen/tabs/user_profile_tabs/user_profile_screen.dart';
+import 'package:prototype_1/screens/nominal_roll_screen/qr_code_scanner_page.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:prototype_1/screens/nominal_roll_screen/util/solider_tile.dart';
 import 'package:provider/provider.dart';
@@ -60,23 +60,13 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
         resizeToAvoidBottomInset: false,
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => AddNewSoldierPage(
-                  name: TextEditingController(),
-                  company: TextEditingController(),
-                  platoon: TextEditingController(),
-                  section: TextEditingController(),
-                  appointment: TextEditingController(),
-                  dob: "Date of Birth:",
-                  ord: "ORD: ",
-                  enlistment: "Enlistment:",
-                  selectedItem: "Select your ration type...",
-                  selectedRank: "Select your rank...",
-                  selectedBloodType: "Select your blood type...",
-                ),
-              ),
+            showModalBottomSheet(
+              context: context,
+              builder: (BuildContext context) {
+                return const QrCodeScannerPage();
+              },
+              backgroundColor: Colors.transparent,
+              isScrollControlled: true,
             );
           },
           backgroundColor: const Color.fromARGB(255, 95, 57, 232),

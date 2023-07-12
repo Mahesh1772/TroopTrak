@@ -161,9 +161,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     name();
+
     for (var names in documentIDs) {
       getUserStatus(names);
-      
+
       getUseronMA(names);
       Future.delayed(Duration(seconds: 2));
     }
@@ -188,6 +189,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         // ...
       });
     }
+
+    getCurrentUserData();
 
     int inCamp(List userDetails, bool isStatusPersonal) {
       int insideCamp = 0;
