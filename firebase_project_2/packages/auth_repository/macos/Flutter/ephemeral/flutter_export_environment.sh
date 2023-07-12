@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
 export "FLUTTER_ROOT=C:\src\flutter"
-export "FLUTTER_APPLICATION_PATH=D:\Aak242\Documents\Orbital\Orbital\firebase_project_2\packages\auth_repository"
+export "FLUTTER_APPLICATION_PATH=C:\Users\bsiva\Desktop\mahesh\NUS documents\Orbital\Orbital\firebase_project_2\packages\auth_repository"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_BUILD_DIR=build"
 export "FLUTTER_BUILD_NAME=0.0.1"

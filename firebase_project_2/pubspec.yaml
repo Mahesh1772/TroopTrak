@@ -69,6 +69,9 @@ dependencies:
   flip_card: ^0.7.0
   animated_toggle_switch: ^0.7.0
   animations: ^2.0.7
+  observer: ^0.0.1
+  pinput: ^2.2.31
+  country_picker: ^2.0.20
 
 
 
@@ -145,6 +148,8 @@ flutter:
       - lib/assets/icons8-doctors-folder-64.png
       - lib/assets/icons8-error-64.png
       - lib/assets/calendar-images/
+      - lib/assets/phone_auth/troopTrak_mascot.png
+      - lib/assets/phone_auth/troopTrak_logo.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

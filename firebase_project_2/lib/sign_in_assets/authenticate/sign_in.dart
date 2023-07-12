@@ -1,9 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_project_2/sign_in_assets/authenticate/otp_screen.dart';
 import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:firebase_project_2/sign_in_assets/authenticate/forgot_password_page.dart';
+//import 'package:firebase_project_2/sign_in_assets/authenticate/forgot_password_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:email_validator/email_validator.dart';
@@ -43,33 +44,54 @@ class _SignInState extends State<SignIn> {
   //Placeholders for the email and password input by user
   final _emailId = TextEditingController();
   final _password = TextEditingController();
-  String errorName = '';
+  var verificationID = '';
+  final auth = FirebaseAuth.instance;
 
-  Future isSignedIn() async {
-    //print('tap detected');
+  Future signInWithPhone(BuildContext context, String PhoneNo) async {
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailId.text.trim(),
-        password: _password.text.trim(),
+      await auth.verifyPhoneNumber(
+        phoneNumber: PhoneNo,
+        verificationCompleted: (phoneAuthCredential) async {
+          await auth.signInWithCredential(phoneAuthCredential);
+        },
+        verificationFailed: (error) {
+          IconSnackBar.show(
+              duration: const Duration(seconds: 4),
+              direction: DismissDirection.horizontal,
+              context: context,
+              snackBarType: SnackBarType.save,
+              label: error.code,
+              snackBarStyle: const SnackBarStyle() // this one
+              );
+          throw Exception(error.message);
+        },
+        codeSent: (verificationId, forceResendingToken) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => OtpScreen(verificationId: verificationId),
+            ),
+          );
+        },
+        codeAutoRetrievalTimeout: (verificationId) {},
       );
+    } on FirebaseAuthException catch (e) {
       IconSnackBar.show(
-          duration: const Duration(seconds: 4),
+          duration: const Duration(seconds: 2),
           direction: DismissDirection.horizontal,
           context: context,
           snackBarType: SnackBarType.save,
-          label: 'Login Successful',
-          snackBarStyle: const SnackBarStyle() // this one
-          );
-    } on FirebaseAuthException catch (e) {
-      errorName = e.message!;
-      print(errorName);
-      IconSnackBar.show(
-          context: context,
-          snackBarType: SnackBarType.fail,
-          label: 'Wrong Email/Password or Both',
+          label: e.code,
           snackBarStyle: const SnackBarStyle() // this one
           );
     }
+  }
+
+  Future<bool> verifyOTP(String otp) async {
+    var credentials = await FirebaseAuth.instance.signInWithCredential(
+        PhoneAuthProvider.credential(
+            verificationId: verificationID, smsCode: otp));
+    return credentials.user == null ? true : false;
   }
 
   @override
@@ -133,7 +155,7 @@ class _SignInState extends State<SignIn> {
                   ),
                   SizedBox(height: 10.h),
                   Text(
-                    'Time to get back!',
+                    'Enter your Phone Number to get verified!',
                     style: GoogleFonts.poppins(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.bold,
@@ -154,17 +176,17 @@ class _SignInState extends State<SignIn> {
                       child: Padding(
                         padding: EdgeInsets.only(left: 20.w),
                         child: TextFormField(
-                          keyboardType: TextInputType.emailAddress,
+                          keyboardType: TextInputType.phone,
                           controller: _emailId,
                           decoration: const InputDecoration(
                             prefixIcon: Icon(Icons.email_outlined),
                             border: InputBorder.none,
-                            hintText: 'Email@example.com',
-                            labelText: 'Email ID',
+                            hintText: '+65 9876 3211',
+                            labelText: 'Phone Number (with country code)',
                           ),
                           validator: (value) {
-                            if (_isvalidaEmail(value!) == false) {
-                              return validateEmail(value);
+                            if (value!.isEmpty) {
+                              return 'The field is empty';
                             } else {
                               return null;
                             }
@@ -174,67 +196,6 @@ class _SignInState extends State<SignIn> {
                     ),
                   ),
                   SizedBox(height: 10.h),
-
-                  // password
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 25.0.w),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
-                        border: Border.all(color: Colors.white),
-                        borderRadius: BorderRadius.circular(12.r),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 20.w),
-                        child: TextFormField(
-                          controller: _password,
-                          obscureText: true,
-                          decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              prefixIcon: Icon(Icons.lock_open),
-                              hintText: 'Enter Password',
-                              labelText: 'Password'),
-                          validator: (value) {
-                            if (_isvalidPassword(value!) == false) {
-                              return validatePassword(value);
-                            } else {
-                              return null;
-                            }
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10.h),
-
-                  //Forgot Password button
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 25.0.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return const ForgotPassword();
-                                },
-                              ),
-                            );
-                          },
-                          child: Text(
-                            'Forgot Password? Aiyahhh',
-                            style: GoogleFonts.poppins(
-                              color: Colors.amber,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 20.h),
 
                   // sign in
                   Padding(
@@ -242,7 +203,7 @@ class _SignInState extends State<SignIn> {
                     child: GestureDetector(
                       onTap: () {
                         if (formKey.currentState!.validate()) {
-                          isSignedIn();
+                          signInWithPhone(context, _emailId.text.trim());
                         } else {
                           IconSnackBar.show(
                               direction: DismissDirection.horizontal,
@@ -269,7 +230,7 @@ class _SignInState extends State<SignIn> {
                         ),
                         child: Center(
                           child: Text(
-                            'Sign In',
+                            'Get verification',
                             style: GoogleFonts.poppins(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
