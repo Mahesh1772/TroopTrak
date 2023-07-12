@@ -40,6 +40,12 @@ class _GuardDutyTrackerScreenState extends State<GuardDutyTrackerScreen>
   }
 
   @override
+  void initState() {
+    super.initState();
+    getCurrentUserData();
+  }
+
+  @override
   Widget build(BuildContext context) {
     TabController tabController = TabController(length: 2, vsync: this);
 
