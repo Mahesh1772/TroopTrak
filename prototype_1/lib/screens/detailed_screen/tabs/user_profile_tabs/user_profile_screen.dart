@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/screens/detailed_screen/tabs/user_profile_tabs/user_profile_attendance_tab.dart.dart';
 import 'package:prototype_1/screens/detailed_screen/tabs/user_profile_tabs/user_profile_basic_info_tab.dart';
 import 'package:prototype_1/screens/detailed_screen/tabs/user_profile_tabs/user_profile_statuses_tab.dart';
+import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:recase/recase.dart';
 
 class UserProfileScreen extends StatefulWidget {
@@ -180,6 +181,30 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                               ),
                             ),
                           ),
+                          Center(
+                            child: GestureDetector(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.transparent.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(20.r)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.qr_code_2_rounded,
+                                      color: Colors.white,
+                                      size: 30.sp,
+                                    ),
+                                    SizedBox(
+                                      width: 20.w,
+                                    ),
+                                    StyledText("SHOW QR CODE", 18.sp,
+                                        fontWeight: FontWeight.bold),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )
                         ],
                       ),
                     ),
