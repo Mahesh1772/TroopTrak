@@ -44,39 +44,43 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyChfiahLw8RLA0ktx8huLlgcygozZ_PrOU',
-    appId: '1:281065592471:web:6f14332c615abb98a3bbd2',
-    messagingSenderId: '281065592471',
-    projectId: 'nstrackerapp',
-    authDomain: 'nstrackerapp.firebaseapp.com',
-    storageBucket: 'nstrackerapp.appspot.com',
+    apiKey: 'AIzaSyBA6dLZhIRHaO17OtDZhRmqMhx_t3ButAE',
+    appId: '1:805269469998:web:226f3608335ffcc924d8bf',
+    messagingSenderId: '805269469998',
+    projectId: 'fir-project-1-8086d',
+    authDomain: 'fir-project-1-8086d.firebaseapp.com',
+    databaseURL: 'https://fir-project-1-8086d-default-rtdb.asia-southeast1.firebasedatabase.app',
+    storageBucket: 'fir-project-1-8086d.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAPksvuWDjGCym1WoQyQZrjMqn4cYYuigE',
-    appId: '1:281065592471:android:5e277fd84d9b84d2a3bbd2',
-    messagingSenderId: '281065592471',
-    projectId: 'nstrackerapp',
-    storageBucket: 'nstrackerapp.appspot.com',
+    apiKey: 'AIzaSyAaRSbp_jrsSpoJASaSTy8wBt_pHX2_ttc',
+    appId: '1:805269469998:android:e22c7e28b7ab619824d8bf',
+    messagingSenderId: '805269469998',
+    projectId: 'fir-project-1-8086d',
+    databaseURL: 'https://fir-project-1-8086d-default-rtdb.asia-southeast1.firebasedatabase.app',
+    storageBucket: 'fir-project-1-8086d.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBQ4wIZnYfeHQyHtiUrYLuTK4CKXBhBMB8',
-    appId: '1:281065592471:ios:0c75bb6268a5bf8ba3bbd2',
-    messagingSenderId: '281065592471',
-    projectId: 'nstrackerapp',
-    storageBucket: 'nstrackerapp.appspot.com',
-    iosClientId: '281065592471-u9gm3sus681f5l4ip1qbbarmcjv34v28.apps.googleusercontent.com',
+    apiKey: 'AIzaSyDmjlH3NOL8Z63s6--JqqXezj7alZ5pL74',
+    appId: '1:805269469998:ios:b3104f5e4c6c1dd624d8bf',
+    messagingSenderId: '805269469998',
+    projectId: 'fir-project-1-8086d',
+    databaseURL: 'https://fir-project-1-8086d-default-rtdb.asia-southeast1.firebasedatabase.app',
+    storageBucket: 'fir-project-1-8086d.appspot.com',
+    iosClientId: '805269469998-k71tppvnd2ko9fef2j5f4k4be1mse42p.apps.googleusercontent.com',
     iosBundleId: 'com.example.firebaseProject2',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBQ4wIZnYfeHQyHtiUrYLuTK4CKXBhBMB8',
-    appId: '1:281065592471:ios:0c75bb6268a5bf8ba3bbd2',
-    messagingSenderId: '281065592471',
-    projectId: 'nstrackerapp',
-    storageBucket: 'nstrackerapp.appspot.com',
-    iosClientId: '281065592471-u9gm3sus681f5l4ip1qbbarmcjv34v28.apps.googleusercontent.com',
+    apiKey: 'AIzaSyDmjlH3NOL8Z63s6--JqqXezj7alZ5pL74',
+    appId: '1:805269469998:ios:b3104f5e4c6c1dd624d8bf',
+    messagingSenderId: '805269469998',
+    projectId: 'fir-project-1-8086d',
+    databaseURL: 'https://fir-project-1-8086d-default-rtdb.asia-southeast1.firebasedatabase.app',
+    storageBucket: 'fir-project-1-8086d.appspot.com',
+    iosClientId: '805269469998-k71tppvnd2ko9fef2j5f4k4be1mse42p.apps.googleusercontent.com',
     iosBundleId: 'com.example.firebaseProject2',
   );
 }

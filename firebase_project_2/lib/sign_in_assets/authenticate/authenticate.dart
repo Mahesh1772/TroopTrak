@@ -1,6 +1,6 @@
 import 'package:firebase_project_2/sign_in_assets/authenticate/sign_in.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_project_2/sign_in_assets/authenticate/register_page.dart';
+import 'package:firebase_project_2/phone_authentication/register_page.dart';
 
 class Authenticate extends StatefulWidget {
   const Authenticate({super.key});
