@@ -2,7 +2,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:firebase_project_2/screens/guard_duty_tracker_screen.dart/update_duty_screen.dart';
 import 'package:firebase_project_2/screens/guard_duty_tracker_screen.dart/util/expanded_view_duty_participants_tile.dart';
 import 'package:firebase_project_2/util/constants.dart';
 import 'package:firebase_project_2/util/text_styles/text_style.dart';
@@ -143,103 +142,6 @@ class GuardDutyTile extends StatelessWidget {
                     soldierRank: participants.values.elementAt(index),
                   );
                 },
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.0.w),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => UpdateDutyScreen(
-                          docID: docID,
-                          participants: participants,
-                          dutyDate: dutyDate,
-                          dutyStartTime: startTime,
-                          dutyEndTime: endTime),
-                    ),
-                  );
-                },
-                child: Container(
-                  padding: EdgeInsets.all(10.sp),
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [
-                        Color.fromARGB(255, 72, 30, 229),
-                        Color.fromARGB(255, 130, 60, 229),
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.edit_document,
-                          color: Colors.white,
-                          size: 30.sp,
-                        ),
-                        SizedBox(
-                          width: 20.w,
-                        ),
-                        AutoSizeText(
-                          'EDIT DUTY',
-                          style: GoogleFonts.poppins(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 22.sp,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 20.h,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.0.w),
-              child: GestureDetector(
-                onTap: deleteDuty,
-                child: Container(
-                  padding: EdgeInsets.all(10.sp),
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [
-                        Color.fromARGB(255, 229, 30, 33),
-                        Color.fromARGB(255, 215, 93, 99),
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.delete_forever,
-                          color: Colors.white,
-                          size: 30.sp,
-                        ),
-                        SizedBox(
-                          width: 20.w,
-                        ),
-                        AutoSizeText(
-                          'DELETE DUTY',
-                          style: GoogleFonts.poppins(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 22.sp,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
               ),
             ),
           ],

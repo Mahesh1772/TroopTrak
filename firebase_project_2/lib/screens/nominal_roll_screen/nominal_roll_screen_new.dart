@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:firebase_project_2/screens/nominal_roll_screen/add_new_soldier_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_project_2/screens/detailed_screen/tabs/user_profile_tabs/user_profile_screen.dart';
 import 'package:firebase_project_2/util/text_styles/text_style.dart';
@@ -55,30 +54,6 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
     return MaterialApp(
       home: Scaffold(
         resizeToAvoidBottomInset: false,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => AddNewSoldierPage(
-                  name: TextEditingController(),
-                  company: TextEditingController(),
-                  platoon: TextEditingController(),
-                  section: TextEditingController(),
-                  appointment: TextEditingController(),
-                  dob: "Date of Birth:",
-                  ord: "ORD: ",
-                  enlistment: "Enlistment:",
-                  selectedItem: "Select your ration type...",
-                  selectedRank: "Select your rank...",
-                  selectedBloodType: "Select your blood type...",
-                ),
-              ),
-            );
-          },
-          backgroundColor: const Color.fromARGB(255, 95, 57, 232),
-          child: const Icon(Icons.add),
-        ),
         backgroundColor: const Color.fromARGB(255, 21, 25, 34),
         body: SafeArea(
           child: Column(

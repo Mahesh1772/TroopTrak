@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:firebase_project_2/screens/guard_duty_tracker_screen.dart/add_new_duty_screen.dart';
 import 'package:firebase_project_2/screens/guard_duty_tracker_screen.dart/tabs/points_leaderboard.dart';
 import 'package:firebase_project_2/screens/guard_duty_tracker_screen.dart/tabs/upcoming_duties.dart';
 import 'package:firebase_project_2/util/text_styles/text_style.dart';
@@ -43,25 +42,6 @@ class _GuardDutyTrackerScreenState extends State<GuardDutyTrackerScreen>
     TabController tabController = TabController(length: 2, vsync: this);
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AddNewDutyScreen(
-                dutyDate: "Date of Duty:",
-                dutyStartTime: "Start Time:",
-                dutyEndTime: "End Time:",
-              ),
-            ),
-          );
-        },
-        backgroundColor: Colors.deepPurple,
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-      ),
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
       body: SingleChildScrollView(

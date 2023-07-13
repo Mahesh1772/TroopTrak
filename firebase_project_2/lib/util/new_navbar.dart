@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_project_2/screens/conduct_tracker_screen/conduct_tracker_screen.dart';
 import 'package:firebase_project_2/screens/guard_duty_tracker_screen.dart/guard_duty_tracker_screen.dart';
 import 'package:firebase_project_2/screens/dashboard_screen/dashboard_screen.dart';
-import 'package:firebase_project_2/screens/nominal_roll_screen/nominal_roll_screen_new.dart';
 
 class GNavMainScreen extends StatefulWidget {
   const GNavMainScreen({super.key});
@@ -20,11 +19,8 @@ class _GNavMainScreen extends State<GNavMainScreen> {
   int selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[
     const DashboardScreen(),
-    const NominalRollNewScreen(),
     const ConductTrackerScreen(),
     const GuardDutyTrackerScreen(),
-    //const StyledText('Conduct Tracker', 25),
-    //const StyledText('Parade State', 25),
   ];
   void itemTapped(int index) {
     setState(() {
@@ -46,45 +42,41 @@ class _GNavMainScreen extends State<GNavMainScreen> {
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 8.0.w, vertical: 15.h),
             child: GNav(
-                onTabChange: (value) {
-                  itemTapped(value);
-                },
-                gap: 7,
-                backgroundColor: const Color.fromARGB(255, 11, 13, 17),
-                color: Colors.deepPurple.shade300,
-                activeColor: Colors.white,
-                tabBackgroundGradient: LinearGradient(
-                  colors: [
-                    const Color.fromARGB(255, 72, 30, 229),
-                    Colors.deepPurple.shade600,
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+              onTabChange: (value) {
+                itemTapped(value);
+              },
+              gap: 7,
+              backgroundColor: const Color.fromARGB(255, 11, 13, 17),
+              color: Colors.deepPurple.shade300,
+              activeColor: Colors.white,
+              tabBackgroundGradient: LinearGradient(
+                colors: [
+                  const Color.fromARGB(255, 72, 30, 229),
+                  Colors.deepPurple.shade600,
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              padding: EdgeInsets.all(16.sp),
+              tabs: [
+                GButton(
+                  icon: Icons.home_outlined,
+                  text: 'Home',
+                  textStyle: GoogleFonts.poppins(
+                      color: Colors.white, fontWeight: FontWeight.bold),
                 ),
-                padding: EdgeInsets.all(16.sp),
-                tabs: [
-                  GButton(
-                    icon: Icons.home_outlined,
-                    text: 'Home',
+                GButton(
+                    icon: Icons.track_changes_rounded,
+                    text: 'Conduct Tracker',
                     textStyle: GoogleFonts.poppins(
-                        color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
-                  GButton(
-                      icon: Icons.perm_contact_calendar_rounded,
-                      text: 'Nominal Roll',
-                      textStyle: GoogleFonts.poppins(
-                          color: Colors.white, fontWeight: FontWeight.bold)),
-                  GButton(
-                      icon: Icons.track_changes_rounded,
-                      text: 'Conduct Tracker',
-                      textStyle: GoogleFonts.poppins(
-                          color: Colors.white, fontWeight: FontWeight.bold)),
-                  GButton(
-                      icon: Icons.safety_check,
-                      text: 'Guard Duty',
-                      textStyle: GoogleFonts.poppins(
-                          color: Colors.white, fontWeight: FontWeight.bold)),
-                ]),
+                        color: Colors.white, fontWeight: FontWeight.bold)),
+                GButton(
+                    icon: Icons.safety_check,
+                    text: 'Guard Duty',
+                    textStyle: GoogleFonts.poppins(
+                        color: Colors.white, fontWeight: FontWeight.bold)),
+              ],
+            ),
           ),
         ),
       ),

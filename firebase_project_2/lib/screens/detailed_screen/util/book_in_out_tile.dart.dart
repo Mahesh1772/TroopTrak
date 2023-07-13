@@ -1,51 +1,50 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
-late IconData? tileIcon;
+class BookInOutTile extends StatefulWidget {
+  const BookInOutTile(
+      {super.key,
+      required this.timeStamp,
+      required this.isInsideCamp,
+      required this.docID,
+      required this.attendanceID});
 
-class PastSoldierStatusTile extends StatefulWidget {
-  const PastSoldierStatusTile({
-    super.key,
-    required this.statusType,
-    required this.statusName,
-    required this.startDate,
-    required this.endDate,
-    required this.docID,
-    required this.statusID,
-  });
-
-  final String statusType;
-  final String startDate;
-  final String endDate;
-  final String statusName;
+  final String timeStamp;
+  final bool isInsideCamp;
   final String docID;
-  final String statusID;
+  final String attendanceID;
+
+  //final String docID;
+
   @override
-  State<PastSoldierStatusTile> createState() => _PastSoldierStatusTileState();
+  State<BookInOutTile> createState() => _BookInOutTileState();
 }
 
-class _PastSoldierStatusTileState extends State<PastSoldierStatusTile> {
+class _BookInOutTileState extends State<BookInOutTile> {
+  Future deletePastStatus() async {
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(widget.docID)
+        .collection('Attendance')
+        .doc(widget.attendanceID)
+        .delete();
+  }
+
   @override
   Widget build(BuildContext context) {
-    Future deletePastStatus() async {
-      await FirebaseFirestore.instance
-          .collection('Users')
-          .doc(widget.docID)
-          .collection('Statuses')
-          .doc(widget.statusID)
-          .delete();
-    }
-
-    setTileIcon(widget.statusType);
+    late IconData? tileIcon;
+    late Color tileColor;
+    tileIcon = setTileIcon(widget.isInsideCamp);
+    tileColor = setTileColor(widget.isInsideCamp);
 
     return Padding(
       padding: EdgeInsets.only(bottom: 8.0.h),
       child: Container(
         decoration: BoxDecoration(
-          color: const Color.fromARGB(104, 158, 158, 158),
+          color: tileColor,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(12.r),
               bottomLeft: Radius.circular(12.r)),
@@ -60,11 +59,11 @@ class _PastSoldierStatusTileState extends State<PastSoldierStatusTile> {
                 color: Colors.white,
                 size: 30.sp,
               ),
-              //SizedBox(width: 20),
+              SizedBox(width: 20.w),
               SizedBox(
                 width: 100.w,
                 child: AutoSizeText(
-                  widget.statusName,
+                  widget.isInsideCamp ? "BOOK IN" : "BOOK OUT",
                   style: GoogleFonts.poppins(
                       fontWeight: FontWeight.bold,
                       fontSize: 16.sp,
@@ -74,9 +73,9 @@ class _PastSoldierStatusTileState extends State<PastSoldierStatusTile> {
                 ),
               ),
               SizedBox(
-                width: 200.w,
+                width: 180.w,
                 child: AutoSizeText(
-                  "${widget.startDate} - ${widget.endDate}",
+                  widget.timeStamp,
                   style: GoogleFonts.poppins(
                       fontWeight: FontWeight.bold,
                       fontSize: 14.sp,
@@ -90,14 +89,20 @@ class _PastSoldierStatusTileState extends State<PastSoldierStatusTile> {
       ),
     );
   }
-}
 
-setTileIcon(String type) {
-  if (type == "Excuse") {
-    tileIcon = Icons.personal_injury_rounded;
-  } else if (type == "Leave") {
-    tileIcon = Icons.medical_services_rounded;
-  } else if (type == "Medical Appointment") {
-    tileIcon = Icons.date_range_rounded;
+  Color setTileColor(bool isInsideCamp) {
+    if (isInsideCamp) {
+      return Colors.green.shade600;
+    } else {
+      return Colors.red;
+    }
+  }
+
+  IconData? setTileIcon(bool type) {
+    if (type) {
+      return Icons.work_history;
+    } else {
+      return Icons.home;
+    }
   }
 }

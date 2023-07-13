@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:firebase_project_2/screens/conduct_tracker_screen/update_conduct_screen.dart';
 import 'package:firebase_project_2/util/text_styles/text_style.dart';
 import 'package:recase/recase.dart';
 
@@ -147,92 +146,15 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Icon(
-                                        Icons.arrow_back_sharp,
-                                        color: Colors.white,
-                                        size: 25.sp,
-                                      ),
-                                    ),
-                                    Row(
-                                      children: [
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    UpdateConductScreen(
-                                                  conductID: conductData['ID'],
-                                                  selectedConductType:
-                                                      conductData[
-                                                          'conductType'],
-                                                  nonParticipants:
-                                                      nonparticipantlist(),
-                                                  conductName:
-                                                      TextEditingController(
-                                                    text: conductData[
-                                                        'conductName'],
-                                                  ),
-                                                  startDate:
-                                                      conductData['startDate'],
-                                                  startTime:
-                                                      conductData['startTime'],
-                                                  endTime:
-                                                      conductData['endTime'],
-                                                  callbackFunction: callback,
-                                                ),
-                                              ),
-                                            ).then((value) => setState(() {
-                                                  documentStream =
-                                                      FirebaseFirestore.instance
-                                                          .collection('Users')
-                                                          .snapshots();
-                                                  conductStream =
-                                                      FirebaseFirestore.instance
-                                                          .collection(
-                                                              'Conducts')
-                                                          .snapshots();
-                                                  Navigator.pushReplacement(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (BuildContext
-                                                                  context) =>
-                                                              super.widget));
-                                                  WidgetsBinding.instance
-                                                      .addPostFrameCallback(
-                                                          (_) => build);
-                                                }));
-                                          },
-                                          child: Icon(
-                                            Icons.edit,
-                                            color: Colors.white,
-                                            size: 25.sp,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 40.w,
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            deleteConduct();
-                                          },
-                                          child: Icon(
-                                            Icons.delete_forever,
-                                            color: Colors.white,
-                                            size: 25.sp,
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Icon(
+                                    Icons.arrow_back_sharp,
+                                    color: Colors.white,
+                                    size: 25.sp,
+                                  ),
                                 ),
                                 SizedBox(
                                   height: 20.h,

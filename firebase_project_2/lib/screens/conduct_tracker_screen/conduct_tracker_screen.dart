@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_project_2/util/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:firebase_project_2/screens/conduct_tracker_screen/add_new_conduct_screen.dart';
 import 'package:firebase_project_2/screens/conduct_tracker_screen/conduct_details_screen.dart';
 import 'package:firebase_project_2/screens/detailed_screen/tabs/user_profile_tabs/user_profile_screen.dart';
 import 'package:firebase_project_2/screens/conduct_tracker_screen/util/charts/bar_graph/bar_graph_styling.dart';
@@ -157,13 +157,23 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
                     Container(
-                      margin: EdgeInsets.symmetric(horizontal: 20.w),
+                      margin: EdgeInsets.only(
+                        top: defaultPadding.h,
+                      ),
+                      padding: EdgeInsets.all(defaultPadding.sp),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 2.w,
+                          color: const Color.fromARGB(255, 72, 30, 229)
+                              .withOpacity(0.35),
+                        ),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(defaultPadding),
+                        ),
+                      ),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           InkWell(
                             onTap: () {
@@ -186,6 +196,9 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                               size: 45.sp,
                             ),
                           ),
+                          SizedBox(
+                            width: 30.w,
+                          ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -194,60 +207,17 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                                 style: GoogleFonts.poppins(
                                     color: Colors.white54,
                                     fontWeight: FontWeight.w400,
-                                    fontSize: 22.sp),
+                                    fontSize: 28.sp),
                               ),
                               Text(
                                 "Today",
                                 style: GoogleFonts.poppins(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w500,
-                                    fontSize: 28.sp),
+                                    fontSize: 32.sp),
                               ),
                             ],
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => AddNewConductScreen(
-                                    selectedConductType: "Select conduct...",
-                                    conductName: TextEditingController(),
-                                    startDate: "Date:",
-                                    startTime: "Start Time:",
-                                    endTime: "End Time:",
-                                  ),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              padding: EdgeInsets.all(8.0.sp),
-                              height: 60.h,
-                              width: 180.w,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.r),
-                                gradient: const LinearGradient(
-                                  colors: [
-                                    Color.fromARGB(255, 72, 30, 229),
-                                    Color.fromARGB(255, 130, 60, 229),
-                                  ],
-                                ),
-                              ),
-                              child: Row(
-                                children: [
-                                  const Icon(
-                                    Icons.add,
-                                    color: Colors.white,
-                                  ),
-                                  SizedBox(
-                                    width: 10.w,
-                                  ),
-                                  StyledText("Add Conduct", 18.sp,
-                                      fontWeight: FontWeight.w400),
-                                ],
-                              ),
-                            ),
-                          )
                         ],
                       ),
                     ),

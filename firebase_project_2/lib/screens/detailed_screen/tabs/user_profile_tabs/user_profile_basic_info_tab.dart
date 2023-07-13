@@ -2,28 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:firebase_project_2/screens/detailed_screen/tabs/basic_info_screen/update_soldier_details_screen.dart';
+import 'package:firebase_project_2/screens/detailed_screen/tabs/user_profile_tabs/update_soldier_details_screen.dart';
 import 'package:firebase_project_2/util/text_styles/text_style.dart';
 import 'package:firebase_project_2/screens/detailed_screen/util/soldier_detailed_screen_info_template.dart';
 
 var fname = FirebaseAuth.instance.currentUser!.displayName.toString();
 var id = FirebaseAuth.instance.currentUser!;
-List profile = [
-  "Sivagnanam Maheshwaran",
-  "lib/assets/army-ranks/3sg.png",
-  Colors.indigo.shade800,
-  "IN CAMP",
-  "lib/assets/army-ranks/soldier.png",
-  "LOGISTICS SPECIALIST",
-  "Bravo",
-  "1",
-  "2",
-  "05 Apr 2001",
-  "VI",
-  "AB+",
-  "11 Aug 2019",
-  "10 Aug 2021",
-];
 
 class UserProfileBasicInfoTab extends StatefulWidget {
   final String dateOfBirth;

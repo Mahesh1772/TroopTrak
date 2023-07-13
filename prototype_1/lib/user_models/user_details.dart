@@ -12,11 +12,12 @@ class UserData extends ChangeNotifier {
   // This is the sample output, to get IDs we just do .id
   List<Map<String, dynamic>> userDetails = [];
 
-  Stream<QuerySnapshot> soldiers = Stream.empty();
-  Stream<QuerySnapshot> conducts = Stream.empty();
-  Stream<QuerySnapshot> duty = Stream.empty();
-  Stream<QuerySnapshot> status = Stream.empty();
-  Stream<DocumentSnapshot<Map<String, dynamic>>> userData = Stream.empty();
+  Stream<QuerySnapshot> soldiers = const Stream.empty();
+  Stream<QuerySnapshot> conducts = const Stream.empty();
+  Stream<QuerySnapshot> duty = const Stream.empty();
+  Stream<QuerySnapshot> status = const Stream.empty();
+  Stream<DocumentSnapshot<Map<String, dynamic>>> userData =
+      const Stream.empty();
 
   Stream<QuerySnapshot> get data {
     soldiers = FirebaseFirestore.instance.collection('Users').snapshots();

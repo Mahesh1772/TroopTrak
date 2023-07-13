@@ -1,3 +1,4 @@
+import 'package:firebase_project_2/util/text_styles/text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -176,6 +177,32 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w500,
                                 letterSpacing: 1.5,
+                              ),
+                            ),
+                          ),
+                          Center(
+                            child: GestureDetector(
+                              child: Container(
+                                width: 300.w,
+                                padding: EdgeInsets.all(16.sp),
+                                decoration: BoxDecoration(
+                                    color: Colors.transparent.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(20.r)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.qr_code_2_rounded,
+                                      color: Colors.white,
+                                      size: 35.sp,
+                                    ),
+                                    SizedBox(
+                                      width: 20.w,
+                                    ),
+                                    StyledText("SHOW QR CODE", 20.sp,
+                                        fontWeight: FontWeight.bold),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
