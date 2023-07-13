@@ -1,8 +1,10 @@
-import 'package:firebase_project_2/util/text_styles/text_style.dart';
+import 'package:firebase_project_2/phone_authentication/provider/auth_provider.dart';
+import 'package:firebase_project_2/phone_authentication/widgets/button_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:country_picker/country_picker.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -61,7 +63,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   SizedBox(height: 30.h),
                   Text(
                     'Enter Phone Number',
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.kanit(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
                       color: Colors.purple.shade300,
@@ -70,7 +72,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   SizedBox(height: 30.h),
                   Text(
                     'For Registration and login',
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.kanit(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.w800,
                       color: Colors.blue.shade900,
@@ -85,7 +87,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     },
                     cursorColor: Colors.deepPurple,
                     controller: _phone,
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.kanit(
                       color: Colors.black,
                       fontSize: 18.sp,
                       fontWeight: FontWeight.bold,
@@ -93,14 +95,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                         labelText: 'Phone Number',
-                        labelStyle: GoogleFonts.poppins(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.w500,
+                        labelStyle: GoogleFonts.kanit(
+                          fontSize: 25.sp,
+                          fontWeight: FontWeight.w800,
                           color: Colors.deepPurple,
                         ),
                         hintText: 'Example: 9865 3214',
-                        hintStyle: GoogleFonts.poppins(
-                          fontSize: 18.sp,
+                        hintStyle: GoogleFonts.kanit(
+                          fontSize: 25.sp,
                           fontWeight: FontWeight.w500,
                           color: Colors.black54,
                         ),
@@ -138,7 +140,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             },
                             child: Text(
                               "${selectedCountry.flagEmoji} + ${selectedCountry.phoneCode}",
-                              style: GoogleFonts.poppins(
+                              style: GoogleFonts.kanit(
                                 color: Colors.black,
                                 fontSize: 18.sp,
                                 fontWeight: FontWeight.bold,
@@ -167,27 +169,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   SizedBox(
                     height: 20.h,
                   ),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 65.h,
-                    child: GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        padding: EdgeInsets.all(16.sp),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(
-                            12.r,
-                          ),
-                          color: Colors.deepPurple,
-                        ),
-                        child: StyledText(
-                          "Login",
-                          20.sp,
-                          fontWeight: FontWeight.w500,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
+                  WrapperButton(
+                    label: 'Login',
+                    onPressed: () {
+                      sendPhoneNumber();
+                    },
                   )
                 ],
               ),
@@ -196,5 +182,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
       ),
     );
+  }
+
+  void sendPhoneNumber() {
+    final ap = Provider.of<AuthProvider>(context, listen: false);
+    String phoneNumber = _phone.text.trim();
+    ap.signInWithPhone(context, '+${selectedCountry.phoneCode}$phoneNumber');
   }
 }

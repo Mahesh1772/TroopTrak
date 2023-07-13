@@ -1,3 +1,4 @@
+import 'package:firebase_project_2/phone_authentication/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_project_2/phone_authentication/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -21,8 +22,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      builder: (BuildContext context, child) => ChangeNotifierProvider(
-        create: (context) => UserData(),
+      builder: (BuildContext context, child) => MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (context) => UserData(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => AuthProvider(),
+          ),
+        ],
         child: const MaterialApp(
           home: Wrapper(),
         ),

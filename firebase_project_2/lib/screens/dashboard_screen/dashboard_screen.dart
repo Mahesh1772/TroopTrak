@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_project_2/phone_authentication/wrapper.dart';
 import 'package:flip_card/flip_card_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,6 +12,8 @@ import 'package:firebase_project_2/util/constants.dart';
 import 'package:firebase_project_2/screens/dashboard_screen/util/pie_chart/current_strength_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_project_2/screens/dashboard_screen/util/dashboard_soldier_tile.dart';
+import 'package:provider/provider.dart';
+import '../../phone_authentication/provider/auth_provider.dart';
 import '../detailed_screen/tabs/user_profile_tabs/user_profile_screen.dart';
 import 'package:flip_card/flip_card.dart';
 
@@ -75,6 +78,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final ap = Provider.of<AuthProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
       body: SingleChildScrollView(
@@ -97,8 +101,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     padding: EdgeInsets.only(left: 100.0.w),
                     child: InkWell(
                       onTap: () {
-                        //print(fname);
-                        FirebaseAuth.instance.signOut();
+                        ap.userSignOut().then((value) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Wrapper(),
+                            ),
+                          );
+                        });
+                        //FirebaseAuth.instance.signOut();
                       },
                       child: Container(
                         decoration: BoxDecoration(

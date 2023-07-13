@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_project_2/sign_in_assets/authenticate/otp_screen.dart';
+import 'package:firebase_project_2/phone_authentication/otp_screen.dart';
 import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 //import 'package:firebase_project_2/sign_in_assets/authenticate/forgot_password_page.dart';

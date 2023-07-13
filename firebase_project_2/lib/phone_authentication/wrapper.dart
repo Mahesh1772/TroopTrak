@@ -1,13 +1,18 @@
+import 'package:firebase_project_2/phone_authentication/provider/auth_provider.dart';
 import 'package:firebase_project_2/phone_authentication/register_page.dart';
-import 'package:firebase_project_2/widgets/button_wrapper.dart';
+import 'package:firebase_project_2/phone_authentication/widgets/button_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+
+import '../util/new_navbar.dart';
 
 class Wrapper extends StatelessWidget {
   const Wrapper({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final ap = Provider.of<AuthProvider>(context, listen: false);
     //return Home if logged in, Else return authentication page
     return Scaffold(
       backgroundColor: Colors.black12,
@@ -47,12 +52,22 @@ class Wrapper extends StatelessWidget {
               const SizedBox(height: 50),
               WrapperButton(
                 label: 'Get started',
-                onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const RegisterScreen(),
-                    )),
-              )
+                onPressed: () {
+                  ap.isSignedIn
+                      ? Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const GNavMainScreen(),
+                          ),
+                        )
+                      : Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const RegisterScreen(),
+                          ),
+                        );
+                },
+              ),
             ],
           ),
         ),
