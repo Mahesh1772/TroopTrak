@@ -9,7 +9,8 @@ import 'package:provider/provider.dart';
 
 import '../../../../user_models/user_details.dart';
 
-var fname = FirebaseAuth.instance.currentUser!.displayName.toString();
+final name = FirebaseAuth.instance.currentUser!.uid.toString();
+
 var id = FirebaseAuth.instance.currentUser!;
 
 late Stream<QuerySnapshot> documentStream;
@@ -34,7 +35,7 @@ class _UserProfileAttendanceTabState extends State<UserProfileAttendanceTab> {
       body: Padding(
         padding: EdgeInsets.all(30.sp),
         child: StreamBuilder<QuerySnapshot>(
-          stream: statusModel.attendance_data(fname),
+          stream: statusModel.attendance_data(name),
           builder: (context, snapshot) {
             var users = snapshot.data?.docs.toList();
 
@@ -93,7 +94,7 @@ class _UserProfileAttendanceTabState extends State<UserProfileAttendanceTab> {
                     scrollDirection: Axis.vertical,
                     itemBuilder: (context, index) {
                       return BookInOutTile(
-                        docID: fname,
+                        docID: name,
                         attendanceID: userBookInStatus[index]['ID'],
                         timeStamp: userBookInStatus[index]['date&time'],
                         isInsideCamp: userBookInStatus[index]['isInsideCamp'],

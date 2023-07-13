@@ -8,6 +8,8 @@ class UserData extends ChangeNotifier {
   List<String> documentIDs = [];
 
   Stream<QuerySnapshot> status = Stream.empty();
+  Stream<DocumentSnapshot<Map<String, dynamic>>> userData =
+      const Stream.empty();
 
   // DocumentReference<Map<String, dynamic>>(Users/8bu245T440NIuQnJhm81)
   // This is the sample output, to get IDs we just do .id
@@ -30,6 +32,15 @@ class UserData extends ChangeNotifier {
         .collection('Users')
         .doc(docID)
         .collection('Attendance')
+        .snapshots();
+    return status;
+  }
+
+  Stream<QuerySnapshot> status_data(String docID) {
+    status = FirebaseFirestore.instance
+        .collection('Users')
+        .doc(docID)
+        .collection('Statuses')
         .snapshots();
     return status;
   }
@@ -96,6 +107,12 @@ class UserData extends ChangeNotifier {
           }
         });
     return false;
+  }
+
+  Stream<DocumentSnapshot<Map<String, dynamic>>> userData_data(String docID) {
+    userData =
+        FirebaseFirestore.instance.collection('Users').doc(docID).snapshots();
+    return userData;
   }
 
   Future name() async {

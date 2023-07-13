@@ -14,7 +14,7 @@ import 'package:intl/intl.dart';
 import 'package:firebase_project_2/screens/dashboard_screen/util/dashboard_soldier_tile.dart';
 import 'package:provider/provider.dart';
 import '../../phone_authentication/provider/auth_provider.dart';
-import '../detailed_screen/tabs/user_profile_tabs/user_profile_screen.dart';
+import '../detailed_screen/tabs/user_profile_tabs copy/user_profile_screen.dart';
 import 'package:flip_card/flip_card.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -39,12 +39,12 @@ List<String> documentIDs = [];
 final FlipCardController _controller = FlipCardController();
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  final name = FirebaseAuth.instance.currentUser!.displayName.toString();
+  final name = FirebaseAuth.instance.currentUser!.uid.toString();
 
-  String fname = FirebaseAuth.instance.currentUser!.displayName.toString();
+  String fname = FirebaseAuth.instance.currentUser!.uid.toString();
 
   Future getCurrentUserData() async {
-    var data = FirebaseFirestore.instance.collection('Users').doc(name);
+    var data = FirebaseFirestore.instance.collection('Men').doc(name);
     data.get().then((DocumentSnapshot doc) {
       currentUserData = doc.data() as Map<String, dynamic>;
       // ...
@@ -79,6 +79,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     final ap = Provider.of<AuthProvider>(context, listen: false);
+    fname = currentUserData['name'];
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
       body: SingleChildScrollView(

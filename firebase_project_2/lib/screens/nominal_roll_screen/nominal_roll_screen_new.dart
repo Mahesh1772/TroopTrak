@@ -4,9 +4,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_project_2/screens/detailed_screen/tabs/user_profile_tabs/user_profile_screen.dart';
 import 'package:firebase_project_2/util/text_styles/text_style.dart';
 import 'package:firebase_project_2/screens/nominal_roll_screen/util/solider_tile.dart';
+
+import '../detailed_screen/tabs/user_profile_tabs copy/user_profile_screen.dart';
 
 class NominalRollNewScreen extends StatefulWidget {
   const NominalRollNewScreen({super.key});

@@ -1,9 +1,10 @@
-import 'package:firebase_project_2/util/text_styles/text_style.dart';
+import 'package:firebase_project_2/screens/detailed_screen/tabs/user_profile_tabs%20copy/user_profile_attendance_tab.dart.dart';
+import 'package:firebase_project_2/screens/detailed_screen/tabs/user_profile_tabs%20copy/user_profile_basic_info_tab.dart';
+import 'package:firebase_project_2/screens/detailed_screen/tabs/user_profile_tabs%20copy/user_profile_statuses_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:firebase_project_2/screens/detailed_screen/tabs/user_profile_tabs/user_profile_basic_info_tab.dart';
-import 'package:firebase_project_2/screens/detailed_screen/tabs/user_profile_tabs/user_profile_statuses_tab.dart';
+import 'package:firebase_project_2/util/text_styles/text_style.dart';
 import 'package:recase/recase.dart';
 
 class UserProfileScreen extends StatefulWidget {
@@ -42,7 +43,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    TabController tabController = TabController(length: 2, vsync: this);
+    TabController tabController = TabController(length: 3, vsync: this);
 
     bool rankColorPicker(String rank) {
       return (rank == 'REC' ||
@@ -168,7 +169,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                           ),
                           Padding(
                             padding:
-                                EdgeInsets.only(left: 20.0.w, bottom: 50.0.h),
+                                EdgeInsets.only(left: 20.0.w, bottom: 20.0.h),
                             child: Text(
                               "Platoon ${widget.platoon}, Section ${widget.section}",
                               maxLines: 2,
@@ -206,6 +207,9 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                               ),
                             ),
                           ),
+                          SizedBox(
+                            height: 30.h,
+                          ),
                         ],
                       ),
                     ),
@@ -222,7 +226,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                 TabBar(
                   labelStyle: GoogleFonts.poppins(
                     color: Colors.white,
-                    fontSize: 16.sp,
+                    fontSize: 15.sp,
                     fontWeight: FontWeight.w500,
                     letterSpacing: 1.5,
                   ),
@@ -239,6 +243,13 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                       text: "STATUSES",
                       icon: Icon(
                         Icons.warning_rounded,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Tab(
+                      text: "ATTENDANCE",
+                      icon: Icon(
+                        Icons.person_add_alt_1,
                         color: Colors.white,
                       ),
                     ),
@@ -259,7 +270,9 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                           ordDate: widget.ordDate),
 
                       //Statuses tab
-                      UserProfileStatusesTab(docID: widget.soldierName),
+                      const UserProfileStatusesTab(),
+
+                      const UserProfileAttendanceTab(),
                     ],
                   ),
                 )
