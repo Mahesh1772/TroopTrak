@@ -7,7 +7,7 @@ import 'package:firebase_project_2/screens/guard_duty_tracker_screen.dart/tabs/p
 import 'package:firebase_project_2/screens/guard_duty_tracker_screen.dart/tabs/upcoming_duties.dart';
 import 'package:firebase_project_2/util/text_styles/text_style.dart';
 
-import '../detailed_screen/tabs/user_profile_tabs/user_profile_screen.dart';
+import '../detailed_screen/tabs/user_profile_tabs copy/user_profile_screen.dart';
 
 class GuardDutyTrackerScreen extends StatefulWidget {
   const GuardDutyTrackerScreen({super.key});
