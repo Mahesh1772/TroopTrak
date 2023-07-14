@@ -1,5 +1,4 @@
 // ignore_for_file: must_be_immutable
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,21 +6,26 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_project_2/util/text_styles/text_style.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../user_models/user_details.dart';
 
 class UpdateSoldierDetailsPage extends StatefulWidget {
-  UpdateSoldierDetailsPage(
-      {super.key,
-      required this.name,
-      required this.company,
-      required this.platoon,
-      required this.section,
-      required this.appointment,
-      required this.dob,
-      required this.ord,
-      required this.enlistment,
-      required this.selectedItem,
-      required this.selectedRank,
-      required this.selectedBloodType});
+  UpdateSoldierDetailsPage({
+    super.key,
+    required this.name,
+    required this.company,
+    required this.platoon,
+    required this.section,
+    required this.appointment,
+    required this.dob,
+    required this.ord,
+    required this.enlistment,
+    required this.selectedItem,
+    required this.selectedRank,
+    required this.selectedBloodType,
+    required this.docID,
+  });
 
   late TextEditingController name;
   late TextEditingController company;
@@ -34,6 +38,7 @@ class UpdateSoldierDetailsPage extends StatefulWidget {
   late String? selectedItem;
   late String? selectedRank;
   late String? selectedBloodType;
+  late String docID;
 
   @override
   State<UpdateSoldierDetailsPage> createState() =>
@@ -56,7 +61,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
 
   Future deleteCurrentUser() async {
     FirebaseFirestore.instance
-        .collection("Users")
+        .collection("Men")
         .doc(widget.name.text.trim())
         .delete();
     Navigator.pop(context);
@@ -64,8 +69,8 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
 
   Future goBackWithoutChanges() async {
     await FirebaseFirestore.instance
-        .collection('Users')
-        .doc(widget.name.text.trim())
+        .collection('Men')
+        .doc(widget.docID)
         .update({
       //User map formatting
       'rank': _selectedRank,
@@ -215,8 +220,8 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
 
   Future addUserDetails() async {
     await FirebaseFirestore.instance
-        .collection('Users')
-        .doc(widget.name.text.trim())
+        .collection('Men')
+        .doc(widget.docID)
         .update({
       //User map formatting
       'rank': widget.selectedRank,
@@ -244,16 +249,14 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
 
   @override
   Widget build(context) {
+    final userDetailsModel = Provider.of<UserData>(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
       body: SingleChildScrollView(
         child: SafeArea(
           child: StreamBuilder(
-            stream: FirebaseFirestore.instance
-                .collection('Users')
-                .doc(widget.name.text.trim())
-                .snapshots(),
+            stream: userDetailsModel.menData_data(widget.docID),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 //We are trying to map the key and values pairs
