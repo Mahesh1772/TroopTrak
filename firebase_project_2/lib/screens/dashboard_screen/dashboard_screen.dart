@@ -71,6 +71,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void initState() {
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
     getCurrentUserData();
+
     getDocIDs();
 
     super.initState();
