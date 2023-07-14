@@ -127,6 +127,7 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => UpdateSoldierDetailsPage(
+                              docID: fname,
                                 name: TextEditingController(text: data['name']),
                                 company: TextEditingController(
                                     text: data['company']),
