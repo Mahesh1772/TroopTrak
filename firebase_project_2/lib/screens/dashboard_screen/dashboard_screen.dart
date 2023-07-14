@@ -51,10 +51,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     });
   }
 
-  void getDocIDs() {
-    fname = currentUserData['name'];
-  }
-
   void cardFlipAnimations() {
     _controller.hint(
       duration: const Duration(seconds: 2),
@@ -66,7 +62,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void initState() {
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
     getCurrentUserData();
-    //getDocIDs();
     print(currentUserData);
     super.initState();
   }

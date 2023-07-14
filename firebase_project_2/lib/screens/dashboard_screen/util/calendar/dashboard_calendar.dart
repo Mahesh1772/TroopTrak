@@ -42,7 +42,7 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
             fontSize: 24.sp,
           ),
         ),
-        view: CalendarView.schedule,
+        view: CalendarView.timelineMonth,
         scheduleViewMonthHeaderBuilder: scheduleViewHeaderBuilder,
         scheduleViewSettings: ScheduleViewSettings(
           appointmentItemHeight: 70.h,

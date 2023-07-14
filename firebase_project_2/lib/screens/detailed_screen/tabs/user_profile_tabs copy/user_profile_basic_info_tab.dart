@@ -43,7 +43,7 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab> {
 
   Future deleteStatuses() async {
     var collection = FirebaseFirestore.instance
-        .collection("Users")
+        .collection("Men")
         .doc(fname)
         .collection('Statuses');
     var snapshots = await collection.get();
@@ -54,7 +54,7 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab> {
 
   Future deleteAttendance() async {
     var collection = FirebaseFirestore.instance
-        .collection("Users")
+        .collection("Men")
         .doc(fname)
         .collection('Attendance');
     var snapshots = await collection.get();
@@ -64,7 +64,7 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab> {
   }
 
   Future deleteCurrentUser() async {
-    FirebaseFirestore.instance.collection("Users").doc(fname).delete();
+    FirebaseFirestore.instance.collection("Men").doc(fname).delete();
   }
 
   Future getCurrentUserData() async {
