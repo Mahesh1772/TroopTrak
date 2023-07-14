@@ -154,6 +154,8 @@ class AuthProvider extends ChangeNotifier {
         _isLoading = false;
         notifyListeners();
       });
+      var Dname = firebase_auth.currentUser!;
+      Dname.updateDisplayName(name);
     } on FirebaseAuthException catch (e) {
       IconSnackBar.show(
           direction: DismissDirection.horizontal,
@@ -173,9 +175,12 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future getUserData() async{
-    await firebase_store.doc(firebase_auth.currentUser!.uid).get().then((DocumentSnapshot snapshot) {
-       _data = snapshot.data() as Map<String, dynamic>;
+  Future getUserData() async {
+    await firebase_store
+        .doc(firebase_auth.currentUser!.uid)
+        .get()
+        .then((DocumentSnapshot snapshot) {
+      _data = snapshot.data() as Map<String, dynamic>;
       _userid = firebase_auth.currentUser!.uid;
     });
   }

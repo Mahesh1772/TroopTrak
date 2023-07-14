@@ -82,7 +82,7 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab> {
       child: SizedBox(
         height: 750.h,
         child: StreamBuilder(
-          stream: userDetailsModel.userData_data(fname),
+          stream: userDetailsModel.menData_data(fname),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               //We are trying to map the key and values pairs

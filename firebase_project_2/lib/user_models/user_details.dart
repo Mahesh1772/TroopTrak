@@ -115,6 +115,12 @@ class UserData extends ChangeNotifier {
     return userData;
   }
 
+  Stream<DocumentSnapshot<Map<String, dynamic>>> menData_data(String docID) {
+    userData =
+        FirebaseFirestore.instance.collection('Men').doc(docID).snapshots();
+    return userData;
+  }
+
   Future name() async {
     await FirebaseFirestore.instance
         .collection("Users")
