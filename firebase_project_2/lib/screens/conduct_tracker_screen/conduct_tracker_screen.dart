@@ -10,7 +10,6 @@ import 'package:firebase_project_2/screens/detailed_screen/tabs/user_profile_tab
 import 'package:firebase_project_2/screens/conduct_tracker_screen/util/charts/bar_graph/bar_graph_styling.dart';
 import 'package:firebase_project_2/util/text_styles/text_style.dart';
 import 'package:firebase_project_2/screens/conduct_tracker_screen/util/conduct_main_page_tiles.dart';
-
 import 'package:horizontal_center_date_picker/datepicker_controller.dart';
 import 'package:horizontal_center_date_picker/horizontal_date_picker.dart';
 

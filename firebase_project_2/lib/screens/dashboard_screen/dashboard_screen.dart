@@ -41,7 +41,7 @@ final FlipCardController _controller = FlipCardController();
 class _DashboardScreenState extends State<DashboardScreen> {
   final name = FirebaseAuth.instance.currentUser!.uid.toString();
 
-  String fname = FirebaseAuth.instance.currentUser!.uid.toString();
+  String fname = FirebaseAuth.instance.currentUser!.displayName.toString();
 
   Future getCurrentUserData() async {
     var data = FirebaseFirestore.instance.collection('Men').doc(name);
@@ -51,13 +51,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     });
   }
 
-  Future getDocIDs() async {
-    FirebaseFirestore.instance
-        .collection('Users')
-        .get()
-        .then((value) => value.docs.forEach((element) {
-              documentIDs.add(element['name']);
-            }));
+  void getDocIDs() {
+    fname = currentUserData['name'];
   }
 
   void cardFlipAnimations() {
@@ -71,16 +66,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void initState() {
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
     getCurrentUserData();
-
-    getDocIDs();
-
+    //getDocIDs();
+    print(currentUserData);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final ap = Provider.of<AuthProvider>(context, listen: false);
-
+    final userid = Provider.of<AuthProvider>(context, listen: true).userid;
+    print(ap.userid);
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
       body: SingleChildScrollView(
