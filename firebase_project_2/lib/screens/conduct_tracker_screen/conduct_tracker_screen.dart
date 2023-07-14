@@ -6,12 +6,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_project_2/screens/conduct_tracker_screen/conduct_details_screen.dart';
-import 'package:firebase_project_2/screens/detailed_screen/tabs/user_profile_tabs copy/user_profile_screen.dart';
 import 'package:firebase_project_2/screens/conduct_tracker_screen/util/charts/bar_graph/bar_graph_styling.dart';
 import 'package:firebase_project_2/util/text_styles/text_style.dart';
 import 'package:firebase_project_2/screens/conduct_tracker_screen/util/conduct_main_page_tiles.dart';
 import 'package:horizontal_center_date_picker/datepicker_controller.dart';
 import 'package:horizontal_center_date_picker/horizontal_date_picker.dart';
+import 'package:lottie/lottie.dart';
 
 class ConductTrackerScreen extends StatefulWidget {
   const ConductTrackerScreen({super.key});
@@ -20,7 +20,8 @@ class ConductTrackerScreen extends StatefulWidget {
   State<ConductTrackerScreen> createState() => _ConductTrackerScreenState();
 }
 
-class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
+class _ConductTrackerScreenState extends State<ConductTrackerScreen>
+    with TickerProviderStateMixin {
   List<Map<String, dynamic>> todayConducts = [];
   List<Map<String, dynamic>> allConducts = [];
   List<String> allParticipants = [];
@@ -28,6 +29,8 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
   List<String> participants = [];
   DateTime _selectedDate = DateTime.now();
   final DatePickerController _date = DatePickerController();
+
+  late AnimationController _noConducts;
 
   // The DocID or the name of the current user is saved in here
   final name = FirebaseAuth.instance.currentUser!.displayName.toString();
@@ -51,6 +54,8 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
         FirebaseFirestore.instance.collection('Conducts').snapshots();
     getCurrentUserData();
     _selectedDate = DateTime.now();
+    _noConducts =
+        AnimationController(vsync: this, duration: const Duration(seconds: 5));
     super.initState();
   }
 
@@ -68,6 +73,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
     var now = DateTime.now();
     DateTime startDate = DateTime(2022);
     DateTime endDate = DateTime(2025);
+    _noConducts.forward();
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -112,49 +118,18 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 24.0.w),
-                          child: StyledText(
-                            'Conduct Tracker',
-                            26.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Center(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 24.0.w),
+                        child: StyledText(
+                          'Conduct Tracker',
+                          32.sp,
+                          fontWeight: FontWeight.w500,
                         ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => UserProfileScreen(
-                                  soldierName: currentUserData['name'],
-                                  soldierRank:
-                                      "lib/assets/army-ranks/${currentUserData['rank'].toString().toLowerCase()}.png",
-                                  soldierAppointment:
-                                      currentUserData['appointment'],
-                                  company: currentUserData['company'],
-                                  platoon: currentUserData['platoon'],
-                                  section: currentUserData['section'],
-                                  dateOfBirth: currentUserData['dob'],
-                                  rationType: currentUserData['rationType'],
-                                  bloodType: currentUserData['bloodgroup'],
-                                  enlistmentDate: currentUserData['enlistment'],
-                                  ordDate: currentUserData['ord'],
-                                ),
-                              ),
-                            );
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.all(12.0.sp),
-                            child: Image.asset(
-                              'lib/assets/user.png',
-                              width: 50.w,
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                     Container(
                       margin: EdgeInsets.only(
@@ -262,67 +237,98 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                     SizedBox(
                       height: 30.h,
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0.w),
-                      child: StyledText("Participation Strength", 24.sp,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    Container(
-                      height: 450.h,
-                      padding: EdgeInsets.all(16.0.sp),
-                      child: BarGraphStyling(
-                        totalStrength: allConducts.length.toDouble(),
-                        conductList: todayConducts,
-                        participationStrength: participant,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0.w),
-                      child: StyledText("Conducts Completed / Ongoing", 24.sp,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: todayConducts.length,
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ConductDetailsScreen(
-                                  conductID: todayConducts[index]['ID'],
-                                  //nonParticipants: allParticipants,
-                                  participants: todayConducts[index]
-                                      ['participants'],
-                                  conductName: todayConducts[index]
-                                      ['conductName'],
-                                  conductType: todayConducts[index]
-                                      ['conductType'],
-                                  startDate: todayConducts[index]['startDate'],
-                                  startTime: todayConducts[index]['startTime'],
-                                  endTime: todayConducts[index]['endTime'],
+                    todayConducts.isNotEmpty
+                        ? Column(
+                            children: [
+                              Padding(
+                                padding:
+                                    EdgeInsets.symmetric(horizontal: 20.0.w),
+                                child: StyledText(
+                                    "Participation Strength", 24.sp,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              Container(
+                                height: 450.h,
+                                padding: EdgeInsets.all(16.0.sp),
+                                child: BarGraphStyling(
+                                  totalStrength: allConducts.length.toDouble(),
+                                  conductList: todayConducts,
+                                  participationStrength: participant,
                                 ),
                               ),
-                            );
-                          },
-                          child: ConductTile(
-                            conductNumber: index.toInt(),
-                            conductName: todayConducts[index]['conductName'],
-                            conductType: todayConducts[index]['conductType'],
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              Padding(
+                                padding:
+                                    EdgeInsets.symmetric(horizontal: 20.0.w),
+                                child: StyledText(
+                                    "Conducts Completed / Ongoing", 24.sp,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: todayConducts.length,
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ConductDetailsScreen(
+                                            conductID: todayConducts[index]
+                                                ['ID'],
+                                            //nonParticipants: allParticipants,
+                                            participants: todayConducts[index]
+                                                ['participants'],
+                                            conductName: todayConducts[index]
+                                                ['conductName'],
+                                            conductType: todayConducts[index]
+                                                ['conductType'],
+                                            startDate: todayConducts[index]
+                                                ['startDate'],
+                                            startTime: todayConducts[index]
+                                                ['startTime'],
+                                            endTime: todayConducts[index]
+                                                ['endTime'],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: ConductTile(
+                                      conductNumber: index.toInt(),
+                                      conductName: todayConducts[index]
+                                          ['conductName'],
+                                      conductType: todayConducts[index]
+                                          ['conductType'],
+                                      isUserParticipating: true,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          )
+                        : Center(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                LottieBuilder.network(
+                                  "https://lottie.host/d086ee86-2d40-45e6-a68d-fc1b5b9ebe58/QpGAG0CLkf.json",
+                                  controller: _noConducts,
+                                  height: 400.h,
+                                ),
+                                StyledText("NO CONDUCTS FOR TODAY!", 28.sp,
+                                    fontWeight: FontWeight.w500),
+                              ],
+                            ),
                           ),
-                        );
-                      },
-                    ),
                     SizedBox(
                       height: 30.h,
                     )

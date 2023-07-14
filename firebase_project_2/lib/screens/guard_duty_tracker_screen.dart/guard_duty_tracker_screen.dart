@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_project_2/screens/guard_duty_tracker_screen.dart/tabs/points_leaderboard.dart';
 import 'package:firebase_project_2/screens/guard_duty_tracker_screen.dart/tabs/upcoming_duties.dart';
 import 'package:firebase_project_2/util/text_styles/text_style.dart';
-import 'package:firebase_project_2/screens/detailed_screen/tabs/user_profile_tabs copy/user_profile_screen.dart';
 
 class GuardDutyTrackerScreen extends StatefulWidget {
   const GuardDutyTrackerScreen({super.key});
@@ -49,48 +48,21 @@ class _GuardDutyTrackerScreenState extends State<GuardDutyTrackerScreen>
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24.0.w),
-                    child: StyledText(
-                      'Guard Duty',
-                      26.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
+              SizedBox(
+                height: 20.h,
+              ),
+              Center(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24.0.w),
+                  child: StyledText(
+                    'Guard Duty',
+                    32.sp,
+                    fontWeight: FontWeight.w500,
                   ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => UserProfileScreen(
-                            soldierName: currentUserData['name'],
-                            soldierRank:
-                                "lib/assets/army-ranks/${currentUserData['rank'].toString().toLowerCase()}.png",
-                            soldierAppointment: currentUserData['appointment'],
-                            company: currentUserData['company'],
-                            platoon: currentUserData['platoon'],
-                            section: currentUserData['section'],
-                            dateOfBirth: currentUserData['dob'],
-                            rationType: currentUserData['rationType'],
-                            bloodType: currentUserData['bloodgroup'],
-                            enlistmentDate: currentUserData['enlistment'],
-                            ordDate: currentUserData['ord'],
-                          ),
-                        ),
-                      );
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.all(12.0.sp),
-                      child: Image.asset(
-                        'lib/assets/user.png',
-                        width: 50.w,
-                      ),
-                    ),
-                  ),
-                ],
+                ),
+              ),
+              SizedBox(
+                height: 20.h,
               ),
               TabBar(
                 labelStyle: GoogleFonts.poppins(

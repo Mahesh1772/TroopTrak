@@ -73,6 +73,7 @@ dependencies:
   pinput: ^2.2.31
   country_picker: ^2.0.20
   shared_preferences: ^2.2.0
+  flutter_animated_icons: ^1.0.1
 
 
 

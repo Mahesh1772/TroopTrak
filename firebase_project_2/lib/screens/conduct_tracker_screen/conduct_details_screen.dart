@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_project_2/screens/conduct_tracker_screen/util/conduct_detailed_participant_tile.dart';
+import 'package:firebase_project_2/screens/conduct_tracker_screen/util/conduct_detailed_screen_tile_non_participant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -323,49 +325,17 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                             StyledText("Participants", 24.sp,
                                 fontWeight: FontWeight.w500),
                             SizedBox(
-                              height: 250,
+                              height: 250.h,
                               child: ListView.builder(
                                   itemCount: userDetails.length,
                                   itemBuilder: (context, index) {
-                                    return Container(
-                                      padding: EdgeInsets.all(16.0.sp),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            padding: EdgeInsets.all(20.0.sp),
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Colors.transparent,
-                                              border: Border.all(
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                            child: Center(
-                                              child: Image.asset(
-                                                "lib/assets/army-ranks/${userDetails[index]['rank'].toString().toLowerCase()}.png",
-                                                width: 20,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(16.0),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                StyledText(
-                                                    userDetails[index]['name']
-                                                        .toString()
-                                                        .titleCase,
-                                                    18,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      ),
+                                    return ConductDetailedParticipantTile(
+                                      rank: userDetails[index]['rank']
+                                          .toString()
+                                          .toLowerCase(),
+                                      name: userDetails[index]['name']
+                                          .toString()
+                                          .titleCase,
                                     );
                                   }),
                             ),
@@ -375,55 +345,17 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                             StyledText("Non-Participants", 24.sp,
                                 fontWeight: FontWeight.w500),
                             SizedBox(
-                              height: 250,
+                              height: 250.h,
                               child: ListView.builder(
                                   itemCount: nonParticipants.length,
                                   itemBuilder: (context, index) {
-                                    return Container(
-                                      padding: EdgeInsets.all(16.0.sp),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            padding: EdgeInsets.all(20.0.sp),
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Colors.transparent,
-                                              border: Border.all(
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                            child: Center(
-                                              child: Image.asset(
-                                                "lib/assets/army-ranks/${nonParticipants[index]['rank'].toString().toLowerCase()}.png",
-                                                width: 20,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(16.0),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                StyledText(
-                                                    nonParticipants[index]
-                                                            ['name']
-                                                        .toString()
-                                                        .titleCase,
-                                                    18,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                                const StyledText(
-                                                    "Reason: Ex RMJ", 14,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    );
+                                    return ConductDetailedNonParticipantTile(
+                                        rank: nonParticipants[index]['rank']
+                                            .toString()
+                                            .toLowerCase(),
+                                        name: nonParticipants[index]['name']
+                                            .toString()
+                                            .titleCase);
                                   }),
                             ),
                           ],

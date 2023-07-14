@@ -90,16 +90,6 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Icon(
-                              Icons.arrow_back_sharp,
-                              color: Colors.white,
-                              size: 25.sp,
-                            ),
-                          ),
                           SizedBox(
                             height: 20.h,
                           ),

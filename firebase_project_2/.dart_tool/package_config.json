@@ -38,6 +38,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "archive",
+      "rootUri": "file:///C:/Users/Aak242/AppData/Local/Pub/Cache/hosted/pub.dev/archive-3.3.7",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "args",
       "rootUri": "file:///C:/Users/Aak242/AppData/Local/Pub/Cache/hosted/pub.dev/args-2.4.2",
       "packageUri": "lib/",
@@ -248,6 +254,12 @@
       "languageVersion": "3.0"
     },
     {
+      "name": "flutter_animated_icons",
+      "rootUri": "file:///C:/Users/Aak242/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_animated_icons-1.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
       "name": "flutter_icon_snackbar",
       "rootUri": "file:///C:/Users/Aak242/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_icon_snackbar-1.1.4",
       "packageUri": "lib/",
@@ -372,6 +384,12 @@
       "rootUri": "file:///C:/Users/Aak242/AppData/Local/Pub/Cache/hosted/pub.dev/logging-1.2.0",
       "packageUri": "lib/",
       "languageVersion": "2.19"
+    },
+    {
+      "name": "lottie",
+      "rootUri": "file:///C:/Users/Aak242/AppData/Local/Pub/Cache/hosted/pub.dev/lottie-1.4.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
     },
     {
       "name": "matcher",
@@ -522,6 +540,12 @@
       "rootUri": "file:///C:/Users/Aak242/AppData/Local/Pub/Cache/hosted/pub.dev/plugin_platform_interface-2.1.4",
       "packageUri": "lib/",
       "languageVersion": "2.17"
+    },
+    {
+      "name": "pointycastle",
+      "rootUri": "file:///C:/Users/Aak242/AppData/Local/Pub/Cache/hosted/pub.dev/pointycastle-3.7.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
     },
     {
       "name": "popup_card",
@@ -764,7 +788,7 @@
       "languageVersion": "2.19"
     }
   ],
-  "generated": "2023-07-14T03:24:40.452541Z",
+  "generated": "2023-07-14T04:11:09.082641Z",
   "generator": "pub",
   "generatorVersion": "3.0.5"
 }

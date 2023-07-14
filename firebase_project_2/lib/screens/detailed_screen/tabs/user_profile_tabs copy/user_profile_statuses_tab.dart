@@ -1,4 +1,4 @@
-import 'package:firebase_project_2/screens/dashboard_screen/dashboard_screen.dart';
+import 'package:firebase_project_2/screens/detailed_screen/tabs/user_profile_tabs%20copy/user_profile_basic_info_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';

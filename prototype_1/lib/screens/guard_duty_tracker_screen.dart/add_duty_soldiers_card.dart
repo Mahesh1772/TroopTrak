@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/add_new_duty_screen.dart';
 import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/util/custom_rect_tween.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
-import 'package:prototype_1/screens/guard_duty_tracker_screen.dart/util/add_soldier_to_duty_tile.dart';
+import 'package:prototype_1/screens/conduct_tracker_screen/util/add_soldier_to_duty_tile.dart';
 import 'package:provider/provider.dart';
 
 import '../../user_models/user_details.dart';
