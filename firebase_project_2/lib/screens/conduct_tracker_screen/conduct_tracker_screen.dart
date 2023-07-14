@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_project_2/screens/conduct_tracker_screen/conduct_details_screen.dart';
+import 'package:firebase_project_2/screens/detailed_screen/tabs/user_profile_tabs copy/user_profile_screen.dart';
 import 'package:firebase_project_2/screens/conduct_tracker_screen/util/charts/bar_graph/bar_graph_styling.dart';
 import 'package:firebase_project_2/util/text_styles/text_style.dart';
 import 'package:firebase_project_2/screens/conduct_tracker_screen/util/conduct_main_page_tiles.dart';
