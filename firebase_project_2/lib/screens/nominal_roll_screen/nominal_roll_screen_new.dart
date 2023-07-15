@@ -77,18 +77,19 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => UserProfileScreen(
-                            soldierName: currentUserData['name'],
-                            soldierRank:
-                                "lib/assets/army-ranks/${currentUserData['rank'].toString().toLowerCase()}.png",
-                            soldierAppointment: currentUserData['appointment'],
-                            company: currentUserData['company'],
-                            platoon: currentUserData['platoon'],
-                            section: currentUserData['section'],
-                            dateOfBirth: currentUserData['dob'],
-                            rationType: currentUserData['rationType'],
-                            bloodType: currentUserData['bloodgroup'],
-                            enlistmentDate: currentUserData['enlistment'],
-                            ordDate: currentUserData['ord'],
+                            docID: currentUserData['name'],
+                            //soldierName: currentUserData['name'],
+                            //soldierRank:
+                            //    "lib/assets/army-ranks/${currentUserData['rank'].toString().toLowerCase()}.png",
+                            //soldierAppointment: currentUserData['appointment'],
+                            //company: currentUserData['company'],
+                            //platoon: currentUserData['platoon'],
+                            //section: currentUserData['section'],
+                            //dateOfBirth: currentUserData['dob'],
+                            //rationType: currentUserData['rationType'],
+                            //bloodType: currentUserData['bloodgroup'],
+                            //enlistmentDate: currentUserData['enlistment'],
+                            //ordDate: currentUserData['ord'],
                           ),
                         ),
                       );
