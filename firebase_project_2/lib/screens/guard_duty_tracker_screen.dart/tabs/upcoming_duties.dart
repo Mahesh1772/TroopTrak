@@ -74,6 +74,7 @@ class _UpcomingDutiesState extends State<UpcomingDuties> {
                             endTime: dutyDetails[index]['endTime'],
                             dutyType: dutyDetails[index]['dayType'],
                             numberOfPoints: dutyDetails[index]['points'],
+                            isUserParticipating: true,
                           ),
                         );
                       },
