@@ -20,20 +20,15 @@ DateTime _selectedDate = DateTime.now();
 List<Appointment> meetings = <Appointment>[];
 
 class _DashboardCalendarState extends State<DashboardCalendar> {
-  Stream<QuerySnapshot<Map<String, dynamic>>> stream1 =
-      FirebaseFirestore.instance.collection('collection1').snapshots();
-  Stream<QuerySnapshot<Map<String, dynamic>>> stream2 =
-      FirebaseFirestore.instance.collection('collection2').snapshots();
-
   @override
   void initState() {
     // TODO: implement initState
-    getDuty_and_Conducts(context);
+    //getDuty_and_Conducts(context);
     super.initState();
   }
 
   @override
-  build(BuildContext context) async {
+  build(BuildContext context) {
     return SizedBox(
       height: 780.h,
       child: SfCalendar(
@@ -64,7 +59,7 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
           ),
         ),
         view: CalendarView.week,
-        dataSource: MeetingDataSource(meetings),
+        dataSource: MeetingDataSource(getAppointments()),
         initialSelectedDate: _selectedDate,
         scheduleViewMonthHeaderBuilder: scheduleViewHeaderBuilder,
         timeSlotViewSettings: const TimeSlotViewSettings(

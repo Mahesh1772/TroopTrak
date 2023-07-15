@@ -150,8 +150,8 @@ class UserData extends ChangeNotifier {
     List<Map<String, dynamic>> conduct = [];
     await FirebaseFirestore.instance
         .collection("Conducts")
-        .where((DateFormat("d MMM yyyy").parse('startDate')),
-            isEqualTo: DateTime.now())
+        .where('startDate',
+            isEqualTo: DateFormat("d MMM yyyy").format(DateTime.now()))
         .get()
         .then((querySnapshot) async {
       for (var snapshot in querySnapshot.docs) {
@@ -166,8 +166,8 @@ class UserData extends ChangeNotifier {
     List<Map<String, dynamic>> conduct = [];
     await FirebaseFirestore.instance
         .collection("Duties")
-        .where((DateFormat("d MMM yyyy").parse('dutyDate')),
-            isEqualTo: DateTime.now())
+        .where('dutyDate',
+            isEqualTo: DateFormat("d MMM yyyy").format(DateTime.now()))
         .get()
         .then((querySnapshot) async {
       for (var snapshot in querySnapshot.docs) {
