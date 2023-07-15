@@ -12,6 +12,9 @@ import 'package:firebase_project_2/screens/conduct_tracker_screen/util/conduct_m
 import 'package:horizontal_center_date_picker/datepicker_controller.dart';
 import 'package:horizontal_center_date_picker/horizontal_date_picker.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
+
+import '../../user_models/user_details.dart';
 
 class ConductTrackerScreen extends StatefulWidget {
   const ConductTrackerScreen({super.key});
@@ -19,6 +22,8 @@ class ConductTrackerScreen extends StatefulWidget {
   @override
   State<ConductTrackerScreen> createState() => _ConductTrackerScreenState();
 }
+
+  String fname = FirebaseAuth.instance.currentUser!.displayName.toString();
 
 class _ConductTrackerScreenState extends State<ConductTrackerScreen>
     with TickerProviderStateMixin {
@@ -36,6 +41,9 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen>
   final name = FirebaseAuth.instance.currentUser!.displayName.toString();
 
   Map<String, dynamic> currentUserData = {};
+
+  //Used to track participation
+  bool isAParticipant = false;
 
   //This is what the stream builder is waiting for
   late Stream<QuerySnapshot> conductStream;
@@ -68,8 +76,17 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen>
         .inDays;
   }
 
+  bool isPartcipant(Map<String, dynamic> todayConducts, String name){
+    List<String> part = todayConducts['participants'].cast<String>();
+    if (part.contains(name)) {
+      return true;
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final statusModel = Provider.of<UserData>(context);
     var now = DateTime.now();
     DateTime startDate = DateTime(2022);
     DateTime endDate = DateTime(2025);
@@ -81,7 +98,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen>
       body: SingleChildScrollView(
         child: SafeArea(
           child: StreamBuilder<QuerySnapshot>(
-            stream: conductStream,
+            stream: statusModel.conducts_data,
             builder: (context, snapshot) {
               var conducts = snapshot.data?.docs.toList();
               if (snapshot.hasData) {
@@ -308,7 +325,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen>
                                           ['conductName'],
                                       conductType: todayConducts[index]
                                           ['conductType'],
-                                      isUserParticipating: true,
+                                      isUserParticipating: isPartcipant(todayConducts[index], fname),
                                     ),
                                   );
                                 },

@@ -19,8 +19,9 @@ List<Map<String, dynamic>> userBookInStatus = [];
 class UserProfileAttendanceTab extends StatefulWidget {
   const UserProfileAttendanceTab({
     super.key,
+    required this.docID,
   });
-
+  final String docID;
   @override
   State<UserProfileAttendanceTab> createState() =>
       _UserProfileAttendanceTabState();

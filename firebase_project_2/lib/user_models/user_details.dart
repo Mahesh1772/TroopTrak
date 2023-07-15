@@ -115,6 +115,11 @@ class UserData extends ChangeNotifier {
     return userData;
   }
 
+  Stream<QuerySnapshot> get conducts_data {
+    var conducts = FirebaseFirestore.instance.collection('Conducts').snapshots();
+    return conducts;
+  }
+
   Stream<DocumentSnapshot<Map<String, dynamic>>> menData_data(String docID) {
     userData =
         FirebaseFirestore.instance.collection('Men').doc(docID).snapshots();

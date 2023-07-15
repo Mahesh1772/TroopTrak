@@ -264,10 +264,12 @@ class _UserProfileScreenState extends State<UserProfileScreen>
 
                               //Statuses tab
                               UserProfileStatusesTab(
-                                docID: fname,
+                                docID: data['name'],
                               ),
 
-                              const UserProfileAttendanceTab(),
+                              UserProfileAttendanceTab(
+                                docID: data['name'],
+                              ),
                             ],
                           ),
                         )
