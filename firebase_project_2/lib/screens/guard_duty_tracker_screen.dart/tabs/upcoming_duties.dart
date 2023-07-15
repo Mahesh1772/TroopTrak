@@ -1,8 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_project_2/screens/guard_duty_tracker_screen.dart/util/guard_duty_main_page_tiles.dart';
 import 'package:firebase_project_2/util/text_styles/text_style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
+
+import '../../../user_models/user_details.dart';
 
 class UpcomingDuties extends StatefulWidget {
   const UpcomingDuties({super.key});
@@ -20,16 +24,19 @@ List<Map<String, dynamic>> dutyDetails = [];
 //Loop variable
 int i = 0;
 
+String fname = FirebaseAuth.instance.currentUser!.displayName.toString();
+
 class _UpcomingDutiesState extends State<UpcomingDuties> {
-  @override
-  void initState() {
-    super.initState();
-    documentStream =
-        FirebaseFirestore.instance.collection('Duties').snapshots();
+  bool isPartcipant(Map<String, dynamic> todayConducts, String name) {
+    if (todayConducts.containsKey(name)) {
+      return true;
+    }
+    return false;
   }
 
   @override
   Widget build(BuildContext context) {
+    final statusModel = Provider.of<UserData>(context);
     return SingleChildScrollView(
       child: Container(
         margin: EdgeInsets.only(top: 50.h),
@@ -45,7 +52,7 @@ class _UpcomingDutiesState extends State<UpcomingDuties> {
                 height: 15.h,
               ),
               StreamBuilder<QuerySnapshot>(
-                  stream: documentStream,
+                  stream: statusModel.duty_data,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       dutyDetails = [];
@@ -57,6 +64,7 @@ class _UpcomingDutiesState extends State<UpcomingDuties> {
                         dutyDetails[i]
                             .addEntries({'ID': duties[i].reference.id}.entries);
                       }
+                      print(dutyDetails.last['participants']);
                     }
                     return ListView.builder(
                       scrollDirection: Axis.vertical,
@@ -74,7 +82,8 @@ class _UpcomingDutiesState extends State<UpcomingDuties> {
                             endTime: dutyDetails[index]['endTime'],
                             dutyType: dutyDetails[index]['dayType'],
                             numberOfPoints: dutyDetails[index]['points'],
-                            isUserParticipating: true,
+                            isUserParticipating: isPartcipant(
+                                dutyDetails[index]['participants'], fname),
                           ),
                         );
                       },
