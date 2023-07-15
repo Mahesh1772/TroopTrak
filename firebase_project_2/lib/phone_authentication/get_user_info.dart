@@ -24,8 +24,8 @@ TextEditingController company = TextEditingController();
 TextEditingController platoon = TextEditingController();
 TextEditingController section = TextEditingController();
 TextEditingController appointment = TextEditingController();
-String dob = 'DOB Date';
-String ord = 'ORD Date';
+String dob = 'Date of Birth';
+String ord = 'Date of ORD';
 String enlistment = 'Enlishment Date';
 String? selectedItem = "Select your ration type...";
 String? selectedRank = "Select your rank...";
@@ -59,28 +59,7 @@ class _AddNewMenState extends State<AddNewMen> {
     "CPL",
     "CFC",
     "SCT",
-    "3SG",
-    "2SG",
-    "1SG",
-    "SSG",
-    "MSG",
-    "3WO",
-    "2WO",
-    "1WO",
-    "MWO",
-    "SWO",
-    "CWO",
     "OCT",
-    "2LT",
-    "LTA",
-    "CPT",
-    "MAJ",
-    "LTC",
-    "SLTC",
-    "COL",
-    "BG",
-    "MG",
-    "LG",
   ];
 
   final _bloodTypes = [

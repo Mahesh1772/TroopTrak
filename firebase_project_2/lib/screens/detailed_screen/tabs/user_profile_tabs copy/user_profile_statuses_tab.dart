@@ -1,4 +1,3 @@
-import 'package:firebase_project_2/screens/detailed_screen/tabs/user_profile_tabs%20copy/user_profile_basic_info_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,9 +14,10 @@ List<Map<String, dynamic>> userCurrentStatus = [];
 
 class UserProfileStatusesTab extends StatefulWidget {
   const UserProfileStatusesTab({
+    required this.docID,
     super.key,
   });
-
+  final String docID;
   @override
   State<UserProfileStatusesTab> createState() => _UserProfileStatusesTabState();
 }
@@ -34,7 +34,7 @@ class _UserProfileStatusesTabState extends State<UserProfileStatusesTab> {
       body: Padding(
         padding: EdgeInsets.all(30.0.sp),
         child: StreamBuilder<QuerySnapshot>(
-          stream: statusModel.status_data(currentUserData['name']),
+          stream: statusModel.status_data(widget.docID),
           builder: (context, snapshot) {
             var users = snapshot.data?.docs.toList();
             if (snapshot.hasData) {
