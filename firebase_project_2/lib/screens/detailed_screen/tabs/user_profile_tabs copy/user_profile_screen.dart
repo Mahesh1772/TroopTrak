@@ -264,7 +264,9 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                   ordDate: data['ord']),
 
                               //Statuses tab
-                              const UserProfileStatusesTab(),
+                              UserProfileStatusesTab(
+                                docID: fname,
+                              ),
 
                               const UserProfileAttendanceTab(),
                             ],

@@ -15,9 +15,10 @@ List<Map<String, dynamic>> userCurrentStatus = [];
 
 class UserProfileStatusesTab extends StatefulWidget {
   const UserProfileStatusesTab({
+    required this.docID,
     super.key,
   });
-
+  final String docID;
   @override
   State<UserProfileStatusesTab> createState() => _UserProfileStatusesTabState();
 }
@@ -34,7 +35,7 @@ class _UserProfileStatusesTabState extends State<UserProfileStatusesTab> {
       body: Padding(
         padding: EdgeInsets.all(30.0.sp),
         child: StreamBuilder<QuerySnapshot>(
-          stream: statusModel.status_data(currentUserData['name']),
+          stream: statusModel.status_data(widget.docID),
           builder: (context, snapshot) {
             var users = snapshot.data?.docs.toList();
             if (snapshot.hasData) {
