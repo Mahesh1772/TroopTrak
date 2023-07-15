@@ -6,8 +6,9 @@ import 'package:firebase_project_2/screens/guard_duty_tracker_screen.dart/util/e
 import 'package:firebase_project_2/util/constants.dart';
 import 'package:firebase_project_2/util/text_styles/text_style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:lottie/lottie.dart';
 
-class GuardDutyTile extends StatelessWidget {
+class GuardDutyTile extends StatefulWidget {
   final String dutyDate;
   final String startTime;
   final String endTime;
@@ -15,6 +16,7 @@ class GuardDutyTile extends StatelessWidget {
   final double numberOfPoints;
   final String docID;
   final Map<String, dynamic> participants;
+  final bool isUserParticipating;
 
   const GuardDutyTile({
     super.key,
@@ -25,10 +27,32 @@ class GuardDutyTile extends StatelessWidget {
     required this.numberOfPoints,
     required this.docID,
     required this.participants,
+    required this.isUserParticipating,
   });
 
+  @override
+  State<GuardDutyTile> createState() => _GuardDutyTileState();
+}
+
+class _GuardDutyTileState extends State<GuardDutyTile>
+    with TickerProviderStateMixin {
+  late AnimationController _isParticipatingIconController;
+
+  @override
+  void initState() {
+    _isParticipatingIconController = AnimationController(
+      vsync: this,
+    );
+
+    _isParticipatingIconController.repeat(period: Duration(seconds: 2));
+    super.initState();
+  }
+
   Future deleteDutyDetails() async {
-    await FirebaseFirestore.instance.collection('Duties').doc(docID).delete();
+    await FirebaseFirestore.instance
+        .collection('Duties')
+        .doc(widget.docID)
+        .delete();
   }
 
   deleteDuty() {
@@ -53,10 +77,10 @@ class GuardDutyTile extends StatelessWidget {
         child: ExpansionTile(
           collapsedIconColor: Colors.white,
           title: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Padding(
-                padding: EdgeInsets.only(right: 30.0.w),
+                padding: EdgeInsets.only(right: 20.0.w),
                 child: Container(
                   height: 85.h,
                   width: 85.w,
@@ -79,7 +103,7 @@ class GuardDutyTile extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          numberOfPoints.toString(),
+                          widget.numberOfPoints.toString(),
                           style: GoogleFonts.poppins(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -94,9 +118,9 @@ class GuardDutyTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: 190.w,
+                    width: 134.w,
                     child: AutoSizeText(
-                      '$startTime - $endTime\n(Next day)',
+                      '${widget.startTime} - ${widget.endTime}\n(Next day)',
                       maxLines: 2,
                       style: GoogleFonts.poppins(
                           fontWeight: FontWeight.w500, color: Colors.white),
@@ -106,9 +130,9 @@ class GuardDutyTile extends StatelessWidget {
                     height: 10.h,
                   ),
                   SizedBox(
-                    width: 190.w,
+                    width: 134.w,
                     child: AutoSizeText(
-                      dutyDate,
+                      widget.dutyDate,
                       maxLines: 1,
                       style: GoogleFonts.poppins(
                           fontSize: 24.sp,
@@ -118,6 +142,33 @@ class GuardDutyTile extends StatelessWidget {
                   ),
                 ],
               ),
+              Center(
+                child: widget.isUserParticipating
+                    ? Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Stack(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(18.0.sp),
+                              child: Icon(
+                                Icons.check,
+                                color: Colors.white,
+                                size: 20.sp,
+                              ),
+                            ),
+                            Lottie.network(
+                                "https://lottie.host/220b2467-17d5-41d3-923a-3124581b9c71/VmZrHlNeR7.json",
+                                controller: _isParticipatingIconController,
+                                height: 55.h,
+                                fit: BoxFit.cover),
+                          ],
+                        ),
+                      )
+                    : Lottie.network(
+                        "https://lottie.host/b9ea1c18-05fc-4fba-b566-cebdaecc45b5/8ZFPRtgKqI.json",
+                        height: 60.h,
+                        fit: BoxFit.cover),
+              )
             ],
           ),
           children: [
@@ -133,13 +184,13 @@ class GuardDutyTile extends StatelessWidget {
             SizedBox(
               height: 220.h,
               child: ListView.builder(
-                itemCount: participants.length,
+                itemCount: widget.participants.length,
                 padding: EdgeInsets.all(12.sp),
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
                   return ExpandedDutyParticipantsTile(
-                    soldierName: participants.keys.elementAt(index),
-                    soldierRank: participants.values.elementAt(index),
+                    soldierName: widget.participants.keys.elementAt(index),
+                    soldierRank: widget.participants.values.elementAt(index),
                   );
                 },
               ),
