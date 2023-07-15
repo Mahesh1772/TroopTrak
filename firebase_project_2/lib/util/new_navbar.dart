@@ -54,7 +54,7 @@ class _GNavMainScreen extends State<GNavMainScreen> {
   Widget build(BuildContext context) {
     final List<Widget> _widgetOptions = <Widget>[
       UserProfileScreen(
-        docID: name,
+        //docID: name,
         //soldierName: currentUserData['name'],
         //soldierRank: currentUserData['rank'].toString().toLowerCase(),
         //soldierAppointment: currentUserData['appointment'],

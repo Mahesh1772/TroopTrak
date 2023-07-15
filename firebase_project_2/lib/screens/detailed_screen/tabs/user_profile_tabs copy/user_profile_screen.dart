@@ -15,31 +15,7 @@ import '../../../../user_models/user_details.dart';
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({
     super.key,
-    required this.docID,
-    //required this.soldierName,
-    //required this.soldierRank,
-    //required this.company,
-    //required this.platoon,
-    //required this.section,
-    //required this.soldierAppointment,
-    //required this.dateOfBirth,
-    //required this.rationType,
-    //required this.bloodType,
-    //required this.enlistmentDate,
-    //required this.ordDate,
   });
-  final String docID;
-  //final String soldierName;
-  //final String soldierRank;
-  //final String company;
-  //final String platoon;
-  //final String section;
-  //final String soldierAppointment;
-  //final String dateOfBirth;
-  //final String rationType;
-  //final String bloodType;
-  //final String enlistmentDate;
-  //final String ordDate;
 
   @override
   State<UserProfileScreen> createState() => _UserProfileScreenState();
@@ -84,20 +60,6 @@ class _UserProfileScreenState extends State<UserProfileScreen>
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 data = snapshot.data!.data() as Map<String, dynamic>;
-                //data['name'] = widget.soldierName;
-                //data['rank'] = widget.soldierRank;
-                //data['dob'] = widget.dateOfBirth;
-                //data['rationType'] = widget.rationType;
-                //data['bloodgroup'] = widget.bloodType;
-                //data['enlistment'] = widget.enlistmentDate;
-                //data['ord'] = widget.ordDate;
-                //data['name'] = widget.soldierRank;
-                //data['name'] = widget.soldierRank;
-                //data['name'] = widget.soldierRank;
-                //data['name'] = widget.soldierRank;
-                //data['name'] = widget.soldierRank;
-                //data['name'] = widget.soldierRank;
-                //data['name'] = widget.soldierRank;
 
                 return Column(
                   children: [
@@ -140,7 +102,6 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                //widget.soldierName.toUpperCase(),
                                                 data['name'].toUpperCase(),
                                                 maxLines: 3,
                                                 style: GoogleFonts.poppins(
@@ -154,10 +115,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                                 height: 5.h,
                                               ),
                                               Text(
-                                                //widget
-                                                //    .soldierAppointment.titleCase,
-                                                data[
-                                                    'appointment'], //.titleCase,
+                                                data['appointment'],
                                                 maxLines: 2,
                                                 style: GoogleFonts.poppins(
                                                   color: Colors.white,
@@ -170,12 +128,9 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                           ),
                                         ),
                                         Image.asset(
-                                          //"lib/assets/army-ranks/${widget.soldierRank.toString().toLowerCase()}.png",
                                           "lib/assets/army-ranks/${data['rank'].toString().toLowerCase()}.png",
                                           width: 60.w,
-                                          color: rankColorPicker(//widget
-                                                  //.soldierRank
-                                                  //.toUpperCase()
+                                          color: rankColorPicker(
                                                   data['rank'].toUpperCase())
                                               ? Colors.white
                                               : null,
@@ -189,7 +144,6 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                   Padding(
                                     padding: EdgeInsets.only(left: 20.0.w),
                                     child: Text(
-                                      //"${widget.company.toUpperCase()} COMPANY",
                                       "${data['company'].toUpperCase()} COMPANY",
                                       maxLines: 2,
                                       style: GoogleFonts.poppins(
@@ -220,10 +174,11 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                         width: 300.w,
                                         padding: EdgeInsets.all(16.sp),
                                         decoration: BoxDecoration(
-                                            color: Colors.transparent
-                                                .withOpacity(0.1),
-                                            borderRadius:
-                                                BorderRadius.circular(20.r)),
+                                          color: Colors.transparent
+                                              .withOpacity(0.1),
+                                          borderRadius:
+                                              BorderRadius.circular(20.r),
+                                        ),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
@@ -236,8 +191,11 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                             SizedBox(
                                               width: 20.w,
                                             ),
-                                            StyledText("SHOW QR CODE", 20.sp,
-                                                fontWeight: FontWeight.bold),
+                                            StyledText(
+                                              "SHOW QR CODE",
+                                              20.sp,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -317,10 +275,16 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                   ],
                 );
               }
-              return const Center(
-                  child: CircularProgressIndicator(
-                color: Colors.deepPurple,
-              ));
+              return const Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(
+                      child: CircularProgressIndicator(
+                    color: Colors.deepPurple,
+                  )),
+                ],
+              );
             }),
       ),
     );
