@@ -38,20 +38,12 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
             if (snapshots.snapshot1.hasData) {
               var conducts = snapshots.snapshot1.data?.docs.toList();
               meetings = [];
-              var todayConducts = [];
               var allConducts = [];
               for (var i = 0; i < conducts!.length; i++) {
                 var data = conducts[i].data();
                 allConducts.add(data as Map<String, dynamic>);
                 allConducts[i]
                     .addEntries({'ID': conducts[i].reference.id}.entries);
-              }
-              for (var conduct in allConducts) {
-                if (calculateDifference(
-                        DateFormat("d MMM yyyy").parse(conduct['startDate'])) ==
-                    0) {
-                  todayConducts.add(conduct);
-                }
               }
               for (var conduct in allConducts) {
                 String nowStrartTime =
@@ -89,8 +81,7 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
                     duty['dutyDate'] + " " + duty['startTime'];
                 DateTime sDate =
                     DateFormat('d MMM yyyy h:mm a').parse(nowStrartTime);
-                String nowEndTime =
-                    duty['dutyDate'] + " " + duty['endTime'];
+                String nowEndTime = duty['dutyDate'] + " " + duty['endTime'];
                 DateTime eDate =
                     DateFormat('d MMM yyyy h:mm a').parse(nowEndTime);
                 final Appointment newAppointment = Appointment(
@@ -130,9 +121,8 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
                   fontSize: 24.sp,
                 ),
               ),
-              view: CalendarView.day,
-              dataSource:
-                  _getCalendarDataSource(), //MeetingDataSource(getAppointments()),
+              view: CalendarView.timelineDay,
+              dataSource: _getCalendarDataSource(),
               initialSelectedDate: _selectedDate,
               scheduleViewMonthHeaderBuilder: scheduleViewHeaderBuilder,
               timeSlotViewSettings: const TimeSlotViewSettings(
@@ -257,83 +247,6 @@ List<Appointment> getAppointments() {
 
   return meetings;
 }
-
-int calculateDifference(DateTime date) {
-  //DateTime now = DateTime.now();
-  return DateTime(date.year, date.month, date.day)
-      .difference(
-          DateTime(_selectedDate.year, _selectedDate.month, _selectedDate.day))
-      .inDays;
-}
-
-/*
-Future<List<Appointment>> getDuty_and_Conducts(BuildContext context) async {
-  final userDetailsModel = Provider.of<UserData>(context);
-  List<Map<String, dynamic>> todayConducts =
-      await userDetailsModel.todayConducts();
-List<Map<String, dynamic>> allConducts = [];
-  List<Map<String, dynamic>> dutyDetails = await userDetailsModel.todayDuty();
-
-  print(dutyDetails);
- StreamBuilder2<QuerySnapshot, QuerySnapshot>(
-   streams: StreamTuple2(
-       userDetailsModel.conducts_data, userDetailsModel.duty_data),
-   builder: (context, snapshots) {
-     if (snapshots.snapshot1.hasData) {
-       var conducts = snapshots.snapshot1.data?.docs.toList();
-       todayConducts = [];
-       allConducts = [];
-       for (var i = 0; i < conducts!.length; i++) {
-         var data = conducts[i].data();
-         allConducts.add(data as Map<String, dynamic>);
-         allConducts[i].addEntries({'ID': conducts[i].reference.id}.entries);
-       }
-       for (var conduct in allConducts) {
-         if (calculateDifference(
-                 DateFormat("d MMM yyyy").parse(conduct['startDate'])) ==
-             0) {
-           todayConducts.add(conduct);
-         }
-       }
-  for (var conduct in todayConducts) {
-    meetings.add(
-      Appointment(
-          startTime: conduct['startTime'],
-          endTime: conduct['endTime'],
-          subject: conduct['conductName'],
-          color: Colors.amber),
-    );
-  }
-      }
-      if (snapshots.snapshot2.hasData) {
-        dutyDetails = [];
-        var duties = snapshots.snapshot2.data?.docs.toList();
-        for (var i = 0; i < duties!.length; i++) {
-          var data = duties[i].data();
-          if (calculateDifference(
-                  DateFormat("d MMM yyyy").parse(duties[i]['dutyDate'])) ==
-              0) {
-            dutyDetails.add(data as Map<String, dynamic>);
-            dutyDetails[i].addEntries({'ID': duties[i].reference.id}.entries);
-          }
-        }
-  for (var conduct in dutyDetails) {
-    meetings.add(
-      Appointment(
-          startTime: conduct['startTime'],
-          endTime: conduct['endTime'],
-          subject: conduct['dayType'],
-          color: Colors.amber),
-    );
-  }
-      }
-      return Text('null');
-    },
-  );
-
-  return meetings;
-}
-*/
 
 MeetingDataSource _getCalendarDataSource() {
   return MeetingDataSource(meetings);

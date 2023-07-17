@@ -27,6 +27,10 @@ class _UserProfileScreenState extends State<UserProfileScreen>
 
   Map<String, dynamic> data = {};
 
+  void showQR() {
+    Navigator.push(context,MaterialPageRoute(builder: (context) => GenerateQRScreen()));
+  }
+
   @override
   Widget build(BuildContext context) {
     final userDetailsModel = Provider.of<UserData>(context);
@@ -169,6 +173,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                   ),
                                   Center(
                                     child: GestureDetector(
+                                      onTap: showQR,
                                       child: Container(
                                         width: 300.w,
                                         padding: EdgeInsets.all(16.sp),

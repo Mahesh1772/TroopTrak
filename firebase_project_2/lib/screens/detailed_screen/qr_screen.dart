@@ -1,24 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:multiple_stream_builder_demo/ui/style/style.dart';
-import 'package:qr_flutter/qr_flutter.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: HomeScreen(),
-    );
-  }
-}
-
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class GenerateQRScreen extends StatefulWidget {
+  const GenerateQRScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -35,7 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Center(
-            child: QrImageView(
+            child: QrImage(
               data: data,
               backgroundColor: Colors.white,
               version: QrVersions.auto,
