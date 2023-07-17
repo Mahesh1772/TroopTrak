@@ -102,7 +102,8 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
         .doc(name)
         .get()
         .then((value) {
-          currentPoints = value['points'];
+          var data = value.data();
+          currentPoints = data!['points'];
         });
 
     await FirebaseFirestore.instance.collection('Users').doc(name).set({
