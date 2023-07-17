@@ -154,6 +154,7 @@ class _SignInState extends State<SignIn> {
                       child: Padding(
                         padding: EdgeInsets.only(left: 20.w),
                         child: TextFormField(
+                          key: const Key("emailField"),
                           keyboardType: TextInputType.emailAddress,
                           controller: _emailId,
                           decoration: const InputDecoration(
@@ -187,6 +188,7 @@ class _SignInState extends State<SignIn> {
                       child: Padding(
                         padding: EdgeInsets.only(left: 20.w),
                         child: TextFormField(
+                          key: const Key("passwordField"),
                           controller: _password,
                           obscureText: true,
                           decoration: const InputDecoration(
@@ -214,6 +216,7 @@ class _SignInState extends State<SignIn> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         GestureDetector(
+                          key: const Key("forgotPasswordButton"),
                           onTap: () {
                             Navigator.push(
                               context,
@@ -240,6 +243,7 @@ class _SignInState extends State<SignIn> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 25.0.w),
                     child: GestureDetector(
+                      key: const Key("signInButton"),
                       onTap: () {
                         if (formKey.currentState!.validate()) {
                           isSignedIn();
