@@ -33,7 +33,34 @@ class GuardDutyTile extends StatelessWidget {
   }
 
   deleteDuty() {
+    addPoints();
     deleteDutyDetails();
+  }
+
+  Future addFieldDetails(String name) async {
+    double currentPoints = 0;
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(name)
+        .get()
+        .then((value) {
+      var data = value.data();
+      currentPoints = data!['points'].toDouble();
+    });
+
+    double diff = currentPoints - numberOfPoints;
+
+    await FirebaseFirestore.instance.collection('Users').doc(name).set({
+      //User map formatting
+      'points': diff >= 0 ? diff : 0,
+    }, SetOptions(merge: true));
+  }
+
+  Future addPoints() async {
+    participants.removeWhere((key, value) => (key.contains("NA")));
+    for (var soldier in participants.keys) {
+      addFieldDetails(soldier);
+    }
   }
 
   @override
@@ -157,7 +184,8 @@ class GuardDutyTile extends StatelessWidget {
                           participants: participants,
                           dutyDate: dutyDate,
                           dutyStartTime: startTime,
-                          dutyEndTime: endTime),
+                          dutyEndTime: endTime,
+                          numberOfPoints: numberOfPoints),
                     ),
                   );
                 },

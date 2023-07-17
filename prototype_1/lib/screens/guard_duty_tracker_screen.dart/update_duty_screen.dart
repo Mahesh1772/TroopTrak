@@ -18,6 +18,7 @@ class UpdateDutyScreen extends StatefulWidget {
     required this.dutyEndTime,
     required this.docID,
     required this.participants,
+    required this.numberOfPoints,
   });
 
   late String dutyDate;
@@ -25,6 +26,7 @@ class UpdateDutyScreen extends StatefulWidget {
   late String dutyEndTime;
   final String docID;
   final Map<String, dynamic> participants;
+  late double numberOfPoints;
 
   @override
   State<UpdateDutyScreen> createState() => _UpdateDutyScreenState();
@@ -37,6 +39,8 @@ List<String> heroAddDutySoldiers = [];
 List<Map<String, dynamic>> listOfPersonal = [];
 
 List documentIDs = [];
+
+double pointsBefore = 0;
 
 class _UpdateDutyScreenState extends State<UpdateDutyScreen> {
   List<String> non_participants = [];
@@ -140,6 +144,33 @@ class _UpdateDutyScreenState extends State<UpdateDutyScreen> {
       'endTime': widget.dutyEndTime,
       'participants': dutySoldiersAndRanks
     });
+
+    addPoints();
+    print(pointsBefore);
+    print(points);
+  }
+
+  Future addFieldDetails(String name) async {
+    double currentPoints = 0;
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(name)
+        .get()
+        .then((value) {
+      var data = value.data();
+      currentPoints = data!['points'].toDouble();
+    });
+    await FirebaseFirestore.instance.collection('Users').doc(name).set({
+      //User map formatting
+      'points': currentPoints + points - widget.numberOfPoints,
+    }, SetOptions(merge: true));
+  }
+
+  Future addPoints() async {
+    dutySoldiersAndRanks.removeWhere((key, value) => (key.contains("NA")));
+    for (var soldier in dutySoldiersAndRanks.keys) {
+      addFieldDetails(soldier);
+    }
   }
 
   @override
@@ -149,6 +180,7 @@ class _UpdateDutyScreenState extends State<UpdateDutyScreen> {
     pointsAssignment(DateTime.now());
     populateHeroTagArray();
     populateDutySoldiersAndRanksArray();
+    pointsBefore = points;
     super.initState();
   }
 
