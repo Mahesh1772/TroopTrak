@@ -53,7 +53,7 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
                   todayConducts.add(conduct);
                 }
               }
-              for (var conduct in todayConducts) {
+              for (var conduct in allConducts) {
                 String nowStrartTime =
                     conduct['startDate'] + " " + conduct['startTime'];
                 DateTime sDate =
@@ -130,7 +130,7 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
                   fontSize: 24.sp,
                 ),
               ),
-              view: CalendarView.timelineDay,
+              view: CalendarView.month,
               dataSource:
                   _getCalendarDataSource(), //MeetingDataSource(getAppointments()),
               initialSelectedDate: _selectedDate,
