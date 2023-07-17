@@ -23,92 +23,128 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
   @override
   void initState() {
     // TODO: implement initState
-    //getDuty_and_Conducts(context);
     super.initState();
   }
 
   @override
   build(BuildContext context) {
+    final statusModel = Provider.of<UserData>(context);
     return SizedBox(
       height: 780.h,
-      child: SfCalendar(
-        //backgroundColor: Colors.black54,
-        showDatePickerButton: true,
-        headerStyle: CalendarHeaderStyle(
-          backgroundColor: Colors.deepPurple,
-          textStyle: GoogleFonts.poppins(
-            color: Colors.white,
-            fontWeight: FontWeight.w500,
-            fontSize: 24.sp,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        todayTextStyle: GoogleFonts.poppins(
-          color: Colors.white,
-          fontSize: 16.sp,
-        ),
-        viewHeaderStyle: ViewHeaderStyle(
-          backgroundColor: Colors.deepPurple,
-          dateTextStyle: GoogleFonts.poppins(
-            color: Colors.white,
-            fontSize: 24.sp,
-          ),
-          dayTextStyle: GoogleFonts.poppins(
-            color: Colors.white,
-            fontSize: 24.sp,
-          ),
-        ),
-        view: CalendarView.week,
-        dataSource: MeetingDataSource(getAppointments()),
-        initialSelectedDate: _selectedDate,
-        scheduleViewMonthHeaderBuilder: scheduleViewHeaderBuilder,
-        timeSlotViewSettings: const TimeSlotViewSettings(
-          numberOfDaysInView: 3,
-          timeIntervalHeight: 100,
-        ),
-        scheduleViewSettings: ScheduleViewSettings(
-          appointmentItemHeight: 50.h,
-          appointmentTextStyle: GoogleFonts.poppins(
-            color: Colors.white,
-            fontWeight: FontWeight.w500,
-            fontSize: 12.sp,
-          ),
-          dayHeaderSettings: DayHeaderSettings(
-            dayFormat: 'EEEE',
-            width: 70.w,
-            dayTextStyle: GoogleFonts.poppins(
-              fontSize: 10.sp,
-              fontWeight: FontWeight.w400,
-              color: Colors.white,
-            ),
-            dateTextStyle: GoogleFonts.poppins(
-              fontSize: 20.sp,
-              fontWeight: FontWeight.w500,
-              color: Colors.white,
-            ),
-          ),
-          monthHeaderSettings: MonthHeaderSettings(
-            backgroundColor: Colors.deepPurple,
-            monthTextStyle: GoogleFonts.poppins(
-              color: Colors.white,
-              fontSize: 20.sp,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          weekHeaderSettings: WeekHeaderSettings(
-            weekTextStyle: GoogleFonts.poppins(
-              color: Colors.white70,
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          placeholderTextStyle: GoogleFonts.poppins(
-            fontSize: 15.sp,
-            fontWeight: FontWeight.w400,
-            color: Colors.white,
-          ),
-        ),
-      ),
+      child: StreamBuilder<QuerySnapshot>(
+          stream: statusModel.conducts_data,
+          builder: (context, snapshot) {
+            var conducts = snapshot.data?.docs.toList();
+            if (snapshot.hasData) {
+              meetings = [];
+              var todayConducts = [];
+              var allConducts = [];
+              for (var i = 0; i < conducts!.length; i++) {
+                var data = conducts[i].data();
+                allConducts.add(data as Map<String, dynamic>);
+                allConducts[i]
+                    .addEntries({'ID': conducts[i].reference.id}.entries);
+              }
+              for (var conduct in allConducts) {
+                if (calculateDifference(
+                        DateFormat("d MMM yyyy").parse(conduct['startDate'])) ==
+                    0) {
+                  todayConducts.add(conduct);
+                }
+              }
+              for (var conduct in todayConducts) {
+                DateTime sDate =
+                    DateFormat('h:mm a').parse(conduct['startTime']).add(Duration(days: 19555));
+                DateTime eDate = DateFormat('h:mm a').parse(conduct['endTime']).add(Duration(days: 19555));
+                final Appointment newAppointment = Appointment(
+                  startTime: sDate,
+                  endTime: eDate,
+                  subject: conduct['conductType'],
+                  color: Colors.amber,
+                );
+                meetings.add(newAppointment);
+              }
+            }
+            return SfCalendar(
+              //backgroundColor: Colors.black54,
+              showDatePickerButton: true,
+              headerStyle: CalendarHeaderStyle(
+                backgroundColor: Colors.deepPurple,
+                textStyle: GoogleFonts.poppins(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 24.sp,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              todayTextStyle: GoogleFonts.poppins(
+                color: Colors.white,
+                fontSize: 16.sp,
+              ),
+              viewHeaderStyle: ViewHeaderStyle(
+                backgroundColor: Colors.deepPurple,
+                dateTextStyle: GoogleFonts.poppins(
+                  color: Colors.white,
+                  fontSize: 24.sp,
+                ),
+                dayTextStyle: GoogleFonts.poppins(
+                  color: Colors.white,
+                  fontSize: 24.sp,
+                ),
+              ),
+              view: CalendarView.timelineDay,
+              dataSource:
+                  _getCalendarDataSource(), //MeetingDataSource(getAppointments()),
+              initialSelectedDate: _selectedDate,
+              scheduleViewMonthHeaderBuilder: scheduleViewHeaderBuilder,
+              timeSlotViewSettings: const TimeSlotViewSettings(
+                //numberOfDaysInView: 1,
+                timeIntervalHeight: 100,
+              ),
+              scheduleViewSettings: ScheduleViewSettings(
+                appointmentItemHeight: 50.h,
+                appointmentTextStyle: GoogleFonts.poppins(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 12.sp,
+                ),
+                dayHeaderSettings: DayHeaderSettings(
+                  dayFormat: 'EEEE',
+                  width: 70.w,
+                  dayTextStyle: GoogleFonts.poppins(
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white,
+                  ),
+                  dateTextStyle: GoogleFonts.poppins(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                  ),
+                ),
+                monthHeaderSettings: MonthHeaderSettings(
+                  backgroundColor: Colors.deepPurple,
+                  monthTextStyle: GoogleFonts.poppins(
+                    color: Colors.white,
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                weekHeaderSettings: WeekHeaderSettings(
+                  weekTextStyle: GoogleFonts.poppins(
+                    color: Colors.white70,
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                placeholderTextStyle: GoogleFonts.poppins(
+                  fontSize: 15.sp,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.white,
+                ),
+              ),
+            );
+          }),
     );
   }
 
@@ -192,34 +228,35 @@ int calculateDifference(DateTime date) {
       .inDays;
 }
 
+/*
 Future<List<Appointment>> getDuty_and_Conducts(BuildContext context) async {
   final userDetailsModel = Provider.of<UserData>(context);
   List<Map<String, dynamic>> todayConducts =
       await userDetailsModel.todayConducts();
-//List<Map<String, dynamic>> allConducts = [];
+List<Map<String, dynamic>> allConducts = [];
   List<Map<String, dynamic>> dutyDetails = await userDetailsModel.todayDuty();
 
   print(dutyDetails);
-  //StreamBuilder2<QuerySnapshot, QuerySnapshot>(
-  //  streams: StreamTuple2(
-  //      userDetailsModel.conducts_data, userDetailsModel.duty_data),
-  //  builder: (context, snapshots) {
-  //    if (snapshots.snapshot1.hasData) {
-  //      var conducts = snapshots.snapshot1.data?.docs.toList();
-  //      todayConducts = [];
-  //      allConducts = [];
-  //      for (var i = 0; i < conducts!.length; i++) {
-  //        var data = conducts[i].data();
-  //        allConducts.add(data as Map<String, dynamic>);
-  //        allConducts[i].addEntries({'ID': conducts[i].reference.id}.entries);
-  //      }
-  //      for (var conduct in allConducts) {
-  //        if (calculateDifference(
-  //                DateFormat("d MMM yyyy").parse(conduct['startDate'])) ==
-  //            0) {
-  //          todayConducts.add(conduct);
-  //        }
-  //      }
+ StreamBuilder2<QuerySnapshot, QuerySnapshot>(
+   streams: StreamTuple2(
+       userDetailsModel.conducts_data, userDetailsModel.duty_data),
+   builder: (context, snapshots) {
+     if (snapshots.snapshot1.hasData) {
+       var conducts = snapshots.snapshot1.data?.docs.toList();
+       todayConducts = [];
+       allConducts = [];
+       for (var i = 0; i < conducts!.length; i++) {
+         var data = conducts[i].data();
+         allConducts.add(data as Map<String, dynamic>);
+         allConducts[i].addEntries({'ID': conducts[i].reference.id}.entries);
+       }
+       for (var conduct in allConducts) {
+         if (calculateDifference(
+                 DateFormat("d MMM yyyy").parse(conduct['startDate'])) ==
+             0) {
+           todayConducts.add(conduct);
+         }
+       }
   for (var conduct in todayConducts) {
     meetings.add(
       Appointment(
@@ -229,19 +266,19 @@ Future<List<Appointment>> getDuty_and_Conducts(BuildContext context) async {
           color: Colors.amber),
     );
   }
-  //    }
-  //    if (snapshots.snapshot2.hasData) {
-  //      dutyDetails = [];
-  //      var duties = snapshots.snapshot2.data?.docs.toList();
-  //      for (var i = 0; i < duties!.length; i++) {
-  //        var data = duties[i].data();
-  //        if (calculateDifference(
-  //                DateFormat("d MMM yyyy").parse(duties[i]['dutyDate'])) ==
-  //            0) {
-  //          dutyDetails.add(data as Map<String, dynamic>);
-  //          dutyDetails[i].addEntries({'ID': duties[i].reference.id}.entries);
-  //        }
-  //      }
+      }
+      if (snapshots.snapshot2.hasData) {
+        dutyDetails = [];
+        var duties = snapshots.snapshot2.data?.docs.toList();
+        for (var i = 0; i < duties!.length; i++) {
+          var data = duties[i].data();
+          if (calculateDifference(
+                  DateFormat("d MMM yyyy").parse(duties[i]['dutyDate'])) ==
+              0) {
+            dutyDetails.add(data as Map<String, dynamic>);
+            dutyDetails[i].addEntries({'ID': duties[i].reference.id}.entries);
+          }
+        }
   for (var conduct in dutyDetails) {
     meetings.add(
       Appointment(
@@ -251,12 +288,17 @@ Future<List<Appointment>> getDuty_and_Conducts(BuildContext context) async {
           color: Colors.amber),
     );
   }
-  //    }
-  //    return Text('null');
-  //  },
-  //);
+      }
+      return Text('null');
+    },
+  );
 
   return meetings;
+}
+*/
+
+MeetingDataSource _getCalendarDataSource() {
+  return MeetingDataSource(meetings);
 }
 
 class MeetingDataSource extends CalendarDataSource {
