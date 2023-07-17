@@ -1,4 +1,4 @@
-name: prototype_1
+name: multiple_stream_builder_demo
 description: A new Flutter project.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.19.6 <3.0.0'
+  sdk: '>=3.0.5 <4.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -27,63 +27,17 @@ environment:
 # dependencies can be manually updated by changing the version numbers below to
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
-
-
 dependencies:
   flutter:
     sdk: flutter
-  google_fonts: ^4.0.4 
-  flutter_svg: ^2.0.5
-  fl_chart: ^0.62.0
-  provider: ^6.0.5
-  cloud_firestore: ^4.5.3
-  intl: ^0.17.0
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  google_nav_bar: ^5.0.6
-  firebase_core: ^2.12.0
-  
-  permission_handler: ^10.2.0
-  flutter_screenutil: ^5.7.0
-  percent_indicator: ^4.2.3
-  firebase_auth: ^4.6.0
-  recase: ^4.1.0
-  auto_size_text: ^3.0.0
-  
-  flutter_slidable: ^3.0.0
-  animated_snack_bar: ^0.3.1
-  email_validator: ^2.0.1
-  flutter_icon_snackbar: ^1.1.4
-  flutter_pw_validator: ^1.6.0
-  responsive_framework: ^1.0.0
-  liquid_pull_to_refresh: ^3.0.1
-  
-  horizontal_center_date_picker: ^2.1.1
-  syncfusion_flutter_datagrid: ^21.2.10
-  easy_autocomplete: ^1.6.0
-  popup_card: ^0.1.0
-  font_awesome_flutter: ^10.4.0
-  roundcheckbox: ^2.0.5
-  syncfusion_flutter_calendar: ^21.2.3
-  mockito: ^5.4.2
-  flip_card: ^0.7.0
-  animated_toggle_switch: ^0.7.0
-
-  fast_immutable_collections: ^9.1.5
-
-  animations: ^2.0.7
-  mobile_scanner: ^3.3.0
-  qr_flutter: ^4.1.0
-  image_picker: ^1.0.1
   multiple_stream_builder: ^3.0.2
-  rxdart: ^0.27.7
-
 
 dev_dependencies:
-  integration_test:
-    sdk: flutter
   flutter_test:
     sdk: flutter
 
@@ -106,44 +60,7 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  assets:
-      - lib/assets/user.png
-      - lib/assets/army-ranks/rec.png
-      - lib/assets/army-ranks/pte.png
-      - lib/assets/army-ranks/lcp.png
-      - lib/assets/army-ranks/cpl.png
-      - lib/assets/army-ranks/cfc.png
-      - lib/assets/army-ranks/sct.png
-      - lib/assets/army-ranks/3sg.png
-      - lib/assets/army-ranks/2sg.png
-      - lib/assets/army-ranks/1sg.png
-      - lib/assets/army-ranks/ssg.png
-      - lib/assets/army-ranks/msg.png
-      - lib/assets/army-ranks/3wo.png
-      - lib/assets/army-ranks/2wo.png
-      - lib/assets/army-ranks/1wo.png
-      - lib/assets/army-ranks/mwo.png
-      - lib/assets/army-ranks/swo.png
-      - lib/assets/army-ranks/cwo.png
-      - lib/assets/army-ranks/2lt.png
-      - lib/assets/army-ranks/lta.png
-      - lib/assets/army-ranks/cpt.png
-      - lib/assets/army-ranks/maj.png
-      - lib/assets/army-ranks/ltc.png
-      - lib/assets/army-ranks/sltc.png
-      - lib/assets/army-ranks/col.png
-      - lib/assets/army-ranks/bg.png
-      - lib/assets/army-ranks/mg.png
-      - lib/assets/army-ranks/lg.png
-      - lib/assets/army-ranks/soldier.png
-      - lib/assets/army-ranks/men.png
-      - lib/assets/icons8-medals-64.png
-      - lib/assets/icons8-soldier-man-64.png
-      - lib/assets/icons8-soldiers-64.png
-      - lib/assets/icons8-doctors-folder-64.png
-      - lib/assets/icons8-error-64.png
-      - lib/assets/calendar-images/
-    
+  # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

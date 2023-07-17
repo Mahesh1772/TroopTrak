@@ -145,4 +145,36 @@ class UserData extends ChangeNotifier {
     });
     //return attendance_list;
   }
+
+  Future<List<Map<String, dynamic>>> todayConducts() async {
+    List<Map<String, dynamic>> conduct = [];
+    await FirebaseFirestore.instance
+        .collection("Conducts")
+        .where('startDate',
+            isEqualTo: DateFormat("d MMM yyyy").format(DateTime.now()))
+        .get()
+        .then((querySnapshot) async {
+      for (var snapshot in querySnapshot.docs) {
+        Map<String, dynamic> data = snapshot.data();
+        conduct.add(data);
+      }
+    });
+    return conduct;
+  }
+
+  Future<List<Map<String, dynamic>>> todayDuty() async {
+    List<Map<String, dynamic>> conduct = [];
+    await FirebaseFirestore.instance
+        .collection("Duties")
+        .where('dutyDate',
+            isEqualTo: DateFormat("d MMM yyyy").format(DateTime.now()))
+        .get()
+        .then((querySnapshot) async {
+      for (var snapshot in querySnapshot.docs) {
+        Map<String, dynamic> data = snapshot.data();
+        conduct.add(data);
+      }
+    });
+    return conduct;
+  }
 }

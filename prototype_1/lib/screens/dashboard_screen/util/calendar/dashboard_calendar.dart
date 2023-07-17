@@ -1,7 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:multiple_stream_builder/multiple_stream_builder.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+
+import '../../../../user_models/user_details.dart';
 
 class DashboardCalendar extends StatefulWidget {
   const DashboardCalendar({super.key});
@@ -10,13 +16,23 @@ class DashboardCalendar extends StatefulWidget {
   State<DashboardCalendar> createState() => _DashboardCalendarState();
 }
 
+DateTime _selectedDate = DateTime.now();
+List<Appointment> meetings = <Appointment>[];
+
 class _DashboardCalendarState extends State<DashboardCalendar> {
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    // TODO: implement initState
+    //getDuty_and_Conducts(context);
+    super.initState();
+  }
+
+  @override
+  build(BuildContext context) {
     return SizedBox(
       height: 780.h,
       child: SfCalendar(
-        backgroundColor: Colors.black54,
+        //backgroundColor: Colors.black54,
         showDatePickerButton: true,
         headerStyle: CalendarHeaderStyle(
           backgroundColor: Colors.deepPurple,
@@ -42,10 +58,16 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
             fontSize: 24.sp,
           ),
         ),
-        view: CalendarView.schedule,
+        view: CalendarView.week,
+        dataSource: MeetingDataSource(getAppointments()),
+        initialSelectedDate: _selectedDate,
         scheduleViewMonthHeaderBuilder: scheduleViewHeaderBuilder,
+        timeSlotViewSettings: const TimeSlotViewSettings(
+          numberOfDaysInView: 3,
+          timeIntervalHeight: 100,
+        ),
         scheduleViewSettings: ScheduleViewSettings(
-          appointmentItemHeight: 70.h,
+          appointmentItemHeight: 50.h,
           appointmentTextStyle: GoogleFonts.poppins(
             color: Colors.white,
             fontWeight: FontWeight.w500,
@@ -142,5 +164,103 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
     } else {
       return 'December';
     }
+  }
+}
+
+List<Appointment> getAppointments() {
+  final DateTime today = DateTime.now();
+  final DateTime startTime =
+      DateTime(today.year, today.month, today.day, 9, 0, 0);
+  final DateTime endTime = startTime.add(const Duration(hours: 2));
+
+  meetings.add(Appointment(
+      startTime: startTime,
+      endTime: endTime,
+      subject: 'Board Meeting',
+      color: Colors.blue,
+      recurrenceRule: 'FREQ=DAILY;COUNT=10',
+      isAllDay: false));
+
+  return meetings;
+}
+
+int calculateDifference(DateTime date) {
+  //DateTime now = DateTime.now();
+  return DateTime(date.year, date.month, date.day)
+      .difference(
+          DateTime(_selectedDate.year, _selectedDate.month, _selectedDate.day))
+      .inDays;
+}
+
+Future<List<Appointment>> getDuty_and_Conducts(BuildContext context) async {
+  final userDetailsModel = Provider.of<UserData>(context);
+  List<Map<String, dynamic>> todayConducts =
+      await userDetailsModel.todayConducts();
+//List<Map<String, dynamic>> allConducts = [];
+  List<Map<String, dynamic>> dutyDetails = await userDetailsModel.todayDuty();
+
+  print(dutyDetails);
+  //StreamBuilder2<QuerySnapshot, QuerySnapshot>(
+  //  streams: StreamTuple2(
+  //      userDetailsModel.conducts_data, userDetailsModel.duty_data),
+  //  builder: (context, snapshots) {
+  //    if (snapshots.snapshot1.hasData) {
+  //      var conducts = snapshots.snapshot1.data?.docs.toList();
+  //      todayConducts = [];
+  //      allConducts = [];
+  //      for (var i = 0; i < conducts!.length; i++) {
+  //        var data = conducts[i].data();
+  //        allConducts.add(data as Map<String, dynamic>);
+  //        allConducts[i].addEntries({'ID': conducts[i].reference.id}.entries);
+  //      }
+  //      for (var conduct in allConducts) {
+  //        if (calculateDifference(
+  //                DateFormat("d MMM yyyy").parse(conduct['startDate'])) ==
+  //            0) {
+  //          todayConducts.add(conduct);
+  //        }
+  //      }
+  for (var conduct in todayConducts) {
+    meetings.add(
+      Appointment(
+          startTime: conduct['startTime'],
+          endTime: conduct['endTime'],
+          subject: conduct['conductName'],
+          color: Colors.amber),
+    );
+  }
+  //    }
+  //    if (snapshots.snapshot2.hasData) {
+  //      dutyDetails = [];
+  //      var duties = snapshots.snapshot2.data?.docs.toList();
+  //      for (var i = 0; i < duties!.length; i++) {
+  //        var data = duties[i].data();
+  //        if (calculateDifference(
+  //                DateFormat("d MMM yyyy").parse(duties[i]['dutyDate'])) ==
+  //            0) {
+  //          dutyDetails.add(data as Map<String, dynamic>);
+  //          dutyDetails[i].addEntries({'ID': duties[i].reference.id}.entries);
+  //        }
+  //      }
+  for (var conduct in dutyDetails) {
+    meetings.add(
+      Appointment(
+          startTime: conduct['startTime'],
+          endTime: conduct['endTime'],
+          subject: conduct['dayType'],
+          color: Colors.amber),
+    );
+  }
+  //    }
+  //    return Text('null');
+  //  },
+  //);
+
+  return meetings;
+}
+
+class MeetingDataSource extends CalendarDataSource {
+  MeetingDataSource(List<Appointment> source) {
+    appointments = source;
   }
 }
