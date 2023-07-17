@@ -31,11 +31,12 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
     final statusModel = Provider.of<UserData>(context);
     return SizedBox(
       height: 780.h,
-      child: StreamBuilder<QuerySnapshot>(
-          stream: statusModel.conducts_data,
-          builder: (context, snapshot) {
-            var conducts = snapshot.data?.docs.toList();
-            if (snapshot.hasData) {
+      child: StreamBuilder2<QuerySnapshot, QuerySnapshot>(
+          streams:
+              StreamTuple2(statusModel.conducts_data, statusModel.duty_data),
+          builder: (context, snapshots) {
+            if (snapshots.snapshot1.hasData) {
+              var conducts = snapshots.snapshot1.data?.docs.toList();
               meetings = [];
               var todayConducts = [];
               var allConducts = [];
@@ -53,15 +54,52 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
                 }
               }
               for (var conduct in todayConducts) {
+                String nowStrartTime =
+                    conduct['startDate'] + " " + conduct['startTime'];
                 DateTime sDate =
-                    DateFormat('h:mm a').parse(conduct['startTime']).add(Duration(days: 19555));
-                DateTime eDate = DateFormat('h:mm a').parse(conduct['endTime']).add(Duration(days: 19555));
+                    DateFormat('d MMM yyyy h:mm a').parse(nowStrartTime);
+
+                String nowEndTime =
+                    conduct['startDate'] + " " + conduct['endTime'];
+                DateTime eDate =
+                    DateFormat('d MMM yyyy h:mm a').parse(nowEndTime);
+
                 final Appointment newAppointment = Appointment(
                   startTime: sDate,
                   endTime: eDate,
                   subject: conduct['conductType'],
                   color: Colors.amber,
                 );
+                print(newAppointment);
+                meetings.add(newAppointment);
+              }
+            }
+            if (snapshots.snapshot2.hasData) {
+              var dutyDetails = [];
+              var duties = snapshots.snapshot2.data?.docs.toList();
+              for (var i = 0; i < duties!.length; i++) {
+                var data = duties[i].data();
+                dutyDetails.add(data as Map<String, dynamic>);
+                dutyDetails[i]
+                    .addEntries({'ID': duties[i].reference.id}.entries);
+              }
+
+              for (var duty in dutyDetails) {
+                String nowStrartTime =
+                    duty['dutyDate'] + " " + duty['startTime'];
+                DateTime sDate =
+                    DateFormat('d MMM yyyy h:mm a').parse(nowStrartTime);
+                String nowEndTime =
+                    duty['dutyDate'] + " " + duty['endTime'];
+                DateTime eDate =
+                    DateFormat('d MMM yyyy h:mm a').parse(nowEndTime);
+                final Appointment newAppointment = Appointment(
+                  startTime: sDate,
+                  endTime: eDate,
+                  subject: 'Guard Duty',
+                  color: Colors.pink,
+                );
+                print(newAppointment);
                 meetings.add(newAppointment);
               }
             }
