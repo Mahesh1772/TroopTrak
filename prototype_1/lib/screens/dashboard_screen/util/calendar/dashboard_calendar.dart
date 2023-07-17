@@ -130,7 +130,7 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
                   fontSize: 24.sp,
                 ),
               ),
-              view: CalendarView.month,
+              view: CalendarView.day,
               dataSource:
                   _getCalendarDataSource(), //MeetingDataSource(getAppointments()),
               initialSelectedDate: _selectedDate,
