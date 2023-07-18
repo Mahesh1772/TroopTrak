@@ -169,11 +169,11 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
           if (status['statusType'] == 'Excuse') {
             if (Run.contains(status['statusName'])) {
               non_participants.add(status['Name']);
-              soldierReason.addAll({status['Name']:status['statusName']});
+              soldierReason.addAll({status['Name']: status['statusName']});
             }
           } else if (status['statusType'] == 'Leave') {
             non_participants.add(status['Name']);
-            soldierReason.addAll({status['Name']:status['statusName']});
+            soldierReason.addAll({status['Name']: status['statusName']});
           }
         }
         break;
@@ -182,11 +182,11 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
           if (status['statusType'] == 'Excuse') {
             if (RouteMarch.contains(status['statusName'])) {
               non_participants.add(status['Name']);
-              soldierReason.addAll({status['Name']:status['statusName']});
+              soldierReason.addAll({status['Name']: status['statusName']});
             }
           } else if (status['statusType'] == 'Leave') {
             non_participants.add(status['Name']);
-            soldierReason.addAll({status['Name']:status['statusName']});
+            soldierReason.addAll({status['Name']: status['statusName']});
           }
         }
         break;
@@ -195,11 +195,11 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
           if (status['statusType'] == 'Excuse') {
             if (Ippt.contains(status['statusName'])) {
               non_participants.add(status['Name']);
-              soldierReason.addAll({status['Name']:status['statusName']});
+              soldierReason.addAll({status['Name']: status['statusName']});
             }
           } else if (status['statusType'] == 'Leave') {
             non_participants.add(status['Name']);
-            soldierReason.addAll({status['Name']:status['statusName']});
+            soldierReason.addAll({status['Name']: status['statusName']});
           }
         }
         break;
@@ -208,11 +208,11 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
           if (status['statusType'] == 'Excuse') {
             if (Outfield.contains(status['statusName'])) {
               non_participants.add(status['Name']);
-              soldierReason.addAll({status['Name']:status['statusName']});
+              soldierReason.addAll({status['Name']: status['statusName']});
             }
           } else if (status['statusType'] == 'Leave') {
             non_participants.add(status['Name']);
-            soldierReason.addAll({status['Name']:status['statusName']});
+            soldierReason.addAll({status['Name']: status['statusName']});
           }
         }
         break;
@@ -221,11 +221,11 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
           if (status['statusType'] == 'Excuse') {
             if (MetabolicCircuit.contains(status['statusName'])) {
               non_participants.add(status['Name']);
-              soldierReason.addAll({status['Name']:status['statusName']});
+              soldierReason.addAll({status['Name']: status['statusName']});
             }
           } else if (status['statusType'] == 'Leave') {
             non_participants.add(status['Name']);
-            soldierReason.addAll({status['Name']:status['statusName']});
+            soldierReason.addAll({status['Name']: status['statusName']});
           }
         }
         break;
@@ -234,11 +234,11 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
           if (status['statusType'] == 'Excuse') {
             if (S_P.contains(status['statusName'])) {
               non_participants.add(status['Name']);
-              soldierReason.addAll({status['Name']:status['statusName']});
+              soldierReason.addAll({status['Name']: status['statusName']});
             }
           } else if (status['statusType'] == 'Leave') {
             non_participants.add(status['Name']);
-            soldierReason.addAll({status['Name']:status['statusName']});
+            soldierReason.addAll({status['Name']: status['statusName']});
           }
         }
         break;
@@ -247,11 +247,11 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
           if (status['statusType'] == 'Excuse') {
             if (CombatCircuit.contains(status['statusName'])) {
               non_participants.add(status['Name']);
-              soldierReason.addAll({status['Name']:status['statusName']});
+              soldierReason.addAll({status['Name']: status['statusName']});
             }
           } else if (status['statusType'] == 'Leave') {
             non_participants.add(status['Name']);
-            soldierReason.addAll({status['Name']:status['statusName']});
+            soldierReason.addAll({status['Name']: status['statusName']});
           }
         }
         break;
@@ -261,11 +261,11 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
             if (Atp.contains(status['statusName']) ||
                 Imt.contains(status['statusName'])) {
               non_participants.add(status['Name']);
-              soldierReason.addAll({status['Name']:status['statusName']});
+              soldierReason.addAll({status['Name']: status['statusName']});
             }
           } else if (status['statusType'] == 'Leave') {
             non_participants.add(status['Name']);
-            soldierReason.addAll({status['Name']:status['statusName']});
+            soldierReason.addAll({status['Name']: status['statusName']});
           }
         }
         break;
@@ -274,11 +274,11 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
           if (status['statusType'] == 'Excuse') {
             if (soc.contains(status['statusName'])) {
               non_participants.add(status['Name']);
-              soldierReason.addAll({status['Name']:status['statusName']});
+              soldierReason.addAll({status['Name']: status['statusName']});
             }
           } else if (status['statusType'] == 'Leave') {
             non_participants.add(status['Name']);
-            soldierReason.addAll({status['Name']:status['statusName']});
+            soldierReason.addAll({status['Name']: status['statusName']});
           }
         }
         break;
@@ -286,7 +286,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
         for (var status in statusList) {
           if (status['statusType'] == 'Leave') {
             non_participants.add(status['Name']);
-            soldierReason.addAll({status['Name']:status['statusName']});
+            soldierReason.addAll({status['Name']: status['statusName']});
           }
         }
     }
@@ -370,7 +370,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
       'startTime': widget.startTime,
       'endTime': widget.endTime,
       'participants': tempArray,
-      'soldierReason' : soldierReason,
+      'soldierReason': soldierReason,
     });
   }
 
@@ -441,6 +441,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                     ),
                     child: Center(
                       child: DropdownButtonFormField<String>(
+                        key: const Key("conductType"),
                         validator: (value) {
                           if (value == "Select conduct...") {
                             return 'Bruh select!';
@@ -494,6 +495,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                     child: Padding(
                       padding: EdgeInsets.only(left: 20.w),
                       child: TextFormField(
+                        key: const Key("conductName"),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return "Oi can add conduct please?";
@@ -523,6 +525,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                   height: 30.h,
                 ),
                 InkWell(
+                  key: const Key("conductDate"),
                   onTap: () {
                     _showStartDatePicker();
                   },
@@ -564,6 +567,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     InkWell(
+                      key: const Key("startTime"),
                       onTap: () {
                         _showStartTimePicker();
                       },
@@ -602,6 +606,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                       width: 20.w,
                     ),
                     InkWell(
+                      key: const Key("endTime"),
                       onTap: () {
                         _showEndTimePicker();
                       },
@@ -782,6 +787,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                   height: 30.h,
                 ),
                 GestureDetector(
+                  key: const Key("addConductButton"),
                   onTap: () {
                     if (formKey.currentState!.validate() &&
                         formKey1.currentState!.validate() &&

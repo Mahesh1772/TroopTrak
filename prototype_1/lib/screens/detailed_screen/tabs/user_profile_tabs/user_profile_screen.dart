@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -90,15 +91,31 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Icon(
-                              Icons.arrow_back_sharp,
-                              color: Colors.white,
-                              size: 25.sp,
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Icon(
+                                  Icons.arrow_back_sharp,
+                                  color: Colors.white,
+                                  size: 30.sp,
+                                ),
+                              ),
+                              InkWell(
+                                key: const Key("signOutButton"),
+                                onTap: () {
+                                  FirebaseAuth.instance.signOut();
+                                },
+                                child: Icon(
+                                  Icons.exit_to_app_rounded,
+                                  color: Colors.white,
+                                  size: 30.sp,
+                                ),
+                              )
+                            ],
                           ),
                           SizedBox(
                             height: 20.h,

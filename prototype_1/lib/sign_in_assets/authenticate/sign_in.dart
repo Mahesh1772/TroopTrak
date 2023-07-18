@@ -64,6 +64,7 @@ class _SignInState extends State<SignIn> {
       errorName = e.message!;
       print(errorName);
       IconSnackBar.show(
+          duration: const Duration(seconds: 4),
           context: context,
           snackBarType: SnackBarType.fail,
           label: 'Wrong Email/Password or Both',
@@ -300,6 +301,7 @@ class _SignInState extends State<SignIn> {
                         width: 10.h,
                       ),
                       GestureDetector(
+                        key: const Key("registerPageButton"),
                         onTap: widget.showRegisterPage,
                         child: Text(
                           'Create one here!',

@@ -209,6 +209,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                             ],
                           ),
                           GestureDetector(
+                            key: const Key("addConductPageRedirectButton"),
                             onTap: () {
                               Navigator.push(
                                 context,

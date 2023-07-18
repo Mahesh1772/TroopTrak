@@ -64,22 +64,26 @@ class _GNavMainScreen extends State<GNavMainScreen> {
                 padding: EdgeInsets.all(16.sp),
                 tabs: [
                   GButton(
+                    key: const Key("home"),
                     icon: Icons.home_outlined,
                     text: 'Home',
                     textStyle: GoogleFonts.poppins(
                         color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                   GButton(
+                      key: const Key("nominalRoll"),
                       icon: Icons.perm_contact_calendar_rounded,
                       text: 'Nominal Roll',
                       textStyle: GoogleFonts.poppins(
                           color: Colors.white, fontWeight: FontWeight.bold)),
                   GButton(
+                      key: const Key("conductTracker"),
                       icon: Icons.track_changes_rounded,
                       text: 'Conduct Tracker',
                       textStyle: GoogleFonts.poppins(
                           color: Colors.white, fontWeight: FontWeight.bold)),
                   GButton(
+                      key: const Key("guardDuty"),
                       icon: Icons.safety_check,
                       text: 'Guard Duty',
                       textStyle: GoogleFonts.poppins(

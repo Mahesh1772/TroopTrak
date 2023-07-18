@@ -226,7 +226,7 @@ class _RegisterPageState extends State<RegisterPage> {
       'dob': dob,
       'ord': ord,
       'enlistment': enlistment,
-      'points' : 0,
+      'points': 0,
     });
   }
 
@@ -306,6 +306,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: Padding(
                         padding: EdgeInsets.only(left: 20.w),
                         child: TextFormField(
+                          key: const Key("name"),
                           validator: (value) {
                             if (value == '') {
                               return 'You must have a name right';
@@ -346,6 +347,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: Padding(
                         padding: EdgeInsets.only(left: 20.w),
                         child: TextFormField(
+                          key: const Key("appointment"),
                           validator: (value) {
                             if (value == '') {
                               return 'Appointment Missing';
@@ -395,6 +397,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         Padding(
                           padding: EdgeInsets.all(8.0.sp),
                           child: InkWell(
+                            key: const Key("dob"),
                             onTap: () {
                               _showDatePicker();
                             },
@@ -417,6 +420,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               borderRadius: BorderRadius.circular(12.r),
                             ),
                             child: DropdownButtonFormField<String>(
+                              key: const Key("rationType"),
                               validator: (value) {
                                 if (value == "Select your ration type...") {
                                   return 'Walao what food you eat?';
@@ -468,6 +472,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             borderRadius: BorderRadius.circular(12.r),
                           ),
                           child: DropdownButtonFormField<String>(
+                            key: const Key("rank"),
                             validator: (value) {
                               if (value == "Select your rank...") {
                                 return 'Walao provide rank liao';
@@ -515,6 +520,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               borderRadius: BorderRadius.circular(12.r),
                             ),
                             child: DropdownButtonFormField<String>(
+                              key: const Key("bloodType"),
                               validator: (value) {
                                 if (value == "Select your blood type...") {
                                   return 'Why your blood field empty ah?';
@@ -565,6 +571,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: Padding(
                         padding: EdgeInsets.only(left: 20.w),
                         child: TextFormField(
+                          key: const Key("company"),
                           validator: (value) {
                             if (value == '') {
                               return 'Company Name Missing';
@@ -601,6 +608,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: Padding(
                         padding: EdgeInsets.only(left: 20.w),
                         child: TextFormField(
+                          key: const Key("platoon"),
                           validator: (value) {
                             if (value == '') {
                               return 'Platoon Information Missing';
@@ -637,6 +645,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: Padding(
                         padding: EdgeInsets.only(left: 20.w),
                         child: TextFormField(
+                          key: const Key("section"),
                           validator: (value) {
                             if (value == '') {
                               return 'Section Information Missing';
@@ -688,6 +697,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         Padding(
                           padding: EdgeInsets.all(8.0.sp),
                           child: InkWell(
+                            key: const Key("enlistment"),
                             onTap: () {
                               _enlistmentDatePicker();
                             },
@@ -720,6 +730,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         Padding(
                           padding: EdgeInsets.all(8.0.sp),
                           child: InkWell(
+                            key: const Key("ord"),
                             onTap: () {
                               _ordDatePicker();
                             },
@@ -744,6 +755,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: Padding(
                         padding: EdgeInsets.only(left: 20.w),
                         child: TextFormField(
+                          key: const Key("email"),
                           validator: (value) {
                             if (_isvalidaEmail(value!) == false) {
                               return validateEmail(value);
@@ -782,6 +794,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: Padding(
                         padding: EdgeInsets.only(left: 20.w),
                         child: TextFormField(
+                          key: const Key("password"),
                           validator: (value) {
                             if (_isvalidPassword(value!) == false) {
                               return validatePassword(value);
@@ -850,6 +863,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: Padding(
                         padding: EdgeInsets.only(left: 20.w),
                         child: TextFormField(
+                          key: const Key("confirmPassword"),
                           validator: (value) {
                             if (_isvalidPassword(value!) == false) {
                               return validatePassword(value);
@@ -885,6 +899,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 25.0.w),
                       child: GestureDetector(
+                        key: const Key("signUpButton"),
                         onTap: () {
                           if (_formKey.currentState!.validate()) {
                             IconSnackBar.show(

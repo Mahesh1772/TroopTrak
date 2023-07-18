@@ -220,6 +220,7 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
                       height: 30.h,
                     ),
                     GestureDetector(
+                      key: const Key("addSoldiersToDuty"),
                       onTap: () {
                         print(dutySoldiersAndRanks);
                         dutySoldiersAndRanks =

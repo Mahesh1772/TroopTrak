@@ -102,9 +102,9 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
         .doc(name)
         .get()
         .then((value) {
-          var data = value.data();
-          currentPoints = data!['points'].toDouble();
-        });
+      var data = value.data();
+      currentPoints = data!['points'].toDouble();
+    });
 
     await FirebaseFirestore.instance.collection('Users').doc(name).set({
       //User map formatting
@@ -190,6 +190,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               OrgChartTile(
+                key: Key(heroAddDutySoldiers[0]),
                 rank: dutySoldiersAndRanks.values.elementAt(0),
                 name: dutySoldiersAndRanks.keys.elementAt(0),
                 heroTag: heroAddDutySoldiers[0],
@@ -489,6 +490,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                 Column(
                   children: [
                     InkWell(
+                      key: const Key("startDate"),
                       onTap: () {
                         _showStartDatePicker();
                       },
@@ -530,6 +532,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         InkWell(
+                          key: const Key("startTime"),
                           onTap: () {
                             _showStartTimePicker();
                           },
@@ -568,6 +571,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                           width: 20.w,
                         ),
                         InkWell(
+                          key: const Key("endTime"),
                           onTap: () {
                             _showEndTimePicker();
                           },
@@ -610,6 +614,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                   height: 30.h,
                 ),
                 GestureDetector(
+                  key: const Key("addGuardDutyButton"),
                   onTap: () {
                     // var dummyarray;
                     // for (var i = dutySoldiersAndRanks.length; i < 10; i++) {

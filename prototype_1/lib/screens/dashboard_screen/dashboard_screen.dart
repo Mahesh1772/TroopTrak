@@ -238,6 +238,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                     ),
                     InkWell(
+                      key: const Key("userProfileIcon"),
                       onTap: () {
                         Navigator.push(
                           context,
