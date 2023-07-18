@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:uuid/uuid.dart';
@@ -13,6 +15,8 @@ class GenerateQRScreen extends StatefulWidget {
 
 class _GenerateQRScreenState extends State<GenerateQRScreen> {
   String randomID = '';
+  var firestore = FirebaseFirestore.instance.collection('Men');
+  var fname = FirebaseAuth.instance.currentUser!.uid.toString();
   var uuid = Uuid();
   Timer? countdownTimer;
   Duration myDuration = const Duration(
@@ -27,6 +31,9 @@ class _GenerateQRScreenState extends State<GenerateQRScreen> {
           final seconds = myDuration.inSeconds - 1;
           if (seconds < 0) {
             _.cancel();
+            firestore.doc(fname).set({
+              'QRid': null,
+            }, SetOptions(merge: true));
             Navigator.pop(context);
           } else {
             myDuration = Duration(seconds: seconds);
@@ -36,9 +43,12 @@ class _GenerateQRScreenState extends State<GenerateQRScreen> {
     );
   }
 
-  void generateRandomId() {
+  void generateRandomId() async {
     var v4 = uuid.v4(options: {'rng': UuidUtil.cryptoRNG});
     randomID = v4;
+    await firestore.doc(fname).set({
+      'QRid': randomID,
+    }, SetOptions(merge: true));
   }
 
   @override
