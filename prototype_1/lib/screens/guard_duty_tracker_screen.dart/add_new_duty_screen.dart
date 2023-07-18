@@ -66,20 +66,22 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
             }));
   }
 
-  Future addGaurdDuty() async {
-    // var keys = dutySoldiersAndRanks.keys.toList();
-    // var notKeys = dutySoldiersAndRanks.keys.toList();
-    // notKeys.removeWhere((element) => documentIDs.contains(element));
-    // keys.removeWhere((element) => notKeys.contains(element));
+  void add_exit() async {
+    addGaurdDuty();
+    addPoints();
+    Navigator.pop(context);
+  }
 
-    // var values = dutySoldiersAndRanks.values.toList();
-    // var notValues = dutySoldiersAndRanks.values.toList();
-    // notValues.removeWhere((element) => documentIDs.contains(element));
-    // values.removeWhere((element) => notValues.contains(element));
+  Future addGaurdDuty() async {
+    //DateTime start = DateFormat('d MMM yyyy').parse(widget.dutyStartTime);
+    //DateTime end = DateFormat('d MMM yyyy').parse(widget.dutyEndTime);
+    //String sTime = DateFormat('h:mm a').format(start);
+    //String eTime = DateFormat('h:mm a').format(end);
 
     dutySoldiersAndRanks.removeWhere((key, value) => (key.contains("NA")));
 
-    //print(dutySoldiersAndRanks);
+    print(widget.dutyStartTime);
+    print(widget.dutyEndTime);
 
     await FirebaseFirestore.instance.collection('Duties').add({
       //User map formatting
@@ -90,9 +92,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
       'endTime': widget.dutyEndTime,
       'participants': dutySoldiersAndRanks
     });
-    addPoints();
     widget.refreshCallback();
-    Navigator.pop(context);
   }
 
   Future addFieldDetails(String name) async {
@@ -632,7 +632,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                           label: 'Guard duty added successfully!',
                           snackBarStyle: const SnackBarStyle() // this one
                           );
-                      addGaurdDuty();
+                      add_exit();
                     } else {
                       IconSnackBar.show(
                           direction: DismissDirection.horizontal,
