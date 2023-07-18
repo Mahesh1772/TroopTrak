@@ -1,56 +1,88 @@
 import 'package:flutter/material.dart';
-import 'package:multiple_stream_builder/multiple_stream_builder.dart';
+import 'package:multiple_stream_builder_demo/ui/style/style.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 void main() {
-  runApp(const ExampleApp());
+  runApp(const MyApp());
 }
 
-class ExampleApp extends StatelessWidget {
-  const ExampleApp({Key? key}) : super(key: key);
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Multiple Stream Builder Example',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Multiple Stream Builder Example'),
-        ),
-        body: const ExampleScreen(),
-      ),
+      home: HomeScreen(),
     );
   }
 }
 
-class ExampleScreen extends StatefulWidget {
-  const ExampleScreen({Key? key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<ExampleScreen> createState() => _ExampleScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _ExampleScreenState extends State<ExampleScreen> {
-  var stream1 = Stream<int>.periodic(const Duration(seconds: 1), (x) => x);
-  var stream2 = Stream<int>.periodic(const Duration(seconds: 2), (x) => x);
-  var stream3 = Stream<int>.periodic(const Duration(seconds: 3), (x) => x);
-
+class _HomeScreenState extends State<HomeScreen> {
+  String data = "";
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder3<int, int, int>(
-      streams: StreamTuple3(stream1, stream2, stream3),
-      initialData: InitialDataTuple3(0, 0, 0),
-      builder: (context, snapshots) {
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('stream1: ${snapshots.snapshot1.data}'),
-              Text('stream2: ${snapshots.snapshot2.data}'),
-              Text('stream3: ${snapshots.snapshot3.data}'),
-            ],
+    return Scaffold(
+      backgroundColor: AppStyle.primaryColor,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Center(
+            child: QrImageView(
+              data: data,
+              backgroundColor: Colors.white,
+              version: QrVersions.auto,
+              size: 300.0,
+            ),
           ),
-        );
-      },
+          SizedBox(
+            height: 24,
+          ),
+          Container(
+            width: 300.0,
+            child: TextField(
+              //we will generate a new qr code when the input value change
+              onChanged: (value) {
+                setState(() {
+                  data = value;
+                });
+              },
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+              ),
+              decoration: InputDecoration(
+                hintText: "Type the Data",
+                filled: true,
+                fillColor: AppStyle.textInputColor,
+                border: InputBorder.none,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 24.0,
+          ),
+          RawMaterialButton(
+            onPressed: () {},
+            fillColor: AppStyle.accentColor,
+            shape: StadiumBorder(),
+            padding: EdgeInsets.symmetric(
+              horizontal: 36.0,
+              vertical: 16.0,
+            ),
+            child: Text(
+              "Generate QR Code",
+            ),
+          )
+        ],
+      ),
     );
   }
 }

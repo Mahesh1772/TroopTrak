@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_project_2/screens/detailed_screen/qr_screen.dart';
 import 'package:firebase_project_2/screens/detailed_screen/tabs/user_profile_tabs%20copy/user_profile_attendance_tab.dart.dart';
 import 'package:firebase_project_2/screens/detailed_screen/tabs/user_profile_tabs%20copy/user_profile_basic_info_tab.dart';
 import 'package:firebase_project_2/screens/detailed_screen/tabs/user_profile_tabs%20copy/user_profile_statuses_tab.dart';
@@ -26,6 +27,10 @@ class _UserProfileScreenState extends State<UserProfileScreen>
   final fname = FirebaseAuth.instance.currentUser!.uid.toString();
 
   Map<String, dynamic> data = {};
+
+  void showQR() {
+    Navigator.push(context,MaterialPageRoute(builder: (context) => const GenerateQRScreen()));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -169,6 +174,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                   ),
                                   Center(
                                     child: GestureDetector(
+                                      onTap: showQR,
                                       child: Container(
                                         width: 300.w,
                                         padding: EdgeInsets.all(16.sp),

@@ -150,6 +150,7 @@ class AuthProvider extends ChangeNotifier {
         'ord': ord,
         'enlistment': enlistment,
         'points': 0,
+        'QRid': null,
       }).then((value) {
         _isLoading = false;
         notifyListeners();
