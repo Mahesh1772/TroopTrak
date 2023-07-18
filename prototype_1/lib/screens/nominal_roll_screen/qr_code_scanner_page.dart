@@ -23,7 +23,39 @@ class _QrCodeScannerPageState extends State<QrCodeScannerPage>
     torchEnabled: false,
   );
 
-  BarcodeCapture? barcode;
+  void _foundBarcode(BarcodeCapture capture) {
+    final List<Barcode> barcodes = capture.barcodes;
+
+    for (final barcode in barcodes) {
+      print('Barcode found! ${barcode.rawValue}');
+    }
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Center(
+            child: Container(
+              color: Colors.black54,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.check_circle,
+                    color: Colors.green,
+                    size: 40.sp,
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  StyledText(barcodes[0].rawValue.toString(), 18.sp,
+                      fontWeight: FontWeight.bold),
+                ],
+              ),
+            ),
+          );
+        });
+  }
 
   bool isStarted = true;
 
@@ -117,11 +149,7 @@ class _QrCodeScannerPageState extends State<QrCodeScannerPage>
                       errorBuilder: (context, error, child) {
                         return ScannerErrorWidget(error: error);
                       },
-                      onDetect: (barcode) {
-                        setState(() {
-                          this.barcode = barcode;
-                        });
-                      },
+                      onDetect: _foundBarcode,
                     ),
                     QRScannerOverlay(
                       overlayColor: const Color.fromARGB(255, 21, 25, 34),

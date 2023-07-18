@@ -4,6 +4,7 @@ import 'package:firebase_project_2/screens/detailed_screen/qr_screen.dart';
 import 'package:firebase_project_2/screens/detailed_screen/tabs/user_profile_tabs%20copy/user_profile_attendance_tab.dart.dart';
 import 'package:firebase_project_2/screens/detailed_screen/tabs/user_profile_tabs%20copy/user_profile_basic_info_tab.dart';
 import 'package:firebase_project_2/screens/detailed_screen/tabs/user_profile_tabs%20copy/user_profile_statuses_tab.dart';
+import 'package:firebase_project_2/screens/detailed_screen/util/hero_dialog_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -27,10 +28,6 @@ class _UserProfileScreenState extends State<UserProfileScreen>
   final fname = FirebaseAuth.instance.currentUser!.uid.toString();
 
   Map<String, dynamic> data = {};
-
-  void showQR() {
-    Navigator.push(context,MaterialPageRoute(builder: (context) => const GenerateQRScreen()));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -174,7 +171,12 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                   ),
                                   Center(
                                     child: GestureDetector(
-                                      onTap: showQR,
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                            HeroDialogRoute(builder: (context) {
+                                          return const GenerateQRScreen();
+                                        }));
+                                      },
                                       child: Container(
                                         width: 300.w,
                                         padding: EdgeInsets.all(16.sp),
