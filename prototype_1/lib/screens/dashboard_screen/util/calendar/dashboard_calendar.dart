@@ -80,10 +80,10 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
                 String nowStrartTime =
                     duty['dutyDate'] + " " + duty['startTime'];
                 DateTime sDate =
-                    DateFormat('d MMM yyyy h:mm a').parse(nowStrartTime);
+                    DateFormat('d MMM yyyy').add_jm().parse(nowStrartTime);
                 String nowEndTime = duty['dutyDate'] + " " + duty['endTime'];
                 DateTime eDate =
-                    DateFormat('d MMM yyyy h:mm a').parse(nowEndTime);
+                    DateFormat('d MMM yyyy').add_jm().parse(nowEndTime);
                 final Appointment newAppointment = Appointment(
                   startTime: sDate,
                   endTime: eDate,
