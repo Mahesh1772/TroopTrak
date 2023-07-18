@@ -4,6 +4,7 @@ import 'package:firebase_project_2/screens/detailed_screen/qr_screen.dart';
 import 'package:firebase_project_2/screens/detailed_screen/tabs/user_profile_tabs%20copy/user_profile_attendance_tab.dart.dart';
 import 'package:firebase_project_2/screens/detailed_screen/tabs/user_profile_tabs%20copy/user_profile_basic_info_tab.dart';
 import 'package:firebase_project_2/screens/detailed_screen/tabs/user_profile_tabs%20copy/user_profile_statuses_tab.dart';
+import 'package:firebase_project_2/screens/detailed_screen/util/custom_rect_tween.dart';
 import 'package:firebase_project_2/screens/detailed_screen/util/hero_dialog_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -177,33 +178,40 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                           return const GenerateQRScreen();
                                         }));
                                       },
-                                      child: Container(
-                                        width: 300.w,
-                                        padding: EdgeInsets.all(16.sp),
-                                        decoration: BoxDecoration(
-                                          color: Colors.transparent
-                                              .withOpacity(0.1),
-                                          borderRadius:
-                                              BorderRadius.circular(20.r),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Icon(
-                                              Icons.qr_code_2_rounded,
-                                              color: Colors.white,
-                                              size: 35.sp,
-                                            ),
-                                            SizedBox(
-                                              width: 20.w,
-                                            ),
-                                            StyledText(
-                                              "SHOW QR CODE",
-                                              20.sp,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ],
+                                      child: Hero(
+                                        tag: "QRCodeScreen",
+                                        createRectTween: (begin, end) {
+                                          return CustomRectTween(
+                                              begin: begin!, end: end!);
+                                        },
+                                        child: Container(
+                                          width: 300.w,
+                                          padding: EdgeInsets.all(16.sp),
+                                          decoration: BoxDecoration(
+                                            color: Colors.transparent
+                                                .withOpacity(0.1),
+                                            borderRadius:
+                                                BorderRadius.circular(20.r),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.qr_code_2_rounded,
+                                                color: Colors.white,
+                                                size: 35.sp,
+                                              ),
+                                              SizedBox(
+                                                width: 20.w,
+                                              ),
+                                              StyledText(
+                                                "SHOW QR CODE",
+                                                20.sp,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
