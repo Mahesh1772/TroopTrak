@@ -24,6 +24,11 @@ class UserData extends ChangeNotifier {
     return soldiers;
   }
 
+  Stream<QuerySnapshot> get men_data {
+    soldiers = FirebaseFirestore.instance.collection('Men').snapshots();
+    return soldiers;
+  }
+
   Stream<QuerySnapshot> get conducts_data {
     conducts = FirebaseFirestore.instance.collection('Conducts').snapshots();
     return conducts;

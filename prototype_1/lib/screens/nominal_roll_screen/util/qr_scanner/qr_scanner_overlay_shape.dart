@@ -9,12 +9,15 @@ class InvertedClipper extends CustomClipper<Path> {
   Path getClip(Size size) {
     return Path()
       ..addRect(Rect.fromLTWH(0, 0, size.width, size.height))
-      ..addRRect(RRect.fromRectAndRadius(
+      ..addRRect(
+        RRect.fromRectAndRadius(
           Rect.fromCenter(
               center: Offset(size.width / 2, size.height / 2),
               width: scanArea.width,
               height: scanArea.height),
-          Radius.circular(borderRadius - 4)))
+          Radius.circular(borderRadius - 4),
+        ),
+      )
       ..fillType = PathFillType.evenOdd;
   }
 

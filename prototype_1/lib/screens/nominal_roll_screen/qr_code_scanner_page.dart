@@ -1,12 +1,17 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:prototype_1/screens/nominal_roll_screen/add_new_soldier_screen.dart';
 import 'package:prototype_1/screens/nominal_roll_screen/util/qr_scanner/qr_scanner_error_widget.dart';
 import 'package:prototype_1/screens/nominal_roll_screen/util/qr_scanner/qr_scanner_overlay_shape.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+
+import '../../user_models/user_details.dart';
 
 class QrCodeScannerPage extends StatefulWidget {
   const QrCodeScannerPage({super.key});
@@ -24,6 +29,7 @@ class _QrCodeScannerPageState extends State<QrCodeScannerPage>
   );
 
   void _foundBarcode(BarcodeCapture capture) {
+    final userModel = Provider.of<UserData>(context);
     final List<Barcode> barcodes = capture.barcodes;
 
     for (final barcode in barcodes) {
@@ -33,28 +39,69 @@ class _QrCodeScannerPageState extends State<QrCodeScannerPage>
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          return Center(
-            child: Container(
-              color: Colors.black54,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.check_circle,
-                    color: Colors.green,
-                    size: 40.sp,
+          return StreamBuilder<QuerySnapshot>(
+              stream: userModel.men_data,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  var userDetails = [];
+                  var users = snapshot.data?.docs.toList();
+
+                  for (var user in users!) {
+                    var data = user.data();
+                    userDetails.add(data as Map<String, dynamic>);
+                  }
+
+                  for (var details in userDetails) {
+                    if (barcodes[0].rawValue.toString() == details['QRid']) {
+                      //Push to the update soldier screen
+                      pushToAddSoldier(details);
+                    }
+                  }
+                }
+                return Center(
+                  child: Container(
+                    color: Colors.black54,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.check_circle,
+                          color: Colors.green,
+                          size: 40.sp,
+                        ),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        StyledText(barcodes[0].rawValue.toString(), 18.sp,
+                            fontWeight: FontWeight.bold),
+                      ],
+                    ),
                   ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  StyledText(barcodes[0].rawValue.toString(), 18.sp,
-                      fontWeight: FontWeight.bold),
-                ],
-              ),
-            ),
-          );
+                );
+              });
         });
+  }
+
+  void pushToAddSoldier(Map<String, dynamic> data) {
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AddNewSoldierPage(
+            name: TextEditingController(text: data['name']),
+            company: TextEditingController(text: data['company']),
+            platoon: TextEditingController(text: data['platoon']),
+            section: TextEditingController(text: data['section']),
+            appointment: TextEditingController(text: data['appointment']),
+            dob: data['dob'],
+            ord: data['ord'],
+            enlistment: data['enlistment'],
+            selectedItem: data['rationType'],
+            selectedRank: data['rank'],
+            selectedBloodType: data['bloodgroup'],
+          ),
+        ),
+        (route) => false);
   }
 
   bool isStarted = true;
