@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:prototype_1/util/new_navbar.dart';
 import 'package:prototype_1/util/text_styles/text_style.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -169,12 +170,16 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
       'dob': widget.dob,
       'ord': widget.ord,
       'enlistment': widget.enlistment,
-      'points' : 0,
+      'points': 0,
     });
 
     addAttendanceDetails();
 
-    Navigator.pop(context);
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return GNavMainScreen(
+        selectedIndex: 1,
+      );
+    }));
   }
 
   Future addAttendanceDetails() async {

@@ -29,11 +29,44 @@ class _QrCodeScannerPageState extends State<QrCodeScannerPage>
   );
 
   void _foundBarcode(BarcodeCapture capture) {
-    final userModel = Provider.of<UserData>(context);
+    final userModel = Provider.of<UserData>(context, listen: false);
     final List<Barcode> barcodes = capture.barcodes;
+    Map<String, dynamic> menDetails = {};
 
     for (final barcode in barcodes) {
       print('Barcode found! ${barcode.rawValue}');
+    }
+
+    void checkIfFilled() {
+      if (menDetails.isEmpty) {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return Center(
+                child: Container(
+                  color: Colors.black54,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.remove_circle_rounded,
+                        color: Colors.red,
+                        size: 40.sp,
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      StyledText("Invalid QR / No such key found!", 18.sp,
+                          fontWeight: FontWeight.bold),
+                    ],
+                  ),
+                ),
+              );
+            });
+      } else {
+        pushToAddSoldier(menDetails);
+      }
     }
 
     showDialog(
@@ -53,8 +86,9 @@ class _QrCodeScannerPageState extends State<QrCodeScannerPage>
 
                   for (var details in userDetails) {
                     if (barcodes[0].rawValue.toString() == details['QRid']) {
+                      menDetails = details;
                       //Push to the update soldier screen
-                      pushToAddSoldier(details);
+                      //pushToAddSoldier(details);
                     }
                   }
                 }
@@ -73,8 +107,79 @@ class _QrCodeScannerPageState extends State<QrCodeScannerPage>
                         SizedBox(
                           height: 20.h,
                         ),
-                        StyledText(barcodes[0].rawValue.toString(), 18.sp,
+                        StyledText("QR Code Successfully Scanned!", 18.sp,
                             fontWeight: FontWeight.bold),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            checkIfFilled();
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              height: 50.h,
+                              padding: EdgeInsets.all(10.sp),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.r),
+                                gradient: const LinearGradient(
+                                  colors: [
+                                    Color.fromARGB(255, 72, 30, 229),
+                                    Color.fromARGB(255, 130, 60, 229),
+                                  ],
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color:
+                                        const Color.fromARGB(255, 130, 60, 229)
+                                            .withOpacity(0.6),
+                                    spreadRadius: 1.r,
+                                    blurRadius: 16.r,
+                                    offset: Offset(8.w, 0.h),
+                                  ),
+                                  BoxShadow(
+                                    color:
+                                        const Color.fromARGB(255, 72, 30, 229)
+                                            .withOpacity(0.2),
+                                    spreadRadius: 8.r,
+                                    blurRadius: 8.r,
+                                    offset: Offset(-8.w, 0.h),
+                                  ),
+                                  BoxShadow(
+                                    color:
+                                        const Color.fromARGB(255, 130, 60, 229)
+                                            .withOpacity(0.2),
+                                    spreadRadius: 8.r,
+                                    blurRadius: 8.r,
+                                    offset: Offset(8.w, 0.h),
+                                  ),
+                                ],
+                              ),
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.edit_document,
+                                      color: Colors.white,
+                                      size: 30.sp,
+                                    ),
+                                    SizedBox(
+                                      width: 20.w,
+                                    ),
+                                    AutoSizeText(
+                                      'GO TO EDIT PAGE',
+                                      style: GoogleFonts.poppins(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 22.sp,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -84,24 +189,24 @@ class _QrCodeScannerPageState extends State<QrCodeScannerPage>
   }
 
   void pushToAddSoldier(Map<String, dynamic> data) {
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => AddNewSoldierPage(
-            name: TextEditingController(text: data['name']),
-            company: TextEditingController(text: data['company']),
-            platoon: TextEditingController(text: data['platoon']),
-            section: TextEditingController(text: data['section']),
-            appointment: TextEditingController(text: data['appointment']),
-            dob: data['dob'],
-            ord: data['ord'],
-            enlistment: data['enlistment'],
-            selectedItem: data['rationType'],
-            selectedRank: data['rank'],
-            selectedBloodType: data['bloodgroup'],
-          ),
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddNewSoldierPage(
+          name: TextEditingController(text: data['name']),
+          company: TextEditingController(text: data['company']),
+          platoon: TextEditingController(text: data['platoon']),
+          section: TextEditingController(text: data['section']),
+          appointment: TextEditingController(text: data['appointment']),
+          dob: data['dob'],
+          ord: data['ord'],
+          enlistment: data['enlistment'],
+          selectedItem: data['rationType'],
+          selectedRank: data['rank'],
+          selectedBloodType: data['bloodgroup'],
         ),
-        (route) => false);
+      ),
+    );
   }
 
   bool isStarted = true;

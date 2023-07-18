@@ -13,7 +13,7 @@ class AuthService extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return const GNavMainScreen();
+            return GNavMainScreen();
           } else {
             return const Authenticate();
           }

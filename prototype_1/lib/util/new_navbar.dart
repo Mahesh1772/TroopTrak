@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -8,7 +10,9 @@ import 'package:prototype_1/screens/dashboard_screen/dashboard_screen.dart';
 import 'package:prototype_1/screens/nominal_roll_screen/nominal_roll_screen_new.dart';
 
 class GNavMainScreen extends StatefulWidget {
-  const GNavMainScreen({super.key});
+  GNavMainScreen({super.key, this.selectedIndex = 0});
+
+  int selectedIndex;
 
   @override
   State<GNavMainScreen> createState() {
@@ -17,7 +21,6 @@ class GNavMainScreen extends StatefulWidget {
 }
 
 class _GNavMainScreen extends State<GNavMainScreen> {
-  int selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[
     const DashboardScreen(),
     const NominalRollNewScreen(),
@@ -28,7 +31,7 @@ class _GNavMainScreen extends State<GNavMainScreen> {
   ];
   void itemTapped(int index) {
     setState(() {
-      selectedIndex = index;
+      widget.selectedIndex = index;
     });
   }
 
@@ -39,7 +42,7 @@ class _GNavMainScreen extends State<GNavMainScreen> {
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color.fromARGB(255, 21, 25, 34),
         body: Center(
-          child: _widgetOptions.elementAt(selectedIndex),
+          child: _widgetOptions.elementAt(widget.selectedIndex),
         ),
         bottomNavigationBar: Container(
           color: const Color.fromARGB(255, 11, 13, 17),
