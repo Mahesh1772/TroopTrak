@@ -1,68 +1,108 @@
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+import 'package:uuid/uuid.dart';
+import 'package:uuid/uuid_util.dart';
+
 class GenerateQRScreen extends StatefulWidget {
-  const GenerateQRScreen({Key? key}) : super(key: key);
+  const GenerateQRScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<GenerateQRScreen> createState() => _GenerateQRScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  String data = "";
+class _GenerateQRScreenState extends State<GenerateQRScreen> {
+  String randomID = '';
+  var uuid = Uuid();
+  Timer? countdownTimer;
+  Duration myDuration = const Duration(
+    minutes: 2,
+  );
+
+  void startTimer() {
+    countdownTimer = Timer.periodic(
+      const Duration(seconds: 1),
+      (_) {
+        setState(() {
+          final seconds = myDuration.inSeconds - 1;
+          if (seconds < 0) {
+            _.cancel();
+            Navigator.pop(context);
+          } else {
+            myDuration = Duration(seconds: seconds);
+          }
+        });
+      },
+    );
+  }
+
+  void generateRandomId() {
+    var v4 = uuid.v4(options: {'rng': UuidUtil.cryptoRNG});
+    randomID = v4;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    generateRandomId();
+    startTimer();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    String strDigits(int n) => n.toString().padLeft(2, '0');
+    final minutes = strDigits(myDuration.inMinutes.remainder(60));
+    final seconds = strDigits(myDuration.inSeconds.remainder(60));
     return Scaffold(
-      backgroundColor: AppStyle.primaryColor,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Center(
-            child: QrImage(
-              data: data,
-              backgroundColor: Colors.white,
-              version: QrVersions.auto,
-              size: 300.0,
-            ),
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          Container(
-            width: 300.0,
-            child: TextField(
-              //we will generate a new qr code when the input value change
-              onChanged: (value) {
-                setState(() {
-                  data = value;
-                });
+      backgroundColor: Colors.black12,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            InkWell(
+              child: Icon(Icons.arrow_back),
+              hoverColor: Colors.amber,
+              onTap: () {
+                Navigator.pop(context);
               },
-              textAlign: TextAlign.center,
+            ),
+            const SizedBox(
+              height: 50,
+            ),
+            Center(
+              child: QrImageView(
+                data: randomID, //data,
+                size: 300,
+                backgroundColor: Colors.white,
+                version: QrVersions.auto,
+              ),
+            ),
+            const SizedBox(
+              height: 24,
+            ),
+            Text(
+              'QR will vanish in:',
               style: TextStyle(
-                color: Colors.white,
-              ),
-              decoration: InputDecoration(
-                hintText: "Type the Data",
-                filled: true,
-                fillColor: AppStyle.textInputColor,
-                border: InputBorder.none,
+                fontWeight: FontWeight.bold,
+                color: Colors.pink,
+                fontSize: 20,
               ),
             ),
-          ),
-          SizedBox(
-            height: 24.0,
-          ),
-          RawMaterialButton(
-            onPressed: () {},
-            fillColor: AppStyle.accentColor,
-            shape: StadiumBorder(),
-            padding: EdgeInsets.symmetric(
-              horizontal: 36.0,
-              vertical: 16.0,
+            const SizedBox(
+              height: 10.0,
             ),
-            child: Text(
-              "Generate QR Code",
-            ),
-          )
-        ],
+            Text(
+              '$minutes:$seconds',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.purpleAccent,
+                fontSize: 30,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
