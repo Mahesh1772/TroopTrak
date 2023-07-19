@@ -160,10 +160,13 @@ class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
                     isFirstTIme = false;
                     documentIDs = [];
                     userDetails = [];
+                    pointsTable = {};
                     var users = snapshot.data?.docs.toList();
                     for (var user in users!) {
                       var data = user.data();
                       userDetails.add(data as Map<String, dynamic>);
+                      pointsTable
+                          .addAll({data['name']: data['points'].toDouble()});
                     }
                     dutyPersonnel = getDutyPersonnel();
                     dutyPersonnelDataSource =

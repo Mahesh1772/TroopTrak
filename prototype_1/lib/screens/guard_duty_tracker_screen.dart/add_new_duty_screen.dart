@@ -73,10 +73,6 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
   }
 
   Future addGaurdDuty() async {
-    //DateTime start = DateFormat('d MMM yyyy').parse(widget.dutyStartTime);
-    //DateTime end = DateFormat('d MMM yyyy').parse(widget.dutyEndTime);
-    //String sTime = DateFormat('h:mm a').format(start);
-    //String eTime = DateFormat('h:mm a').format(end);
 
     dutySoldiersAndRanks.removeWhere((key, value) => (key.contains("NA")));
 

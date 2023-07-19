@@ -48,7 +48,7 @@ class DutyPersonnelDataSource extends DataGridSource {
         padding: EdgeInsets.all(16.0.sp),
         child: Center(
           child: StyledText(
-            dataGridCell.value.toString().titleCase,
+            dataGridCell.value.toString(),
             16.sp,
             fontWeight: FontWeight.w400,
           ),
