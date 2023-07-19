@@ -1,7 +1,6 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_project_2/screens/guard_duty_tracker_screen.dart/tabs/points_leaderboard.dart';
 import 'package:firebase_project_2/util/text_styles/text_style.dart';
-import 'package:recase/recase.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +13,8 @@ class DutyPersonnelDataSource extends DataGridSource {
                 value: e.rank,
               ),
               DataGridCell<String>(columnName: 'name', value: e.name),
-              DataGridCell<int>(columnName: 'points', value: e.points),
+              DataGridCell<String>(
+                  columnName: 'points', value: e.points.toString()),
             ]))
         .toList();
   }

@@ -11,6 +11,13 @@ class UserData extends ChangeNotifier {
   Stream<DocumentSnapshot<Map<String, dynamic>>> userData =
       const Stream.empty();
 
+  Stream<QuerySnapshot> soldiers = const Stream.empty();
+
+  Stream<QuerySnapshot> get data {
+    soldiers = FirebaseFirestore.instance.collection('Users').snapshots();
+    return soldiers;
+  }
+
   // DocumentReference<Map<String, dynamic>>(Users/8bu245T440NIuQnJhm81)
   // This is the sample output, to get IDs we just do .id
   List<Map<String, dynamic>> userDetails = [];
@@ -148,5 +155,21 @@ class UserData extends ChangeNotifier {
   List<Map<String, dynamic>> getUserData() {
     futuremethod();
     return userDetails;
+  }
+
+  Future<List<Map<String, dynamic>>> todayDuty() async {
+    List<Map<String, dynamic>> conduct = [];
+    await FirebaseFirestore.instance
+        .collection("Duties")
+        .where('dutyDate',
+            isEqualTo: DateFormat("d MMM yyyy").format(DateTime.now()))
+        .get()
+        .then((querySnapshot) async {
+      for (var snapshot in querySnapshot.docs) {
+        Map<String, dynamic> data = snapshot.data();
+        conduct.add(data);
+      }
+    });
+    return conduct;
   }
 }

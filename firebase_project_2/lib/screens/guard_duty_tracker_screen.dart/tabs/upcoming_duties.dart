@@ -36,7 +36,7 @@ class _UpcomingDutiesState extends State<UpcomingDuties> {
 
   @override
   Widget build(BuildContext context) {
-    final statusModel = Provider.of<UserData>(context);
+    final userDetailsModel = Provider.of<UserData>(context);
     return SingleChildScrollView(
       child: Container(
         margin: EdgeInsets.only(top: 50.h),
@@ -52,7 +52,7 @@ class _UpcomingDutiesState extends State<UpcomingDuties> {
                 height: 15.h,
               ),
               StreamBuilder<QuerySnapshot>(
-                  stream: statusModel.duty_data,
+                  stream: userDetailsModel.duty_data,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       dutyDetails = [];
@@ -64,7 +64,6 @@ class _UpcomingDutiesState extends State<UpcomingDuties> {
                         dutyDetails[i]
                             .addEntries({'ID': duties[i].reference.id}.entries);
                       }
-                      print(dutyDetails.last['participants']);
                     }
                     return ListView.builder(
                       scrollDirection: Axis.vertical,
