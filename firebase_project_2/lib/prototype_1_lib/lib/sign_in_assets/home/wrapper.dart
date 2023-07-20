@@ -7,6 +7,9 @@ class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //return Home if logged in, Else return authentication page
-    return const AuthService();
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: const AuthService(),
+    );
   }
 }

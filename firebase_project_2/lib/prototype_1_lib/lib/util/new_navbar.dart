@@ -38,60 +38,63 @@ class _GNavMainScreen extends State<GNavMainScreen> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: const Color.fromARGB(255, 21, 25, 34),
-        body: Center(
-          child: _widgetOptions.elementAt(widget.selectedIndex),
-        ),
-        bottomNavigationBar: Container(
-          color: const Color.fromARGB(255, 11, 13, 17),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.0.w, vertical: 15.h),
-            child: GNav(
-                onTabChange: (value) {
-                  itemTapped(value);
-                },
-                gap: 7,
-                backgroundColor: const Color.fromARGB(255, 11, 13, 17),
-                color: Colors.deepPurple.shade300,
-                activeColor: Colors.white,
-                tabBackgroundGradient: LinearGradient(
-                  colors: [
-                    const Color.fromARGB(255, 72, 30, 229),
-                    Colors.deepPurple.shade600,
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                padding: EdgeInsets.all(16.sp),
-                tabs: [
-                  GButton(
-                    key: const Key("home"),
-                    icon: Icons.home_outlined,
-                    text: 'Home',
-                    textStyle: GoogleFonts.poppins(
-                        color: Colors.white, fontWeight: FontWeight.bold),
+      home: WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: const Color.fromARGB(255, 21, 25, 34),
+          body: Center(
+            child: _widgetOptions.elementAt(widget.selectedIndex),
+          ),
+          bottomNavigationBar: Container(
+            color: const Color.fromARGB(255, 11, 13, 17),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.0.w, vertical: 15.h),
+              child: GNav(
+                  onTabChange: (value) {
+                    itemTapped(value);
+                  },
+                  gap: 7,
+                  backgroundColor: const Color.fromARGB(255, 11, 13, 17),
+                  color: Colors.deepPurple.shade300,
+                  activeColor: Colors.white,
+                  tabBackgroundGradient: LinearGradient(
+                    colors: [
+                      const Color.fromARGB(255, 72, 30, 229),
+                      Colors.deepPurple.shade600,
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                   ),
-                  GButton(
-                      key: const Key("nominalRoll"),
-                      icon: Icons.perm_contact_calendar_rounded,
-                      text: 'Nominal Roll',
+                  padding: EdgeInsets.all(16.sp),
+                  tabs: [
+                    GButton(
+                      key: const Key("home"),
+                      icon: Icons.home_outlined,
+                      text: 'Home',
                       textStyle: GoogleFonts.poppins(
-                          color: Colors.white, fontWeight: FontWeight.bold)),
-                  GButton(
-                      key: const Key("conductTracker"),
-                      icon: Icons.track_changes_rounded,
-                      text: 'Conduct Tracker',
-                      textStyle: GoogleFonts.poppins(
-                          color: Colors.white, fontWeight: FontWeight.bold)),
-                  GButton(
-                      key: const Key("guardDuty"),
-                      icon: Icons.safety_check,
-                      text: 'Guard Duty',
-                      textStyle: GoogleFonts.poppins(
-                          color: Colors.white, fontWeight: FontWeight.bold)),
-                ]),
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                    GButton(
+                        key: const Key("nominalRoll"),
+                        icon: Icons.perm_contact_calendar_rounded,
+                        text: 'Nominal Roll',
+                        textStyle: GoogleFonts.poppins(
+                            color: Colors.white, fontWeight: FontWeight.bold)),
+                    GButton(
+                        key: const Key("conductTracker"),
+                        icon: Icons.track_changes_rounded,
+                        text: 'Conduct Tracker',
+                        textStyle: GoogleFonts.poppins(
+                            color: Colors.white, fontWeight: FontWeight.bold)),
+                    GButton(
+                        key: const Key("guardDuty"),
+                        icon: Icons.safety_check,
+                        text: 'Guard Duty',
+                        textStyle: GoogleFonts.poppins(
+                            color: Colors.white, fontWeight: FontWeight.bold)),
+                  ]),
+            ),
           ),
         ),
       ),

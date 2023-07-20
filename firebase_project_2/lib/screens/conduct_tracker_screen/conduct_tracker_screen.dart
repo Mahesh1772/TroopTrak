@@ -67,6 +67,12 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen>
     super.initState();
   }
 
+  @override
+  void dispose() {
+    _noConducts.dispose();
+    super.dispose();
+  }
+
   /// Returns the difference (in full days) between the provided date and today.
   int calculateDifference(DateTime date) {
     //DateTime now = DateTime.now();

@@ -59,51 +59,54 @@ class _GNavMainScreen extends State<GNavMainScreen> {
     ];
 
     return MaterialApp(
-      home: Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: const Color.fromARGB(255, 21, 25, 34),
-        body: Center(
-          child: _widgetOptions.elementAt(selectedIndex),
-        ),
-        bottomNavigationBar: Container(
-          color: const Color.fromARGB(255, 11, 13, 17),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.0.w, vertical: 15.h),
-            child: GNav(
-              onTabChange: (value) {
-                itemTapped(value);
-              },
-              gap: 7,
-              backgroundColor: const Color.fromARGB(255, 11, 13, 17),
-              color: Colors.deepPurple.shade300,
-              activeColor: Colors.white,
-              tabBackgroundGradient: LinearGradient(
-                colors: [
-                  const Color.fromARGB(255, 72, 30, 229),
-                  Colors.deepPurple.shade600,
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              padding: EdgeInsets.all(16.sp),
-              tabs: [
-                GButton(
-                  icon: Icons.person,
-                  text: 'My Profile',
-                  textStyle: GoogleFonts.poppins(
-                      color: Colors.white, fontWeight: FontWeight.bold),
+      home: WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: const Color.fromARGB(255, 21, 25, 34),
+          body: Center(
+            child: _widgetOptions.elementAt(selectedIndex),
+          ),
+          bottomNavigationBar: Container(
+            color: const Color.fromARGB(255, 11, 13, 17),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.0.w, vertical: 15.h),
+              child: GNav(
+                onTabChange: (value) {
+                  itemTapped(value);
+                },
+                gap: 7,
+                backgroundColor: const Color.fromARGB(255, 11, 13, 17),
+                color: Colors.deepPurple.shade300,
+                activeColor: Colors.white,
+                tabBackgroundGradient: LinearGradient(
+                  colors: [
+                    const Color.fromARGB(255, 72, 30, 229),
+                    Colors.deepPurple.shade600,
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
-                GButton(
-                    icon: Icons.track_changes_rounded,
-                    text: 'Conduct Tracker',
+                padding: EdgeInsets.all(16.sp),
+                tabs: [
+                  GButton(
+                    icon: Icons.person,
+                    text: 'My Profile',
                     textStyle: GoogleFonts.poppins(
-                        color: Colors.white, fontWeight: FontWeight.bold)),
-                GButton(
-                    icon: Icons.safety_check,
-                    text: 'Guard Duty',
-                    textStyle: GoogleFonts.poppins(
-                        color: Colors.white, fontWeight: FontWeight.bold)),
-              ],
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                  GButton(
+                      icon: Icons.track_changes_rounded,
+                      text: 'Conduct Tracker',
+                      textStyle: GoogleFonts.poppins(
+                          color: Colors.white, fontWeight: FontWeight.bold)),
+                  GButton(
+                      icon: Icons.safety_check,
+                      text: 'Guard Duty',
+                      textStyle: GoogleFonts.poppins(
+                          color: Colors.white, fontWeight: FontWeight.bold)),
+                ],
+              ),
             ),
           ),
         ),

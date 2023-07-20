@@ -11,6 +11,8 @@ import 'package:provider/provider.dart';
 
 import 'package:firebase_project_2/prototype_1_lib/lib/user_models/user_details.dart';
 
+import '../../../../screens/guard_duty_tracker_screen.dart/tabs/points_leaderboard.dart';
+
 class AddDutySoldiersCard extends StatefulWidget {
   const AddDutySoldiersCard({
     super.key,
@@ -189,6 +191,19 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
                               .where((element) => !userModel.non_participants
                                   .contains(element['name']))
                               .toList();
+
+                          for (var i = 0; i < userDetails.length; i++) {
+                            userDetails[i].addEntries({
+                              'Points': pointsTable[userDetails[i]['name']]
+                                      ?.toInt() ??
+                                  0
+                            }.entries);
+                          }
+
+                          userDetails.sort(
+                              (a, b) => a["Points"].compareTo(b["Points"]));
+
+                          print(userDetails);
                         }
                         return Flexible(
                           child: SizedBox(

@@ -44,7 +44,7 @@ class AuthProvider extends ChangeNotifier {
       await firebase_auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
         timeout: const Duration(seconds: 60),
-        verificationCompleted: (phoneAuthCredential) async {
+        verificationCompleted: (PhoneAuthCredential phoneAuthCredential) async {
           await firebase_auth.signInWithCredential(phoneAuthCredential);
         },
         verificationFailed: (error) {
@@ -83,7 +83,7 @@ class AuthProvider extends ChangeNotifier {
     try {
       PhoneAuthCredential creds = PhoneAuthProvider.credential(
           verificationId: verificationId, smsCode: otp);
-      User? user = (await firebase_auth.signInWithCredential(creds)).user!;
+      User? user = (await firebase_auth.signInWithCredential(creds)).user;
       // ignore: unnecessary_null_comparison
       if (user != null) {
         _userid = user.uid;
