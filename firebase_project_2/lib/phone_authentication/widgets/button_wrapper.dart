@@ -1,10 +1,16 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class WrapperButton extends StatelessWidget {
   final String label;
   final VoidCallback onPressed;
-  const WrapperButton({super.key, required this.label, required this.onPressed,});
+  const WrapperButton({
+    super.key,
+    required this.label,
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +19,7 @@ class WrapperButton extends StatelessWidget {
       child: GestureDetector(
         onTap: onPressed,
         child: Container(
-          padding: const EdgeInsets.all(25),
+          padding: EdgeInsets.all(16.sp),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
@@ -27,13 +33,26 @@ class WrapperButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           child: Center(
-            child: Text(
-              label,
-              style: GoogleFonts.poppins(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AutoSizeText(
+                  label,
+                  style: GoogleFonts.poppins(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24.sp,
+                  ),
+                ),
+                SizedBox(
+                  width: 20.w,
+                ),
+                Icon(
+                  Icons.arrow_circle_right_rounded,
+                  color: Colors.white,
+                  size: 30.sp,
+                )
+              ],
             ),
           ),
         ),

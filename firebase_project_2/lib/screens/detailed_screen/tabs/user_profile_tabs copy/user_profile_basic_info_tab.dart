@@ -77,7 +77,7 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab> {
 
   @override
   Widget build(BuildContext context) {
-    final userDetailsModel = Provider.of<UserData>(context);
+    final userDetailsModel = Provider.of<MenUserData>(context);
     return SingleChildScrollView(
       child: SizedBox(
         height: 750.h,
@@ -127,7 +127,7 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => UpdateSoldierDetailsPage(
-                              docID: fname,
+                                docID: fname,
                                 name: TextEditingController(text: data['name']),
                                 company: TextEditingController(
                                     text: data['company']),

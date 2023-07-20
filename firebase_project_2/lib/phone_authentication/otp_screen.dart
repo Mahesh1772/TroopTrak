@@ -4,6 +4,7 @@ import 'package:firebase_project_2/phone_authentication/widgets/button_wrapper.d
 import 'package:firebase_project_2/util/new_navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
@@ -30,7 +31,7 @@ class _OtpScreenState extends State<OtpScreen> {
         Provider.of<AuthProvider>(context, listen: true).isLoading;
     Vid = widget.verificationId;
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 45, 60, 68),
+      backgroundColor: const Color.fromARGB(255, 21, 25, 34),
       body: SafeArea(
         child: SingleChildScrollView(
           child: isLoading
@@ -47,132 +48,134 @@ class _OtpScreenState extends State<OtpScreen> {
                 )
               : Center(
                   child: Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: GestureDetector(
-                            onTap: () => Navigator.pop(context),
-                            child: const Icon(
-                              Icons.arrow_back_sharp,
-                              color: Colors.white,
-                              size: 25,
-                            ),
-                          ),
-                        ),
-
-                        const SizedBox(
-                          height: 30,
-                        ),
-
-                        const Icon(
-                          Icons.military_tech_outlined,
-                          size: 180,
-                          color: Colors.deepPurpleAccent,
-                        ),
-
-                        const SizedBox(
-                          height: 20,
-                        ),
-
-                        //welcome text
-                        Text(
-                          'User verification',
-                          style: GoogleFonts.kanit(
-                            fontSize: 35,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.purple.shade300,
-                          ),
-                        ),
-
-                        const SizedBox(
-                          height: 10,
-                        ),
-
-                        Text(
-                          'Enter OTP recieved',
-                          style: GoogleFonts.kanit(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.purple.shade400,
-                          ),
-                        ),
-
-                        const SizedBox(height: 30),
-
-                        Pinput(
-                          length: 6,
-                          showCursor: true,
-                          defaultPinTheme: PinTheme(
-                            width: 36,
-                            height: 56,
-                            textStyle: GoogleFonts.kanit(
-                                fontSize: 20,
-                                color: Colors.amber,
-                                fontWeight: FontWeight.w800),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.purpleAccent,
+                    padding: EdgeInsets.all(12.sp),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: GestureDetector(
+                              onTap: () => Navigator.pop(context),
+                              child: Icon(
+                                Icons.arrow_back_sharp,
+                                color: Colors.white,
+                                size: 25.sp,
                               ),
-                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          onCompleted: (value) {
-                            setState(() {
-                              otp = value;
-                              print(otp);
-                            });
-                          },
-                        ),
 
-                        const SizedBox(height: 30),
-
-                        WrapperButton(
-                          label: 'Verify',
-                          onPressed: () {
-                            if (otp != null) {
-                              verifyOTP(context, otp!);
-                            } else {
-                              IconSnackBar.show(
-                                  direction: DismissDirection.horizontal,
-                                  context: context,
-                                  snackBarType: SnackBarType.alert,
-                                  label: 'Enter 6 digit code',
-                                  snackBarStyle:
-                                      const SnackBarStyle() // this one
-                                  );
-                            }
-                          },
-                        ),
-
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        //welcome text
-                        Text(
-                          "Did not recieve OTP?",
-                          style: GoogleFonts.kanit(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.purple.shade300,
+                          SizedBox(
+                            height: 50.h,
                           ),
-                        ),
 
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        //welcome text
-                        Text(
-                          'Resed New OTP',
-                          style: GoogleFonts.kanit(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: const Color.fromARGB(255, 187, 231, 74),
+                          Icon(
+                            Icons.military_tech_outlined,
+                            size: 180.sp,
+                            color: Colors.deepPurpleAccent,
                           ),
-                        ),
-                      ],
+
+                          SizedBox(
+                            height: 20.h,
+                          ),
+
+                          //welcome text
+                          Text(
+                            'User Verification',
+                            style: GoogleFonts.poppins(
+                              fontSize: 35.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.purple.shade300,
+                            ),
+                          ),
+
+                          SizedBox(
+                            height: 10.h,
+                          ),
+
+                          Text(
+                            'Enter OTP Recieved',
+                            style: GoogleFonts.poppins(
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.purple.shade400,
+                            ),
+                          ),
+
+                          SizedBox(height: 30.h),
+
+                          Pinput(
+                            length: 6,
+                            showCursor: true,
+                            defaultPinTheme: PinTheme(
+                              width: 46.w,
+                              height: 66.h,
+                              textStyle: GoogleFonts.poppins(
+                                  fontSize: 20.sp,
+                                  color: Colors.amber,
+                                  fontWeight: FontWeight.w800),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.purpleAccent,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            onCompleted: (value) {
+                              setState(() {
+                                otp = value;
+                                print(otp);
+                              });
+                            },
+                          ),
+
+                          SizedBox(height: 30.h),
+
+                          WrapperButton(
+                            label: 'Verify',
+                            onPressed: () {
+                              if (otp != null) {
+                                verifyOTP(context, otp!);
+                              } else {
+                                IconSnackBar.show(
+                                    direction: DismissDirection.horizontal,
+                                    context: context,
+                                    snackBarType: SnackBarType.alert,
+                                    label: 'Enter 6 digit code',
+                                    snackBarStyle:
+                                        const SnackBarStyle() // this one
+                                    );
+                              }
+                            },
+                          ),
+
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          //welcome text
+                          Text(
+                            "Did not recieve OTP?",
+                            style: GoogleFonts.poppins(
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.purple.shade300,
+                            ),
+                          ),
+
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          //welcome text
+                          Text(
+                            'Resend New OTP',
+                            style: GoogleFonts.poppins(
+                              fontSize: 22.sp,
+                              fontWeight: FontWeight.bold,
+                              color: const Color.fromARGB(255, 187, 231, 74),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

@@ -113,7 +113,7 @@ class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
 
   @override
   Widget build(BuildContext context) {
-    final userDetailsModel = Provider.of<UserData>(context);
+    final userDetailsModel = Provider.of<MenUserData>(context);
     Future.delayed(const Duration(milliseconds: 5000), () {
       return const CircularProgressIndicator();
     });

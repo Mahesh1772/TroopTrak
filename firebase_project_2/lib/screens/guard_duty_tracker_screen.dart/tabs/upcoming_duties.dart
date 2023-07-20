@@ -36,7 +36,7 @@ class _UpcomingDutiesState extends State<UpcomingDuties> {
 
   @override
   Widget build(BuildContext context) {
-    final userDetailsModel = Provider.of<UserData>(context);
+    final userDetailsModel = Provider.of<MenUserData>(context);
     return SingleChildScrollView(
       child: Container(
         margin: EdgeInsets.only(top: 50.h),

@@ -249,7 +249,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
 
   @override
   Widget build(context) {
-    final userDetailsModel = Provider.of<UserData>(context);
+    final userDetailsModel = Provider.of<MenUserData>(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),

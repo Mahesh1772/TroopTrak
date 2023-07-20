@@ -25,7 +25,7 @@ class UserProfileStatusesTab extends StatefulWidget {
 class _UserProfileStatusesTabState extends State<UserProfileStatusesTab> {
   @override
   Widget build(BuildContext context) {
-    final statusModel = Provider.of<UserData>(context);
+    final statusModel = Provider.of<MenUserData>(context);
     List<Map<String, dynamic>> userPastStatus = [];
     List<Map<String, dynamic>> toRemove = [];
 

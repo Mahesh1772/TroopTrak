@@ -33,152 +33,148 @@ class _RegisterScreenState extends State<RegisterScreen> {
       TextPosition(offset: _phone.text.length),
     );
     return Scaffold(
-      backgroundColor: Colors.deepPurple.shade100,
+      resizeToAvoidBottomInset: false,
+      backgroundColor: const Color.fromARGB(255, 21, 25, 34),
       body: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 25,
-              horizontal: 35,
-            ),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 350.w,
-                    height: 350.h,
-                    padding: EdgeInsets.all(10.sp),
-                    transformAlignment: Alignment.center,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      //color: Colors.blueGrey.shade800,
-                    ),
-                    child: Image.asset(
-                      'lib/assets/phone_auth/troopTrak_logo.png',
-                      color: Colors.deepPurpleAccent,
-                    ),
-                  ),
-                  SizedBox(height: 30.h),
-                  Text(
-                    'Enter Phone Number',
-                    style: GoogleFonts.kanit(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.purple.shade300,
-                    ),
-                  ),
-                  SizedBox(height: 30.h),
-                  Text(
-                    'For Registration and login',
-                    style: GoogleFonts.kanit(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.w800,
-                      color: Colors.blue.shade900,
-                    ),
-                  ),
-                  SizedBox(height: 30.h),
-                  TextFormField(
-                    onChanged: (value) {
-                      setState(() {
-                        _phone.text = value;
-                      });
-                    },
-                    cursorColor: Colors.deepPurple,
-                    controller: _phone,
-                    style: GoogleFonts.kanit(
-                      color: Colors.black,
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                        labelText: 'Phone Number',
-                        labelStyle: GoogleFonts.kanit(
-                          fontSize: 25.sp,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: 15.h,
+                  horizontal: 35.w,
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'lib/assets/phone_auth/troopTrak_logo.png',
+                        color: Colors.deepPurpleAccent,
+                        width: 300.w,
+                      ),
+                      Text(
+                        'Enter Phone Number',
+                        style: GoogleFonts.poppins(
+                          fontSize: 28.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.purple.shade300,
+                        ),
+                      ),
+                      SizedBox(height: 20.h),
+                      Text(
+                        'For Registration and login',
+                        style: GoogleFonts.poppins(
+                          fontSize: 22.sp,
                           fontWeight: FontWeight.w800,
-                          color: Colors.deepPurple,
+                          color: Colors.white,
                         ),
-                        hintText: 'Example: 9865 3214',
-                        hintStyle: GoogleFonts.kanit(
-                          fontSize: 25.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black54,
+                      ),
+                      SizedBox(height: 20.h),
+                      TextFormField(
+                        onChanged: (value) {
+                          setState(() {
+                            _phone.text = value;
+                          });
+                        },
+                        cursorColor: Colors.deepPurple.shade300,
+                        controller: _phone,
+                        style: GoogleFonts.poppins(
+                          color: Colors.white,
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
                         ),
-                        fillColor: Colors.purple.shade50,
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            width: 3,
-                            color: Colors.deepPurple.shade900,
-                          ), //<-- SEE HERE
-
-                          borderRadius: BorderRadius.circular(50.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            width: 3,
-                            color: Colors.deepPurple.shade900,
-                          ), //<-- SEE HERE
-
-                          borderRadius: BorderRadius.circular(50.0),
-                        ),
-                        prefixIcon: Container(
-                          padding: EdgeInsets.all(16.sp),
-                          child: InkWell(
-                            onTap: () {
-                              showCountryPicker(
-                                context: context,
-                                countryListTheme: CountryListThemeData(
-                                    bottomSheetHeight: 600.h),
-                                onSelect: (value) {
-                                  setState(() {
-                                    selectedCountry = value;
-                                  });
-                                },
-                              );
-                            },
-                            child: Text(
-                              "${selectedCountry.flagEmoji} + ${selectedCountry.phoneCode}",
-                              style: GoogleFonts.kanit(
-                                color: Colors.black,
-                                fontSize: 18.sp,
-                                fontWeight: FontWeight.bold,
-                              ),
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                            labelText: 'Phone Number',
+                            labelStyle: GoogleFonts.poppins(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w800,
+                              color: Colors.deepPurple.shade300,
                             ),
-                          ),
-                        ),
-                        suffixIcon: _phone.text.length > 7
-                            ? Padding(
-                                padding: EdgeInsets.all(8.0.sp),
-                                child: Container(
-                                  height: 20.h,
-                                  width: 20.w,
-                                  decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.green),
-                                  child: Icon(
-                                    Icons.done,
+                            hintText: 'Example: 9865 3214',
+                            hintStyle: GoogleFonts.poppins(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                            ),
+                            fillColor: Colors.purple.shade50,
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 3,
+                                color: Colors.deepPurple.shade400,
+                              ), //<-- SEE HERE
+
+                              borderRadius: BorderRadius.circular(50.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 3,
+                                color: Colors.deepPurple.shade900,
+                              ), //<-- SEE HERE
+
+                              borderRadius: BorderRadius.circular(50.0),
+                            ),
+                            prefixIcon: Container(
+                              padding: EdgeInsets.all(16.sp),
+                              child: InkWell(
+                                onTap: () {
+                                  showCountryPicker(
+                                    context: context,
+                                    countryListTheme: CountryListThemeData(
+                                        bottomSheetHeight: 600.h),
+                                    onSelect: (value) {
+                                      setState(() {
+                                        selectedCountry = value;
+                                      });
+                                    },
+                                  );
+                                },
+                                child: Text(
+                                  "${selectedCountry.flagEmoji}  +${selectedCountry.phoneCode}",
+                                  style: GoogleFonts.poppins(
                                     color: Colors.white,
-                                    size: 30.sp,
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                              )
-                            : null),
+                              ),
+                            ),
+                            suffixIcon: _phone.text.length > 7
+                                ? Padding(
+                                    padding: EdgeInsets.all(8.0.sp),
+                                    child: Container(
+                                      height: 20.h,
+                                      width: 20.w,
+                                      decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.green),
+                                      child: Icon(
+                                        Icons.done,
+                                        color: Colors.white,
+                                        size: 30.sp,
+                                      ),
+                                    ),
+                                  )
+                                : null),
+                      ),
+                      SizedBox(
+                        height: 50.h,
+                      ),
+                      WrapperButton(
+                        label: 'Login',
+                        onPressed: () {
+                          sendPhoneNumber();
+                        },
+                      )
+                    ],
                   ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  WrapperButton(
-                    label: 'Login',
-                    onPressed: () {
-                      sendPhoneNumber();
-                    },
-                  )
-                ],
+                ),
               ),
             ),
-          ),
+          ],
         ),
       ),
     );

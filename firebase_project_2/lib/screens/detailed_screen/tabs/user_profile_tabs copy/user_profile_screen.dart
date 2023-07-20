@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_project_2/phone_authentication/provider/auth_provider.dart';
+import 'package:firebase_project_2/phone_authentication/wrapper.dart';
 import 'package:firebase_project_2/screens/detailed_screen/qr_screen.dart';
 import 'package:firebase_project_2/screens/detailed_screen/tabs/user_profile_tabs%20copy/user_profile_attendance_tab.dart.dart';
 import 'package:firebase_project_2/screens/detailed_screen/tabs/user_profile_tabs%20copy/user_profile_basic_info_tab.dart';
@@ -32,8 +34,9 @@ class _UserProfileScreenState extends State<UserProfileScreen>
 
   @override
   Widget build(BuildContext context) {
-    final userDetailsModel = Provider.of<UserData>(context);
+    final userDetailsModel = Provider.of<MenUserData>(context);
     TabController tabController = TabController(length: 3, vsync: this);
+    final ap = Provider.of<AuthProvider>(context, listen: false);
 
     bool rankColorPicker(String rank) {
       return (rank == 'REC' ||
@@ -80,6 +83,32 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    ap.userSignOut().then((value) {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => const Wrapper(),
+                                        ),
+                                      );
+                                    });
+                                    //FirebaseAuth.instance.signOut();
+                                  },
+                                  child: Padding(
+                                    padding: EdgeInsets.all(8.0.sp),
+                                    child: Icon(
+                                      Icons.exit_to_app_rounded,
+                                      color: Colors.white,
+                                      size: 35.sp,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 10.w),
                               child: Column(

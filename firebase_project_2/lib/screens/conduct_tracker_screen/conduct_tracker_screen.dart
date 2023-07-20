@@ -23,7 +23,7 @@ class ConductTrackerScreen extends StatefulWidget {
   State<ConductTrackerScreen> createState() => _ConductTrackerScreenState();
 }
 
-  String fname = FirebaseAuth.instance.currentUser!.displayName.toString();
+String fname = FirebaseAuth.instance.currentUser!.displayName.toString();
 
 class _ConductTrackerScreenState extends State<ConductTrackerScreen>
     with TickerProviderStateMixin {
@@ -76,7 +76,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen>
         .inDays;
   }
 
-  bool isPartcipant(Map<String, dynamic> todayConducts, String name){
+  bool isPartcipant(Map<String, dynamic> todayConducts, String name) {
     List<String> part = todayConducts['participants'].cast<String>();
     if (part.contains(name)) {
       return true;
@@ -86,7 +86,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen>
 
   @override
   Widget build(BuildContext context) {
-    final statusModel = Provider.of<UserData>(context);
+    final statusModel = Provider.of<MenUserData>(context);
     var now = DateTime.now();
     DateTime startDate = DateTime(2022);
     DateTime endDate = DateTime(2025);
@@ -325,7 +325,8 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen>
                                           ['conductName'],
                                       conductType: todayConducts[index]
                                           ['conductType'],
-                                      isUserParticipating: isPartcipant(todayConducts[index], fname),
+                                      isUserParticipating: isPartcipant(
+                                          todayConducts[index], fname),
                                     ),
                                   );
                                 },

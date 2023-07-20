@@ -30,7 +30,7 @@ class UserProfileAttendanceTab extends StatefulWidget {
 class _UserProfileAttendanceTabState extends State<UserProfileAttendanceTab> {
   @override
   Widget build(BuildContext context) {
-    final statusModel = Provider.of<UserData>(context);
+    final statusModel = Provider.of<MenUserData>(context);
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Padding(

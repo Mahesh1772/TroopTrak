@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
-class UserData extends ChangeNotifier {
+class MenUserData extends ChangeNotifier {
   // The list of all document IDs,
   //which have access to each their own personal information
   List<String> documentIDs = [];
