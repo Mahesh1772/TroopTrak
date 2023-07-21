@@ -94,6 +94,9 @@ class _GenerateQRScreenState extends State<GenerateQRScreen> {
                         InkWell(
                           hoverColor: Colors.amber,
                           onTap: () {
+                            firestore.doc(fname).set({
+                              'QRid': null,
+                            }, SetOptions(merge: true));
                             Navigator.pop(context);
                           },
                           child: Icon(

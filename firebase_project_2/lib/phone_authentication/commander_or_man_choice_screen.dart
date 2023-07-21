@@ -28,6 +28,7 @@ class _CommanderOrManSelectScreenState
   @override
   Widget build(BuildContext context) {
     final ap = Provider.of<AuthProvider>(context, listen: false);
+    ap.checkSignIn();
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
       body: SafeArea(
@@ -210,6 +211,7 @@ class _CommanderOrManSelectScreenState
                         if (isPressed1) {
                           print(ap.isSignedIn);
                           ap.isSignedIn
+                          //ap.userid != null
                               ? Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(

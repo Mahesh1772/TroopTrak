@@ -48,6 +48,12 @@ class AuthProvider extends ChangeNotifier {
           await firebase_auth.signInWithCredential(phoneAuthCredential);
         },
         verificationFailed: (error) {
+          IconSnackBar.show(
+              direction: DismissDirection.horizontal,
+              context: context,
+              snackBarType: SnackBarType.fail,
+              label: error.message.toString(),
+              snackBarStyle: const SnackBarStyle());
           throw Exception(error.message);
         },
         codeSent: (verificationId, forceResendingToken) {
