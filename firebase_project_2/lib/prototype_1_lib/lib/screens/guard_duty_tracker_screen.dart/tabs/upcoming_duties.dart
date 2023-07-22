@@ -146,10 +146,80 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
                 height: 15.h,
               ),
               StreamBuilder<QuerySnapshot>(
+                stream: userDetailsModel.duty_data,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    todayDuties = [];
+                    dutyDetails = [];
+                    var duties = snapshot.data?.docs.toList();
+
+                    for (var i = 0; i < duties!.length; i++) {
+                      var data = duties[i].data();
+                      dutyDetails.add(data as Map<String, dynamic>);
+                      dutyDetails[i]
+                          .addEntries({'ID': duties[i].reference.id}.entries);
+                    }
+                    for (var duty in dutyDetails) {
+                      if (calculateDifference(DateFormat("d MMM yyyy")
+                              .parse(duty['dutyDate'])) ==
+                          0) {
+                        todayDuties.add(duty);
+                      }
+                    }
+                  }
+                  return todayDuties.isNotEmpty
+                      ? ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          physics: const PageScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: todayDuties.length,
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                              onTap: () {},
+                              child: GuardDutyTile(
+                                docID: todayDuties[index]['ID'],
+                                participants: todayDuties[index]
+                                    ['participants'],
+                                dutyDate: todayDuties[index]['dutyDate'],
+                                startTime: todayDuties[index]['startTime'],
+                                endTime: todayDuties[index]['endTime'],
+                                dutyType: todayDuties[index]['dayType'],
+                                numberOfPoints: todayDuties[index]['points'],
+                              ),
+                            );
+                          },
+                        )
+                      : Center(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              LottieBuilder.network(
+                                "https://lottie.host/d086ee86-2d40-45e6-a68d-fc1b5b9ebe58/QpGAG0CLkf.json",
+                                controller: _noConducts,
+                                height: 400.h,
+                              ),
+                              StyledText("NO DUTIES FOR TODAY!", 28.sp,
+                                  fontWeight: FontWeight.w500),
+                            ],
+                          ),
+                        );
+                },
+              ),
+              SizedBox(
+                height: 50.h,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0.w),
+                child: StyledText("Upcoming Duties", 24.sp,
+                    fontWeight: FontWeight.w600),
+              ),
+              SizedBox(
+                height: 15.h,
+              ),
+              StreamBuilder<QuerySnapshot>(
                   stream: userDetailsModel.duty_data,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      todayDuties = [];
                       dutyDetails = [];
                       var duties = snapshot.data?.docs.toList();
 
@@ -159,54 +229,31 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
                         dutyDetails[i]
                             .addEntries({'ID': duties[i].reference.id}.entries);
                       }
-                      for (var duty in dutyDetails) {
-                        if (calculateDifference(DateFormat("d MMM yyyy")
-                                .parse(duty['dutyDate'])) ==
-                            0) {
-                          todayDuties.add(duty);
-                        }
-                      }
                     }
-                    return todayDuties.isNotEmpty
-                        ? ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            physics: const PageScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: todayDuties.length,
-                            itemBuilder: (context, index) {
-                              return InkWell(
-                                onTap: () {},
-                                child: GuardDutyTile(
-                                  docID: todayDuties[index]['ID'],
-                                  participants: todayDuties[index]
-                                      ['participants'],
-                                  dutyDate: todayDuties[index]['dutyDate'],
-                                  startTime: todayDuties[index]['startTime'],
-                                  endTime: todayDuties[index]['endTime'],
-                                  dutyType: todayDuties[index]['dayType'],
-                                  numberOfPoints: todayDuties[index]['points'],
-                                ),
-                              );
-                            },
-                          )
-                        : Center(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                LottieBuilder.network(
-                                  "https://lottie.host/d086ee86-2d40-45e6-a68d-fc1b5b9ebe58/QpGAG0CLkf.json",
-                                  controller: _noConducts,
-                                  height: 400.h,
-                                ),
-                                StyledText("NO DUTIES FOR TODAY!", 28.sp,
-                                    fontWeight: FontWeight.w500),
-                              ],
-                            ),
-                          );
+                    return ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      physics: const PageScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: dutyDetails.length,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () {},
+                          child: GuardDutyTile(
+                            docID: dutyDetails[index]['ID'],
+                            participants: dutyDetails[index]['participants'],
+                            dutyDate: dutyDetails[index]['dutyDate'],
+                            startTime: dutyDetails[index]['startTime'],
+                            endTime: dutyDetails[index]['endTime'],
+                            dutyType: dutyDetails[index]['dayType'],
+                            numberOfPoints: dutyDetails[index]['points'],
+                          ),
+                        );
+                      },
+                    );
                   }),
               SizedBox(
                 height: 50.h,
-              )
+              ),
             ],
           ),
         ),

@@ -4,8 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_project_2/screens/guard_duty_tracker_screen.dart/util/guard_duty_main_page_tiles.dart';
 import 'package:firebase_project_2/util/text_styles/text_style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
+import 'package:lottie/lottie.dart';
 import '../../../user_models/user_details.dart';
 
 class UpcomingDuties extends StatefulWidget {
@@ -21,17 +23,47 @@ late Stream<QuerySnapshot> documentStream;
 // List to store all user data, whilst also mapping to name
 List<Map<String, dynamic>> dutyDetails = [];
 
+//List to store the selected date's guard duties
+List<Map<String, dynamic>> todayDuties = [];
+
 //Loop variable
 int i = 0;
 
 String fname = FirebaseAuth.instance.currentUser!.displayName.toString();
 
-class _UpcomingDutiesState extends State<UpcomingDuties> {
+class _UpcomingDutiesState extends State<UpcomingDuties>
+    with TickerProviderStateMixin {
+  DateTime _selectedDate = DateTime.now();
+
+  late AnimationController _noConducts;
+
   bool isPartcipant(Map<String, dynamic> todayConducts, String name) {
     if (todayConducts.containsKey(name)) {
       return true;
     }
     return false;
+  }
+
+  @override
+  void initState() {
+    _noConducts =
+        AnimationController(vsync: this, duration: const Duration(seconds: 5));
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _noConducts.dispose();
+    super.dispose();
+  }
+
+  /// Returns the difference (in full days) between the provided date and today.
+  int calculateDifference(DateTime date) {
+    //DateTime now = DateTime.now();
+    return DateTime(date.year, date.month, date.day)
+        .difference(DateTime(
+            _selectedDate.year, _selectedDate.month, _selectedDate.day))
+        .inDays;
   }
 
   @override
@@ -43,6 +75,150 @@ class _UpcomingDutiesState extends State<UpcomingDuties> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0.w),
+                child: StyledText("Today's Duties", 24.sp,
+                    fontWeight: FontWeight.w600),
+              ),
+              SizedBox(
+                height: 15.h,
+              ),
+              Container(
+                margin: EdgeInsets.only(
+                  top: 16.h,
+                ),
+                padding: EdgeInsets.all(16.sp),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    width: 2.w,
+                    color: const Color.fromARGB(255, 72, 30, 229)
+                        .withOpacity(0.35),
+                  ),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(16.r),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        showDatePicker(
+                          context: context,
+                          initialDate: _selectedDate,
+                          firstDate: DateTime(2020),
+                          lastDate: DateTime(2030),
+                        ).then(
+                          (value) {
+                            setState(
+                              () {
+                                _selectedDate = value!;
+                              },
+                            );
+                          },
+                        );
+                      },
+                      child: Icon(
+                        Icons.date_range_rounded,
+                        color: Colors.white,
+                        size: 45.sp,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 30.w,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          DateFormat.yMMMMd().format(_selectedDate),
+                          style: GoogleFonts.poppins(
+                              color: Colors.white54,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 28.sp),
+                        ),
+                        Text(
+                          _selectedDate == DateTime.now()
+                              ? "Today"
+                              : DateFormat('EEEE').format(_selectedDate),
+                          style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 32.sp),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 15.h,
+              ),
+              StreamBuilder<QuerySnapshot>(
+                stream: userDetailsModel.duty_data,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    todayDuties = [];
+                    dutyDetails = [];
+                    var duties = snapshot.data?.docs.toList();
+
+                    for (var i = 0; i < duties!.length; i++) {
+                      var data = duties[i].data();
+                      dutyDetails.add(data as Map<String, dynamic>);
+                      dutyDetails[i]
+                          .addEntries({'ID': duties[i].reference.id}.entries);
+                    }
+                    for (var duty in dutyDetails) {
+                      if (calculateDifference(DateFormat("d MMM yyyy")
+                              .parse(duty['dutyDate'])) ==
+                          0) {
+                        todayDuties.add(duty);
+                      }
+                    }
+                  }
+                  return todayDuties.isNotEmpty
+                      ? ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          physics: const PageScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: todayDuties.length,
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                              onTap: () {},
+                              child: GuardDutyTile(
+                                docID: todayDuties[index]['ID'],
+                                participants: todayDuties[index]
+                                    ['participants'],
+                                dutyDate: todayDuties[index]['dutyDate'],
+                                startTime: todayDuties[index]['startTime'],
+                                endTime: todayDuties[index]['endTime'],
+                                dutyType: todayDuties[index]['dayType'],
+                                numberOfPoints: todayDuties[index]['points'],
+                                isUserParticipating: isPartcipant(
+                                    dutyDetails[index]['participants'], fname),
+                              ),
+                            );
+                          },
+                        )
+                      : Center(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              LottieBuilder.network(
+                                "https://lottie.host/d086ee86-2d40-45e6-a68d-fc1b5b9ebe58/QpGAG0CLkf.json",
+                                controller: _noConducts,
+                                height: 400.h,
+                              ),
+                              StyledText("NO DUTIES FOR TODAY!", 28.sp,
+                                  fontWeight: FontWeight.w500),
+                            ],
+                          ),
+                        );
+                },
+              ),
+              SizedBox(
+                height: 50.h,
+              ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.0.w),
                 child: StyledText("Upcoming Duties", 24.sp,
