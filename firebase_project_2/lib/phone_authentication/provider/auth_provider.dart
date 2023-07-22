@@ -18,8 +18,8 @@ class AuthProvider extends ChangeNotifier {
   Map<String, dynamic>? _data;
   Map<String, dynamic> get data => _data!;
 
-  int _selector = 1;
-  int get selector => _selector;
+  int? _selector;
+  int? get selector => _selector;
 
   final firebase_auth = FirebaseAuth.instance;
   final firebase_store = FirebaseFirestore.instance.collection('Men');
@@ -31,12 +31,12 @@ class AuthProvider extends ChangeNotifier {
   void assign_entry(bool value) {
     if (value) {
       //men side
-      _selector = 2;
+      _selector = 1;
       notifyListeners();
     } else {
       //commander side
       notifyListeners();
-      _selector = 3;
+      _selector = 2;
     }
   }
 

@@ -10,6 +10,7 @@ import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CommanderOrManSelectScreen extends StatefulWidget {
   const CommanderOrManSelectScreen({super.key});
@@ -24,25 +25,16 @@ class _CommanderOrManSelectScreenState
   bool isPressed1 = false;
   bool isPressed2 = false;
 
+  _storeOnBoardInfo(int isViewed) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('onBoard', isViewed);
+  }
+
   @override
   Widget build(BuildContext context) {
     final ap = Provider.of<AuthProvider>(context, listen: false);
-    //if (ap.selector == 2) {
-    //  Navigator.push(
-    //    context,
-    //    MaterialPageRoute(
-    //      builder: (context) => const Wrapper(),
-    //    ),
-    //  );
-    //}
-    //if (ap.selector == 3) {
-    //  Navigator.push(
-    //    context,
-    //    MaterialPageRoute(
-    //      builder: (context) => const MyApp(),
-    //    ),
-    //  );
-    //}
+    print(ap.selector);
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
       body: SafeArea(
@@ -221,9 +213,10 @@ class _CommanderOrManSelectScreenState
                     height: 60.h,
                     width: 60.w,
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (isPressed1) {
-                          ap.assign_entry(true);
+                          await _storeOnBoardInfo(1);
+                          print(ap.selector);
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
@@ -231,11 +224,11 @@ class _CommanderOrManSelectScreenState
                             ),
                           );
                         } else if (isPressed2) {
-                          ap.assign_entry(false);
+                          await _storeOnBoardInfo(2);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const MyApp(),
+                              builder: (context) => const MyAppCommander(),
                             ),
                           );
                         }
