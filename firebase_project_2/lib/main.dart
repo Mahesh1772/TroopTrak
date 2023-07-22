@@ -1,6 +1,6 @@
 import 'package:firebase_project_2/phone_authentication/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_project_2/phone_authentication/wrapper.dart';
+import 'package:firebase_project_2/phone_authentication/commander_or_man_choice_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_project_2/firebase_options.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
           ),
         ],
         child: const MaterialApp(
-          home: Wrapper(),
+          home: CommanderOrManSelectScreen(),
         ),
       ),
       designSize: const Size(450, 1000),

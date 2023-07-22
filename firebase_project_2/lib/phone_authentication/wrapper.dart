@@ -1,15 +1,20 @@
-import 'package:firebase_project_2/phone_authentication/commander_or_man_choice_screen.dart';
+import 'package:firebase_project_2/phone_authentication/provider/auth_provider.dart';
+import 'package:firebase_project_2/phone_authentication/register_page.dart';
 import 'package:firebase_project_2/phone_authentication/widgets/button_wrapper.dart';
+import 'package:firebase_project_2/util/new_navbar.dart';
 import 'package:firebase_project_2/util/text_styles/text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class Wrapper extends StatelessWidget {
   const Wrapper({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final ap = Provider.of<AuthProvider>(context, listen: false);
+    ap.checkSignIn();
     //return Home if logged in, Else return authentication page
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
@@ -51,12 +56,20 @@ class Wrapper extends StatelessWidget {
               WrapperButton(
                 label: 'GET STARTED',
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const CommanderOrManSelectScreen(),
-                    ),
-                  );
+                  ap.isSignedIn
+                      //ap.userid != null
+                      ? Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const GNavMainScreen(),
+                          ),
+                        )
+                      : Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const RegisterScreen(),
+                          ),
+                        );
                 },
               ),
             ],

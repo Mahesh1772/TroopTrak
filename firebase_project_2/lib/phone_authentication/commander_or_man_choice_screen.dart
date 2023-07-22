@@ -1,16 +1,13 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:firebase_project_2/phone_authentication/provider/auth_provider.dart';
-import 'package:firebase_project_2/phone_authentication/register_page.dart';
+import 'package:firebase_project_2/phone_authentication/wrapper.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/main.dart';
-import 'package:firebase_project_2/util/new_navbar.dart';
 import 'package:firebase_project_2/util/text_styles/text_style.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
 class CommanderOrManSelectScreen extends StatefulWidget {
   const CommanderOrManSelectScreen({super.key});
@@ -27,8 +24,6 @@ class _CommanderOrManSelectScreenState
 
   @override
   Widget build(BuildContext context) {
-    final ap = Provider.of<AuthProvider>(context, listen: false);
-    ap.checkSignIn();
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
       body: SafeArea(
@@ -209,22 +204,12 @@ class _CommanderOrManSelectScreenState
                     child: ElevatedButton(
                       onPressed: () {
                         if (isPressed1) {
-                          ap.isSignedIn
-                          //ap.userid != null
-                              ? Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const GNavMainScreen(),
-                                  ),
-                                )
-                              : Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const RegisterScreen(),
-                                  ),
-                                );
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Wrapper(),
+                            ),
+                          );
                         } else if (isPressed2) {
                           Navigator.push(
                             context,

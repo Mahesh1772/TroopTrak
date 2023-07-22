@@ -10,7 +10,7 @@ int calculateDifference(DateTime date, DateTime _selectedDate) {
 }
 
 void main() {
-  test('calculateDifference returns correct difference in full days', () {
+  test('calculateDifference returns negative difference for past dates', () {
     final DateTime date1 = DateTime(2023, 7, 16);
     final DateTime date2 = DateTime(2023, 7, 20);
     final int expectedDifference = -4;
@@ -18,7 +18,7 @@ void main() {
     expect(calculateDifference(date1, date2), expectedDifference);
   });
 
-  test('calculateDifference returns negative difference for past dates', () {
+  test('calculateDifference returns correct difference in full days', () {
     final DateTime date1 = DateTime(2023, 7, 20);
     final DateTime date2 = DateTime(2023, 7, 16);
     final int expectedDifference = 4;
