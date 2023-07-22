@@ -8,10 +8,8 @@ import 'package:firebase_project_2/prototype_1_lib/lib/screens/guard_duty_tracke
 import 'package:firebase_project_2/prototype_1_lib/lib/util/text_styles/text_style.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/conduct_tracker_screen/util/add_soldier_to_duty_tile.dart';
 import 'package:provider/provider.dart';
-
 import 'package:firebase_project_2/prototype_1_lib/lib/user_models/user_details.dart';
 
-import '../../../../screens/guard_duty_tracker_screen.dart/tabs/points_leaderboard.dart';
 
 class AddDutySoldiersCard extends StatefulWidget {
   const AddDutySoldiersCard({
@@ -186,22 +184,13 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
                               userDetails.add(data);
                             }
                           }
-                          print(userModel.non_participants);
                           userDetails = userDetails
                               .where((element) => !userModel.non_participants
                                   .contains(element['name']))
                               .toList();
 
-                          for (var i = 0; i < userDetails.length; i++) {
-                            userDetails[i].addEntries({
-                              'Points': pointsTable[userDetails[i]['name']]
-                                      ?.toInt() ??
-                                  0
-                            }.entries);
-                          }
-
                           userDetails.sort(
-                              (a, b) => a["Points"].compareTo(b["Points"]));
+                              (a, b) => a["points"].compareTo(b["points"]));
 
                           print(userDetails);
                         }
@@ -237,7 +226,7 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
                     GestureDetector(
                       key: const Key("addSoldiersToDuty"),
                       onTap: () {
-                        print(dutySoldiersAndRanks);
+                        //print(dutySoldiersAndRanks);
                         dutySoldiersAndRanks =
                             reverseMapAndRemoveExcess(dutySoldiersAndRanks);
                         widget.callbackFunction(dutySoldiersAndRanks);

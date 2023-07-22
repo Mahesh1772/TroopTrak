@@ -62,7 +62,6 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
                   subject: conduct['conductType'],
                   color: Colors.amber,
                 );
-                print(newAppointment);
                 meetings.add(newAppointment);
               }
             }
@@ -90,7 +89,6 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
                   subject: 'Guard Duty',
                   color: Colors.pink,
                 );
-                print(newAppointment);
                 meetings.add(newAppointment);
               }
             }

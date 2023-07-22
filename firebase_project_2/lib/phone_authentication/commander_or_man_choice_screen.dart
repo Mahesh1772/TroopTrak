@@ -209,7 +209,6 @@ class _CommanderOrManSelectScreenState
                     child: ElevatedButton(
                       onPressed: () {
                         if (isPressed1) {
-                          print(ap.isSignedIn);
                           ap.isSignedIn
                           //ap.userid != null
                               ? Navigator.pushReplacement(
