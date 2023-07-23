@@ -13,6 +13,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_project_2/util/text_styles/text_style.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../user_models/user_details.dart';
 
@@ -27,6 +28,11 @@ class UserProfileScreen extends StatefulWidget {
 
 class _UserProfileScreenState extends State<UserProfileScreen>
     with TickerProviderStateMixin {
+  _storeOnBoardInfo(int isViewed) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('onBoard', isViewed);
+  }
+
   //String fname = FirebaseAuth.instance.currentUser!.displayName.toString();
   final fname = FirebaseAuth.instance.currentUser!.uid.toString();
 
@@ -87,8 +93,9 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 InkWell(
-                                  onTap: () {
+                                  onTap: () async {
                                     ap.userSignOut().then((value) {
+                                      _storeOnBoardInfo(1);
                                       Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(

@@ -216,7 +216,7 @@ class _CommanderOrManSelectScreenState
                       onPressed: () async {
                         if (isPressed1) {
                           await _storeOnBoardInfo(1);
-                          print(ap.selector);
+
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
