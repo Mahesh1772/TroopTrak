@@ -142,175 +142,182 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                             soldierReason = data['soldierReason'];
                           }
                         }
-                      }
-                      documentIDs.removeWhere((element) =>
-                          conductData['participants'].contains(element));
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 10.w, vertical: 20.h),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Icon(
-                                        Icons.arrow_back_sharp,
-                                        color: Colors.white,
-                                        size: 25.sp,
-                                      ),
-                                    ),
-                                    Row(
-                                      children: [
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    UpdateConductScreen(
-                                                  conductID: conductData['ID'],
-                                                  selectedConductType:
-                                                      conductData[
-                                                          'conductType'],
-                                                  nonParticipants:
-                                                      nonparticipantlist(),
-                                                  conductName:
-                                                      TextEditingController(
-                                                    text: conductData[
-                                                        'conductName'],
-                                                  ),
-                                                  startDate:
-                                                      conductData['startDate'],
-                                                  startTime:
-                                                      conductData['startTime'],
-                                                  endTime:
-                                                      conductData['endTime'],
-                                                  callbackFunction: callback,
-                                                ),
-                                              ),
-                                            ).then((value) => setState(() {
-                                                  documentStream =
-                                                      FirebaseFirestore.instance
-                                                          .collection('Users')
-                                                          .snapshots();
-                                                  conductStream =
-                                                      FirebaseFirestore.instance
-                                                          .collection(
-                                                              'Conducts')
-                                                          .snapshots();
-                                                  Navigator.pushReplacement(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (BuildContext
-                                                                  context) =>
-                                                              super.widget));
-                                                  WidgetsBinding.instance
-                                                      .addPostFrameCallback(
-                                                          (_) => build);
-                                                }));
-                                          },
-                                          child: Icon(
-                                            Icons.edit,
-                                            color: Colors.white,
-                                            size: 25.sp,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 40.w,
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            deleteConduct();
-                                          },
-                                          child: Icon(
-                                            Icons.delete_forever,
-                                            color: Colors.white,
-                                            size: 25.sp,
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 20.h,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      left: 20.0.w, right: 20.0.w, top: 20.0.h),
-                                  child: Row(
+                        documentIDs.removeWhere((element) =>
+                            conductData['participants'].contains(element));
+
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 10.w, vertical: 20.h),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              conductData['conductType']
-                                                  .toUpperCase(),
-                                              maxLines: 2,
-                                              style: GoogleFonts.poppins(
-                                                color: Colors.white,
-                                                fontSize: 24.sp,
-                                                fontWeight: FontWeight.w500,
-                                                letterSpacing: 1.5,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 5.h,
-                                            ),
-                                            Text(
-                                              conductData['conductName'],
-                                              maxLines: 3,
-                                              style: GoogleFonts.poppins(
-                                                color: Colors.white,
-                                                fontSize: 35.sp,
-                                                fontWeight: FontWeight.bold,
-                                                letterSpacing: 1.5,
-                                              ),
-                                            ),
-                                          ],
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Icon(
+                                          Icons.arrow_back_sharp,
+                                          color: Colors.white,
+                                          size: 25.sp,
                                         ),
                                       ),
+                                      Row(
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      UpdateConductScreen(
+                                                    conductID:
+                                                        conductData['ID'],
+                                                    selectedConductType:
+                                                        conductData[
+                                                            'conductType'],
+                                                    nonParticipants:
+                                                        nonparticipantlist(),
+                                                    conductName:
+                                                        TextEditingController(
+                                                      text: conductData[
+                                                          'conductName'],
+                                                    ),
+                                                    startDate: conductData[
+                                                        'startDate'],
+                                                    startTime: conductData[
+                                                        'startTime'],
+                                                    endTime:
+                                                        conductData['endTime'],
+                                                    callbackFunction: callback,
+                                                  ),
+                                                ),
+                                              ).then((value) => setState(() {
+                                                    documentStream =
+                                                        FirebaseFirestore
+                                                            .instance
+                                                            .collection('Users')
+                                                            .snapshots();
+                                                    conductStream =
+                                                        FirebaseFirestore
+                                                            .instance
+                                                            .collection(
+                                                                'Conducts')
+                                                            .snapshots();
+                                                    Navigator.pushReplacement(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (BuildContext
+                                                                    context) =>
+                                                                super.widget));
+                                                    WidgetsBinding.instance
+                                                        .addPostFrameCallback(
+                                                            (_) => build);
+                                                  }));
+                                            },
+                                            child: Icon(
+                                              Icons.edit,
+                                              color: Colors.white,
+                                              size: 25.sp,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 40.w,
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              deleteConduct();
+                                            },
+                                            child: Icon(
+                                              Icons.delete_forever,
+                                              color: Colors.white,
+                                              size: 25.sp,
+                                            ),
+                                          ),
+                                        ],
+                                      )
                                     ],
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 20.h,
-                                ),
-                                Center(
-                                  child: Text(
-                                    conductData['startDate'].toUpperCase(),
-                                    maxLines: 2,
-                                    style: GoogleFonts.poppins(
-                                      color: Colors.white,
-                                      fontSize: 18.sp,
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 1.5,
+                                  SizedBox(
+                                    height: 20.h,
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 20.0.w,
+                                        right: 20.0.w,
+                                        top: 20.0.h),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                conductData['conductType']
+                                                    .toUpperCase(),
+                                                maxLines: 2,
+                                                style: GoogleFonts.poppins(
+                                                  color: Colors.white,
+                                                  fontSize: 24.sp,
+                                                  fontWeight: FontWeight.w500,
+                                                  letterSpacing: 1.5,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 5.h,
+                                              ),
+                                              Text(
+                                                conductData['conductName'],
+                                                maxLines: 3,
+                                                style: GoogleFonts.poppins(
+                                                  color: Colors.white,
+                                                  fontSize: 35.sp,
+                                                  fontWeight: FontWeight.bold,
+                                                  letterSpacing: 1.5,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 20.h,
-                                ),
-                              ],
+                                  SizedBox(
+                                    height: 20.h,
+                                  ),
+                                  Center(
+                                    child: Text(
+                                      conductData['startDate'].toUpperCase(),
+                                      maxLines: 2,
+                                      style: GoogleFonts.poppins(
+                                        color: Colors.white,
+                                        fontSize: 18.sp,
+                                        fontWeight: FontWeight.bold,
+                                        letterSpacing: 1.5,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 20.h,
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      );
+                          ],
+                        );
+                      }
+                      return const Center(child: CircularProgressIndicator(),);
                     }),
               ),
             ),
