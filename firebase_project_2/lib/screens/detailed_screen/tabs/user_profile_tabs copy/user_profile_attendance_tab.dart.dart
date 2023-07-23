@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../user_models/user_details.dart';
 
-final name = FirebaseAuth.instance.currentUser!.uid.toString();
+final name = FirebaseAuth.instance.currentUser!.displayName.toString();
 
 var id = FirebaseAuth.instance.currentUser!;
 
@@ -30,13 +30,14 @@ class UserProfileAttendanceTab extends StatefulWidget {
 class _UserProfileAttendanceTabState extends State<UserProfileAttendanceTab> {
   @override
   Widget build(BuildContext context) {
+    print(name);
     final statusModel = Provider.of<MenUserData>(context);
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Padding(
         padding: EdgeInsets.all(30.sp),
         child: StreamBuilder<QuerySnapshot>(
-          stream: statusModel.attendance_data(name),
+          stream: statusModel.attendance_data(widget.docID),
           builder: (context, snapshot) {
             var users = snapshot.data?.docs.toList();
 

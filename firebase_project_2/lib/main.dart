@@ -29,42 +29,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    // final ap = Provider.of<AuthProvider>(context, listen: false);
-    // if (ap.selector == 1) {
-    //   return ScreenUtilInit(
-    //     builder: (BuildContext context, child) => MultiProvider(
-    //       providers: [
-    //         ChangeNotifierProvider(
-    //           create: (context) => MenUserData(),
-    //         ),
-    //         ChangeNotifierProvider(
-    //           create: (context) => AuthProvider(),
-    //         ),
-    //       ],
-    //       child: const MaterialApp(
-    //         home: CommanderOrManSelectScreen(),
-    //       ),
-    //     ),
-    //     designSize: const Size(450, 1000),
-    //   );
-    // } else if (ap.selector == 2) {
-    //   return ScreenUtilInit(
-    //     builder: (BuildContext context, child) => MultiProvider(
-    //       providers: [
-    //         ChangeNotifierProvider(
-    //           create: (context) => MenUserData(),
-    //         ),
-    //         ChangeNotifierProvider(
-    //           create: (context) => AuthProvider(),
-    //         ),
-    //       ],
-    //       child: const MaterialApp(
-    //         home: Wrapper(),
-    //       ),
-    //     ),
-    //     designSize: const Size(450, 1000),
-    //   );
-    // }
     return ScreenUtilInit(
       builder: (BuildContext context, child) => MultiProvider(
         providers: [
