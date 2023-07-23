@@ -331,6 +331,12 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
     showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
+      builder: (context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
+          child: child!,
+        );
+      },
     ).then(
       ((value) {
         setState(
@@ -348,6 +354,12 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
     showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
+      builder: (context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
+          child: child!,
+        );
+      },
     ).then(
       ((value) {
         setState(
