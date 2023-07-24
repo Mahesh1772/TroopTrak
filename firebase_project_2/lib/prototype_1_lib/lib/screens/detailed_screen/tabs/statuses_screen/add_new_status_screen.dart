@@ -118,8 +118,10 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
     if (widget.selectedStatusType != 'Excuse') {
       DateTime end = DateFormat("d MMM yyyy").parse(widget.endDate);
       DateTime now = DateTime.now();
-      end = DateTime(end.year, end.month, end.day, now.hour, now.minute + 30);
-      addAttendanceDetails(false, end);
+      now = DateTime(now.year, now.month, now.day, now.hour, now.minute + 30);
+      await addAttendanceDetails(false, now);
+      end = DateTime(end.year, end.month, end.day, 22, 0, 0);
+      await addAttendanceDetails(true, end);
     }
     Navigator.pop(context);
   }
