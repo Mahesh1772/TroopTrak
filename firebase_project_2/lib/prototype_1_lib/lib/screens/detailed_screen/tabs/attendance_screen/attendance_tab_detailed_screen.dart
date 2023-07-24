@@ -24,6 +24,14 @@ class AttendanceTab extends StatefulWidget {
 }
 
 class _AttendanceTabState extends State<AttendanceTab> {
+  int calculateDifference(DateTime date) {
+    DateTime now = DateTime.now();
+    return DateTime(date.year, date.month, date.day, date.hour, date.minute)
+        .difference(
+            DateTime(now.year, now.month, now.day, now.hour, now.minute))
+        .inMinutes;
+  }
+
   @override
   Widget build(BuildContext context) {
     final statusModel = Provider.of<UserData>(context);
@@ -59,6 +67,13 @@ class _AttendanceTabState extends State<AttendanceTab> {
             });
 
             userBookInStatus = userBookInStatus.reversed.toList();
+
+            userBookInStatus = userBookInStatus
+                .where((element) =>
+                    calculateDifference(DateFormat('E d MMM yyyy HH:mm:ss')
+                        .parse(element['date&time'])) <=
+                    0)
+                .toList();
             return SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,

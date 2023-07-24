@@ -182,18 +182,6 @@ class _SoldierTileState extends State<SoldierTile> {
                     all_data[i].addEntries(
                         {'ID': attendenceData[i].reference.id}.entries);
                   }
-                  //print(all_data[length-1]);
-                  //all_data.sort((m1, m2) {
-                  //  var r = DateFormat("E d MMM yyyy HH:mm:ss")
-                  //      .parse(m1["date&time"])
-                  //      .compareTo(DateFormat("E d MMM yyyy HH:mm:ss")
-                  //          .parse(m2["date&time"]));
-                  //  if (r != 0) return r;
-                  //  return DateFormat("E d MMM yyyy HH:mm:ss")
-                  //      .parse(m1["date&time"])
-                  //      .compareTo(DateFormat("E d MMM yyyy HH:mm:ss")
-                  //          .parse(m2["date&time"]));
-                  //});
                   all_data = all_data
                       .where((element) =>
                           calculateDifference(
