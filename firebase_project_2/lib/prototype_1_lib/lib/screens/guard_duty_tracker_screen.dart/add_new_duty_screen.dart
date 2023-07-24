@@ -355,7 +355,11 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
         setState(
           () {
             if (value != null) {
-              widget.dutyStartTime = value.format(context).toString();
+              DateTime now = DateTime.now();
+              DateTime dt = DateTime(
+                  now.year, now.month, now.day, value.hour, value.minute);
+
+              widget.dutyStartTime = DateFormat.jm().format(dt);
             }
           },
         );
@@ -378,7 +382,11 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
         setState(
           () {
             if (value != null) {
-              widget.dutyEndTime = value.format(context).toString();
+              DateTime now = DateTime.now();
+              DateTime dt = DateTime(
+                  now.year, now.month, now.day, value.hour, value.minute);
+
+              widget.dutyEndTime = DateFormat.jm().format(dt);
             }
           },
         );

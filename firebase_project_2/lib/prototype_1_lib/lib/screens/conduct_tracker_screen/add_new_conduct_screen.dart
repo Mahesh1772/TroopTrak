@@ -342,7 +342,11 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
         setState(
           () {
             if (value != null) {
-              widget.startTime = value.format(context).toString();
+              DateTime now = DateTime.now();
+              DateTime dt = DateTime(
+                  now.year, now.month, now.day, value.hour, value.minute);
+
+              widget.startTime = DateFormat.jm().format(dt);
             }
           },
         );
@@ -365,7 +369,11 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
         setState(
           () {
             if (value != null) {
-              widget.endTime = value.format(context).toString();
+              DateTime now = DateTime.now();
+              DateTime dt = DateTime(
+                  now.year, now.month, now.day, value.hour, value.minute);
+
+              widget.endTime = DateFormat.jm().format(dt);
             }
           },
         );

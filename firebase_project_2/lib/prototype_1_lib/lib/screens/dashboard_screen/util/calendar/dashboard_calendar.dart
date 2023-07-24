@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:multiple_stream_builder/multiple_stream_builder.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
 
 import 'package:firebase_project_2/prototype_1_lib/lib/user_models/user_details.dart';
 
@@ -20,157 +22,244 @@ DateTime _selectedDate = DateTime.now();
 List<Appointment> meetings = <Appointment>[];
 
 class _DashboardCalendarState extends State<DashboardCalendar> {
+  final CalendarController _controller = CalendarController();
+
+  void calendarTapped(CalendarTapDetails calendarTapDetails) {
+    if (_controller.view == CalendarView.month &&
+        calendarTapDetails.targetElement == CalendarElement.calendarCell) {
+      _controller.view = CalendarView.day;
+    } else if ((_controller.view == CalendarView.week ||
+            _controller.view == CalendarView.workWeek) &&
+        calendarTapDetails.targetElement == CalendarElement.viewHeader) {
+      _controller.view = CalendarView.day;
+    }
+  }
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
   @override
-  build(BuildContext context) {
+  Widget build(BuildContext context) {
     final statusModel = Provider.of<UserData>(context);
     return SizedBox(
       height: 780.h,
       child: StreamBuilder2<QuerySnapshot, QuerySnapshot>(
-          streams:
-              StreamTuple2(statusModel.conducts_data, statusModel.duty_data),
-          builder: (context, snapshots) {
-            if (snapshots.snapshot1.hasData) {
-              var conducts = snapshots.snapshot1.data?.docs.toList();
-              meetings = [];
-              var allConducts = [];
-              for (var i = 0; i < conducts!.length; i++) {
-                var data = conducts[i].data();
-                allConducts.add(data as Map<String, dynamic>);
-                allConducts[i]
-                    .addEntries({'ID': conducts[i].reference.id}.entries);
-              }
-              for (var conduct in allConducts) {
-                String nowStrartTime =
-                    conduct['startDate'] + " " + conduct['startTime'];
-                DateTime sDate =
-                    DateFormat('d MMM yyyy h:mm a').parse(nowStrartTime);
-
-                String nowEndTime =
-                    conduct['startDate'] + " " + conduct['endTime'];
-                DateTime eDate =
-                    DateFormat('d MMM yyyy h:mm a').parse(nowEndTime);
-
-                final Appointment newAppointment = Appointment(
-                  startTime: sDate,
-                  endTime: eDate,
-                  subject: conduct['conductType'],
-                  color: Colors.amber,
-                );
-                meetings.add(newAppointment);
-              }
+        streams: StreamTuple2(statusModel.conducts_data, statusModel.duty_data),
+        builder: (context, snapshots) {
+          if (snapshots.snapshot1.hasData) {
+            var conducts = snapshots.snapshot1.data?.docs.toList();
+            meetings = [];
+            var allConducts = [];
+            for (var i = 0; i < conducts!.length; i++) {
+              var data = conducts[i].data();
+              allConducts.add(data as Map<String, dynamic>);
+              allConducts[i]
+                  .addEntries({'ID': conducts[i].reference.id}.entries);
             }
-            if (snapshots.snapshot2.hasData) {
-              var dutyDetails = [];
-              var duties = snapshots.snapshot2.data?.docs.toList();
-              for (var i = 0; i < duties!.length; i++) {
-                var data = duties[i].data();
-                dutyDetails.add(data as Map<String, dynamic>);
-                dutyDetails[i]
-                    .addEntries({'ID': duties[i].reference.id}.entries);
-              }
+            for (var conduct in allConducts) {
+              String nowStrartTime =
+                  conduct['startDate'] + " " + conduct['startTime'];
+              DateTime sDate =
+                  DateFormat('d MMM yyyy h:mm a').parse(nowStrartTime);
 
-              for (var duty in dutyDetails) {
-                String nowStrartTime =
-                    duty['dutyDate'] + " " + duty['startTime'];
-                DateTime sDate =
-                    DateFormat('d MMM yyyy').add_jm().parse(nowStrartTime);
-                String nowEndTime = duty['dutyDate'] + " " + duty['endTime'];
-                DateTime eDate =
-                    DateFormat('d MMM yyyy').add_jm().parse(nowEndTime);
-                final Appointment newAppointment = Appointment(
-                  startTime: sDate,
-                  endTime: eDate,
-                  subject: 'Guard Duty',
-                  color: Colors.pink,
-                );
-                meetings.add(newAppointment);
-              }
+              String nowEndTime =
+                  conduct['startDate'] + " " + conduct['endTime'];
+              DateTime eDate =
+                  DateFormat('d MMM yyyy h:mm a').parse(nowEndTime);
+
+              final Appointment newAppointment = Appointment(
+                startTime: sDate,
+                endTime: eDate,
+                subject: conduct['conductType'],
+                color: Colors.amber,
+              );
+              meetings.add(newAppointment);
             }
-            return SfCalendar(
-              //backgroundColor: Colors.black54,
-              showDatePickerButton: true,
-              headerStyle: CalendarHeaderStyle(
-                backgroundColor: Colors.deepPurple,
-                textStyle: GoogleFonts.poppins(
-                  color: Colors.white,
+          }
+          if (snapshots.snapshot2.hasData) {
+            var dutyDetails = [];
+            var duties = snapshots.snapshot2.data?.docs.toList();
+            for (var i = 0; i < duties!.length; i++) {
+              var data = duties[i].data();
+              dutyDetails.add(data as Map<String, dynamic>);
+              dutyDetails[i].addEntries({'ID': duties[i].reference.id}.entries);
+            }
+
+            for (var duty in dutyDetails) {
+              String nowStrartTime = duty['dutyDate'] + " " + duty['startTime'];
+              DateTime sDate =
+                  DateFormat('d MMM yyyy').add_jm().parse(nowStrartTime);
+              String nowEndTime = duty['dutyDate'] + " " + duty['endTime'];
+              DateTime eDate =
+                  DateFormat('d MMM yyyy').add_jm().parse(nowEndTime);
+              final Appointment newAppointment = Appointment(
+                startTime: sDate,
+                endTime: eDate,
+                subject: 'Guard Duty',
+                color: Colors.pink,
+              );
+              meetings.add(newAppointment);
+            }
+          }
+          return Scaffold(
+            body: SfCalendarTheme(
+              data: SfCalendarThemeData(
+                brightness: Brightness.dark,
+                backgroundColor: const Color.fromARGB(255, 21, 25, 34),
+              ),
+              child: SfCalendar(
+                blackoutDatesTextStyle: GoogleFonts.poppins(
                   fontWeight: FontWeight.w500,
-                  fontSize: 24.sp,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              todayTextStyle: GoogleFonts.poppins(
-                color: Colors.white,
-                fontSize: 16.sp,
-              ),
-              viewHeaderStyle: ViewHeaderStyle(
-                backgroundColor: Colors.deepPurple,
-                dateTextStyle: GoogleFonts.poppins(
+                  fontSize: 18.sp,
                   color: Colors.white,
-                  fontSize: 24.sp,
                 ),
-                dayTextStyle: GoogleFonts.poppins(
-                  color: Colors.white,
-                  fontSize: 24.sp,
+                allowedViews: const [
+                  CalendarView.day,
+                  CalendarView.month,
+                  CalendarView.timelineDay,
+                  CalendarView.schedule
+                ],
+                showNavigationArrow: true,
+                cellEndPadding: 5.sp,
+                todayHighlightColor: Colors.deepPurple.shade400,
+                selectionDecoration: BoxDecoration(
+                  border:
+                      Border.all(color: Colors.deepPurple.shade400, width: 2.w),
+                  borderRadius: BorderRadius.all(Radius.circular(4.r)),
+                  shape: BoxShape.rectangle,
                 ),
-              ),
-              view: CalendarView.timelineDay,
-              dataSource: _getCalendarDataSource(),
-              initialSelectedDate: _selectedDate,
-              scheduleViewMonthHeaderBuilder: scheduleViewHeaderBuilder,
-              timeSlotViewSettings: const TimeSlotViewSettings(
-                //numberOfDaysInView: 1,
-                timeIntervalHeight: 100,
-              ),
-              scheduleViewSettings: ScheduleViewSettings(
-                appointmentItemHeight: 50.h,
+                controller: _controller,
+                allowViewNavigation: true,
+                showCurrentTimeIndicator: true,
+                cellBorderColor: Colors.white,
                 appointmentTextStyle: GoogleFonts.poppins(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 12.sp,
-                ),
-                dayHeaderSettings: DayHeaderSettings(
-                  dayFormat: 'EEEE',
-                  width: 70.w,
-                  dayTextStyle: GoogleFonts.poppins(
-                    fontSize: 10.sp,
-                    fontWeight: FontWeight.w400,
                     color: Colors.white,
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w500),
+                onTap: calendarTapped,
+                monthViewSettings: MonthViewSettings(
+                  navigationDirection: MonthNavigationDirection.vertical,
+                  agendaStyle: AgendaStyle(
+                    appointmentTextStyle: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18.sp,
+                      color: Colors.white,
+                    ),
+                    dayTextStyle: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18.sp,
+                      color: Colors.white,
+                    ),
+                    dateTextStyle: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18.sp,
+                      color: Colors.white,
+                    ),
                   ),
-                  dateTextStyle: GoogleFonts.poppins(
-                    fontSize: 20.sp,
+                  monthCellStyle: MonthCellStyle(
+                    textStyle: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18.sp,
+                      color: Colors.white,
+                    ),
+                    trailingDatesTextStyle: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18.sp,
+                      color: Colors.white70,
+                    ),
+                    leadingDatesTextStyle: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18.sp,
+                      color: Colors.white70,
+                    ),
+                  ),
+                ),
+                backgroundColor: const Color.fromARGB(255, 21, 25, 34),
+                showDatePickerButton: true,
+                headerStyle: CalendarHeaderStyle(
+                  backgroundColor: Colors.deepPurple.shade400,
+                  textStyle: GoogleFonts.poppins(
                     fontWeight: FontWeight.w500,
+                    fontSize: 24.sp,
                     color: Colors.white,
                   ),
+                  textAlign: TextAlign.center,
                 ),
-                monthHeaderSettings: MonthHeaderSettings(
-                  backgroundColor: Colors.deepPurple,
-                  monthTextStyle: GoogleFonts.poppins(
-                    color: Colors.white,
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                weekHeaderSettings: WeekHeaderSettings(
-                  weekTextStyle: GoogleFonts.poppins(
-                    color: Colors.white70,
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                placeholderTextStyle: GoogleFonts.poppins(
-                  fontSize: 15.sp,
-                  fontWeight: FontWeight.w400,
+                todayTextStyle: GoogleFonts.poppins(
+                  fontSize: 16.sp,
                   color: Colors.white,
+                ),
+                viewHeaderStyle: ViewHeaderStyle(
+                  dateTextStyle: GoogleFonts.poppins(
+                    fontSize: 14.sp,
+                    color: Colors.white,
+                  ),
+                  dayTextStyle: GoogleFonts.poppins(
+                    fontSize: 18.sp,
+                    color: Colors.white,
+                  ),
+                ),
+                view: CalendarView.schedule,
+                dataSource: _getCalendarDataSource(),
+                initialSelectedDate: _selectedDate,
+                scheduleViewMonthHeaderBuilder: scheduleViewHeaderBuilder,
+                timeSlotViewSettings: TimeSlotViewSettings(
+                  //numberOfDaysInView: 1,
+                  timeIntervalHeight: 100.h,
+                  timeTextStyle: GoogleFonts.poppins(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16.sp,
+                  ),
+                ),
+                scheduleViewSettings: ScheduleViewSettings(
+                  appointmentItemHeight: 50.h,
+                  appointmentTextStyle: GoogleFonts.poppins(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12.sp,
+                  ),
+                  dayHeaderSettings: DayHeaderSettings(
+                    dayFormat: 'EEEE',
+                    width: 70.w,
+                    dayTextStyle: GoogleFonts.poppins(
+                      fontSize: 10.sp,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white,
+                    ),
+                    dateTextStyle: GoogleFonts.poppins(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                    ),
+                  ),
+                  monthHeaderSettings: MonthHeaderSettings(
+                    backgroundColor: Colors.deepPurple,
+                    monthTextStyle: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  weekHeaderSettings: WeekHeaderSettings(
+                    weekTextStyle: GoogleFonts.poppins(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white70),
+                  ),
+                  placeholderTextStyle: GoogleFonts.poppins(
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white,
+                  ),
                 ),
               ),
-            );
-          }),
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -190,10 +279,12 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
           right: 0.w,
           top: 20.h,
           bottom: 0.h,
-          child: Text(
+          child: AutoSizeText(
             '$monthName ${details.date.year}',
             style: GoogleFonts.poppins(
-                fontSize: 20.sp, fontWeight: FontWeight.w500),
+              fontSize: 20.sp,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         )
       ],

@@ -66,9 +66,11 @@ class _UpdateAttendanceScreenState extends State<UpdateAttendanceScreen> {
         setState(
           () {
             if (value != null) {
-              time = value.format(context).toString();
-              DateTime newTime = DateFormat('h:mm a').parse(time);
-              time = DateFormat('h:mm a').format(newTime);
+              DateTime now = DateTime.now();
+              DateTime dt = DateTime(
+                  now.year, now.month, now.day, value.hour, value.minute);
+
+              time = DateFormat.jm().format(dt);
             }
           },
         );

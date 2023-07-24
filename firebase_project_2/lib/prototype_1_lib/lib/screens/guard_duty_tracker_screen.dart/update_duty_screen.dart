@@ -246,12 +246,22 @@ class _UpdateDutyScreenState extends State<UpdateDutyScreen> {
     showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
+      builder: (context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
+          child: child!,
+        );
+      },
     ).then(
       ((value) {
         setState(
           () {
             if (value != null) {
-              widget.dutyStartTime = value.format(context).toString();
+              DateTime now = DateTime.now();
+              DateTime dt = DateTime(
+                  now.year, now.month, now.day, value.hour, value.minute);
+
+              widget.dutyStartTime = DateFormat.jm().format(dt);
             }
           },
         );
@@ -263,12 +273,22 @@ class _UpdateDutyScreenState extends State<UpdateDutyScreen> {
     showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
+      builder: (context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
+          child: child!,
+        );
+      },
     ).then(
       ((value) {
         setState(
           () {
             if (value != null) {
-              widget.dutyEndTime = value.format(context).toString();
+              DateTime now = DateTime.now();
+              DateTime dt = DateTime(
+                  now.year, now.month, now.day, value.hour, value.minute);
+
+              widget.dutyEndTime = DateFormat.jm().format(dt);
             }
           },
         );

@@ -167,12 +167,22 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
     showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
+      builder: (context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
+          child: child!,
+        );
+      },
     ).then(
       ((value) {
         setState(
           () {
             if (value != null) {
-              widget.startTime = value.format(context).toString();
+              DateTime now = DateTime.now();
+              DateTime dt = DateTime(
+                  now.year, now.month, now.day, value.hour, value.minute);
+
+              widget.startTime = DateFormat.jm().format(dt);
             }
           },
         );
@@ -184,12 +194,22 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
     showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
+      builder: (context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
+          child: child!,
+        );
+      },
     ).then(
       ((value) {
         setState(
           () {
             if (value != null) {
-              widget.endTime = value.format(context).toString();
+              DateTime now = DateTime.now();
+              DateTime dt = DateTime(
+                  now.year, now.month, now.day, value.hour, value.minute);
+
+              widget.endTime = DateFormat.jm().format(dt);
             }
           },
         );
