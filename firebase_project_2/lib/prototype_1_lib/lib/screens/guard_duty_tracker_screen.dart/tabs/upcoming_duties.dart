@@ -229,6 +229,13 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
                         dutyDetails[i]
                             .addEntries({'ID': duties[i].reference.id}.entries);
                       }
+                      dutyDetails = dutyDetails
+                          .where((element) =>
+                              calculateDifference(
+                                  DateFormat('d MMM yyyy')
+                                      .parse(element['dutyDate'])) >=
+                              1)
+                          .toList();
                     }
                     return ListView.builder(
                       scrollDirection: Axis.vertical,
