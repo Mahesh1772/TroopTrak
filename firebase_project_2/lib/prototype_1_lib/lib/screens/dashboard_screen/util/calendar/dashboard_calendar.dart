@@ -135,7 +135,7 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
                 showCurrentTimeIndicator: true,
                 cellBorderColor: Colors.white,
                 appointmentTextStyle: GoogleFonts.poppins(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: 18.sp,
                     fontWeight: FontWeight.w500),
                 onTap: calendarTapped,
@@ -217,7 +217,7 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
                 scheduleViewSettings: ScheduleViewSettings(
                   appointmentItemHeight: 50.h,
                   appointmentTextStyle: GoogleFonts.poppins(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontWeight: FontWeight.w500,
                     fontSize: 12.sp,
                   ),
