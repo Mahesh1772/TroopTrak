@@ -64,10 +64,20 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
               DateTime sDate =
                   DateFormat('d MMM yyyy h:mm a').parse(nowStrartTime);
 
-              String nowEndTime =
-                  conduct['startDate'] + " " + conduct['endTime'];
-              DateTime eDate =
-                  DateFormat('d MMM yyyy h:mm a').parse(nowEndTime);
+              DateTime eDate;
+              if (conduct['endTime'].contains('AM') && conduct['startTime'].contains('PM')) {
+                DateTime newDate =
+                    DateFormat('d MMM yyyy').parse(conduct['startDate']);
+                newDate =
+                    DateTime(newDate.year, newDate.month, newDate.day + 1);
+                String dateOfDuty = DateFormat('d MMM yyyy').format(newDate);
+                String nowEndTime = dateOfDuty + " " + conduct['endTime'];
+                eDate = DateFormat('d MMM yyyy').add_jm().parse(nowEndTime);
+              } else {
+                String nowEndTime =
+                    conduct['startDate'] + " " + conduct['endTime'];
+                eDate = DateFormat('d MMM yyyy h:mm a').parse(nowEndTime);
+              }
 
               final Appointment newAppointment = Appointment(
                 startTime: sDate,
@@ -91,9 +101,20 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
               String nowStrartTime = duty['dutyDate'] + " " + duty['startTime'];
               DateTime sDate =
                   DateFormat('d MMM yyyy').add_jm().parse(nowStrartTime);
-              String nowEndTime = duty['dutyDate'] + " " + duty['endTime'];
-              DateTime eDate =
-                  DateFormat('d MMM yyyy').add_jm().parse(nowEndTime);
+              DateTime eDate;
+              if (duty['endTime'].contains('AM') && duty['startTime'].contains('PM')) {
+                DateTime newDate =
+                    DateFormat('d MMM yyyy').parse(duty['dutyDate']);
+                newDate =
+                    DateTime(newDate.year, newDate.month, newDate.day + 1);
+                String dateOfDuty = DateFormat('d MMM yyyy').format(newDate);
+                String nowEndTime = dateOfDuty + " " + duty['endTime'];
+                eDate = DateFormat('d MMM yyyy').add_jm().parse(nowEndTime);
+              } else {
+                String nowEndTime = duty['dutyDate'] + " " + duty['endTime'];
+                eDate = DateFormat('d MMM yyyy').add_jm().parse(nowEndTime);
+              }
+
               final Appointment newAppointment = Appointment(
                 startTime: sDate,
                 endTime: eDate,
