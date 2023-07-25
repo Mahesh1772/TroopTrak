@@ -49,12 +49,28 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
   void initState() {
     documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
     getCurrentUserData();
+    isSelectedList[0] = true;
     super.initState();
   }
 
+  List<String> categories = [
+    'Name',
+    'Rank',
+    'Company',
+    'Section',
+    'Platoon',
+    'Ration',
+    'Blood',
+    'Appointment',
+  ];
+
+  List<bool> isSelectedList =
+      List.filled(8, false); // Initialize the list with all false values
+  String selectedCategory = 'name';
   @override
   Widget build(BuildContext context) {
     final userModel = Provider.of<UserData>(context);
+    final searchChip = userModel.categorySelected;
     return MaterialApp(
       home: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -71,7 +87,8 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
           backgroundColor: const Color.fromARGB(255, 95, 57, 232),
           child: const Icon(Icons.add),
         ),
-        backgroundColor: Color.fromARGB(255, 149, 164, 240),//const Color.fromARGB(255, 254, 251, 234),//const Color.fromARGB(255, 21, 25, 34),
+        backgroundColor: const Color.fromARGB(255, 149, 164,
+            240), //const Color.fromARGB(255, 254, 251, 234),//const Color.fromARGB(255, 21, 25, 34),
         body: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,6 +181,42 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                   ),
                 ),
               ),
+              Container(
+                padding: const EdgeInsets.all(5),
+                margin: const EdgeInsets.all(5),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Wrap(
+                      spacing: 10,
+                      children: categories
+                          .asMap()
+                          .entries
+                          .map(
+                            (category) => ChoiceChip(
+                              selected: isSelectedList[category.key],
+                              label: Text(category.value),
+                              onSelected: (selected) {
+                                setState(() {
+                                  isSelectedList = List.filled(
+                                      categories.length,
+                                      false); // Reset all values to false
+                                  isSelectedList[category.key] =
+                                      selected; // Set the selected value to true for the chosen category
+                                  selectedCategory = searchChip[category.value]!;
+                                  print(selectedCategory);
+                                  
+                                  
+                                  
+                                });
+                              },
+                              selectedColor:
+                                  const Color.fromARGB(255, 198, 103, 214),
+                              backgroundColor: Colors.white,
+                            ),
+                          )
+                          .toList()),
+                ),
+              ),
               StreamBuilder<QuerySnapshot>(
                 stream: userModel.data,
                 builder: (context, snapshot) {
@@ -174,7 +227,7 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                     if (searchText.isNotEmpty) {
                       users = users!.where((element) {
                         return element
-                            .get('name')
+                            .get(selectedCategory)
                             .toString()
                             .toLowerCase()
                             .contains(searchText.toLowerCase());
@@ -213,7 +266,7 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                       itemCount: userDetails.length,
                       padding: EdgeInsets.all(12.sp),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2, childAspectRatio: 1.w / 1.6.h),
+                          crossAxisCount: 2, childAspectRatio: 1.w / 1.5.h),
                       itemBuilder: (context, index) {
                         return SoldierTile(
                           soldierName: userDetails[index]['name'],

@@ -182,4 +182,15 @@ class UserData extends ChangeNotifier {
     });
     return conduct;
   }
+
+  Map<String, String> categorySelected = {
+    'Name': 'name',
+    'Rank' : 'rank',
+    'Company' : 'company',
+    'Section' : 'section',
+    'Platoon' : 'platoon',
+    'Ration' : 'rationType',
+    'Blood' : 'bloodgroup',
+    'Appointment' : 'appointment',
+  };
 }
