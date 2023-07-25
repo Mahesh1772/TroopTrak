@@ -71,7 +71,7 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
           backgroundColor: const Color.fromARGB(255, 95, 57, 232),
           child: const Icon(Icons.add),
         ),
-        backgroundColor: const Color.fromARGB(255, 21, 25, 34),
+        backgroundColor: Color.fromARGB(255, 149, 164, 240),//const Color.fromARGB(255, 254, 251, 234),//const Color.fromARGB(255, 21, 25, 34),
         body: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
