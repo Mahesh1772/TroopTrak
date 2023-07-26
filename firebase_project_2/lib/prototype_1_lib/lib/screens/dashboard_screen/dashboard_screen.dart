@@ -141,11 +141,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     int inCamp(List userDetails, bool isStatusPersonal) {
       int insideCamp = 0;
-      //if (fullList.isEmpty) {
-      //  Future.delayed(const Duration(milliseconds: 4000), () {
-      //    return const CircularProgressIndicator();
-      //  });
-      //}
 
       for (var user in userDetails) {
         if (fullList[user['name']]) {
@@ -249,10 +244,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         Completer<void> completer = Completer<void>();
                         List? users = snapshot.data?.docs.toList();
                         var docsmapshot = snapshot.data!;
-
-                        //Future.delayed(const Duration(seconds: 2)).then((val) {
-                        //  // Your logic here
-                        //});
+                        print(users!.length);
 
                         for (var i = 0; i < users!.length; i++) {
                           //documentIDs.add(users[i]['name']);
@@ -299,28 +291,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 }
                                 //statusDetails.add(data);
                               });
-                              if (counter == users.length - 1) {
+                              if (counter == users.length) {
                                 completer.complete();
                               }
                             }
                           });
                         }
-                        // Wait for the completer to complete before printing the lists
-                        //completer.future;
 
-                        //statusDetails = userDetails
-                        //    .where((element) =>
-                        //        statusList.contains(element['name']))
-                        //    .toList();
-
-                        //_maDetails = userDetails
-                        //    .where(
-                        //        (element) => _maList.contains(element['name']))
-                        //    .toList();
-//
                         return FutureBuilder<void>(
-                            future: Future.delayed(
-                                Duration(seconds: 1)), //completer.future,
+                            future: completer.future,//Future.delayed(Duration(
+                                //milliseconds: 1000)), //
                             builder: (context, snapshot) {
                               if (snapshot.connectionState ==
                                   ConnectionState.done) {
@@ -332,204 +312,190 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     LinkedHashSet<Map<String, dynamic>>.from(
                                             _maDetails)
                                         .toList();
-                                print(statusDetails);
-                                print(_maDetails);
-                                return LiquidPullToRefresh(
-                                  onRefresh: refreshPage,
-                                  child: FlipCard(
-                                    controller: _controller,
-                                    front: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: defaultPadding.w),
-                                      child: Container(
-                                        padding:
-                                            EdgeInsets.all(defaultPadding.sp),
-                                        decoration: BoxDecoration(
-                                          boxShadow: [
-                                            BoxShadow(
-                                                color: Colors.black54,
-                                                offset: Offset(10.0.w, 10.0.h),
-                                                blurRadius: 2.0.r,
-                                                spreadRadius: 2.0.r),
-                                          ],
-                                          color: const Color.fromARGB(
-                                              255, 32, 36, 51),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10.r)),
-                                        ),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Column(
+                                //print(statusDetails);
+                                //print(_maDetails);
+                                return FlipCard(
+                                  controller: _controller,
+                                  front: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: defaultPadding.w),
+                                    child: Container(
+                                      padding:
+                                          EdgeInsets.all(defaultPadding.sp),
+                                      decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                              color: Colors.black54,
+                                              offset: Offset(10.0.w, 10.0.h),
+                                              blurRadius: 2.0.r,
+                                              spreadRadius: 2.0.r),
+                                        ],
+                                        color: const Color.fromARGB(
+                                            255, 32, 36, 51),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10.r)),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "Strength In-Camp",
+                                                    style: GoogleFonts.poppins(
+                                                        fontSize: 24.sp,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: Colors.white),
+                                                  ),
+                                                  Text(
+                                                    "As of ${DateFormat('yMMMMd').add_Hm().format(DateTime.now())}",
+                                                    style: GoogleFonts.poppins(
+                                                        fontSize: 18.sp,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: Colors.white
+                                                            .withOpacity(0.45)),
+                                                  ),
+                                                ],
+                                              ),
+                                              Container(
+                                                margin: EdgeInsets.only(
+                                                  top: 16.0.h,
+                                                ),
+                                                child: Column(
                                                   crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                                      CrossAxisAlignment.center,
                                                   children: [
-                                                    Text(
-                                                      "Strength In-Camp",
-                                                      style:
-                                                          GoogleFonts.poppins(
-                                                              fontSize: 24.sp,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              color:
-                                                                  Colors.white),
+                                                    InkWell(
+                                                      onTap: () {
+                                                        _controller
+                                                            .toggleCard();
+                                                      },
+                                                      child: Icon(
+                                                        Icons
+                                                            .date_range_rounded,
+                                                        color: Colors.white,
+                                                        size: 30.sp,
+                                                      ),
                                                     ),
-                                                    Text(
-                                                      "As of ${DateFormat('yMMMMd').add_Hm().format(DateTime.now())}",
-                                                      style:
-                                                          GoogleFonts.poppins(
-                                                              fontSize: 18.sp,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              color: Colors
-                                                                  .white
-                                                                  .withOpacity(
-                                                                      0.45)),
-                                                    ),
+                                                    StyledText(
+                                                        "Show Calendar", 14.sp,
+                                                        fontWeight:
+                                                            FontWeight.w400),
                                                   ],
                                                 ),
-                                                Container(
-                                                  margin: EdgeInsets.only(
-                                                    top: 16.0.h,
-                                                  ),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      InkWell(
-                                                        onTap: () {
-                                                          _controller
-                                                              .toggleCard();
-                                                        },
-                                                        child: Icon(
-                                                          Icons
-                                                              .date_range_rounded,
-                                                          color: Colors.white,
-                                                          size: 30.sp,
-                                                        ),
-                                                      ),
-                                                      StyledText(
-                                                          "Show Calendar",
-                                                          14.sp,
-                                                          fontWeight:
-                                                              FontWeight.w400),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              height: (defaultPadding + 2).h,
-                                            ),
-                                            CurrentStrengthChart(
-                                              currentOfficers:
-                                                  inCamp(officerDetails, false),
-                                              currentWOSEs:
-                                                  inCamp(specDetails, false),
-                                              currentStatus:
-                                                  inCamp(statusDetails, true),
-                                              currentMA:
-                                                  inCamp(_maDetails, true),
-                                              totalOfficers:
-                                                  officerDetails.length,
-                                              totalWOSEs: specDetails.length,
-                                            ),
-                                            SizedBox(
-                                              height: defaultPadding.h,
-                                            ),
-                                            CurrentStrengthBreakdownTile(
-                                              title: "Total Officers",
-                                              imgSrc:
-                                                  "lib/assets/icons8-medals-64.png",
-                                              currentNumOfSoldiers:
-                                                  inCamp(officerDetails, false),
-                                              totalNumOfSoldiers:
-                                                  officerDetails.length,
-                                              imgColor: Colors.red,
-                                              userDetails: officerDetails,
-                                              fullList: fullList,
-                                            ),
-                                            CurrentStrengthBreakdownTile(
-                                              title: "Total WOSEs",
-                                              imgSrc:
-                                                  "lib/assets/icons8-soldier-man-64.png",
-                                              currentNumOfSoldiers:
-                                                  inCamp(specDetails, false),
-                                              totalNumOfSoldiers:
-                                                  specDetails.length,
-                                              imgColor: Colors.blue,
-                                              userDetails: specDetails,
-                                              fullList: fullList,
-                                            ),
-                                            CurrentStrengthBreakdownTile(
-                                              title: "On Status",
-                                              imgSrc:
-                                                  "lib/assets/icons8-error-64.png",
-                                              currentNumOfSoldiers:
-                                                  statusDetails.length,
-                                              //inCamp(statusDetails, true),
-                                              totalNumOfSoldiers:
-                                                  (officerDetails.length +
-                                                      specDetails.length),
-                                              imgColor: Colors.yellow,
-                                              userDetails: statusDetails,
-                                              fullList: fullList,
-                                            ),
-                                            CurrentStrengthBreakdownTile(
-                                              title: "On MA",
-                                              imgSrc:
-                                                  "lib/assets/icons8-doctors-folder-64.png",
-                                              currentNumOfSoldiers:
-                                                  _maDetails.length,
-                                              //inCamp(_maDetails, false),
-                                              totalNumOfSoldiers:
-                                                  (officerDetails.length +
-                                                      specDetails.length),
-                                              imgColor: Colors.lightBlueAccent,
-                                              userDetails: _maDetails,
-                                              fullList: fullList,
-                                            ),
-                                          ],
-                                        ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: (defaultPadding + 2).h,
+                                          ),
+                                          CurrentStrengthChart(
+                                            currentOfficers:
+                                                inCamp(officerDetails, false),
+                                            currentWOSEs:
+                                                inCamp(specDetails, false),
+                                            currentStatus:
+                                                inCamp(statusDetails, true),
+                                            currentMA: inCamp(_maDetails, true),
+                                            totalOfficers:
+                                                officerDetails.length,
+                                            totalWOSEs: specDetails.length,
+                                          ),
+                                          SizedBox(
+                                            height: defaultPadding.h,
+                                          ),
+                                          CurrentStrengthBreakdownTile(
+                                            title: "Total Officers",
+                                            imgSrc:
+                                                "lib/assets/icons8-medals-64.png",
+                                            currentNumOfSoldiers:
+                                                inCamp(officerDetails, false),
+                                            totalNumOfSoldiers:
+                                                officerDetails.length,
+                                            imgColor: Colors.red,
+                                            userDetails: officerDetails,
+                                            fullList: fullList,
+                                          ),
+                                          CurrentStrengthBreakdownTile(
+                                            title: "Total WOSEs",
+                                            imgSrc:
+                                                "lib/assets/icons8-soldier-man-64.png",
+                                            currentNumOfSoldiers:
+                                                inCamp(specDetails, false),
+                                            totalNumOfSoldiers:
+                                                specDetails.length,
+                                            imgColor: Colors.blue,
+                                            userDetails: specDetails,
+                                            fullList: fullList,
+                                          ),
+                                          CurrentStrengthBreakdownTile(
+                                            title: "On Status",
+                                            imgSrc:
+                                                "lib/assets/icons8-error-64.png",
+                                            currentNumOfSoldiers:
+                                                statusDetails.length,
+                                            //inCamp(statusDetails, true),
+                                            totalNumOfSoldiers:
+                                                (officerDetails.length +
+                                                    specDetails.length),
+                                            imgColor: Colors.yellow,
+                                            userDetails: statusDetails,
+                                            fullList: fullList,
+                                          ),
+                                          CurrentStrengthBreakdownTile(
+                                            title: "On MA",
+                                            imgSrc:
+                                                "lib/assets/icons8-doctors-folder-64.png",
+                                            currentNumOfSoldiers:
+                                                _maDetails.length,
+                                            //inCamp(_maDetails, false),
+                                            totalNumOfSoldiers:
+                                                (officerDetails.length +
+                                                    specDetails.length),
+                                            imgColor: Colors.lightBlueAccent,
+                                            userDetails: _maDetails,
+                                            fullList: fullList,
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    back: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: defaultPadding.w),
-                                      child: Container(
-                                        padding:
-                                            EdgeInsets.all(defaultPadding.sp),
-                                        decoration: BoxDecoration(
-                                          boxShadow: [
-                                            BoxShadow(
-                                                color: Colors.black54,
-                                                offset: Offset(10.0.w, 10.0.h),
-                                                blurRadius: 2.0.r,
-                                                spreadRadius: 2.0.r),
-                                          ],
-                                          color: const Color.fromARGB(
-                                              255, 32, 36, 51),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10.r)),
-                                        ),
-                                        child: const Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            DashboardCalendar(),
-                                          ],
-                                        ),
+                                  ),
+                                  back: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: defaultPadding.w),
+                                    child: Container(
+                                      padding:
+                                          EdgeInsets.all(defaultPadding.sp),
+                                      decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                              color: Colors.black54,
+                                              offset: Offset(10.0.w, 10.0.h),
+                                              blurRadius: 2.0.r,
+                                              spreadRadius: 2.0.r),
+                                        ],
+                                        color: const Color.fromARGB(
+                                            255, 32, 36, 51),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10.r)),
+                                      ),
+                                      child: const Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          DashboardCalendar(),
+                                        ],
                                       ),
                                     ),
                                   ),
