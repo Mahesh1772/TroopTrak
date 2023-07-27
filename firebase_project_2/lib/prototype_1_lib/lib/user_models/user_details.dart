@@ -194,3 +194,92 @@ class UserData extends ChangeNotifier {
     'Appointment' : 'appointment',
   };
 }
+
+
+/*
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: Text('Users & Statuses')),
+        body: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance.collection('Users').snapshots(),
+          builder: (context, usersSnapshot) {
+            if (usersSnapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            }
+
+            if (usersSnapshot.hasData) {
+              // Your existing code...
+              bool hasLoadedData = false;
+
+              // Create a Completer to delay the execution until we have collected data from all 'Statuses' subcollections
+              Completer<void> completer = Completer<void>();
+              List<String> peopleWithCertainData = [];
+
+              List? users = usersSnapshot.data?.docs.toList();
+              var docsmapshot = usersSnapshot.data!;
+
+              for (var i = 0; i < users!.length; i++) {
+                final uid = users[i]['name'];
+                var data = docsmapshot.docs[i].data() as Map<String, dynamic>;
+
+                // Your existing code to process user data
+                // ...
+
+                // Query 'Statuses' subcollection for each user
+                FirebaseFirestore.instance
+                    .collection('Users')
+                    .doc(uid)
+                    .collection('Statuses')
+                    .get()
+                    .then((statusSnapshot) {
+                  // Check if the user has any documents in 'Statuses' subcollection
+                  if (statusSnapshot.docs.isNotEmpty) {
+                    // Process the 'Statuses' subcollection data here
+                    statusSnapshot.docs.forEach((statusDoc) {
+                      String data = statusDoc['data']; // Replace 'data' with the field name you want to check
+                      if (data == 'certainData') {
+                        peopleWithCertainData.add(statusDoc['name']);
+                      }
+                    });
+                  }
+
+                  // Check if we have collected data for all users
+                  if (i == users.length - 1) {
+                    hasLoadedData = true;
+                    completer.complete();
+                  }
+                });
+              }
+
+              return FutureBuilder<void>(
+                future: completer.future,
+                builder: (context, snapshot) {
+                  // Check if the Future is still loading data
+                  if (!hasLoadedData) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  // Your existing code with LiquidPullToRefresh and FlipCard...
+                  return LiquidPullToRefresh(
+                    onRefresh: refreshPage,
+                    child: FlipCard(
+                      // ... (rest of your FlipCard code)
+                    ),
+                  );
+                },
+              );
+            }
+
+            return Center(
+              child: Text('No Users found'),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+*/
