@@ -1,6 +1,9 @@
 import 'package:firebase_project_2/phone_authentication/provider/auth_provider.dart';
 import 'package:firebase_project_2/phone_authentication/wrapper.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/main.dart';
+import 'package:firebase_project_2/themes/dark_theme.dart';
+import 'package:firebase_project_2/themes/light_theme.dart';
+import 'package:firebase_project_2/themes/theme_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_project_2/phone_authentication/commander_or_man_choice_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -23,6 +26,8 @@ Future main() async {
   runApp(const MyApp());
 }
 
+ThemeManager _themeManager = ThemeManager();
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -40,6 +45,9 @@ class MyApp extends StatelessWidget {
           ),
         ],
         child: MaterialApp(
+          theme: lightTheme,
+          darkTheme: darkTheme,
+          themeMode: _themeManager.themeMode,
           home: (() {
             if (isViewed == 1) {
               return const Wrapper();

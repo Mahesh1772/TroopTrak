@@ -84,11 +84,11 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                 backgroundColor: Colors.transparent,
                 isScrollControlled: true);
           },
-          backgroundColor: const Color.fromARGB(255, 95, 57, 232),
           child: const Icon(Icons.add),
         ),
-        backgroundColor: const Color.fromARGB(255, 149, 164,
-            240), //const Color.fromARGB(255, 254, 251, 234),//const Color.fromARGB(255, 21, 25, 34),
+        backgroundColor: Theme.of(context)
+            .colorScheme
+            .background, //const Color.fromARGB(255, 254, 251, 234),//const Color.fromARGB(255, 21, 25, 34),
         body: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -202,11 +202,9 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                                       false); // Reset all values to false
                                   isSelectedList[category.key] =
                                       selected; // Set the selected value to true for the chosen category
-                                  selectedCategory = searchChip[category.value]!;
+                                  selectedCategory =
+                                      searchChip[category.value]!;
                                   print(selectedCategory);
-                                  
-                                  
-                                  
                                 });
                               },
                               selectedColor:

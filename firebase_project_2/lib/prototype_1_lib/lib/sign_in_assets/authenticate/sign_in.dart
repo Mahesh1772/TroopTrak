@@ -104,7 +104,7 @@ class _SignInState extends State<SignIn> {
 
     return Scaffold(
       //resizeToAvoidBottomInset: false,
-      backgroundColor: const Color.fromARGB(255, 45, 60, 68),
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Center(
@@ -148,7 +148,7 @@ class _SignInState extends State<SignIn> {
                     padding: EdgeInsets.symmetric(horizontal: 25.0.w),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
+                        color: Theme.of(context).colorScheme.primary,
                         border: Border.all(color: Colors.white),
                         borderRadius: BorderRadius.circular(12.r),
                       ),
@@ -182,7 +182,7 @@ class _SignInState extends State<SignIn> {
                     padding: EdgeInsets.symmetric(horizontal: 25.0.w),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
+                        color: Theme.of(context).colorScheme.primary,
                         border: Border.all(color: Colors.white),
                         borderRadius: BorderRadius.circular(12.r),
                       ),

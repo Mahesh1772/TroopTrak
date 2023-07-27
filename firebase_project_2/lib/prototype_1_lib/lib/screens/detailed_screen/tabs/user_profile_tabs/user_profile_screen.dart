@@ -1,11 +1,12 @@
+import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_project_2/themes/theme_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/tabs/user_profile_tabs/user_profile_attendance_tab.dart.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/tabs/user_profile_tabs/user_profile_basic_info_tab.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/tabs/user_profile_tabs/user_profile_statuses_tab.dart';
-import 'package:firebase_project_2/prototype_1_lib/lib/util/text_styles/text_style.dart';
 import 'package:recase/recase.dart';
 
 class UserProfileScreen extends StatefulWidget {
@@ -40,8 +41,28 @@ class UserProfileScreen extends StatefulWidget {
   State<UserProfileScreen> createState() => _UserProfileScreenState();
 }
 
+ThemeManager _themeManager = ThemeManager();
+
 class _UserProfileScreenState extends State<UserProfileScreen>
     with TickerProviderStateMixin {
+  @override
+  void dispose() {
+    _themeManager.removeListener(themeListener);
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    _themeManager.addListener(themeListener);
+    super.initState();
+  }
+
+  themeListener() {
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     TabController tabController = TabController(length: 3, vsync: this);
@@ -199,29 +220,43 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                             ),
                           ),
                           Center(
-                            child: GestureDetector(
-                              child: Container(
-                                width: 300.w,
-                                padding: EdgeInsets.all(16.sp),
-                                decoration: BoxDecoration(
-                                    color: Colors.transparent.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(20.r)),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.qr_code_2_rounded,
-                                      color: Colors.white,
-                                      size: 35.sp,
-                                    ),
-                                    SizedBox(
-                                      width: 20.w,
-                                    ),
-                                    StyledText("SHOW QR CODE", 20.sp,
-                                        fontWeight: FontWeight.bold),
-                                  ],
-                                ),
-                              ),
+                            child: AnimatedToggleSwitch<bool>.rolling(
+                              current:
+                                  _themeManager.themeMode == ThemeMode.dark,
+                              allowUnlistedValues: true,
+                              values: const [false, true],
+                              onChanged: (i) {
+                                _themeManager.toggleTheme(i);
+                              },
+                              iconBuilder: rollingIconBuilder,
+                              borderWidth: 3.0.w,
+                              indicatorColor: Colors.white,
+                              innerGradient: LinearGradient(colors: [
+                                Colors.transparent.withOpacity(0.1),
+                                Colors.transparent.withOpacity(0),
+                              ]),
+                              innerColor: Colors.amber,
+                              height: 40.h,
+                              dif: 10.w,
+                              iconRadius: 10.0.r,
+                              selectedIconRadius: 13.0.r,
+                              borderColor: Colors.transparent,
+                              foregroundBoxShadow: [
+                                BoxShadow(
+                                  color: Colors.black26,
+                                  spreadRadius: 1.r,
+                                  blurRadius: 2.r,
+                                  offset: Offset(0.w, 1.5.h),
+                                )
+                              ],
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black26,
+                                  spreadRadius: 1.r,
+                                  blurRadius: 2.r,
+                                  offset: Offset(0.w, 1.5.h),
+                                )
+                              ],
                             ),
                           ),
                           SizedBox(
@@ -300,4 +335,18 @@ class _UserProfileScreenState extends State<UserProfileScreen>
       ),
     );
   }
+}
+
+Widget rollingIconBuilder(bool value, Size iconSize, bool foreground) {
+  IconData data;
+
+  if (value) {
+    data = Icons.dark_mode_rounded;
+  } else {
+    data = Icons.light_mode_rounded;
+  }
+  return Icon(
+    data,
+    size: iconSize.shortestSide,
+  );
 }
