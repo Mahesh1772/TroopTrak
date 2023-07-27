@@ -8,7 +8,6 @@ import 'package:flip_card/flip_card_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/dashboard_screen/util/calendar/dashboard_calendar.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/dashboard_screen/util/current_strength_breakdown_tile.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/util/text_styles/text_style.dart';
@@ -232,7 +231,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       Completer<void> completer = Completer<void>();
                       List? users = snapshot.data?.docs.toList();
                       var docsmapshot = snapshot.data!;
-                      print(users!.length);
 
                       for (var i = 0; i < users!.length; i++) {
                         final uid = users[i]['name'];
