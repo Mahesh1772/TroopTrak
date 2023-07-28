@@ -86,12 +86,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   final _ranks = [
     "Select rank...",
-    "REC",
-    "PTE",
-    "LCP",
-    "CPL",
-    "CFC",
-    "SCT",
     "3SG",
     "2SG",
     "1SG",
@@ -103,7 +97,6 @@ class _RegisterPageState extends State<RegisterPage> {
     "MWO",
     "SWO",
     "CWO",
-    "OCT",
     "2LT",
     "LTA",
     "CPT",
@@ -150,10 +143,10 @@ class _RegisterPageState extends State<RegisterPage> {
         User user = result.user!;
         user.updateDisplayName(_name.text.trim());
         //Adding user details
-        addUserDetails();
-        addAttendanceDetails();
+        await addUserDetails();
+        await addAttendanceDetails();
       }
-      FirebaseAuth.instance.signOut();
+      await FirebaseAuth.instance.signOut();
     } catch (e) {
       IconSnackBar.show(
           context: context,
@@ -900,7 +893,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       padding: EdgeInsets.symmetric(horizontal: 25.0.w),
                       child: GestureDetector(
                         key: const Key("signUpButton"),
-                        onTap: () {
+                        onTap: () async {
                           if (_formKey.currentState!.validate()) {
                             IconSnackBar.show(
                                 duration: const Duration(seconds: 4),
@@ -910,7 +903,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 label: 'User Profile created',
                                 snackBarStyle: const SnackBarStyle() // this one
                                 );
-                            signUp();
+                            await signUp();
                           } else {
                             IconSnackBar.show(
                                 direction: DismissDirection.horizontal,
