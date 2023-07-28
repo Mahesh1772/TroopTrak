@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/conduct_tracker_screen/add_new_conduct_screen.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/conduct_tracker_screen/conduct_details_screen.dart';
-import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/tabs/user_profile_tabs/user_profile_screen.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/conduct_tracker_screen/util/charts/bar_graph/bar_graph_styling.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/util/text_styles/text_style.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/conduct_tracker_screen/util/conduct_main_page_tiles.dart';
@@ -115,51 +114,6 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 24.0.w),
-                          child: StyledText(
-                            'Conduct Tracker',
-                            26.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => UserProfileScreen(
-                                  soldierName: currentUserData['name'],
-                                  soldierRank: currentUserData['rank']
-                                      .toString()
-                                      .toLowerCase(),
-                                  soldierAppointment:
-                                      currentUserData['appointment'],
-                                  company: currentUserData['company'],
-                                  platoon: currentUserData['platoon'],
-                                  section: currentUserData['section'],
-                                  dateOfBirth: currentUserData['dob'],
-                                  rationType: currentUserData['rationType'],
-                                  bloodType: currentUserData['bloodgroup'],
-                                  enlistmentDate: currentUserData['enlistment'],
-                                  ordDate: currentUserData['ord'],
-                                ),
-                              ),
-                            );
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.all(12.0.sp),
-                            child: Image.asset(
-                              'lib/assets/user.png',
-                              width: 50.w,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
                     SizedBox(
                       height: 20.h,
                     ),

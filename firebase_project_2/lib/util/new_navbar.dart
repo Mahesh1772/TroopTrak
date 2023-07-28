@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_project_2/screens/detailed_screen/tabs/user_profile_tabs%20copy/user_profile_screen.dart';
+import 'package:firebase_project_2/themes/dark_theme.dart';
+import 'package:firebase_project_2/themes/light_theme.dart';
+import 'package:firebase_project_2/themes/theme_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -50,6 +53,8 @@ class _GNavMainScreen extends State<GNavMainScreen> {
     });
   }
 
+  ThemeManager _themeManager = ThemeManager();
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> _widgetOptions = <Widget>[
@@ -59,6 +64,9 @@ class _GNavMainScreen extends State<GNavMainScreen> {
     ];
 
     return MaterialApp(
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      themeMode: _themeManager.themeMode,
       home: WillPopScope(
         onWillPop: () async => false,
         child: Scaffold(

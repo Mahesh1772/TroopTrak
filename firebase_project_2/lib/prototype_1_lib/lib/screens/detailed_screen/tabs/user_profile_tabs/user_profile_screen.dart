@@ -227,6 +227,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                               values: const [false, true],
                               onChanged: (i) {
                                 _themeManager.toggleTheme(i);
+                                print(_themeManager.themeMode);
                               },
                               iconBuilder: rollingIconBuilder,
                               borderWidth: 3.0.w,

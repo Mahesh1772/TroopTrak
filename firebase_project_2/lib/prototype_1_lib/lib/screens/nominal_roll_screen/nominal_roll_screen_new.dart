@@ -1,10 +1,10 @@
 // ignore_for_file: must_be_immutable
+import 'package:firebase_project_2/themes/theme_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/tabs/user_profile_tabs/user_profile_screen.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/nominal_roll_screen/qr_code_scanner_page.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/util/text_styles/text_style.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/nominal_roll_screen/util/solider_tile.dart';
@@ -69,12 +69,16 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
   String selectedCategory = 'name';
   @override
   Widget build(BuildContext context) {
+    ThemeManager _themeManager = ThemeManager();
+
+    print(_themeManager.themeMode);
     final userModel = Provider.of<UserData>(context);
     final searchChip = userModel.categorySelected;
     return MaterialApp(
       home: Scaffold(
         resizeToAvoidBottomInset: false,
         floatingActionButton: FloatingActionButton(
+          backgroundColor: const Color.fromARGB(255, 72, 30, 229),
           onPressed: () {
             showModalBottomSheet(
                 context: context,
@@ -93,50 +97,6 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24.0.w),
-                    child: StyledText(
-                      'Nominal Roll',
-                      26.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => UserProfileScreen(
-                            soldierName: currentUserData['name'],
-                            soldierRank: currentUserData['rank']
-                                .toString()
-                                .toLowerCase(),
-                            soldierAppointment: currentUserData['appointment'],
-                            company: currentUserData['company'],
-                            platoon: currentUserData['platoon'],
-                            section: currentUserData['section'],
-                            dateOfBirth: currentUserData['dob'],
-                            rationType: currentUserData['rationType'],
-                            bloodType: currentUserData['bloodgroup'],
-                            enlistmentDate: currentUserData['enlistment'],
-                            ordDate: currentUserData['ord'],
-                          ),
-                        ),
-                      );
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.all(12.0.sp),
-                      child: Image.asset(
-                        'lib/assets/user.png',
-                        width: 50.w,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
               SizedBox(
                 height: 20.h,
               ),

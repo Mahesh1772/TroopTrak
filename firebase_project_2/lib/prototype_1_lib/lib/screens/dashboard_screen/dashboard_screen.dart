@@ -16,7 +16,6 @@ import 'package:firebase_project_2/prototype_1_lib/lib/screens/dashboard_screen/
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/user_models/user_details.dart';
-import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/tabs/user_profile_tabs/user_profile_screen.dart';
 import 'package:flip_card/flip_card.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -157,52 +156,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 24.0.w),
-                      child: StyledText(
-                        'Dashboard',
-                        26.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    InkWell(
-                      key: const Key("userProfileIcon"),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => UserProfileScreen(
-                              soldierName: currentUserData['name'],
-                              soldierRank: currentUserData['rank']
-                                  .toString()
-                                  .toLowerCase(),
-                              soldierAppointment:
-                                  currentUserData['appointment'],
-                              company: currentUserData['company'],
-                              platoon: currentUserData['platoon'],
-                              section: currentUserData['section'],
-                              dateOfBirth: currentUserData['dob'],
-                              rationType: currentUserData['rationType'],
-                              bloodType: currentUserData['bloodgroup'],
-                              enlistmentDate: currentUserData['enlistment'],
-                              ordDate: currentUserData['ord'],
-                            ),
-                          ),
-                        );
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.all(12.0.sp),
-                        child: Image.asset(
-                          'lib/assets/user.png',
-                          width: 50.w,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
                 SizedBox(
                   height: 10.h,
                 ),
@@ -235,8 +188,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       for (var i = 0; i < users!.length; i++) {
                         final uid = users[i]['name'];
                         counter++;
-                        var data = docsmapshot.docs[i].data()
-                            as Map<String, dynamic>;
+                        var data =
+                            docsmapshot.docs[i].data() as Map<String, dynamic>;
                         userDetails.add(data);
                         if (specialist.contains(data['rank'])) {
                           specDetails.add(data);
@@ -305,8 +258,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   padding: EdgeInsets.symmetric(
                                       horizontal: defaultPadding.w),
                                   child: Container(
-                                    padding:
-                                        EdgeInsets.all(defaultPadding.sp),
+                                    padding: EdgeInsets.all(defaultPadding.sp),
                                     decoration: BoxDecoration(
                                       boxShadow: [
                                         BoxShadow(
@@ -315,8 +267,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                             blurRadius: 2.0.r,
                                             spreadRadius: 2.0.r),
                                       ],
-                                      color: const Color.fromARGB(
-                                          255, 32, 36, 51),
+                                      color:
+                                          const Color.fromARGB(255, 32, 36, 51),
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10.r)),
                                     ),
@@ -361,12 +313,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                 children: [
                                                   InkWell(
                                                     onTap: () {
-                                                      _controller
-                                                          .toggleCard();
+                                                      _controller.toggleCard();
                                                     },
                                                     child: Icon(
-                                                      Icons
-                                                          .date_range_rounded,
+                                                      Icons.date_range_rounded,
                                                       color: Colors.white,
                                                       size: 30.sp,
                                                     ),
@@ -391,8 +341,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           currentStatus:
                                               inCamp(statusDetails, true),
                                           currentMA: inCamp(_maDetails, true),
-                                          totalOfficers:
-                                              officerDetails.length,
+                                          totalOfficers: officerDetails.length,
                                           totalWOSEs: specDetails.length,
                                         ),
                                         SizedBox(
@@ -458,8 +407,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   padding: EdgeInsets.symmetric(
                                       horizontal: defaultPadding.w),
                                   child: Container(
-                                    padding:
-                                        EdgeInsets.all(defaultPadding.sp),
+                                    padding: EdgeInsets.all(defaultPadding.sp),
                                     decoration: BoxDecoration(
                                       boxShadow: [
                                         BoxShadow(
@@ -468,8 +416,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                             blurRadius: 2.0.r,
                                             spreadRadius: 2.0.r),
                                       ],
-                                      color: const Color.fromARGB(
-                                          255, 32, 36, 51),
+                                      color:
+                                          const Color.fromARGB(255, 32, 36, 51),
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10.r)),
                                     ),

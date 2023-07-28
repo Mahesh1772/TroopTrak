@@ -1,5 +1,9 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:firebase_project_2/themes/dark_theme.dart';
+import 'package:firebase_project_2/themes/light_theme.dart';
+import 'package:firebase_project_2/themes/theme_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -8,6 +12,7 @@ import 'package:firebase_project_2/prototype_1_lib/lib/screens/conduct_tracker_s
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/guard_duty_tracker_screen.dart/guard_duty_tracker_screen.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/dashboard_screen/dashboard_screen.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/nominal_roll_screen/nominal_roll_screen_new.dart';
+import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/tabs/user_profile_tabs/user_profile_screen.dart';
 
 class GNavMainScreen extends StatefulWidget {
   GNavMainScreen({super.key, this.selectedIndex = 0});
@@ -32,15 +37,111 @@ class _GNavMainScreen extends State<GNavMainScreen> {
   void itemTapped(int index) {
     setState(() {
       widget.selectedIndex = index;
+      displayTitle(index);
     });
   }
+
+  String displayTitle(int index) {
+    String title = "";
+
+    switch (index) {
+      case 0:
+        title = "Dashboard";
+        break;
+      case 1:
+        title = "Nominal Roll";
+        break;
+      case 2:
+        title = "Conduct Tracker";
+        break;
+      case 3:
+        title = "Guard Duty";
+        break;
+      default:
+        title = "Dashboard";
+        break;
+    }
+
+    return title;
+  }
+
+  ThemeManager _themeManager = ThemeManager();
+  bool isToggled = true;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      themeMode: _themeManager.themeMode,
       home: WillPopScope(
         onWillPop: () async => false,
         child: Scaffold(
+          appBar: AppBar(
+            title: AutoSizeText(
+              displayTitle(widget.selectedIndex),
+              style: GoogleFonts.poppins(
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  if (isToggled) {
+                    setState(() {
+                      isToggled = false;
+                      _themeManager.toggleTheme(isToggled);
+                    });
+                  } else {
+                    setState(() {
+                      isToggled = true;
+                      _themeManager.toggleTheme(isToggled);
+                    });
+                  }
+                },
+                icon: isToggled
+                    ? const Icon(
+                        Icons.dark_mode_rounded,
+                        color: Colors.white,
+                      )
+                    : const Icon(
+                        Icons.light_mode_rounded,
+                        color: Colors.black,
+                      ),
+              ),
+              InkWell(
+                key: const Key("userProfileIcon"),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => UserProfileScreen(
+                        soldierName: currentUserData['name'],
+                        soldierRank:
+                            currentUserData['rank'].toString().toLowerCase(),
+                        soldierAppointment: currentUserData['appointment'],
+                        company: currentUserData['company'],
+                        platoon: currentUserData['platoon'],
+                        section: currentUserData['section'],
+                        dateOfBirth: currentUserData['dob'],
+                        rationType: currentUserData['rationType'],
+                        bloodType: currentUserData['bloodgroup'],
+                        enlistmentDate: currentUserData['enlistment'],
+                        ordDate: currentUserData['ord'],
+                      ),
+                    ),
+                  );
+                },
+                child: Padding(
+                  padding: EdgeInsets.all(12.0.sp),
+                  child: Image.asset(
+                    'lib/assets/user.png',
+                    width: 50.w,
+                  ),
+                ),
+              ),
+            ],
+          ),
           resizeToAvoidBottomInset: false,
           backgroundColor: const Color.fromARGB(255, 21, 25, 34),
           body: Center(
