@@ -7,6 +7,9 @@ import 'package:firebase_project_2/prototype_1_lib/lib/user_models/user_details.
 import 'package:firebase_project_2/prototype_1_lib/lib/util/text_styles/text_style.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/util/soldier_detailed_screen_info_template.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../../main.dart';
 
 var fname = FirebaseAuth.instance.currentUser!.displayName.toString();
 var id = FirebaseAuth.instance.currentUser!;
@@ -31,13 +34,18 @@ class UserProfileBasicInfoTab extends StatefulWidget {
       _UserProfileBasicInfoTabState();
 }
 
-class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab> {
+class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab>
+    with TickerProviderStateMixin {
+  _storeOnBoardInfo(int isViewed) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('onBoard', isViewed);
+  }
+
   Future deleteUserAccount() async {
     await deleteAttendance();
     await deleteStatuses();
     await deleteCurrentUser();
     await id.delete();
-    Navigator.pop(context);
   }
 
   Future deleteStatuses() async {
@@ -171,8 +179,17 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab> {
                   Center(
                     child: TextButton(
                       onPressed: () async {
-                        await deleteUserAccount();
-                        FirebaseAuth.instance.signOut();
+                        //await deleteUserAccount();
+                        FirebaseAuth.instance.signOut().then((value) async {
+                          _storeOnBoardInfo(2);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const MyAppCommander(),
+                            ),
+                          );
+                          await deleteUserAccount();
+                        });
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric(

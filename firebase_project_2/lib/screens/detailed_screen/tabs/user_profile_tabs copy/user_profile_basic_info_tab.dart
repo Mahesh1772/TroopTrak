@@ -49,7 +49,6 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab>
     await deleteStatuses();
     await deleteCurrentUser();
     await id.delete();
-    Navigator.pop(context);
   }
 
   Future deleteStatuses() async {
