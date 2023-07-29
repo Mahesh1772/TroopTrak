@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -49,10 +48,6 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
   Widget build(BuildContext context) {
     final soldierModel = Provider.of<UserData>(context);
     TabController tabController = TabController(length: 3, vsync: this);
-    Stream docStream = FirebaseFirestore.instance
-        .collection('Users')
-        .doc(widget.docID)
-        .snapshots();
 
     bool rankColorPicker(String rank) {
       return (rank == 'REC' ||
@@ -77,7 +72,7 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
       body: SingleChildScrollView(
         child: StreamBuilder(
-            stream: docStream, //soldierModel.userData_data(widget.docID),
+            stream: soldierModel.userData_data(widget.docID),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 Map<String, dynamic> currentUser =

@@ -1,7 +1,5 @@
 // ignore_for_file: must_be_immutable
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:firebase_project_2/prototype_1_lib/lib/screens/nominal_roll_screen/nominal_roll_screen_new.dart';
-import 'package:firebase_project_2/prototype_1_lib/lib/util/new_navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
