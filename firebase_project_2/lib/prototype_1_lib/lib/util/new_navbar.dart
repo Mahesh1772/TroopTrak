@@ -78,11 +78,12 @@ class _GNavMainScreen extends State<GNavMainScreen> {
         onWillPop: () async => false,
         child: Scaffold(
           appBar: AppBar(
+            elevation: 0,
+            toolbarHeight: 60.h,
             title: AutoSizeText(
               displayTitle(widget.selectedIndex),
               style: GoogleFonts.poppins(
-                fontWeight: FontWeight.w500,
-              ),
+                  fontWeight: FontWeight.w500, fontSize: 26.sp),
             ),
             actions: [
               IconButton(
@@ -100,13 +101,15 @@ class _GNavMainScreen extends State<GNavMainScreen> {
                   }
                 },
                 icon: isToggled
-                    ? const Icon(
+                    ? Icon(
                         Icons.dark_mode_rounded,
                         color: Colors.white,
+                        size: 30.sp,
                       )
-                    : const Icon(
+                    : Icon(
                         Icons.light_mode_rounded,
-                        color: Colors.black,
+                        color: Colors.orange,
+                        size: 30.sp,
                       ),
               ),
               InkWell(
@@ -155,7 +158,7 @@ class _GNavMainScreen extends State<GNavMainScreen> {
                   onTabChange: (value) {
                     itemTapped(value);
                   },
-                  gap: 7,
+                  gap: 7.w,
                   backgroundColor: const Color.fromARGB(255, 11, 13, 17),
                   color: Colors.deepPurple.shade300,
                   activeColor: Colors.white,

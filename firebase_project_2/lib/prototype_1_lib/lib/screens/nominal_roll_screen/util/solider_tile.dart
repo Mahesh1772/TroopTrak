@@ -166,6 +166,7 @@ class _SoldierTileState extends State<SoldierTile> {
     Color tileColor = soldierColorGenerator(
         "lib/assets/army-ranks/${widget.soldierRank.toString().toLowerCase()}.png");
     return OpenContainer(
+      closedElevation: 0,
       closedBuilder: (context, action) {
         return Padding(
           padding: EdgeInsets.all(8.0.sp),

@@ -104,7 +104,7 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 24.0.w),
                 child: StyledText(
                   'Our Family of Soldiers:',
-                  30.sp,
+                  24.sp,
                   fontWeight: FontWeight.bold,
                 ),
               ),
