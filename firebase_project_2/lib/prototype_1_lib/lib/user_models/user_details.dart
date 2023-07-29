@@ -63,6 +63,12 @@ class UserData extends ChangeNotifier {
     return userData;
   }
 
+  Stream<DocumentSnapshot<Map<String, dynamic>>> conduct_data(String docID) {
+    userData =
+        FirebaseFirestore.instance.collection('Conducts').doc(docID).snapshots();
+    return userData;
+  }
+
   Stream<DocumentSnapshot<Map<String, dynamic>>> updateStatus_data(
       String docID, String statusID) {
     userData = FirebaseFirestore.instance
@@ -185,13 +191,13 @@ class UserData extends ChangeNotifier {
 
   Map<String, String> categorySelected = {
     'Name': 'name',
-    'Rank' : 'rank',
-    'Company' : 'company',
-    'Section' : 'section',
-    'Platoon' : 'platoon',
-    'Ration' : 'rationType',
-    'Blood' : 'bloodgroup',
-    'Appointment' : 'appointment',
+    'Rank': 'rank',
+    'Company': 'company',
+    'Section': 'section',
+    'Platoon': 'platoon',
+    'Ration': 'rationType',
+    'Blood': 'bloodgroup',
+    'Appointment': 'appointment',
   };
 }
 

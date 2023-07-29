@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/conduct_tracker_screen/update_conduct_screen.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/util/text_styles/text_style.dart';
+import 'package:multiple_stream_builder/multiple_stream_builder.dart';
 import 'package:provider/provider.dart';
 import 'package:recase/recase.dart';
 
@@ -127,21 +128,20 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                 ),
               ),
               child: SafeArea(
-                child: StreamBuilder<QuerySnapshot>(
-                    stream: conductModel.conducts_data,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        var conducts = snapshot.data?.docs.toList();
-                        for (var conduct in conducts!) {
-                          if (conduct.reference.id == widget.conductID) {
-                            Map<String, dynamic> data =
-                                conduct.data() as Map<String, dynamic>;
-                            conductData = data;
-                            conductData.addEntries(
-                                {'ID': conduct.reference.id}.entries);
-                            soldierReason = data['soldierReason'];
-                          }
+                child: StreamBuilder2<DocumentSnapshot<Map<String, dynamic>>, QuerySnapshot>(
+                    streams: StreamTuple2(conductModel.conduct_data(widget.conductID), conductModel.data),
+                    builder: (context, snapshots) {
+                      if (snapshots.snapshot1.hasData) {
+                        conductData = snapshots.snapshot1.data!.data() as Map<String, dynamic>;
+                        conductData.addEntries({'ID':widget.conductID}.entries);
+
+                      if (snapshots.snapshot2.hasData) {
+                        List? users = snapshots.snapshot2.data?.docs.toList();
+                        for (var user in users!) {
+                          documentIDs.add(user['name']);
                         }
+                      }
+
                         documentIDs.removeWhere((element) =>
                             conductData['participants'].contains(element));
 
