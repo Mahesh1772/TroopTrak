@@ -191,6 +191,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         var data =
                             docsmapshot.docs[i].data() as Map<String, dynamic>;
                         userDetails.add(data);
+                        userDetails[i]
+                            .addEntries({'ID': users[i].reference.id}.entries);
                         if (specialist.contains(data['rank'])) {
                           specDetails.add(data);
                         } else if (officers.contains(data['rank'])) {

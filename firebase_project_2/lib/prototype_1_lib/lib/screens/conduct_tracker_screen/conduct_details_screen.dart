@@ -66,13 +66,13 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
         .delete();
   }
 
-  deleteConduct() {
-    deleteConductDetails();
+  deleteConduct() async{
+    await deleteConductDetails();
     Navigator.pop(context);
   }
 
   Future getDocIDs() async {
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection('Users')
         .get()
         .then((value) => value.docs.forEach((element) {

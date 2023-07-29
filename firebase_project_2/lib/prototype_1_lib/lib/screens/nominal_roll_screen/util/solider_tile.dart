@@ -26,6 +26,7 @@ class SoldierTile extends StatefulWidget {
   final String enlistmentDate;
   final String ordDate;
   late bool isInsideCamp;
+  final String docID;
 
   SoldierTile({
     super.key,
@@ -41,6 +42,7 @@ class SoldierTile extends StatefulWidget {
     required this.enlistmentDate,
     required this.ordDate,
     required this.isInsideCamp,
+    required this.docID,
   });
 
   @override
@@ -54,7 +56,7 @@ class _SoldierTileState extends State<SoldierTile> {
   Future addAttendanceDetails(bool i) async {
     await FirebaseFirestore.instance
         .collection('Users')
-        .doc(widget.soldierName)
+        .doc(widget.docID)
         .collection('Attendance')
         .doc(DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()))
         .set({
@@ -68,7 +70,7 @@ class _SoldierTileState extends State<SoldierTile> {
     String stat = i == true ? 'Inside Camp' : 'Outside';
     await FirebaseFirestore.instance
         .collection('Users')
-        .doc(widget.soldierName)
+        .doc(widget.docID)
         .set({
       //User map formatting
       'currentAttendance': stat,
@@ -170,7 +172,7 @@ class _SoldierTileState extends State<SoldierTile> {
         return Padding(
           padding: EdgeInsets.all(8.0.sp),
           child: StreamBuilder<QuerySnapshot>(
-              stream: userModel.attendance_data(widget.soldierName),
+              stream: userModel.attendance_data(widget.docID),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   var attendenceData = snapshot.data?.docs.toList();
@@ -323,6 +325,7 @@ class _SoldierTileState extends State<SoldierTile> {
       openBuilder:
           (BuildContext context, void Function({Object? returnValue}) action) {
         return SoldierDetailedScreen(
+          docID: widget.docID,
           soldierName: widget.soldierName,
           soldierRank: widget.soldierRank,
           company: widget.company,

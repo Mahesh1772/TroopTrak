@@ -1,12 +1,11 @@
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/tabs/user_profile_tabs/user_profile_basic_info_tab.dart';
 import 'package:firebase_project_2/themes/theme_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/tabs/user_profile_tabs/user_profile_attendance_tab.dart.dart';
-import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/tabs/user_profile_tabs/user_profile_basic_info_tab.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/tabs/user_profile_tabs/user_profile_statuses_tab.dart';
 import 'package:provider/provider.dart';
 import 'package:recase/recase.dart';
@@ -27,6 +26,7 @@ class UserProfileScreen extends StatefulWidget {
     required this.bloodType,
     required this.enlistmentDate,
     required this.ordDate,
+    required this.docID,
   });
 
   final String soldierName;
@@ -40,6 +40,7 @@ class UserProfileScreen extends StatefulWidget {
   final String bloodType;
   final String enlistmentDate;
   final String ordDate;
+  final String docID;
 
   @override
   State<UserProfileScreen> createState() => _UserProfileScreenState();
@@ -47,6 +48,7 @@ class UserProfileScreen extends StatefulWidget {
 
 ThemeManager _themeManager = ThemeManager();
 final name = FirebaseAuth.instance.currentUser!.displayName.toString();
+String docID = '';
 
 class _UserProfileScreenState extends State<UserProfileScreen>
     with TickerProviderStateMixin {
@@ -96,24 +98,14 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
       body: SingleChildScrollView(
-        child: StreamBuilder<QuerySnapshot>(
-            stream: statusModel.data,
+        child: StreamBuilder(
+            stream: statusModel.userData_data(widget.docID),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 // List to store all user data, whilst also mapping to name
-                Map<String, dynamic> currentUser = {};
-                List<Map<String, dynamic>> userDetails = [];
-                var users = snapshot.data?.docs.toList();
-                for (var user in users!) {
-                  var data = user.data();
-                  userDetails.add(data as Map<String, dynamic>);
-                }
-
-                for (var element in userDetails) {
-                  if (element['name'] == name) {
-                    currentUser = element;
-                  }
-                }
+                Map<String, dynamic> currentUser =
+                    snapshot.data!.data() as Map<String, dynamic>;
+                docID = widget.docID;
                 currentUser['name'] = widget.soldierName;
                 currentUser['rank'] = widget.soldierRank;
                 currentUser['appointment'] = widget.soldierAppointment;
@@ -394,6 +386,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                 rationType: widget.rationType,
                                 bloodType: widget.bloodType,
                                 enlistmentDate: widget.enlistmentDate,
+                                docID: docID,
                                 ordDate: widget.ordDate),
 
                             //Statuses tab

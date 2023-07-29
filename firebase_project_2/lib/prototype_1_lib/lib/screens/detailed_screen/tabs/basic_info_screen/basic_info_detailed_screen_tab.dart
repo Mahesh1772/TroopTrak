@@ -6,13 +6,12 @@ import 'package:firebase_project_2/prototype_1_lib/lib/util/text_styles/text_sty
 import 'package:provider/provider.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/user_models/user_details.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/util/soldier_detailed_screen_info_template.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
-var fname = FirebaseAuth.instance.currentUser!.displayName.toString();
-var id = FirebaseAuth.instance.currentUser!;
 
 class BasicInfoTab extends StatefulWidget {
-  const BasicInfoTab({super.key, required this.docID});
+  BasicInfoTab({
+    super.key,
+    required this.docID,
+  });
 
   final String docID;
 
@@ -106,21 +105,23 @@ class _BasicInfoTabState extends State<BasicInfoTab> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => UpdateSoldierDetailsPage(
-                                name: TextEditingController(text: data['name']),
-                                company: TextEditingController(
-                                    text: data['company']),
-                                platoon: TextEditingController(
-                                    text: data['platoon']),
-                                section: TextEditingController(
-                                    text: data['section']),
-                                appointment: TextEditingController(
-                                    text: data['appointment']),
-                                dob: data['dob'],
-                                ord: data['ord'],
-                                enlistment: data['enlistment'],
-                                selectedItem: data['rationType'],
-                                selectedRank: data['rank'],
-                                selectedBloodType: data['bloodgroup']),
+                              docID: widget.docID,
+                              name: TextEditingController(text: data['name']),
+                              company:
+                                  TextEditingController(text: data['company']),
+                              platoon:
+                                  TextEditingController(text: data['platoon']),
+                              section:
+                                  TextEditingController(text: data['section']),
+                              appointment: TextEditingController(
+                                  text: data['appointment']),
+                              dob: data['dob'],
+                              ord: data['ord'],
+                              enlistment: data['enlistment'],
+                              selectedItem: data['rationType'],
+                              selectedRank: data['rank'],
+                              selectedBloodType: data['bloodgroup'],
+                            ),
                           ),
                         );
                       },
@@ -158,7 +159,9 @@ class _BasicInfoTabState extends State<BasicInfoTab> {
                   ),
                   Center(
                     child: TextButton(
-                      onPressed: deleteUserAccount,
+                      onPressed: () async {
+                        await deleteUserAccount();
+                      },
                       child: Container(
                         padding: EdgeInsets.symmetric(
                             horizontal: 30.0.w, vertical: 16.0.h),

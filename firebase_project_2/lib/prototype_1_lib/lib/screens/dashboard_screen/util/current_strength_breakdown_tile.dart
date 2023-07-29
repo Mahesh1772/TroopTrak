@@ -100,6 +100,7 @@ class CurrentStrengthBreakdownTile extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 return DashboardSoldierTile(
+                  docID: userDetails[index]['name'],
                   soldierName: userDetails[index]['name'],
                   soldierRank: userDetails[index]['rank'],
                   soldierAppointment: userDetails[index]['appointment'],

@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_project_2/themes/dark_theme.dart';
 import 'package:firebase_project_2/themes/light_theme.dart';
 import 'package:firebase_project_2/themes/theme_manager.dart';
@@ -24,6 +25,8 @@ class GNavMainScreen extends StatefulWidget {
     return _GNavMainScreen();
   }
 }
+
+var fname = FirebaseAuth.instance.currentUser!.displayName.toString();
 
 class _GNavMainScreen extends State<GNavMainScreen> {
   static final List<Widget> _widgetOptions = <Widget>[
@@ -116,6 +119,7 @@ class _GNavMainScreen extends State<GNavMainScreen> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => UserProfileScreen(
+                        docID: fname,
                         soldierName: currentUserData['name'],
                         soldierRank:
                             currentUserData['rank'].toString().toLowerCase(),

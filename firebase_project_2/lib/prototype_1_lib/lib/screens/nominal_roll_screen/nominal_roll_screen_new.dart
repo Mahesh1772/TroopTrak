@@ -190,9 +190,11 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                             .toLowerCase()
                             .contains(searchText.toLowerCase());
                       }).toList();
-                      for (var user in users) {
-                        var data = user.data();
+                      for (var i = 0; i < users.length; i++) {
+                        var data = users[i].data();
                         userDetails.add(data as Map<String, dynamic>);
+                        userDetails[i]
+                            .addEntries({'ID': users[i].reference.id}.entries);
                       }
                       if (userDetails.isEmpty) {
                         return Column(
@@ -213,9 +215,11 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                         );
                       }
                     } else {
-                      for (var user in users!) {
-                        var data = user.data();
+                      for (var i = 0; i < users!.length; i++) {
+                        var data = users[i].data();
                         userDetails.add(data as Map<String, dynamic>);
+                        userDetails[i]
+                            .addEntries({'ID': users[i].reference.id}.entries);
                       }
                     }
                   }
@@ -227,6 +231,7 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                           crossAxisCount: 2, childAspectRatio: 1.w / 1.5.h),
                       itemBuilder: (context, index) {
                         return SoldierTile(
+                          docID: userDetails[index]['ID'],
                           soldierName: userDetails[index]['name'],
                           soldierRank: userDetails[index]['rank'],
                           soldierAppointment: userDetails[index]['appointment'],

@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
-
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:firebase_project_2/prototype_1_lib/lib/screens/nominal_roll_screen/nominal_roll_screen_new.dart';
+import 'package:firebase_project_2/prototype_1_lib/lib/util/new_navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,19 +13,21 @@ import 'package:provider/provider.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/user_models/user_details.dart';
 
 class UpdateSoldierDetailsPage extends StatefulWidget {
-  UpdateSoldierDetailsPage(
-      {super.key,
-      required this.name,
-      required this.company,
-      required this.platoon,
-      required this.section,
-      required this.appointment,
-      required this.dob,
-      required this.ord,
-      required this.enlistment,
-      required this.selectedItem,
-      required this.selectedRank,
-      required this.selectedBloodType});
+  UpdateSoldierDetailsPage({
+    super.key,
+    required this.name,
+    required this.company,
+    required this.platoon,
+    required this.section,
+    required this.appointment,
+    required this.dob,
+    required this.ord,
+    required this.enlistment,
+    required this.selectedItem,
+    required this.selectedRank,
+    required this.selectedBloodType,
+    required this.docID,
+  });
 
   late TextEditingController name;
   late TextEditingController company;
@@ -32,6 +35,7 @@ class UpdateSoldierDetailsPage extends StatefulWidget {
   late TextEditingController section;
   late TextEditingController appointment;
   late String dob;
+  late String docID;
   late String ord;
   late String enlistment;
   late String? selectedItem;
@@ -58,9 +62,9 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
   String _selectedBloodType = '';
 
   Future deleteCurrentUser() async {
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection("Users")
-        .doc(widget.name.text.trim())
+        .doc(widget.docID)
         .delete();
     Navigator.pop(context);
   }
@@ -68,7 +72,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
   Future goBackWithoutChanges() async {
     await FirebaseFirestore.instance
         .collection('Users')
-        .doc(widget.name.text.trim())
+        .doc(widget.docID)
         .update({
       //User map formatting
       'rank': _selectedRank,
@@ -160,19 +164,19 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
     "Unknown"
   ];
 
-  void _showDatePicker() {
+  void _showDatePicker() async {
     showDatePicker(
       context: context,
       initialDate: DateFormat("d MMM yyyy").parse(widget.dob),
       firstDate: DateTime(1960),
       lastDate: DateTime.now(),
     ).then((value) {
-      setState(() {
+      setState(() async {
         if (value != null) {
           widget.dob = DateFormat('d MMM yyyy').format(value);
         }
         isFirstTIme = false;
-        addUserDetails();
+        //await addUserDetails();
       });
     });
   }
@@ -184,12 +188,12 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
       firstDate: DateTime(1960),
       lastDate: DateTime(2030),
     ).then((value) {
-      setState(() {
+      setState(() async {
         if (value != null) {
           widget.ord = DateFormat('d MMM yyyy').format(value);
         }
         isFirstTIme = false;
-        addUserDetails();
+        //await addUserDetails();
       });
     });
   }
@@ -201,25 +205,25 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
       firstDate: DateTime(1960),
       lastDate: DateTime(2030),
     ).then((value) {
-      setState(() {
+      setState(() async {
         if (value != null) {
           widget.enlistment = DateFormat('d MMM yyyy').format(value);
         }
         isFirstTIme = false;
-        addUserDetails();
+        //await addUserDetails();
       });
     });
   }
 
   Future updateUserDetails() async {
-    addUserDetails();
+    await addUserDetails();
     Navigator.pop(context);
   }
 
   Future addUserDetails() async {
     await FirebaseFirestore.instance
         .collection('Users')
-        .doc(widget.name.text.trim())
+        .doc(widget.docID)
         .update({
       //User map formatting
       'rank': widget.selectedRank,
@@ -254,7 +258,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
       body: SingleChildScrollView(
         child: SafeArea(
           child: StreamBuilder(
-            stream: userDetailsModel.userData_data(widget.name.text.trim()),
+            stream: userDetailsModel.userData_data(widget.docID),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 //We are trying to map the key and values pairs
@@ -269,8 +273,8 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       InkWell(
-                        onTap: () {
-                          goBackWithoutChanges();
+                        onTap: () async {
+                          await goBackWithoutChanges();
                           Navigator.pop(context);
                         },
                         child: Icon(
@@ -414,6 +418,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                     .toList(),
                                 onChanged: (item) => setState(() {
                                   widget.selectedItem = item;
+                                  isFirstTIme = false;
                                 }),
                               ),
                             ),
@@ -462,7 +467,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                 onChanged: (String? item) async => setState(() {
                                   widget.selectedRank = item;
                                   isFirstTIme = false;
-                                  addUserDetails();
+                                  //addUserDetails();
                                 }),
                               ),
                             ),
@@ -505,7 +510,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                                 onChanged: (item) async => setState(() {
                                   widget.selectedBloodType = item;
                                   isFirstTIme = false;
-                                  addUserDetails();
+                                  //addUserDetails();
                                 }),
                               ),
                             ),
@@ -730,7 +735,9 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                           Padding(
                             padding: EdgeInsets.only(left: 5.0.w),
                             child: GestureDetector(
-                              onTap: updateUserDetails,
+                              onTap: () async {
+                                await updateUserDetails();
+                              },
                               child: Container(
                                 padding: EdgeInsets.all(16.sp),
                                 decoration: BoxDecoration(
@@ -773,7 +780,9 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 25.0.w),
                             child: GestureDetector(
-                              onTap: deleteCurrentUser,
+                              onTap: () async {
+                                await deleteCurrentUser();
+                              },
                               child: Container(
                                 padding: EdgeInsets.all(16.sp),
                                 decoration: BoxDecoration(
