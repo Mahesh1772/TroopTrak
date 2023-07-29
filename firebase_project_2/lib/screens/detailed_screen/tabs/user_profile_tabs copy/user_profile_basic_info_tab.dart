@@ -7,8 +7,13 @@ import 'package:firebase_project_2/user_models/user_details.dart';
 import 'package:firebase_project_2/util/text_styles/text_style.dart';
 import 'package:firebase_project_2/screens/detailed_screen/util/soldier_detailed_screen_info_template.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../../phone_authentication/provider/auth_provider.dart';
+import '../../../../phone_authentication/wrapper.dart';
 
 final fname = FirebaseAuth.instance.currentUser!.uid.toString();
+final name = FirebaseAuth.instance.currentUser!.displayName.toString();
 var id = FirebaseAuth.instance.currentUser!;
 Map<String, dynamic> currentUserData = {};
 
@@ -32,18 +37,24 @@ class UserProfileBasicInfoTab extends StatefulWidget {
       _UserProfileBasicInfoTabState();
 }
 
-class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab> {
+class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab>
+    with TickerProviderStateMixin {
+  _storeOnBoardInfo(int isViewed) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('onBoard', isViewed);
+  }
+
   Future deleteUserAccount() async {
-    deleteAttendance();
-    deleteStatuses();
-    deleteCurrentUser();
-    id.delete();
+    await deleteAttendance();
+    await deleteStatuses();
+    await deleteCurrentUser();
+    await id.delete();
     Navigator.pop(context);
   }
 
   Future deleteStatuses() async {
     var collection = FirebaseFirestore.instance
-        .collection("Men")
+        .collection("Users")
         .doc(fname)
         .collection('Statuses');
     var snapshots = await collection.get();
@@ -54,7 +65,7 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab> {
 
   Future deleteAttendance() async {
     var collection = FirebaseFirestore.instance
-        .collection("Men")
+        .collection("Users")
         .doc(fname)
         .collection('Attendance');
     var snapshots = await collection.get();
@@ -64,7 +75,8 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab> {
   }
 
   Future deleteCurrentUser() async {
-    FirebaseFirestore.instance.collection("Men").doc(fname).delete();
+    await FirebaseFirestore.instance.collection("Men").doc(fname).delete();
+    await FirebaseFirestore.instance.collection("Users").doc(name).delete();
   }
 
   Future getCurrentUserData() async {
@@ -78,6 +90,7 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab> {
   @override
   Widget build(BuildContext context) {
     final userDetailsModel = Provider.of<MenUserData>(context);
+    final ap = Provider.of<AuthProvider>(context, listen: false);
     return SingleChildScrollView(
       child: SizedBox(
         height: 750.h,
@@ -180,7 +193,18 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab> {
                   ),
                   Center(
                     child: TextButton(
-                      onPressed: deleteUserAccount,
+                      onPressed: () async {
+                        await ap.userSignOut().then((value) async {
+                          _storeOnBoardInfo(1);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Wrapper(),
+                            ),
+                          );
+                          await deleteUserAccount();
+                        });
+                      },
                       child: Container(
                         padding: EdgeInsets.symmetric(
                             horizontal: 30.0.w, vertical: 16.0.h),

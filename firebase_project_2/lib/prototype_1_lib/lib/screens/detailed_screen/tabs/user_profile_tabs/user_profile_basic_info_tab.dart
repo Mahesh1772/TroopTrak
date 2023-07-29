@@ -33,10 +33,10 @@ class UserProfileBasicInfoTab extends StatefulWidget {
 
 class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab> {
   Future deleteUserAccount() async {
-    deleteAttendance();
-    deleteStatuses();
-    deleteCurrentUser();
-    id.delete();
+    await deleteAttendance();
+    await deleteStatuses();
+    await deleteCurrentUser();
+    await id.delete();
     Navigator.pop(context);
   }
 
@@ -170,7 +170,10 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab> {
                   ),
                   Center(
                     child: TextButton(
-                      onPressed: deleteUserAccount,
+                      onPressed: () async {
+                        await deleteUserAccount();
+                        FirebaseAuth.instance.signOut();
+                      },
                       child: Container(
                         padding: EdgeInsets.symmetric(
                             horizontal: 30.0.w, vertical: 16.0.h),

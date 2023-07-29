@@ -175,6 +175,12 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
                         todayDuties.add(duty);
                       }
                     }
+                    dutyDetails = dutyDetails
+                        .where((element) =>
+                            calculateDifference(DateFormat('d MMM yyyy')
+                                .parse(element['dutyDate'])) >=
+                            1)
+                        .toList();
                   }
                   return todayDuties.isNotEmpty
                       ? ListView.builder(
