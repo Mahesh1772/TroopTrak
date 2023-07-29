@@ -126,7 +126,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
   List<String> non_participants = [];
   Map<String, String> soldierReason = {};
   Future getUserBooks() async {
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection("Users")
         .get()
         .then((querySnapshot) async {
@@ -153,7 +153,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
   }
 
   Future getDocIDs() async {
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection('Users')
         .get()
         .then((value) => value.docs.forEach((element) {
@@ -294,9 +294,9 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
   }
 
   @override
-  void initState() {
-    getDocIDs();
-    getUserBooks();
+  void initState() async{
+    await getDocIDs();
+    await getUserBooks();
     super.initState();
   }
 
@@ -394,8 +394,8 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
     });
   }
 
-  addConduct() {
-    addConductDetails();
+  addConduct() async{
+    await addConductDetails();
     Navigator.pop(context);
   }
 
@@ -808,7 +808,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                 ),
                 GestureDetector(
                   key: const Key("addConductButton"),
-                  onTap: () {
+                  onTap: () async {
                     if (formKey.currentState!.validate() &&
                         formKey1.currentState!.validate() &&
                         widget.endTime != "End Time:" &&
@@ -822,7 +822,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                           label: 'Conduct added successfully!',
                           snackBarStyle: const SnackBarStyle() // this one
                           );
-                      addConduct();
+                      await addConduct();
                     } else {
                       IconSnackBar.show(
                           direction: DismissDirection.horizontal,
