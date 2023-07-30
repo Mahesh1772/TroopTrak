@@ -61,7 +61,6 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
   CollectionReference db = FirebaseFirestore.instance.collection('Conducts');
   TextEditingController sName = TextEditingController();
   String _initialsType = '';
-  List<String> _initialParticipants = [];
   String _inititialSDate = '';
   String _intitialSTime = '';
   String _intitialETime = '';
@@ -71,7 +70,6 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
   void getInitialValues() {
     if (isFirstTIme) {
       _initialName = widget.conductName.text.trim();
-      _initialParticipants = tempArray;
       _initialsType = widget.selectedConductType!;
       _inititialSDate = widget.startDate;
       _intitialETime = widget.endTime;
