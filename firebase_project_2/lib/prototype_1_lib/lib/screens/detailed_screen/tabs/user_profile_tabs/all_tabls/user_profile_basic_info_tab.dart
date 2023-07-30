@@ -2,14 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/tabs/basic_info_screen/update_soldier_details_screen.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/user_models/user_details.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/util/text_styles/text_style.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/util/soldier_detailed_screen_info_template.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../../main.dart';
+import '../../../../../main.dart';
+import '../update_current_user_details.dart';
 
 var fname = FirebaseAuth.instance.currentUser!.displayName.toString();
 var id = FirebaseAuth.instance.currentUser!;
@@ -128,7 +128,7 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab>
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => UpdateSoldierDetailsPage(
+                            builder: (context) => UpdateCurrentUserDetailsPage(
                               docID: widget.docID,
                                 name: TextEditingController(text: data['name']),
                                 company: TextEditingController(
