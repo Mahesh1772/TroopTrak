@@ -20,14 +20,17 @@ class UserProfileBasicInfoTab extends StatefulWidget {
   final String bloodType;
   final String enlistmentDate;
   final String ordDate;
+  final String docID;
 
-  const UserProfileBasicInfoTab(
-      {super.key,
-      required this.dateOfBirth,
-      required this.rationType,
-      required this.bloodType,
-      required this.enlistmentDate,
-      required this.ordDate});
+  const UserProfileBasicInfoTab({
+    super.key,
+    required this.dateOfBirth,
+    required this.rationType,
+    required this.bloodType,
+    required this.enlistmentDate,
+    required this.docID,
+    required this.ordDate,
+  });
 
   @override
   State<UserProfileBasicInfoTab> createState() =>
@@ -51,7 +54,7 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab>
   Future deleteStatuses() async {
     var collection = FirebaseFirestore.instance
         .collection("Users")
-        .doc(fname)
+        .doc(widget.docID)
         .collection('Statuses');
     var snapshots = await collection.get();
     for (var doc in snapshots.docs) {
@@ -62,7 +65,7 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab>
   Future deleteAttendance() async {
     var collection = FirebaseFirestore.instance
         .collection("Users")
-        .doc(fname)
+        .doc(widget.docID)
         .collection('Attendance');
     var snapshots = await collection.get();
     for (var doc in snapshots.docs) {
@@ -81,7 +84,7 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab>
       child: SizedBox(
         height: 750.h,
         child: StreamBuilder(
-          stream: userDetailsModel.userData_data(fname),
+          stream: userDetailsModel.userData_data(widget.docID),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               //We are trying to map the key and values pairs
@@ -126,6 +129,7 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab>
                           context,
                           MaterialPageRoute(
                             builder: (context) => UpdateSoldierDetailsPage(
+                              docID: widget.docID,
                                 name: TextEditingController(text: data['name']),
                                 company: TextEditingController(
                                     text: data['company']),

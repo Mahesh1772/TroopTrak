@@ -109,7 +109,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                 }
                 allParticipants.removeWhere(
                   (element) => participants.contains(element),
-                );
+                );;
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,

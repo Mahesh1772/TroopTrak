@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:firebase_project_2/prototype_1_lib/lib/util/text_styles/text_style.dart';
+import 'package:multiple_stream_builder/multiple_stream_builder.dart';
 import 'package:provider/provider.dart';
 import 'package:recase/recase.dart';
 
@@ -46,8 +47,8 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
 // Name of soldiers not included
   List<dynamic> soldierStatusArray = [];
 
-  //This is what the stream builder is waiting for
-  late Stream<QuerySnapshot> documentStream;
+  
+  
 
   // List to store all user data, whilst also mapping to name
   List<Map<String, dynamic>> userDetails = [];
@@ -77,6 +78,7 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
       _intitialETime = widget.endTime;
       _intitialSTime = widget.startTime;
     }
+    print('getting initial values');
   }
 
   void editConduct() {
@@ -119,18 +121,8 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
     super.dispose();
   }
 
-  void filter() {
-    if (isFirstTIme) {
-      documentIDs
-          .removeWhere((element) => widget.nonParticipants.contains(element));
-      tempArray = documentIDs;
-    }
-    print(tempArray);
-  }
-
   @override
   void initState() {
-    documentStream = FirebaseFirestore.instance.collection('Users').snapshots();
     getInitialValues();
     super.initState();
   }
@@ -480,14 +472,23 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
                     ),
                   ),
                 ),
-                StreamBuilder<QuerySnapshot>(
-                  stream: userModel.data,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
+                StreamBuilder2<QuerySnapshot,
+                    DocumentSnapshot<Map<String, dynamic>>>(
+                  streams: StreamTuple2(
+                      userModel.data, userModel.conduct_data(widget.conductID)),
+                  builder: (context, snapshots) {
+                    if (snapshots.snapshot2.hasData) {
+                      var conductData = snapshots.snapshot2.data!.data()
+                          as Map<String, dynamic>;
+                      if (isFirstTIme) {
+                        tempArray = List<String>.from(conductData['participants'] as List);;
+                      }
+                    }
+                    if (snapshots.snapshot1.hasData) {
                       documentIDs = [];
                       userDetails = [];
-                      var users = snapshot.data?.docs.toList();
-                      var docsmapshot = snapshot.data!;
+                      var users = snapshots.snapshot1.data?.docs.toList();
+                      var docsmapshot = snapshots.snapshot1.data!;
                       if (searchText.isNotEmpty) {
                         users = users!.where((element) {
                           return element
@@ -527,7 +528,7 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
                           userDetails.add(data);
                         }
                       }
-                      filter();
+                      //filter();
                     }
                     return Flexible(
                       child: SizedBox(

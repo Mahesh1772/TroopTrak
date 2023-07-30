@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/util/book_in_out_tile.dart.dart';
 import 'package:provider/provider.dart';
-
 import 'package:firebase_project_2/prototype_1_lib/lib/user_models/user_details.dart';
 
 late Stream<QuerySnapshot> documentStream;
@@ -34,6 +33,7 @@ class _AttendanceTabState extends State<AttendanceTab> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.docID);
     final statusModel = Provider.of<UserData>(context);
     return Scaffold(
       backgroundColor: Colors.transparent,

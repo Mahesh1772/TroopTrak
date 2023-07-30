@@ -16,20 +16,23 @@ class DashboardSoldierTile extends StatelessWidget {
   final String bloodType;
   final String enlistmentDate;
   final String ordDate;
+  final String docID;
 
-  const DashboardSoldierTile(
-      {super.key,
-      required this.soldierName,
-      required this.soldierRank,
-      required this.company,
-      required this.platoon,
-      required this.section,
-      required this.soldierAppointment,
-      required this.dateOfBirth,
-      required this.rationType,
-      required this.bloodType,
-      required this.enlistmentDate,
-      required this.ordDate});
+  const DashboardSoldierTile({
+    super.key,
+    required this.soldierName,
+    required this.soldierRank,
+    required this.company,
+    required this.platoon,
+    required this.section,
+    required this.soldierAppointment,
+    required this.dateOfBirth,
+    required this.rationType,
+    required this.bloodType,
+    required this.enlistmentDate,
+    required this.ordDate,
+    required this.docID,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +89,7 @@ class DashboardSoldierTile extends StatelessWidget {
             context,
             MaterialPageRoute(
                 builder: (context) => SoldierDetailedScreen(
+                      docID: docID,
                       soldierName: soldierName,
                       soldierRank: soldierRank,
                       company: company,
