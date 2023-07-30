@@ -772,49 +772,6 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 25.0.w),
-                            child: GestureDetector(
-                              onTap: deleteCurrentUser,
-                              child: Container(
-                                padding: EdgeInsets.all(16.sp),
-                                decoration: BoxDecoration(
-                                  gradient: const LinearGradient(
-                                    colors: [
-                                      Colors.red,
-                                      Color.fromARGB(255, 202, 65, 55)
-                                    ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  ),
-                                  //color: Colors.deepPurple,
-                                  borderRadius: BorderRadius.circular(12.r),
-                                ),
-                                child: Center(
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.delete_forever_rounded,
-                                        color: Colors.white,
-                                        size: 30.sp,
-                                      ),
-                                      SizedBox(
-                                        width: 10.w,
-                                      ),
-                                      AutoSizeText(
-                                        'DELETE DETAILS',
-                                        style: GoogleFonts.poppins(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 10.sp,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
                         ],
                       ),
 

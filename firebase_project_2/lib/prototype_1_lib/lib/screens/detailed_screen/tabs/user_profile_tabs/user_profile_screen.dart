@@ -8,7 +8,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/tabs/user_profile_tabs/all_tabls/user_profile_attendance_tab.dart.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/tabs/user_profile_tabs/all_tabls/user_profile_statuses_tab.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../main.dart';
 import '../../../../user_models/user_details.dart';
 
 class UserProfileScreen extends StatefulWidget {
@@ -50,6 +52,10 @@ class _UserProfileScreenState extends State<UserProfileScreen>
 
   @override
   Widget build(BuildContext context) {
+    _storeOnBoardInfo(int isViewed) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('onBoard', isViewed);
+  }
     print(name);
     TabController tabController = TabController(length: 3, vsync: this);
 
@@ -122,8 +128,21 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                     ),
                                     InkWell(
                                       key: const Key("signOutButton"),
-                                      onTap: () {
-                                        FirebaseAuth.instance.signOut();
+                                      onTap: () async {
+                                        //await FirebaseAuth.instance.signOut().then((value) => Navigator.pop(context));
+                                        //Navigator.pop(context);
+                                        FirebaseAuth.instance
+                                            .signOut()
+                                            .then((value) async {
+                                          _storeOnBoardInfo(2);
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const MyAppCommander(),
+                                            ),
+                                          );
+                                        });
                                       },
                                       child: Icon(
                                         Icons.exit_to_app_rounded,
