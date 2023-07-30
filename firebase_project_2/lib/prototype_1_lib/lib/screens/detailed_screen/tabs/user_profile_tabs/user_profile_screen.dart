@@ -82,17 +82,6 @@ class _UserProfileScreenState extends State<UserProfileScreen>
               if (snapshot.hasData) {
                 // List to store all user data, whilst also mapping to name
                 currentUser = snapshot.data!.data() as Map<String, dynamic>;
-                //currentUser['name'] = widget.soldierName;
-                //currentUser['rank'] = widget.soldierRank;
-                //currentUser['appointment'] = widget.soldierAppointment;
-                //currentUser['section'] = widget.section;
-                //currentUser['company'] = widget.company;
-                //currentUser['platoon'] = widget.platoon;
-                //currentUser['rationType'] = widget.rationType;
-                //currentUser['bloodgroup'] = widget.bloodType;
-                //currentUser['ord'] = widget.ordDate;
-                //currentUser['dob'] = widget.dateOfBirth;
-                //currentUser['enlistment'] = widget.enlistmentDate;
               }
               return Column(
                 children: [
@@ -161,7 +150,6 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                           children: [
                                             Text(
                                               currentUser['name'].toUpperCase(),
-                                              //widget.soldierName.toUpperCase(),
                                               maxLines: 3,
                                               style: GoogleFonts.poppins(
                                                 color: Colors.white,
@@ -175,8 +163,6 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                             ),
                                             Text(
                                               currentUser['appointment'],
-                                              //widget
-                                              //    .soldierAppointment.titleCase,
                                               maxLines: 2,
                                               style: GoogleFonts.poppins(
                                                 color: Colors.white,
