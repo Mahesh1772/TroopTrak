@@ -25,6 +25,7 @@ class UpdateCurrentUserDetailsPage extends StatefulWidget {
     required this.selectedRank,
     required this.selectedBloodType,
     required this.docID,
+    required this.callback,
   });
 
   late TextEditingController name;
@@ -39,6 +40,7 @@ class UpdateCurrentUserDetailsPage extends StatefulWidget {
   late String? selectedItem;
   late String? selectedRank;
   late String? selectedBloodType;
+  late Function callback;
 
   @override
   State<UpdateCurrentUserDetailsPage> createState() =>
@@ -208,6 +210,7 @@ class _UpdateCurrentUserDetailsPageState
 
   Future updateUserDetails() async {
     await addUserDetails();
+    widget.callback;
     Navigator.pop(context);
   }
 
@@ -228,7 +231,7 @@ class _UpdateCurrentUserDetailsPageState
       'dob': widget.dob,
       'ord': widget.ord,
       'enlistment': widget.enlistment,
-    });
+    }, SetOptions(merge: true));
   }
 
   void resetControllers() {

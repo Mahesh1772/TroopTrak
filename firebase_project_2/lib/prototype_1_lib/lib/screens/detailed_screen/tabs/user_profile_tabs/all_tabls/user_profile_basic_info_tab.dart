@@ -14,6 +14,7 @@ import '../update_current_user_details.dart';
 var fname = FirebaseAuth.instance.currentUser!.displayName.toString();
 var id = FirebaseAuth.instance.currentUser!;
 
+// ignore: must_be_immutable
 class UserProfileBasicInfoTab extends StatefulWidget {
   final String dateOfBirth;
   final String rationType;
@@ -21,8 +22,9 @@ class UserProfileBasicInfoTab extends StatefulWidget {
   final String enlistmentDate;
   final String ordDate;
   final String docID;
+  late Function callback;
 
-  const UserProfileBasicInfoTab({
+  UserProfileBasicInfoTab({
     super.key,
     required this.dateOfBirth,
     required this.rationType,
@@ -30,6 +32,7 @@ class UserProfileBasicInfoTab extends StatefulWidget {
     required this.enlistmentDate,
     required this.docID,
     required this.ordDate,
+    required this.callback,
   });
 
   @override
@@ -129,7 +132,8 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab>
                           context,
                           MaterialPageRoute(
                             builder: (context) => UpdateCurrentUserDetailsPage(
-                              docID: widget.docID,
+                                callback: widget.callback,
+                                docID: widget.docID,
                                 name: TextEditingController(text: data['name']),
                                 company: TextEditingController(
                                     text: data['company']),
@@ -146,7 +150,7 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab>
                                 selectedRank: data['rank'],
                                 selectedBloodType: data['bloodgroup']),
                           ),
-                        );
+                        ).then((value) => widget.callback);
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric(
