@@ -486,7 +486,7 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
                       var conductData = snapshots.snapshot2.data!.data()
                           as Map<String, dynamic>;
                       if (isFirstTIme) {
-                        tempArray = List<String>.from(conductData['participants'] as List);;
+                        tempArray = List<String>.from(conductData['participants'] as List);
                       }
                     }
                     if (snapshots.snapshot1.hasData) {
