@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/guard_duty_tracker_screen.dart/util/duty_personnel_data_source.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/util/constants.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/util/text_styles/text_style.dart';
+import 'package:multiple_stream_builder/multiple_stream_builder.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -44,7 +45,7 @@ late DutyPersonnelDataSource dutyPersonnelDataSource;
 List<Map<dynamic, dynamic>> dutyInfo = [];
 
 //To have a points table
-Map<dynamic, double> pointsTable = {};
+final Map<dynamic, double?> pointsTable = {};
 
 List<DutyPersonnel> getDutyPersonnel() {
   List<DutyPersonnel> array = [];
@@ -61,56 +62,6 @@ List<DutyPersonnel> getDutyPersonnel() {
 }
 
 class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
-  Future getDutyInfo() async {
-    if (isFirstTIme) {
-      FirebaseFirestore.instance
-          .collection("Duties")
-          .get()
-          .then((querySnapshot) async {
-        for (var snapshot in querySnapshot.docs) {
-          Map<String, dynamic> data = snapshot.data();
-          dutyInfo.add(data);
-        }
-      });
-    }
-  }
-
-  Future getDocIDs() async {
-    FirebaseFirestore.instance
-        .collection('Users')
-        .get()
-        .then((value) => value.docs.forEach((element) {
-              Map<String, dynamic> data = element.data();
-              documentIDs.add(element['name']);
-              if (isFirstTIme) {
-                pointsTable.addEntries({data['name']: 0.0}.entries);
-              }
-            }));
-  }
-
-  void getDutyPoints() {
-    for (var info in dutyInfo) {
-      for (var person in info['participants'].keys.toList()) {
-        var pointsPerPerson = pointsTable[person];
-        if (isFirstTIme && pointsPerPerson != null) {
-          pointsTable[person] = (pointsPerPerson + info['points']);
-          print(pointsPerPerson);
-        }
-      }
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getDutyInfo();
-    getDocIDs();
-    getDutyPoints();
-    dutyPersonnel = getDutyPersonnel();
-    dutyPersonnelDataSource =
-        DutyPersonnelDataSource(dutyPersonnel: dutyPersonnel);
-  }
-
   @override
   Widget build(BuildContext context) {
     final userDetailsModel = Provider.of<UserData>(context);
@@ -155,22 +106,20 @@ class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
             ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 30.0.h),
-              child: StreamBuilder<QuerySnapshot>(
-                stream: userDetailsModel.data,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    getDutyPoints();
-
+              child: StreamBuilder2<QuerySnapshot, QuerySnapshot>(
+                streams: StreamTuple2(
+                    userDetailsModel.data, userDetailsModel.conducts_data),
+                builder: (context, snapshots) {
+                  if (snapshots.snapshot1.hasData) {
                     isFirstTIme = false;
                     documentIDs = [];
                     userDetails = [];
-                    pointsTable = {};
-                    var users = snapshot.data?.docs.toList();
+                    //pointsTable = {};
+                    var users = snapshots.snapshot1.data?.docs.toList();
                     for (var user in users!) {
                       var data = user.data();
                       userDetails.add(data as Map<String, dynamic>);
-                      pointsTable
-                          .addAll({data['name']: data['points'].toDouble()});
+                      pointsTable[data['name']] = data['points'].toDouble();
                     }
                     dutyPersonnel = getDutyPersonnel();
                     dutyPersonnelDataSource =

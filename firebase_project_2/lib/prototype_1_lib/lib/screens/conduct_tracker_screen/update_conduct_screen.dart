@@ -488,7 +488,6 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
                       if (isFirstTIme) {
                         tempArray = List<String>.from(
                             conductData['participants'] as List);
-                        ;
                       }
                     }
                     if (snapshots.snapshot1.hasData) {
