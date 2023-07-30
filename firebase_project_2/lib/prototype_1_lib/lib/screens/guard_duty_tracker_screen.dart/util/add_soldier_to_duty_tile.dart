@@ -24,7 +24,7 @@ class AddSoldierToDutyTile extends StatefulWidget {
   final String appointment;
   final List nonParticipants;
   final bool isTileSelected;
-  final Map<dynamic, dynamic> selectedSoldiers;
+  final Map<String, dynamic> selectedSoldiers;
   final Function tileSelectionCallback;
 
   @override

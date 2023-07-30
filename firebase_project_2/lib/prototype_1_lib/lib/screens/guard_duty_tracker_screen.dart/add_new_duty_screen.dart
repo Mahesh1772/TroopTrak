@@ -29,7 +29,7 @@ class AddNewDutyScreen extends StatefulWidget {
   State<AddNewDutyScreen> createState() => _AddNewDutyScreenState();
 }
 
-Map<dynamic, dynamic> dutySoldiersAndRanks = {};
+Map<String, dynamic> dutySoldiersAndRanks = {};
 
 void populateDutySoldiersAndRanksArray() {
   var length = dutySoldiersAndRanks.length;

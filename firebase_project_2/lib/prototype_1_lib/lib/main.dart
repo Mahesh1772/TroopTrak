@@ -1,6 +1,3 @@
-import 'package:firebase_project_2/themes/dark_theme.dart';
-import 'package:firebase_project_2/themes/light_theme.dart';
-import 'package:firebase_project_2/themes/theme_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/sign_in_assets/home/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -17,8 +14,6 @@ Future main() async {
   runApp(const MyAppCommander());
 }
 
-ThemeManager _themeManager = ThemeManager();
-
 class MyAppCommander extends StatelessWidget {
   const MyAppCommander({super.key});
 
@@ -28,11 +23,8 @@ class MyAppCommander extends StatelessWidget {
     return ScreenUtilInit(
       builder: (BuildContext context, child) => ChangeNotifierProvider(
         create: (context) => UserData(),
-        child: MaterialApp(
-          theme: lightTheme,
-          darkTheme: darkTheme,
-          themeMode: _themeManager.themeMode,
-          home: const Wrapper(),
+        child: const MaterialApp(
+          home: Wrapper(),
         ),
       ),
       designSize: const Size(450, 1000),

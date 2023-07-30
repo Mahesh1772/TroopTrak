@@ -25,14 +25,14 @@ class UpdateDutyScreen extends StatefulWidget {
   late String dutyStartTime;
   late String dutyEndTime;
   final String docID;
-  final Map<dynamic, dynamic> participants;
+  final Map<String, dynamic> participants;
   late double numberOfPoints;
 
   @override
   State<UpdateDutyScreen> createState() => _UpdateDutyScreenState();
 }
 
-Map<dynamic, dynamic> dutySoldiersAndRanks = {};
+Map<String, dynamic> dutySoldiersAndRanks = {};
 
 List<String> heroAddDutySoldiers = [];
 

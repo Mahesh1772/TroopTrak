@@ -26,7 +26,7 @@ class AddDutySoldiersCard extends StatefulWidget {
   final String heroTag;
   final Function callbackFunction;
   final List nonParticipants;
-  Map<dynamic, dynamic> dutySoldiersAndRanks;
+  Map<String, dynamic> dutySoldiersAndRanks;
 }
 
 // List of all names
@@ -50,7 +50,7 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
     super.initState();
   }
 
-  void tileSelectionCallback(Map<dynamic, dynamic> selection) {
+  void tileSelectionCallback(Map<String, dynamic> selection) {
     setState(() {
       widget.dutySoldiersAndRanks = selection;
     });
@@ -65,8 +65,8 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
             }));
   }
 
-  reverseMapAndRemoveExcess(Map<dynamic, dynamic> map) {
-    Map<dynamic, dynamic> newmap = {};
+  reverseMapAndRemoveExcess(Map<String, dynamic> map) {
+    Map<String, dynamic> newmap = {};
     for (var _key in map.keys.toList()) {
       if (map[_key]!.contains("NA")) {
         continue;

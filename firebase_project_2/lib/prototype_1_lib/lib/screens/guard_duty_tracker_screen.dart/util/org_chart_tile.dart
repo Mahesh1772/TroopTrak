@@ -21,7 +21,7 @@ class OrgChartTile extends StatefulWidget {
   final String heroTag;
   final Function callbackFunction;
   final List nonParticipants;
-  final Map<dynamic, dynamic> dutySoldiersAndRanks;
+  final Map<String, dynamic> dutySoldiersAndRanks;
 
   @override
   State<OrgChartTile> createState() => _OrgChartTileState();
