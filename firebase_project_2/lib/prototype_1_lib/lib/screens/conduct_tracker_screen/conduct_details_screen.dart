@@ -253,6 +253,7 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                                                     endTime:
                                                         conductData['endTime'],
                                                     callbackFunction: callback,
+                                                    participants: conductData['participants'],
                                                   ),
                                                 ),
                                               ).then(

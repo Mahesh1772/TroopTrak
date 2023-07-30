@@ -23,6 +23,7 @@ class UpdateConductScreen extends StatefulWidget {
     required this.nonParticipants,
     required this.conductID,
     required this.callbackFunction,
+    required this.participants,
   });
 
   late TextEditingController conductName;
@@ -32,6 +33,7 @@ class UpdateConductScreen extends StatefulWidget {
   late String endTime;
   late String conductID;
   late List nonParticipants;
+  late List participants;
   Function callbackFunction;
 
   @override
@@ -46,10 +48,7 @@ List<String> documentIDs = [];
 class _UpdateConductScreenState extends State<UpdateConductScreen> {
 // Name of soldiers not included
   List<dynamic> soldierStatusArray = [];
-
   
-  
-
   // List to store all user data, whilst also mapping to name
   List<Map<String, dynamic>> userDetails = [];
 
@@ -81,8 +80,8 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
     print('getting initial values');
   }
 
-  void editConduct() {
-    editConductDetails();
+  void editConduct() async{
+    await editConductDetails();
     var listofusers =
         userDetails.where((element) => tempArray.contains(element['name']));
     var nonparts = userDetails
@@ -92,6 +91,12 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
   }
 
   Future goBackWithoutChanges() async {
+    //tempArray = [];
+    //for (var element in documentIDs) {
+    //  if (!widget.nonParticipants.contains(element)) {
+    //    tempArray.add(element);
+    //  }
+    //}
     db.doc(widget.conductID).update({
       //User map formatting
       'conductName': _initialName,
@@ -99,7 +104,7 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
       'startDate': _inititialSDate,
       'startTime': _intitialSTime,
       'endTime': _intitialETime,
-      'participants': _initialParticipants,
+      'participants': widget.participants,
     });
   }
 
@@ -225,8 +230,8 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 InkWell(
-                  onTap: () {
-                    goBackWithoutChanges();
+                  onTap: () async{
+                    await goBackWithoutChanges();
                     Navigator.pop(context);
                   },
                   child: Icon(
