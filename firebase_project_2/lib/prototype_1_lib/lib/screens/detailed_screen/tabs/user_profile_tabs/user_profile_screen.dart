@@ -269,33 +269,6 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                           SizedBox(
                             height: 20.h,
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 20.0.w),
-                            child: Text(
-                              "${widget.company.toUpperCase()} COMPANY",
-                              maxLines: 2,
-                              style: GoogleFonts.poppins(
-                                color: Colors.white,
-                                fontSize: 18.sp,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 1.5,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding:
-                                EdgeInsets.only(left: 20.0.w, bottom: 20.0.h),
-                            child: Text(
-                              "Platoon ${widget.platoon}, Section ${widget.section}",
-                              maxLines: 2,
-                              style: GoogleFonts.poppins(
-                                color: Colors.white,
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w500,
-                                letterSpacing: 1.5,
-                              ),
-                            ),
-                          ),
                           Center(
                             child: AnimatedToggleSwitch<bool>.rolling(
                               current:
