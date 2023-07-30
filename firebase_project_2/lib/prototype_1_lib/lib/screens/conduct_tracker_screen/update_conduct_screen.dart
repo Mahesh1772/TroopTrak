@@ -47,9 +47,6 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
 // Name of soldiers not included
   List<dynamic> soldierStatusArray = [];
 
-  
-  
-
   // List to store all user data, whilst also mapping to name
   List<Map<String, dynamic>> userDetails = [];
 
@@ -69,7 +66,7 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
   String _initialName = '';
   Map<String, dynamic> data = {};
 
-  void getInitialValues() {
+  Future getInitialValues() async {
     if (isFirstTIme) {
       _initialName = widget.conductName.text.trim();
       _initialParticipants = tempArray;
@@ -92,6 +89,7 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
   }
 
   Future goBackWithoutChanges() async {
+    await getInitialValues();
     db.doc(widget.conductID).update({
       //User map formatting
       'conductName': _initialName,
@@ -481,7 +479,9 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
                       var conductData = snapshots.snapshot2.data!.data()
                           as Map<String, dynamic>;
                       if (isFirstTIme) {
-                        tempArray = List<String>.from(conductData['participants'] as List);;
+                        tempArray = List<String>.from(
+                            conductData['participants'] as List);
+                        ;
                       }
                     }
                     if (snapshots.snapshot1.hasData) {

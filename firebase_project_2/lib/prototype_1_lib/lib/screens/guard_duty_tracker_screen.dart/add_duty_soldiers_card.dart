@@ -1,18 +1,18 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:firebase_project_2/prototype_1_lib/lib/screens/guard_duty_tracker_screen.dart/add_new_duty_screen.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/guard_duty_tracker_screen.dart/util/custom_rect_tween.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/util/text_styles/text_style.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/conduct_tracker_screen/util/add_soldier_to_duty_tile.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/user_models/user_details.dart';
 
-
 class AddDutySoldiersCard extends StatefulWidget {
-  const AddDutySoldiersCard({
+  AddDutySoldiersCard({
     super.key,
     required this.heroTag,
     required this.callbackFunction,
@@ -26,7 +26,7 @@ class AddDutySoldiersCard extends StatefulWidget {
   final String heroTag;
   final Function callbackFunction;
   final List nonParticipants;
-  final Map<dynamic, dynamic> dutySoldiersAndRanks;
+  Map<dynamic, dynamic> dutySoldiersAndRanks;
 }
 
 // List of all names
@@ -50,9 +50,9 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
     super.initState();
   }
 
-  void tileSelectionCallback(selection) {
+  void tileSelectionCallback(Map<dynamic, dynamic> selection) {
     setState(() {
-      dutySoldiersAndRanks = selection;
+      widget.dutySoldiersAndRanks = selection;
     });
   }
 
@@ -65,8 +65,8 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
             }));
   }
 
-  reverseMapAndRemoveExcess(Map<String, String> map) {
-    Map<String, String> newmap = {};
+  reverseMapAndRemoveExcess(Map<dynamic, dynamic> map) {
+    Map<dynamic, dynamic> newmap = {};
     for (var _key in map.keys.toList()) {
       if (map[_key]!.contains("NA")) {
         continue;
@@ -191,9 +191,8 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
 
                           userDetails.sort(
                               (a, b) => a["points"].compareTo(b["points"]));
-
-                          print(userDetails);
                         }
+
                         return Flexible(
                           child: SizedBox(
                             height: 300.h,
@@ -203,17 +202,18 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
                               padding: EdgeInsets.all(12.sp),
                               itemBuilder: (context, index) {
                                 return AddSoldierToDutyTile(
-                                    rank: userDetails[index]['rank'],
-                                    name: userDetails[index]['name'],
-                                    appointment: userDetails[index]
-                                        ['appointment'],
-                                    nonParticipants: widget.nonParticipants,
-                                    selectedSoldiers: dutySoldiersAndRanks,
-                                    tileSelectionCallback:
-                                        tileSelectionCallback,
-                                    isTileSelected: dutySoldiersAndRanks
-                                        .containsKey(userDetails[index]['name']
-                                            .toString()));
+                                  rank: userDetails[index]['rank'],
+                                  name: userDetails[index]['name'],
+                                  appointment: userDetails[index]
+                                      ['appointment'],
+                                  nonParticipants: widget.nonParticipants,
+                                  selectedSoldiers: widget.dutySoldiersAndRanks,
+                                  tileSelectionCallback: tileSelectionCallback,
+                                  isTileSelected:
+                                      widget.dutySoldiersAndRanks.containsKey(
+                                    userDetails[index]['name'].toString(),
+                                  ),
+                                );
                               },
                             ),
                           ),
@@ -227,9 +227,9 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
                       key: const Key("addSoldiersToDuty"),
                       onTap: () {
                         //print(dutySoldiersAndRanks);
-                        dutySoldiersAndRanks =
-                            reverseMapAndRemoveExcess(dutySoldiersAndRanks);
-                        widget.callbackFunction(dutySoldiersAndRanks);
+                        widget.dutySoldiersAndRanks = reverseMapAndRemoveExcess(
+                            widget.dutySoldiersAndRanks);
+                        widget.callbackFunction(widget.dutySoldiersAndRanks);
 
                         Navigator.pop(context);
                       },

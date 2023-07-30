@@ -160,6 +160,7 @@ class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     getDutyPoints();
+
                     isFirstTIme = false;
                     documentIDs = [];
                     userDetails = [];

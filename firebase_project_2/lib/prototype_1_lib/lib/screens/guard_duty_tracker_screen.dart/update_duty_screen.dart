@@ -25,7 +25,7 @@ class UpdateDutyScreen extends StatefulWidget {
   late String dutyStartTime;
   late String dutyEndTime;
   final String docID;
-  final Map<String, dynamic> participants;
+  final Map<dynamic, dynamic> participants;
   late double numberOfPoints;
 
   @override
