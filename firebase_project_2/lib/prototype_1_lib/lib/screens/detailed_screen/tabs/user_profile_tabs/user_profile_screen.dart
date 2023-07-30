@@ -8,39 +8,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/tabs/user_profile_tabs/all_tabls/user_profile_attendance_tab.dart.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/tabs/user_profile_tabs/all_tabls/user_profile_statuses_tab.dart';
 import 'package:provider/provider.dart';
-import 'package:recase/recase.dart';
 
 import '../../../../user_models/user_details.dart';
 
 class UserProfileScreen extends StatefulWidget {
-  const UserProfileScreen({
+  UserProfileScreen({
     super.key,
-    required this.soldierName,
-    required this.soldierRank,
-    required this.company,
-    required this.platoon,
-    required this.section,
-    required this.soldierAppointment,
-    required this.dateOfBirth,
-    required this.rationType,
-    required this.bloodType,
-    required this.enlistmentDate,
-    required this.ordDate,
-    required this.docID,
   });
-
-  final String soldierName;
-  final String soldierRank;
-  final String company;
-  final String platoon;
-  final String section;
-  final String soldierAppointment;
-  final String dateOfBirth;
-  final String rationType;
-  final String bloodType;
-  final String enlistmentDate;
-  final String ordDate;
-  final String docID;
 
   @override
   State<UserProfileScreen> createState() => _UserProfileScreenState();
@@ -48,7 +22,7 @@ class UserProfileScreen extends StatefulWidget {
 
 ThemeManager _themeManager = ThemeManager();
 final name = FirebaseAuth.instance.currentUser!.displayName.toString();
-String docID = '';
+Map<String, dynamic> currentUser = {};
 
 class _UserProfileScreenState extends State<UserProfileScreen>
     with TickerProviderStateMixin {
@@ -68,6 +42,10 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     if (mounted) {
       setState(() {});
     }
+  }
+
+  callback() {
+    setState(() {});
   }
 
   @override
@@ -99,24 +77,11 @@ class _UserProfileScreenState extends State<UserProfileScreen>
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
       body: SingleChildScrollView(
         child: StreamBuilder(
-            stream: statusModel.userData_data(widget.docID),
+            stream: statusModel.userData_data(name),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 // List to store all user data, whilst also mapping to name
-                Map<String, dynamic> currentUser =
-                    snapshot.data!.data() as Map<String, dynamic>;
-                docID = widget.docID;
-                currentUser['name'] = widget.soldierName;
-                currentUser['rank'] = widget.soldierRank;
-                currentUser['appointment'] = widget.soldierAppointment;
-                currentUser['section'] = widget.section;
-                currentUser['company'] = widget.company;
-                currentUser['platoon'] = widget.platoon;
-                currentUser['rationType'] = widget.rationType;
-                currentUser['bloodgroup'] = widget.bloodType;
-                currentUser['ord'] = widget.ordDate;
-                currentUser['dob'] = widget.dateOfBirth;
-                currentUser['enlistment'] = widget.enlistmentDate;
+                currentUser = snapshot.data!.data() as Map<String, dynamic>;
               }
               return Column(
                 children: [
@@ -184,7 +149,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              widget.soldierName.toUpperCase(),
+                                              currentUser['name'].toUpperCase(),
                                               maxLines: 3,
                                               style: GoogleFonts.poppins(
                                                 color: Colors.white,
@@ -197,8 +162,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                               height: 5.h,
                                             ),
                                             Text(
-                                              widget
-                                                  .soldierAppointment.titleCase,
+                                              currentUser['appointment'],
                                               maxLines: 2,
                                               style: GoogleFonts.poppins(
                                                 color: Colors.white,
@@ -211,11 +175,11 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                         ),
                                       ),
                                       Image.asset(
-                                        "lib/assets/army-ranks/${widget.soldierRank.toString().toLowerCase()}.png",
+                                        "lib/assets/army-ranks/${currentUser['rank'].toString().toLowerCase()}.png",
                                         width: 60.w,
-                                        color: rankColorPicker(widget
-                                                .soldierRank
-                                                .toUpperCase())
+                                        color: rankColorPicker(
+                                                currentUser['rank']
+                                                    .toUpperCase())
                                             ? Colors.white
                                             : null,
                                       )
@@ -228,7 +192,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                 Padding(
                                   padding: EdgeInsets.only(left: 20.0.w),
                                   child: Text(
-                                    "${widget.company.toUpperCase()} COMPANY",
+                                    "${currentUser['company'].toUpperCase()} COMPANY",
                                     maxLines: 2,
                                     style: GoogleFonts.poppins(
                                       color: Colors.white,
@@ -242,7 +206,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                   padding: EdgeInsets.only(
                                       left: 20.0.w, bottom: 20.0.h),
                                   child: Text(
-                                    "Platoon ${widget.platoon}, Section ${widget.section}",
+                                    "Platoon ${currentUser['platoon']}, Section ${currentUser['section']}",
                                     maxLines: 2,
                                     style: GoogleFonts.poppins(
                                       color: Colors.white,
@@ -355,12 +319,18 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                           children: [
                             //Basic Info tab
                             UserProfileBasicInfoTab(
-                                dateOfBirth: widget.dateOfBirth,
-                                rationType: widget.rationType,
-                                bloodType: widget.bloodType,
-                                enlistmentDate: widget.enlistmentDate,
-                                docID: docID,
-                                ordDate: widget.ordDate),
+                              dateOfBirth:
+                                  currentUser['dob'], //widget.dateOfBirth,
+                              rationType: currentUser[
+                                  'rationType'], //widget.rationType,
+                              bloodType:
+                                  currentUser['bloodgroup'], //widget.bloodType,
+                              enlistmentDate: currentUser[
+                                  'enlistment'], //widget.enlistmentDate,
+                              docID: name,
+                              ordDate: currentUser['ord'],
+                              callback: callback,
+                            ), //widget.ordDate),
 
                             //Statuses tab
                             const UserProfileStatusesTab(),

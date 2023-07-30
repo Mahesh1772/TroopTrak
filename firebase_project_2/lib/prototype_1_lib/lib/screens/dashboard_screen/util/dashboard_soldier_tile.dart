@@ -88,20 +88,10 @@ class DashboardSoldierTile extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => SoldierDetailedScreen(
-                      docID: docID,
-                      soldierName: soldierName,
-                      soldierRank: soldierRank,
-                      company: company,
-                      platoon: platoon,
-                      section: section,
-                      dateOfBirth: dateOfBirth,
-                      enlistmentDate: enlistmentDate,
-                      ordDate: ordDate,
-                      soldierAppointment: soldierAppointment,
-                      rationType: rationType,
-                      bloodType: bloodType,
-                    )),
+              builder: (context) => SoldierDetailedScreen(
+                docID: docID,
+              ),
+            ),
           );
         },
         child: Container(

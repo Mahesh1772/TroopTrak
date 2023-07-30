@@ -7,13 +7,16 @@ import 'package:provider/provider.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/user_models/user_details.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/util/soldier_detailed_screen_info_template.dart';
 
+// ignore: must_be_immutable
 class BasicInfoTab extends StatefulWidget {
   BasicInfoTab({
     super.key,
     required this.docID,
+    required this.callback,
   });
 
   final String docID;
+  late Function callback;
 
   @override
   State<BasicInfoTab> createState() => _BasicInfoTabState();
@@ -121,9 +124,10 @@ class _BasicInfoTabState extends State<BasicInfoTab> {
                               selectedItem: data['rationType'],
                               selectedRank: data['rank'],
                               selectedBloodType: data['bloodgroup'],
+                              callback: widget.callback,
                             ),
                           ),
-                        );
+                        ).then((value) => widget.callback);
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric(

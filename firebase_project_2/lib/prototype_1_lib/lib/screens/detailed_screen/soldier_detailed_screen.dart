@@ -5,45 +5,28 @@ import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/t
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/tabs/basic_info_screen/basic_info_detailed_screen_tab.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/tabs/statuses_screen/statuses_detailed_screen_tab.dart';
 import 'package:provider/provider.dart';
-import 'package:recase/recase.dart';
 import '../../user_models/user_details.dart';
 
 class SoldierDetailedScreen extends StatefulWidget {
   const SoldierDetailedScreen({
     super.key,
-    required this.soldierName,
-    required this.soldierRank,
-    required this.company,
-    required this.platoon,
-    required this.section,
-    required this.soldierAppointment,
-    required this.dateOfBirth,
-    required this.rationType,
-    required this.bloodType,
-    required this.enlistmentDate,
-    required this.ordDate,
     required this.docID,
   });
 
-  final String soldierName;
-  final String soldierRank;
-  final String company;
-  final String platoon;
-  final String section;
-  final String soldierAppointment;
-  final String dateOfBirth;
-  final String rationType;
-  final String bloodType;
-  final String enlistmentDate;
-  final String ordDate;
   final String docID;
 
   @override
   State<SoldierDetailedScreen> createState() => _SoldierDetailedScreenState();
 }
 
+Map<String, dynamic> currentUser = {};
+
 class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
     with TickerProviderStateMixin {
+  callback() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     final soldierModel = Provider.of<UserData>(context);
@@ -75,19 +58,7 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
             stream: soldierModel.userData_data(widget.docID),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                Map<String, dynamic> currentUser =
-                    snapshot.data!.data() as Map<String, dynamic>;
-                currentUser['name'] = widget.soldierName;
-                currentUser['rank'] = widget.soldierRank;
-                currentUser['appointment'] = widget.soldierAppointment;
-                currentUser['section'] = widget.section;
-                currentUser['company'] = widget.company;
-                currentUser['platoon'] = widget.platoon;
-                currentUser['rationType'] = widget.rationType;
-                currentUser['bloodgroup'] = widget.bloodType;
-                currentUser['ord'] = widget.ordDate;
-                currentUser['dob'] = widget.dateOfBirth;
-                currentUser['enlistment'] = widget.enlistmentDate;
+                currentUser = snapshot.data!.data() as Map<String, dynamic>;
               }
               return Column(
                 children: [
@@ -138,7 +109,7 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              widget.soldierName.toUpperCase(),
+                                              currentUser['name'].toUpperCase(),
                                               maxLines: 3,
                                               style: GoogleFonts.poppins(
                                                 color: Colors.white,
@@ -151,8 +122,7 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
                                               height: 5.h,
                                             ),
                                             Text(
-                                              widget
-                                                  .soldierAppointment.titleCase,
+                                              currentUser['appointment'],
                                               maxLines: 2,
                                               style: GoogleFonts.poppins(
                                                 color: Colors.white,
@@ -165,10 +135,10 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
                                         ),
                                       ),
                                       Image.asset(
-                                        "lib/assets/army-ranks/${widget.soldierRank.toString().toLowerCase()}.png",
+                                        "lib/assets/army-ranks/${currentUser['rank'].toString().toLowerCase()}.png",
                                         width: 60.w,
                                         color:
-                                            rankColorPicker(widget.soldierRank)
+                                            rankColorPicker(currentUser['rank'])
                                                 ? Colors.white
                                                 : null,
                                       )
@@ -181,7 +151,7 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
                                 Padding(
                                   padding: EdgeInsets.only(left: 20.0.w),
                                   child: Text(
-                                    "${widget.company.toUpperCase()} COMPANY",
+                                    "${currentUser['company'].toUpperCase()} COMPANY",
                                     maxLines: 2,
                                     style: GoogleFonts.poppins(
                                       color: Colors.white,
@@ -195,7 +165,7 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
                                   padding: EdgeInsets.only(
                                       left: 20.0.w, bottom: 50.0.h),
                                   child: Text(
-                                    "Platoon ${widget.platoon}, Section ${widget.section}",
+                                    "Platoon ${currentUser['platoon']}, Section ${currentUser['section']}",
                                     maxLines: 2,
                                     style: GoogleFonts.poppins(
                                       color: Colors.white,
@@ -259,6 +229,7 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
                             //Basic Info tab
                             BasicInfoTab(
                               docID: widget.docID,
+                              callback: callback,
                             ),
 
                             //Statuses tab

@@ -121,21 +121,7 @@ class _GNavMainScreen extends State<GNavMainScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => UserProfileScreen(
-                        docID: fname,
-                        soldierName: currentUserData['name'],
-                        soldierRank:
-                            currentUserData['rank'].toString().toLowerCase(),
-                        soldierAppointment: currentUserData['appointment'],
-                        company: currentUserData['company'],
-                        platoon: currentUserData['platoon'],
-                        section: currentUserData['section'],
-                        dateOfBirth: currentUserData['dob'],
-                        rationType: currentUserData['rationType'],
-                        bloodType: currentUserData['bloodgroup'],
-                        enlistmentDate: currentUserData['enlistment'],
-                        ordDate: currentUserData['ord'],
-                      ),
+                      builder: (context) => UserProfileScreen(),
                     ),
                   );
                 },

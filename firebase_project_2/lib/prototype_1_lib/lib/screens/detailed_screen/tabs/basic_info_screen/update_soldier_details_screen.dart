@@ -25,6 +25,7 @@ class UpdateSoldierDetailsPage extends StatefulWidget {
     required this.selectedRank,
     required this.selectedBloodType,
     required this.docID,
+    required this.callback,
   });
 
   late TextEditingController name;
@@ -39,6 +40,7 @@ class UpdateSoldierDetailsPage extends StatefulWidget {
   late String? selectedItem;
   late String? selectedRank;
   late String? selectedBloodType;
+  late Function callback;
 
   @override
   State<UpdateSoldierDetailsPage> createState() =>
@@ -215,6 +217,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
 
   Future updateUserDetails() async {
     await addUserDetails();
+    widget.callback;
     Navigator.pop(context);
   }
 

@@ -68,10 +68,7 @@ class _SoldierTileState extends State<SoldierTile> {
 
   Future addFieldDetails(bool i) async {
     String stat = i == true ? 'Inside Camp' : 'Outside';
-    await FirebaseFirestore.instance
-        .collection('Users')
-        .doc(widget.docID)
-        .set({
+    await FirebaseFirestore.instance.collection('Users').doc(widget.docID).set({
       //User map formatting
       'currentAttendance': stat,
     }, SetOptions(merge: true));
@@ -327,17 +324,6 @@ class _SoldierTileState extends State<SoldierTile> {
           (BuildContext context, void Function({Object? returnValue}) action) {
         return SoldierDetailedScreen(
           docID: widget.docID,
-          soldierName: widget.soldierName,
-          soldierRank: widget.soldierRank,
-          company: widget.company,
-          platoon: widget.platoon,
-          section: widget.section,
-          dateOfBirth: widget.dateOfBirth,
-          enlistmentDate: widget.enlistmentDate,
-          ordDate: widget.ordDate,
-          soldierAppointment: widget.soldierAppointment,
-          rationType: widget.rationType,
-          bloodType: widget.bloodType,
         );
       },
       closedColor: Colors.transparent,
