@@ -7,7 +7,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:lottie/lottie.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/user_models/user_details.dart';
 
 class UpcomingDuties extends StatefulWidget {
@@ -33,19 +32,9 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
     with TickerProviderStateMixin {
   DateTime _selectedDate = DateTime.now();
 
-  late AnimationController _noConducts;
-
   @override
   void initState() {
-    _noConducts =
-        AnimationController(vsync: this, duration: const Duration(seconds: 5));
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _noConducts.dispose();
-    super.dispose();
   }
 
   /// Returns the difference (in full days) between the provided date and today.
@@ -193,11 +182,8 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              LottieBuilder.network(
-                                "https://lottie.host/d086ee86-2d40-45e6-a68d-fc1b5b9ebe58/QpGAG0CLkf.json",
-                                controller: _noConducts,
-                                height: 400.h,
-                              ),
+                              Image.asset(
+                                  "lib/prototype_1_lib/assets/noConductspng.png"),
                               StyledText("NO DUTIES FOR TODAY!", 28.sp,
                                   fontWeight: FontWeight.w500),
                             ],
@@ -231,9 +217,8 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
                       }
                       dutyDetails = dutyDetails
                           .where((element) =>
-                              calculateDifference(
-                                  DateFormat('d MMM yyyy')
-                                      .parse(element['dutyDate'])) >=
+                              calculateDifference(DateFormat('d MMM yyyy')
+                                  .parse(element['dutyDate'])) >=
                               1)
                           .toList();
                     }

@@ -23,7 +23,8 @@ class ConductTrackerScreen extends StatefulWidget {
   State<ConductTrackerScreen> createState() => _ConductTrackerScreenState();
 }
 
-class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
+class _ConductTrackerScreenState extends State<ConductTrackerScreen>
+    with TickerProviderStateMixin {
   List<Map<String, dynamic>> todayConducts = [];
   List<Map<String, dynamic>> allConducts = [];
   List<String> allParticipants = [];
@@ -54,6 +55,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
         FirebaseFirestore.instance.collection('Conducts').snapshots();
     getCurrentUserData();
     _selectedDate = DateTime.now();
+
     super.initState();
   }
 
@@ -109,7 +111,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                 }
                 allParticipants.removeWhere(
                   (element) => participants.contains(element),
-                );;
+                );
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -251,70 +253,97 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen> {
                     SizedBox(
                       height: 30.h,
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0.w),
-                      child: StyledText("Participation Strength", 24.sp,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    Container(
-                      height: 450.h,
-                      padding: EdgeInsets.all(16.0.sp),
-                      child: BarGraphStyling(
-                        totalStrength: allConducts.length.toDouble(),
-                        conductList: todayConducts,
-                        participationStrength: participant,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0.w),
-                      child: StyledText("Conducts Completed / Ongoing", 24.sp,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: todayConducts.length,
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ConductDetailsScreen(
-                                  conductID: todayConducts[index]['ID'],
-                                  //nonParticipants: allParticipants,
-                                  participants: todayConducts[index]
-                                      ['participants'],
-                                  conductName: todayConducts[index]
-                                      ['conductName'],
-                                  conductType: todayConducts[index]
-                                      ['conductType'],
-                                  startDate: todayConducts[index]['startDate'],
-                                  startTime: todayConducts[index]['startTime'],
-                                  endTime: todayConducts[index]['endTime'],
+                    todayConducts.isEmpty
+                        ? Center(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                    "lib/prototype_1_lib/assets/noConductspng.png"),
+                                StyledText("NO CONDUCTS FOR TODAY!", 28.sp,
+                                    fontWeight: FontWeight.w500),
+                              ],
+                            ),
+                          )
+                        : Column(
+                            children: [
+                              Padding(
+                                padding:
+                                    EdgeInsets.symmetric(horizontal: 20.0.w),
+                                child: StyledText(
+                                    "Participation Strength", 24.sp,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              Container(
+                                height: 450.h,
+                                padding: EdgeInsets.all(16.0.sp),
+                                child: BarGraphStyling(
+                                  totalStrength: allConducts.length.toDouble(),
+                                  conductList: todayConducts,
+                                  participationStrength: participant,
                                 ),
                               ),
-                            );
-                          },
-                          child: ConductTile(
-                            conductNumber: index.toInt(),
-                            conductName: todayConducts[index]['conductName'],
-                            conductType: todayConducts[index]['conductType'],
-                          ),
-                        );
-                      },
-                    ),
-                    SizedBox(
-                      height: 30.h,
-                    )
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              Padding(
+                                padding:
+                                    EdgeInsets.symmetric(horizontal: 20.0.w),
+                                child: StyledText(
+                                    "Conducts Completed / Ongoing", 24.sp,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: todayConducts.length,
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ConductDetailsScreen(
+                                            conductID: todayConducts[index]
+                                                ['ID'],
+                                            //nonParticipants: allParticipants,
+                                            participants: todayConducts[index]
+                                                ['participants'],
+                                            conductName: todayConducts[index]
+                                                ['conductName'],
+                                            conductType: todayConducts[index]
+                                                ['conductType'],
+                                            startDate: todayConducts[index]
+                                                ['startDate'],
+                                            startTime: todayConducts[index]
+                                                ['startTime'],
+                                            endTime: todayConducts[index]
+                                                ['endTime'],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: ConductTile(
+                                      conductNumber: index.toInt(),
+                                      conductName: todayConducts[index]
+                                          ['conductName'],
+                                      conductType: todayConducts[index]
+                                          ['conductType'],
+                                    ),
+                                  );
+                                },
+                              ),
+                              SizedBox(
+                                height: 30.h,
+                              )
+                            ],
+                          )
                   ],
                 );
               }
