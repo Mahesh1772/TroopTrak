@@ -9,21 +9,21 @@ import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/t
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/tabs/user_profile_tabs/all_tabls/user_profile_statuses_tab.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../../main.dart';
 import '../../../../user_models/user_details.dart';
 
 class UserProfileScreen extends StatefulWidget {
-  UserProfileScreen({
+   const UserProfileScreen({
+    required this.docID,
     super.key,
   });
-
+  final String docID;
   @override
   State<UserProfileScreen> createState() => _UserProfileScreenState();
 }
 
 ThemeManager _themeManager = ThemeManager();
-final name = FirebaseAuth.instance.currentUser!.displayName.toString();
+var name = FirebaseAuth.instance.currentUser!.displayName.toString();
 Map<String, dynamic> currentUser = {};
 
 class _UserProfileScreenState extends State<UserProfileScreen>
@@ -37,6 +37,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
   @override
   void initState() {
     _themeManager.addListener(themeListener);
+    //name = widget.docID;
     super.initState();
   }
 
@@ -53,10 +54,12 @@ class _UserProfileScreenState extends State<UserProfileScreen>
   @override
   Widget build(BuildContext context) {
     _storeOnBoardInfo(int isViewed) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('onBoard', isViewed);
-  }
-    print(name);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setInt('onBoard', isViewed);
+    }
+    name = widget.docID;
+    //print(widget.docID);
+    //print(name);
     TabController tabController = TabController(length: 3, vsync: this);
 
     bool rankColorPicker(String rank) {
@@ -129,9 +132,11 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                     InkWell(
                                       key: const Key("signOutButton"),
                                       onTap: () async {
-                                        //await FirebaseAuth.instance.signOut().then((value) => Navigator.pop(context));
+                                        //await FirebaseAuth.instance.signOut();
                                         //Navigator.pop(context);
-                                        FirebaseAuth.instance
+                                        //.then((value) => Navigator.pop(context));
+                                        //Navigator.pop(context);
+                                        await FirebaseAuth.instance
                                             .signOut()
                                             .then((value) async {
                                           _storeOnBoardInfo(2);
