@@ -258,8 +258,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen>
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Image.asset(
-                                    "lib/prototype_1_lib/assets/noConductspng.png"),
+                                Image.asset("lib/assets/noConductspng.png"),
                                 StyledText("NO CONDUCTS FOR TODAY!", 28.sp,
                                     fontWeight: FontWeight.w500),
                               ],
