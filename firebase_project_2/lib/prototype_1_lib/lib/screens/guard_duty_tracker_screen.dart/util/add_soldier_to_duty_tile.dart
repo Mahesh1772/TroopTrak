@@ -9,7 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:roundcheckbox/roundcheckbox.dart';
 
 class AddSoldierToDutyTile extends StatefulWidget {
-  const AddSoldierToDutyTile(
+  AddSoldierToDutyTile(
       {super.key,
       required this.rank,
       required this.name,
@@ -24,7 +24,7 @@ class AddSoldierToDutyTile extends StatefulWidget {
   final String appointment;
   final List nonParticipants;
   final bool isTileSelected;
-  final Map<String, dynamic> selectedSoldiers;
+  Map<String, dynamic> selectedSoldiers;
   final Function tileSelectionCallback;
 
   @override
@@ -177,6 +177,8 @@ class _AddSoldierToDutyTileState extends State<AddSoldierToDutyTile> {
                   }
 
                   widget.tileSelectionCallback(widget.selectedSoldiers);
+                  widget.selectedSoldiers =
+                      Map<String, dynamic>.from(widget.selectedSoldiers as Map);
 
                   print(widget.selectedSoldiers);
                 },
