@@ -106,21 +106,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     "LG",
   ];
 
-  final name = FirebaseAuth.instance.currentUser!.displayName.toString();
-
-  Future getCurrentUserData() async {
-    var data = FirebaseFirestore.instance.collection('Users').doc(name);
-    data.get().then((DocumentSnapshot doc) {
-      currentUserData = doc.data() as Map<String, dynamic>;
-      // ...
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getCurrentUserData();
-  }
+  String name = FirebaseAuth.instance.currentUser!.displayName.toString();
 
   @override
   Widget build(BuildContext context) {
@@ -153,92 +139,90 @@ class _DashboardScreenState extends State<DashboardScreen> {
         backgroundColor: const Color.fromARGB(255, 21, 25, 34),
         body: SingleChildScrollView(
           child: SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 10.h,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24.0.w),
-                  child: StyledText(
-                    'Welcome,\n$name! 👋',
-                    32.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                StreamBuilder<QuerySnapshot>(
-                  stream: statusModel.data,
-                  builder: (context, AsyncSnapshot snapshot) {
-                    if (snapshot.hasData) {
-                      userDetails = [];
-                      officerDetails = [];
-                      specDetails = [];
-                      fullList = {};
-                      counter = 0;
-
-                      // Create a Completer to delay the execution until we have collected data from all 'Statuses' subcollections
-                      Completer<void> completer = Completer<void>();
-                      List? users = snapshot.data?.docs.toList();
-                      var docsmapshot = snapshot.data!;
-
-                      for (var i = 0; i < users!.length; i++) {
-                        final uid = users[i]['name'];
-                        counter++;
-                        var data =
-                            docsmapshot.docs[i].data() as Map<String, dynamic>;
-                        userDetails.add(data);
-                        userDetails[i]
-                            .addEntries({'ID': users[i].reference.id}.entries);
-                        if (specialist.contains(data['rank'])) {
-                          specDetails.add(data);
-                        } else if (officers.contains(data['rank'])) {
-                          officerDetails.add(data);
-                        }
-                        bool val = data['currentAttendance'] == 'Outside'
-                            ? false
-                            : true;
-                        fullList.addAll({data['name']: val});
-
-                        FirebaseFirestore.instance
-                            .collection('Users')
-                            .doc(uid)
-                            .collection('Statuses')
-                            .snapshots()
-                            .listen((statusesSnapshot) {
-                          if (statusesSnapshot.docs.isNotEmpty) {
-                            statusesSnapshot.docs.forEach((element) {
-                              var statusData = element.data();
-                              DateTime end = DateFormat("d MMM yyyy")
-                                  .parse(statusData['endDate']);
-                              if (DateTime(end.year, end.month, end.day + 1)
-                                  .isAfter(DateTime.now())) {
-                                if (statusData['statusType'] ==
-                                    'Medical Appointment') {
-                                  //_maList.add(uid);
-
-                                  _maDetails
-                                      .add(Map<String, dynamic>.from(data));
-                                } else {
-                                  // statusList.add(uid);
-
-                                  statusDetails
-                                      .add(Map<String, dynamic>.from(data));
-                                }
-                              }
-                              //statusDetails.add(data);
-                            });
-                            if (counter == users.length) {
-                              completer.complete();
-                            }
-                          }
-                        });
+            child: StreamBuilder<QuerySnapshot>(
+                stream: statusModel.data,
+                builder: (context, AsyncSnapshot snapshot) {
+                  if (snapshot.hasData) {
+                    userDetails = [];
+                    officerDetails = [];
+                    specDetails = [];
+                    fullList = {};
+                    counter = 0;
+// Create a Completer to delay the execution until we have collected data from all 'Statuses' subcollections
+                    Completer<void> completer = Completer<void>();
+                    List? users = snapshot.data?.docs.toList();
+                    var docsmapshot = snapshot.data!;
+                    for (var i = 0; i < users!.length; i++) {
+                      final uid = users[i]['name'];
+                      counter++;
+                      var data =
+                          docsmapshot.docs[i].data() as Map<String, dynamic>;
+                      userDetails.add(data);
+                      userDetails[i]
+                          .addEntries({'ID': users[i].reference.id}.entries);
+                      if (specialist.contains(data['rank'])) {
+                        specDetails.add(data);
+                      } else if (officers.contains(data['rank'])) {
+                        officerDetails.add(data);
                       }
-
-                      return FutureBuilder<void>(
+                      if (userDetails[i]['ID'] == name) {
+                        name = userDetails[i]['name'];
+                      }
+                      bool val =
+                          data['currentAttendance'] == 'Outside' ? false : true;
+                      fullList.addAll({data['name']: val});
+                      FirebaseFirestore.instance
+                          .collection('Users')
+                          .doc(uid)
+                          .collection('Statuses')
+                          .snapshots()
+                          .listen((statusesSnapshot) {
+                        if (statusesSnapshot.docs.isNotEmpty) {
+                          statusesSnapshot.docs.forEach((element) {
+                            var statusData = element.data();
+                            DateTime end = DateFormat("d MMM yyyy")
+                                .parse(statusData['endDate']);
+                            if (DateTime(end.year, end.month, end.day + 1)
+                                .isAfter(DateTime.now())) {
+                              if (statusData['statusType'] ==
+                                  'Medical Appointment') {
+                                //_maList.add(uid);
+                                _maDetails.add(Map<String, dynamic>.from(data));
+                              } else {
+                                // statusList.add(uid);
+                                statusDetails
+                                    .add(Map<String, dynamic>.from(data));
+                              }
+                            }
+                            //statusDetails.add(data);
+                          });
+                          if (counter == users.length) {
+                            completer.complete();
+                          }
+                        }
+                      });
+                    }
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 24.0.w),
+                          child: StyledText(
+                            'Welcome,\n$name! 👋',
+                            32.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        SizedBox(
+                          height: 40.h,
+                        ),
+                        FutureBuilder<void>(
                           future: completer.future,
                           //stream: Stream.empty(),
                           builder: (context, snapshot) {
@@ -443,20 +427,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 ],
                               ),
                             );
-                          });
-                    }
-                    return Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.deepPurple.shade400,
-                      ),
+                          },
+                        ),
+                      ],
                     );
-                  },
-                ),
-                SizedBox(
-                  height: 40.h,
-                )
-              ],
-            ),
+                  }
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.deepPurple.shade400,
+                    ),
+                  );
+                }),
           ),
         ),
       ),
