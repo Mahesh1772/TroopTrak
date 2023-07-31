@@ -2,12 +2,12 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_project_2/prototype_1_lib/lib/screens/guard_duty_tracker_screen.dart/util/add_soldier_to_duty_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/guard_duty_tracker_screen.dart/util/custom_rect_tween.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/util/text_styles/text_style.dart';
-import 'package:firebase_project_2/prototype_1_lib/lib/screens/conduct_tracker_screen/util/add_soldier_to_duty_tile.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/user_models/user_details.dart';
 
@@ -65,6 +65,17 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
             }));
   }
 
+  Map<String, dynamic> populateDutySoldiersAndRanksArray(
+      Map<String, dynamic> map) {
+    var length = map.length;
+
+    for (var i = length; i < 10; i++) {
+      map.addEntries({'NA$i': 'NA'}.entries);
+    }
+    print(map);
+    return map;
+  }
+
   reverseMapAndRemoveExcess(Map<String, dynamic> map) {
     Map<String, dynamic> newmap = {};
     for (var _key in map.keys.toList()) {
@@ -74,13 +85,13 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
         newmap.addAll({_key: map[_key]!});
       }
     }
-    print(newmap);
+    newmap = populateDutySoldiersAndRanksArray(newmap);
     return newmap;
   }
 
   @override
   Widget build(BuildContext context) {
-    final userModel = Provider.of<UserData>(context);
+    final userModel = Provider.of<UserData>(context, listen: false);
 
     return Center(
       child: Padding(
