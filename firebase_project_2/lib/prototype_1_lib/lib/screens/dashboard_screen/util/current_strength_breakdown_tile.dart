@@ -35,12 +35,15 @@ class CurrentStrengthBreakdownTile extends StatelessWidget {
       ),
       padding: EdgeInsets.all(defaultPadding.sp),
       decoration: BoxDecoration(
-        border: Border.all(width: 2.w, color: Colors.blue.withOpacity(0.15)),
+        border: Border.all(width: 2.w, color: Colors.blue.withOpacity(0.25)),
         borderRadius: const BorderRadius.all(
           Radius.circular(defaultPadding),
         ),
       ),
       child: ExpansionTile(
+        textColor: Theme.of(context).colorScheme.tertiary,
+        iconColor: Theme.of(context).colorScheme.tertiary,
+        collapsedIconColor: Colors.blue,
         title: Row(
           children: [
             SizedBox(
@@ -60,7 +63,6 @@ class CurrentStrengthBreakdownTile extends StatelessWidget {
                     Text(
                       title,
                       style: GoogleFonts.poppins(
-                        color: Colors.white,
                         fontSize: 18.sp,
                         fontWeight: FontWeight.w500,
                       ),
@@ -70,7 +72,11 @@ class CurrentStrengthBreakdownTile extends StatelessWidget {
                     Text(
                       "$currentNumOfSoldiers In Camp",
                       style: GoogleFonts.poppins(
-                        color: Colors.white.withOpacity(0.45),
+                        color: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.color
+                            ?.withOpacity(0.45),
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
                       ),
@@ -84,13 +90,12 @@ class CurrentStrengthBreakdownTile extends StatelessWidget {
             Text(
               "$currentNumOfSoldiers / $totalNumOfSoldiers",
               style: GoogleFonts.poppins(
-                  fontSize: 24.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white),
+                fontSize: 24.sp,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ],
         ),
-        collapsedIconColor: Colors.white,
         children: [
           SizedBox(
             height: 220.h,

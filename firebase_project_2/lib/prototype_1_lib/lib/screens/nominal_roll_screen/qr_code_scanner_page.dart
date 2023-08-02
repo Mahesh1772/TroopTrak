@@ -252,7 +252,7 @@ class _QrCodeScannerPageState extends State<QrCodeScannerPage>
             borderRadius: BorderRadius.vertical(
               top: Radius.circular(20.r),
             ),
-            color: const Color.fromARGB(255, 21, 25, 34),
+            color: Theme.of(context).colorScheme.primary,
           ),
           padding: EdgeInsets.all(12.sp),
           child: Column(
@@ -264,7 +264,10 @@ class _QrCodeScannerPageState extends State<QrCodeScannerPage>
                   children: [
                     Icon(
                       Icons.minimize_rounded,
-                      color: Colors.white70,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .tertiary
+                          .withOpacity(0.7),
                       size: 50.sp,
                     ),
                     SizedBox(
@@ -282,7 +285,10 @@ class _QrCodeScannerPageState extends State<QrCodeScannerPage>
                     Text(
                       "Please scan the QR code on the soldier's profile by placing it within the frame to add their details.",
                       style: GoogleFonts.poppins(
-                        color: Colors.white60,
+                        color: Theme.of(context)
+                            .colorScheme
+                            .tertiary
+                            .withOpacity(0.7),
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w400,
                       ),
@@ -304,7 +310,7 @@ class _QrCodeScannerPageState extends State<QrCodeScannerPage>
                       onDetect: _foundBarcode,
                     ),
                     QRScannerOverlay(
-                      overlayColor: const Color.fromARGB(255, 21, 25, 34),
+                      overlayColor: Theme.of(context).colorScheme.primary,
                     ),
                   ],
                 ),
@@ -340,7 +346,6 @@ class _QrCodeScannerPageState extends State<QrCodeScannerPage>
                           onPressed: () => scannerController.toggleTorch(),
                         ),
                         IconButton(
-                          color: Colors.white,
                           icon: isStarted
                               ? const Icon(Icons.stop)
                               : const Icon(Icons.play_arrow),
@@ -348,7 +353,6 @@ class _QrCodeScannerPageState extends State<QrCodeScannerPage>
                           onPressed: _startOrStop,
                         ),
                         IconButton(
-                          color: Colors.white,
                           icon: ValueListenableBuilder(
                             valueListenable:
                                 scannerController.cameraFacingState,
@@ -370,14 +374,11 @@ class _QrCodeScannerPageState extends State<QrCodeScannerPage>
                       height: 10.h,
                     ),
                     Stack(alignment: Alignment.center, children: [
-                      const Divider(
-                        color: Colors.white,
-                      ),
+                      Divider(color: Theme.of(context).colorScheme.tertiary),
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 16.0.w),
-                        decoration: const BoxDecoration(
-                          color: Color.fromARGB(255, 21, 25, 34),
-                        ),
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.primary),
                         child: StyledText(
                           "OR",
                           22.sp,

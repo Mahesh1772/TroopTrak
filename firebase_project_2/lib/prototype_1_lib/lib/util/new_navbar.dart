@@ -86,35 +86,39 @@ class _GNavMainScreen extends State<GNavMainScreen> {
             title: AutoSizeText(
               displayTitle(widget.selectedIndex),
               style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.w500, fontSize: 26.sp),
+                  fontWeight: FontWeight.w500,
+                  fontSize: 26.sp,
+                  color: (_themeManager.themeMode == ThemeMode.dark)
+                      ? Colors.white
+                      : Colors.black),
             ),
             actions: [
-              // IconButton(
-              //   onPressed: () {
-              //     if (isToggled) {
-              //       setState(() {
-              //         isToggled = false;
-              //         _themeManager.toggleTheme(isToggled);
-              //       });
-              //     } else {
-              //       setState(() {
-              //         isToggled = true;
-              //         _themeManager.toggleTheme(isToggled);
-              //       });
-              //     }
-              //   },
-              //   icon: isToggled
-              //       ? Icon(
-              //           Icons.dark_mode_rounded,
-              //           color: Colors.white,
-              //           size: 30.sp,
-              //         )
-              //       : Icon(
-              //           Icons.light_mode_rounded,
-              //           color: Colors.orange,
-              //           size: 30.sp,
-              //         ),
-              // ),
+              IconButton(
+                onPressed: () {
+                  if (isToggled) {
+                    setState(() {
+                      isToggled = false;
+                      _themeManager.toggleTheme(isToggled);
+                    });
+                  } else {
+                    setState(() {
+                      isToggled = true;
+                      _themeManager.toggleTheme(isToggled);
+                    });
+                  }
+                },
+                icon: isToggled
+                    ? Icon(
+                        Icons.dark_mode_rounded,
+                        color: Colors.white,
+                        size: 30.sp,
+                      )
+                    : Icon(
+                        Icons.light_mode_rounded,
+                        color: Colors.orange,
+                        size: 30.sp,
+                      ),
+              ),
               InkWell(
                 key: const Key("userProfileIcon"),
                 onTap: () {
@@ -128,20 +132,25 @@ class _GNavMainScreen extends State<GNavMainScreen> {
                 child: Padding(
                   padding: EdgeInsets.all(12.0.sp),
                   child: Image.asset(
-                    'lib/assets/user.png',
+                    'lib/assets/icons8-user-96.png',
                     width: 50.w,
+                    color: isToggled ? Colors.white : null,
                   ),
                 ),
               ),
             ],
           ),
           resizeToAvoidBottomInset: false,
-          backgroundColor: const Color.fromARGB(255, 21, 25, 34),
+          backgroundColor: (_themeManager.themeMode == ThemeMode.dark)
+              ? const Color.fromARGB(255, 21, 25, 34)
+              : const Color.fromARGB(255, 243, 246, 254),
           body: Center(
             child: _widgetOptions.elementAt(widget.selectedIndex),
           ),
           bottomNavigationBar: Container(
-            color: const Color.fromARGB(255, 11, 13, 17),
+            color: (_themeManager.themeMode == ThemeMode.dark)
+                ? const Color.fromARGB(255, 21, 25, 34)
+                : const Color.fromARGB(255, 243, 246, 254),
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.0.w, vertical: 15.h),
               child: GNav(
@@ -149,7 +158,9 @@ class _GNavMainScreen extends State<GNavMainScreen> {
                     itemTapped(value);
                   },
                   gap: 7.w,
-                  backgroundColor: const Color.fromARGB(255, 11, 13, 17),
+                  backgroundColor: (_themeManager.themeMode == ThemeMode.dark)
+                      ? const Color.fromARGB(255, 21, 25, 34)
+                      : const Color.fromARGB(255, 243, 246, 254),
                   color: Colors.deepPurple.shade300,
                   activeColor: Colors.white,
                   tabBackgroundGradient: LinearGradient(

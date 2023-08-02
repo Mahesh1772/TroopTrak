@@ -159,6 +159,7 @@ flutter:
       - lib/assets/phone_auth/troopTrak_mascot.png
       - lib/assets/phone_auth/troopTrak_logo.png
       - lib/assets/noConductspng.png
+      - lib/assets/icons8-user-96.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

@@ -407,7 +407,7 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
     }
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: const Color.fromARGB(255, 21, 25, 34),
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -423,7 +423,6 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                   },
                   child: Icon(
                     Icons.arrow_back_sharp,
-                    color: Colors.white,
                     size: 25.sp,
                   ),
                 ),
@@ -483,18 +482,33 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        StyledText("EXPECTED POINTS PER PERSON", 14.sp,
-                            fontWeight: FontWeight.w400),
+                        Text(
+                          "EXPECTED POINTS PER PERSON",
+                          style: GoogleFonts.poppins(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white),
+                        ),
                         SizedBox(
                           height: 15.h,
                         ),
-                        StyledText(typeOfDay, 24.sp,
-                            fontWeight: FontWeight.w500),
+                        Text(
+                          typeOfDay,
+                          style: GoogleFonts.poppins(
+                              fontSize: 24.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white),
+                        ),
                         SizedBox(
                           height: 10.h,
                         ),
-                        StyledText("${points.toString()} Points", 32.sp,
-                            fontWeight: FontWeight.bold),
+                        Text(
+                          "${points.toString()} Points",
+                          style: GoogleFonts.poppins(
+                              fontSize: 32.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
                       ],
                     ),
                   ),
@@ -514,7 +528,8 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                         width: double.maxFinite,
                         decoration: BoxDecoration(
                           color: Colors.black54,
-                          border: Border.all(color: Colors.white),
+                          border: Border.all(
+                              color: Theme.of(context).colorScheme.tertiary),
                           borderRadius: BorderRadius.circular(12.r),
                         ),
                         child: Row(
@@ -556,7 +571,9 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                             width: 200.w,
                             decoration: BoxDecoration(
                               color: Colors.black54,
-                              border: Border.all(color: Colors.white),
+                              border: Border.all(
+                                  color:
+                                      Theme.of(context).colorScheme.tertiary),
                               borderRadius: BorderRadius.circular(12.r),
                             ),
                             child: Row(
@@ -595,7 +612,9 @@ class _AddNewDutyScreenState extends State<AddNewDutyScreen> {
                             width: 200.w,
                             decoration: BoxDecoration(
                               color: Colors.black54,
-                              border: Border.all(color: Colors.white),
+                              border: Border.all(
+                                  color:
+                                      Theme.of(context).colorScheme.tertiary),
                               borderRadius: BorderRadius.circular(12.r),
                             ),
                             child: Row(

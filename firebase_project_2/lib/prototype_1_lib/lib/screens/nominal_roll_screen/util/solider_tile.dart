@@ -7,7 +7,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/user_models/user_details.dart';
-import 'package:firebase_project_2/prototype_1_lib/lib/util/text_styles/text_style.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/soldier_detailed_screen.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
@@ -267,8 +266,14 @@ class _SoldierTileState extends State<SoldierTile> {
                         height: 10.h,
                       ),
 
-                      StyledText(inCampStatusText, 14.sp,
-                          fontWeight: FontWeight.w400),
+                      Text(
+                        inCampStatusText,
+                        style: GoogleFonts.poppins(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white,
+                        ),
+                      ),
 
                       SizedBox(
                         height: 15.h,

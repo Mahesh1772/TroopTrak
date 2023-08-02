@@ -69,7 +69,7 @@ class _GuardDutyTrackerScreenState extends State<GuardDutyTrackerScreen>
         ),
       ),
       resizeToAvoidBottomInset: false,
-      backgroundColor: const Color.fromARGB(255, 21, 25, 34),
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: SingleChildScrollView(
         child: SafeArea(
           child: Column(
@@ -78,7 +78,6 @@ class _GuardDutyTrackerScreenState extends State<GuardDutyTrackerScreen>
             children: [
               TabBar(
                 labelStyle: GoogleFonts.poppins(
-                  color: Colors.white,
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
                   letterSpacing: 1.5,
@@ -89,14 +88,12 @@ class _GuardDutyTrackerScreenState extends State<GuardDutyTrackerScreen>
                     text: "POINTS LEADERBOARD",
                     icon: Icon(
                       Icons.leaderboard_rounded,
-                      color: Colors.white,
                     ),
                   ),
                   Tab(
                     text: "UPCOMING DUTIES",
                     icon: Icon(
                       Icons.more_time_rounded,
-                      color: Colors.white,
                     ),
                   ),
                 ],

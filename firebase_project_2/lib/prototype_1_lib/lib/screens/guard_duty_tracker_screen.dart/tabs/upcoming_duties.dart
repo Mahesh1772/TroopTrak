@@ -100,7 +100,6 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
                       },
                       child: Icon(
                         Icons.date_range_rounded,
-                        color: Colors.white,
                         size: 45.sp,
                       ),
                     ),
@@ -113,7 +112,11 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
                         Text(
                           DateFormat.yMMMMd().format(_selectedDate),
                           style: GoogleFonts.poppins(
-                              color: Colors.white54,
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.color
+                                  ?.withOpacity(0.54),
                               fontWeight: FontWeight.w400,
                               fontSize: 28.sp),
                         ),
@@ -122,9 +125,7 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
                               ? "Today"
                               : DateFormat('EEEE').format(_selectedDate),
                           style: GoogleFonts.poppins(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 32.sp),
+                              fontWeight: FontWeight.w500, fontSize: 32.sp),
                         ),
                       ],
                     ),
@@ -195,8 +196,13 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.0.w),
-                child: StyledText("Upcoming Duties", 24.sp,
-                    fontWeight: FontWeight.w600),
+                child: Text(
+                  "Upcoming Duties",
+                  style: GoogleFonts.poppins(
+                    fontSize: 24.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
               ),
               SizedBox(
                 height: 15.h,

@@ -77,16 +77,14 @@ class CurrentStrengthChart extends StatelessWidget {
                 "${(currentOfficers + currentWOSEs)}",
                 style: GoogleFonts.poppins(
                   fontSize: 48.sp,
-                  color: Colors.white,
                   fontWeight: FontWeight.w600,
-                  height: 0.5,
+                  height: 0.5.h,
                 ),
               ),
               Text(
                 "of ${(totalOfficers + totalWOSEs)} soldiers",
                 style: GoogleFonts.poppins(
                   fontSize: 14.sp,
-                  color: Colors.white,
                   fontWeight: FontWeight.w500,
                 ),
               )

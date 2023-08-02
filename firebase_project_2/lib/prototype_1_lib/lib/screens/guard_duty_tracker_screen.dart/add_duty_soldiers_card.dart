@@ -102,7 +102,7 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
             return CustomRectTween(begin: begin!, end: end!);
           },
           child: Material(
-            color: const Color.fromARGB(255, 39, 43, 58),
+            color: Theme.of(context).colorScheme.background,
             elevation: 2,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -116,7 +116,7 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
                     StyledText("ADD A NEW SOLDIER", 24.sp,
                         fontWeight: FontWeight.w600),
                     Divider(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.tertiary,
                       thickness: 0.2.h,
                     ),
                     Padding(

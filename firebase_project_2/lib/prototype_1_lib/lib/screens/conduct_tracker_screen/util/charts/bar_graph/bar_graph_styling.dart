@@ -32,7 +32,6 @@ class _BarGraphStylingState extends State<BarGraphStyling> {
   Widget build(BuildContext context) {
     Widget getTitles(double value, TitleMeta meta) {
       final style = GoogleFonts.poppins(
-        color: Colors.white,
         fontWeight: FontWeight.w500,
       );
       String text;
@@ -90,7 +89,7 @@ class _BarGraphStylingState extends State<BarGraphStyling> {
         gridData: FlGridData(show: false),
         borderData: FlBorderData(
           show: true,
-          border: Border.all(color: Colors.white),
+          border: Border.all(color: Theme.of(context).colorScheme.tertiary),
         ),
         barTouchData: BarTouchData(
           enabled: false,
@@ -102,9 +101,8 @@ class _BarGraphStylingState extends State<BarGraphStyling> {
                 return BarTooltipItem(
                   rod.toY.round().toString(),
                   GoogleFonts.poppins(
-                    color: Colors.white,
                     fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                    fontSize: 16.sp,
                   ),
                 );
               }),
@@ -113,7 +111,9 @@ class _BarGraphStylingState extends State<BarGraphStyling> {
           show: true,
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
-                showTitles: true, getTitlesWidget: getTitles, reservedSize: 30),
+                showTitles: true,
+                getTitlesWidget: getTitles,
+                reservedSize: 30.sp),
           ),
           topTitles: AxisTitles(
             sideTitles: SideTitles(showTitles: false),
@@ -144,7 +144,7 @@ class _BarGraphStylingState extends State<BarGraphStyling> {
                             (1 /
                                 widget.participationStrength.length.toDouble()))
                         .w,
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(4.r),
                   ),
                 ],
                 showingTooltipIndicators: [0],

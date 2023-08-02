@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/nominal_roll_screen/qr_code_scanner_page.dart';
-import 'package:firebase_project_2/prototype_1_lib/lib/util/text_styles/text_style.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/nominal_roll_screen/util/solider_tile.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/user_models/user_details.dart';
@@ -102,10 +101,12 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24.0.w),
-                child: StyledText(
+                child: Text(
                   'Our Family of Soldiers:',
-                  24.sp,
-                  fontWeight: FontWeight.bold,
+                  style: GoogleFonts.poppins(
+                      fontSize: 24.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).textTheme.bodyMedium?.color),
                 ),
               ),
               SizedBox(
@@ -204,7 +205,7 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                             Center(
                               child: Text(
                                 'No results Found!',
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                   color: Colors.purpleAccent,
                                   fontSize: 45.sp,
                                 ),

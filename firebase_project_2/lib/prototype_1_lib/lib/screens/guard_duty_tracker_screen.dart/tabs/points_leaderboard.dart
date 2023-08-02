@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/guard_duty_tracker_screen.dart/util/duty_personnel_data_source.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/util/constants.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/util/text_styles/text_style.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:multiple_stream_builder/multiple_stream_builder.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
@@ -146,8 +147,13 @@ class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
                                 label: Container(
                                   padding: EdgeInsets.all(8.0.sp),
                                   alignment: Alignment.center,
-                                  child: StyledText("Rank", 18.sp,
-                                      fontWeight: FontWeight.w600),
+                                  child: Text(
+                                    "Rank",
+                                    style: GoogleFonts.poppins(
+                                        fontSize: 18.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white),
+                                  ),
                                 ),
                               ),
                               GridColumn(
@@ -155,8 +161,13 @@ class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
                                 label: Container(
                                   padding: EdgeInsets.all(8.0.sp),
                                   alignment: Alignment.center,
-                                  child: StyledText("Name", 18.sp,
-                                      fontWeight: FontWeight.w600),
+                                  child: Text(
+                                    "Name",
+                                    style: GoogleFonts.poppins(
+                                        fontSize: 18.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white),
+                                  ),
                                 ),
                               ),
                               GridColumn(
@@ -164,8 +175,13 @@ class _PointsLeaderBoardState extends State<PointsLeaderBoard> {
                                 label: Container(
                                   padding: EdgeInsets.all(8.0.sp),
                                   alignment: Alignment.center,
-                                  child: StyledText("Points", 18.sp,
-                                      fontWeight: FontWeight.w600),
+                                  child: Text(
+                                    "Points",
+                                    style: GoogleFonts.poppins(
+                                        fontSize: 18.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white),
+                                  ),
                                 ),
                               ),
                             ],

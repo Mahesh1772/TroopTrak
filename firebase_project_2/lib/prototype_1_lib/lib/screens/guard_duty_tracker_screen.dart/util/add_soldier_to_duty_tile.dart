@@ -60,7 +60,7 @@ class _AddSoldierToDutyTileState extends State<AddSoldierToDutyTile> {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.r),
-            color: const Color.fromARGB(255, 29, 32, 43).withOpacity(0.35),
+            color: Theme.of(context).colorScheme.primary.withOpacity(0.35),
           ),
           child: Padding(
             padding: EdgeInsets.all(10.0.sp),
@@ -122,7 +122,7 @@ class _AddSoldierToDutyTileState extends State<AddSoldierToDutyTile> {
               spreadRadius: 2.0.r,
             ),
           ],
-          color: const Color.fromARGB(255, 29, 32, 43),
+          color: Theme.of(context).colorScheme.primary,
         ),
         child: Padding(
           padding: EdgeInsets.all(10.0.sp),
@@ -150,7 +150,6 @@ class _AddSoldierToDutyTileState extends State<AddSoldierToDutyTile> {
                       widget.name,
                       minFontSize: 16,
                       style: GoogleFonts.poppins(
-                        color: Colors.white,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -159,14 +158,19 @@ class _AddSoldierToDutyTileState extends State<AddSoldierToDutyTile> {
                     widget.appointment,
                     maxFontSize: 12,
                     style: GoogleFonts.poppins(
-                        color: Colors.white70, fontWeight: FontWeight.w400),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .tertiary
+                            .withOpacity(0.7),
+                        fontWeight: FontWeight.w400),
                   ),
                 ],
               ),
               RoundCheckBox(
                 isChecked: widget.isTileSelected,
                 size: 30.0.sp,
-                borderColor: Colors.white54,
+                borderColor:
+                    Theme.of(context).colorScheme.tertiary.withOpacity(0.54),
                 uncheckedColor: Colors.transparent,
                 onTap: (selected) {
                   if (widget.selectedSoldiers.containsKey(widget.name)) {

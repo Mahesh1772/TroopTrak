@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:firebase_project_2/prototype_1_lib/lib/util/text_styles/text_style.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ExpandedDutyParticipantsTile extends StatelessWidget {
   final String soldierName;
@@ -99,7 +99,14 @@ class ExpandedDutyParticipantsTile extends StatelessWidget {
             SizedBox(
               height: 10.h,
             ),
-            StyledText(soldierName, 20.sp, fontWeight: FontWeight.bold)
+            Text(
+              soldierName,
+              style: GoogleFonts.poppins(
+                fontSize: 20.sp,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            )
           ],
         ),
       ),

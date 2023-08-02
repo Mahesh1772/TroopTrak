@@ -294,9 +294,9 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
   }
 
   @override
-  void initState() async{
-    await getDocIDs();
-    await getUserBooks();
+  void initState() {
+    getDocIDs();
+    getUserBooks();
     super.initState();
   }
 
@@ -394,7 +394,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
     });
   }
 
-  addConduct() async{
+  addConduct() async {
     await addConductDetails();
     Navigator.pop(context);
   }
@@ -412,7 +412,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
     final formKey1 = GlobalKey<FormState>();
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: const Color.fromARGB(255, 21, 25, 34),
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -428,7 +428,6 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                   },
                   child: Icon(
                     Icons.arrow_back_sharp,
-                    color: Colors.white,
                     size: 25.sp,
                   ),
                 ),
@@ -456,7 +455,8 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                     height: 70.h,
                     decoration: BoxDecoration(
                       color: Colors.black54,
-                      border: Border.all(color: Colors.white),
+                      border: Border.all(
+                          color: Theme.of(context).colorScheme.tertiary),
                       borderRadius: BorderRadius.circular(12.r),
                     ),
                     child: Center(
@@ -475,7 +475,9 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                           Icons.arrow_downward_sharp,
                           color: Colors.white,
                         ),
-                        style: const TextStyle(color: Colors.black54),
+                        style: GoogleFonts.poppins(
+                          color: Colors.black54,
+                        ),
                         items: _conductTypes
                             .map(
                               (item) => DropdownMenuItem<String>(
@@ -509,7 +511,8 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.black54,
-                      border: Border.all(color: Colors.white),
+                      border: Border.all(
+                          color: Theme.of(context).colorScheme.tertiary),
                       borderRadius: BorderRadius.circular(12.r),
                     ),
                     child: Padding(
@@ -554,7 +557,8 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                     width: double.maxFinite,
                     decoration: BoxDecoration(
                       color: Colors.black54,
-                      border: Border.all(color: Colors.white),
+                      border: Border.all(
+                          color: Theme.of(context).colorScheme.tertiary),
                       borderRadius: BorderRadius.circular(12.r),
                     ),
                     child: Row(
@@ -596,7 +600,8 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                         width: 200.w,
                         decoration: BoxDecoration(
                           color: Colors.black54,
-                          border: Border.all(color: Colors.white),
+                          border: Border.all(
+                              color: Theme.of(context).colorScheme.tertiary),
                           borderRadius: BorderRadius.circular(12.r),
                         ),
                         child: Row(
@@ -635,7 +640,8 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                         width: 200.w,
                         decoration: BoxDecoration(
                           color: Colors.black54,
-                          border: Border.all(color: Colors.white),
+                          border: Border.all(
+                              color: Theme.of(context).colorScheme.tertiary),
                           borderRadius: BorderRadius.circular(12.r),
                         ),
                         child: Row(
@@ -681,13 +687,23 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                     },
                     decoration: InputDecoration(
                       hintText: 'Search Name',
-                      prefixIcon: const Icon(Icons.search_sharp),
-                      prefixIconColor: Colors.indigo.shade900,
-                      fillColor: Colors.amber,
+                      hintStyle: GoogleFonts.poppins(
+                        color: Colors.white,
+                      ),
+                      focusColor: Colors.white,
+                      prefixIcon: const Icon(
+                        Icons.search_sharp,
+                        color: Colors.white,
+                      ),
+                      prefixIconColor: Colors.white,
+                      fillColor: const Color.fromARGB(255, 72, 30, 229),
                       filled: true,
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.r),
                           borderSide: BorderSide.none),
+                    ),
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
                     ),
                   ),
                 ),
@@ -750,12 +766,16 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                             return Card(
                               color: Colors.black54,
                               child: ListTile(
-                                title: StyledText(
-                                    userDetails[index]['name']
-                                        .toString()
-                                        .titleCase,
-                                    16.sp,
-                                    fontWeight: FontWeight.w500),
+                                title: Text(
+                                  userDetails[index]['name']
+                                      .toString()
+                                      .titleCase,
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                  ),
+                                ),
                                 leading: InkWell(
                                   onTap: () {
                                     setState(() {
@@ -784,14 +804,18 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Center(
-                                      child: StyledText(
-                                          tempArray.contains(userDetails[index]
-                                                      ['name']
-                                                  .toString())
-                                              ? "REMOVE"
-                                              : "ADD",
-                                          18.sp,
-                                          fontWeight: FontWeight.bold),
+                                      child: Text(
+                                        tempArray.contains(userDetails[index]
+                                                    ['name']
+                                                .toString())
+                                            ? "REMOVE"
+                                            : "ADD",
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 18.sp,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),

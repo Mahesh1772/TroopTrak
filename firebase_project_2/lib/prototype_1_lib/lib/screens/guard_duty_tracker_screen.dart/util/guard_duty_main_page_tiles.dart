@@ -73,13 +73,17 @@ class GuardDutyTile extends StatelessWidget {
         ),
         padding: EdgeInsets.all(defaultPadding.sp),
         decoration: BoxDecoration(
-          border: Border.all(width: 2.w, color: Colors.white.withOpacity(0.15)),
+          border: Border.all(
+              width: 2.w,
+              color: Theme.of(context).colorScheme.tertiary.withOpacity(0.15)),
           borderRadius: BorderRadius.all(
             Radius.circular(defaultPadding.r),
           ),
         ),
         child: ExpansionTile(
-          collapsedIconColor: Colors.white,
+          textColor: Theme.of(context).colorScheme.tertiary,
+          iconColor: Theme.of(context).colorScheme.tertiary,
+          collapsedIconColor: Colors.blue,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -127,7 +131,8 @@ class GuardDutyTile extends StatelessWidget {
                       '$startTime - $endTime\n(Next day)',
                       maxLines: 2,
                       style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.w500, color: Colors.white),
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -139,9 +144,9 @@ class GuardDutyTile extends StatelessWidget {
                       dutyDate,
                       maxLines: 1,
                       style: GoogleFonts.poppins(
-                          fontSize: 24.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white),
+                        fontSize: 24.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ],

@@ -55,10 +55,10 @@ class _OrgChartTileState extends State<OrgChartTile> {
           height: 100.h,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.r),
-            gradient: const LinearGradient(
+            gradient: LinearGradient(
               colors: [
-                Color.fromARGB(255, 38, 31, 60),
-                Color.fromARGB(255, 54, 60, 81),
+                const Color.fromARGB(255, 54, 60, 81),
+                Theme.of(context).colorScheme.background,
               ],
             ),
           ),
@@ -66,7 +66,6 @@ class _OrgChartTileState extends State<OrgChartTile> {
               ? Center(
                   child: Icon(
                     Icons.add,
-                    color: Colors.white,
                     size: 50.sp,
                   ),
                 )
@@ -94,7 +93,8 @@ class _OrgChartTileState extends State<OrgChartTile> {
                         maxFontSize: 12,
                         textAlign: TextAlign.center,
                         style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.w500, color: Colors.white),
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ],

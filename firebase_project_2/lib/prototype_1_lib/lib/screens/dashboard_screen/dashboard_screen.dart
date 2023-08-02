@@ -136,7 +136,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 21, 25, 34),
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: SingleChildScrollView(
           child: SafeArea(
             child: StreamBuilder<QuerySnapshot>(
@@ -219,9 +219,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         SizedBox(
                           height: 20.h,
                         ),
-                        SizedBox(
-                          height: 40.h,
-                        ),
                         FutureBuilder<void>(
                           future: completer.future,
                           //stream: Stream.empty(),
@@ -254,7 +251,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                             spreadRadius: 2.0.r),
                                       ],
                                       color:
-                                          const Color.fromARGB(255, 32, 36, 51),
+                                          Theme.of(context).colorScheme.primary,
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10.r)),
                                     ),
@@ -273,10 +270,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                 Text(
                                                   "Strength In-Camp",
                                                   style: GoogleFonts.poppins(
-                                                      fontSize: 24.sp,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color: Colors.white),
+                                                    fontSize: 24.sp,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
                                                 ),
                                                 Text(
                                                   "As of ${DateFormat('yMMMMd').add_Hm().format(DateTime.now())}",
@@ -284,7 +280,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                       fontSize: 18.sp,
                                                       fontWeight:
                                                           FontWeight.w500,
-                                                      color: Colors.white
+                                                      color: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyMedium
+                                                          ?.color!
                                                           .withOpacity(0.45)),
                                                 ),
                                               ],
@@ -303,7 +302,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                     },
                                                     child: Icon(
                                                       Icons.date_range_rounded,
-                                                      color: Colors.white,
                                                       size: 30.sp,
                                                     ),
                                                   ),

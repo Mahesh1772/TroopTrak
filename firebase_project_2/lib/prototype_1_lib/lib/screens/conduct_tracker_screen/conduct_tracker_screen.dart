@@ -78,7 +78,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen>
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: const Color.fromARGB(255, 21, 25, 34),
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: SingleChildScrollView(
         child: SafeArea(
           child: StreamBuilder<QuerySnapshot>(
@@ -141,7 +141,6 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen>
                             },
                             child: Icon(
                               Icons.date_range_rounded,
-                              color: Colors.white,
                               size: 45.sp,
                             ),
                           ),
@@ -151,14 +150,17 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen>
                               Text(
                                 DateFormat.yMMMMd().format(DateTime.now()),
                                 style: GoogleFonts.poppins(
-                                    color: Colors.white54,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.color
+                                        ?.withOpacity(0.54),
                                     fontWeight: FontWeight.w400,
                                     fontSize: 22.sp),
                               ),
                               Text(
                                 "Today",
                                 style: GoogleFonts.poppins(
-                                    color: Colors.white,
                                     fontWeight: FontWeight.w500,
                                     fontSize: 28.sp),
                               ),
@@ -202,8 +204,13 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen>
                                   SizedBox(
                                     width: 10.w,
                                   ),
-                                  StyledText("Add Conduct", 18.sp,
-                                      fontWeight: FontWeight.w400),
+                                  Text(
+                                    "Add Conduct",
+                                    style: GoogleFonts.poppins(
+                                        fontSize: 18.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.white),
+                                  )
                                 ],
                               ),
                             ),
@@ -229,23 +236,30 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen>
                           });
                         },
                         datePickerController: _date,
-                        normalColor: const Color.fromARGB(255, 21, 25, 34),
+                        normalColor: Theme.of(context).colorScheme.primary,
                         selectedColor: const Color.fromARGB(255, 72, 30, 229),
-                        disabledColor: const Color.fromARGB(255, 21, 25, 34),
-                        normalTextColor: Colors.white,
+                        selectedTextColor: Colors.white,
+                        disabledColor: Theme.of(context).colorScheme.primary,
                         monthTextStyle: GoogleFonts.poppins(
                           fontSize: 14.sp,
-                          color: Colors.white54,
+                          color: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.color
+                              ?.withOpacity(0.54),
                           fontWeight: FontWeight.w500,
                         ),
                         dayTextStyle: GoogleFonts.poppins(
                           fontSize: 24.sp,
-                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
                         weekDayTextStyle: GoogleFonts.poppins(
                           fontSize: 18.sp,
-                          color: Colors.white54,
+                          color: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.color
+                              ?.withOpacity(0.54),
                           fontWeight: FontWeight.w500,
                         ),
                       ),

@@ -37,7 +37,7 @@ class DutyPersonnelDataSource extends DataGridSource {
               "lib/assets/army-ranks/${dataGridCell.value.toString().toLowerCase()}.png",
               width: 35.w,
               color: rankColorPicker(dataGridCell.value.toString())
-                  ? Colors.white
+                  ? Colors.amber
                   : null,
             ),
           ),

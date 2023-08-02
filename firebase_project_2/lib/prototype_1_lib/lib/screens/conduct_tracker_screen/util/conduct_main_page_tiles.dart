@@ -51,9 +51,9 @@ class ConductTile extends StatelessWidget {
                   conductType,
                   maxLines: 1,
                   style: GoogleFonts.poppins(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white),
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
               SizedBox(
@@ -62,9 +62,9 @@ class ConductTile extends StatelessWidget {
                   conductName,
                   maxLines: 1,
                   style: GoogleFonts.poppins(
-                      fontSize: 24.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white),
+                    fontSize: 24.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
             ],
@@ -73,7 +73,6 @@ class ConductTile extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 10.0.w),
             child: const Icon(
               Icons.arrow_forward_outlined,
-              color: Colors.white,
             ),
           )
         ],

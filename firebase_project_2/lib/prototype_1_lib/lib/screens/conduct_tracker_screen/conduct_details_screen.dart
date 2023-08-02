@@ -112,7 +112,7 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
     final conductModel = Provider.of<UserData>(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: const Color.fromARGB(255, 21, 25, 34),
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -253,7 +253,8 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                                                     endTime:
                                                         conductData['endTime'],
                                                     callbackFunction: callback,
-                                                    participants: conductData['participants'],
+                                                    participants: conductData[
+                                                        'participants'],
                                                   ),
                                                 ),
                                               ).then(
@@ -377,174 +378,172 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                             SizedBox(
                               height: 10.h,
                             ),
-                            Padding(
-                              padding: EdgeInsets.all(20.0.sp),
-                              child: TextField(
-                                onChanged: (value) {
-                                  setState(() {
-                                    searchText = value;
-                                  });
-                                },
-                                decoration: InputDecoration(
-                                  hintText: 'Search Name',
-                                  prefixIcon: const Icon(Icons.search_sharp),
-                                  prefixIconColor: Colors.indigo.shade900,
-                                  fillColor: Colors.amber,
-                                  filled: true,
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.r),
-                                      borderSide: BorderSide.none),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      StyledText("Participants", 24.sp,
-                                          fontWeight: FontWeight.w500),
-                                      SizedBox(
-                                        height: 250,
-                                        child: ListView.builder(
-                                            itemCount: userDetails.length,
-                                            itemBuilder: (context, index) {
-                                              return Container(
-                                                padding:
-                                                    EdgeInsets.all(16.0.sp),
-                                                child: Row(
-                                                  children: [
-                                                    Container(
-                                                      padding: EdgeInsets.all(
-                                                          20.0.sp),
-                                                      decoration: BoxDecoration(
-                                                        shape: BoxShape.circle,
-                                                        color:
-                                                            Colors.transparent,
-                                                        border: Border.all(
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                      child: Center(
-                                                        child: Image.asset(
-                                                          "lib/assets/army-ranks/${userDetails[index]['rank'].toString().toLowerCase()}.png",
-                                                          width: 20,
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              16.0),
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          StyledText(
-                                                              userDetails[index]
-                                                                      ['name']
-                                                                  .toString()
-                                                                  .titleCase,
-                                                              18,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600),
-                                                        ],
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              );
-                                            }),
-                                      ),
-                                      SizedBox(
-                                        height: 20.h,
-                                      ),
-                                      StyledText("Non-Participants", 24.sp,
-                                          fontWeight: FontWeight.w500),
-                                      SizedBox(
-                                        height: 250,
-                                        child: ListView.builder(
-                                            itemCount: nonParticipants.length,
-                                            itemBuilder: (context, index) {
-                                              return Container(
-                                                padding:
-                                                    EdgeInsets.all(16.0.sp),
-                                                child: Row(
-                                                  children: [
-                                                    Container(
-                                                      padding: EdgeInsets.all(
-                                                          20.0.sp),
-                                                      decoration: BoxDecoration(
-                                                        shape: BoxShape.circle,
-                                                        color:
-                                                            Colors.transparent,
-                                                        border: Border.all(
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                      child: Center(
-                                                        child: Image.asset(
-                                                          "lib/assets/army-ranks/${nonParticipants[index]['rank'].toString().toLowerCase()}.png",
-                                                          width: 20,
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              16.0),
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          StyledText(
-                                                              nonParticipants[
-                                                                          index]
-                                                                      ['name']
-                                                                  .toString()
-                                                                  .titleCase,
-                                                              18,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600),
-                                                          StyledText(
-                                                              soldierReason[nonParticipants[
-                                                                          index]
-                                                                      [
-                                                                      'name']] ??
-                                                                  excuseText,
-                                                              14,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400),
-                                                        ],
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              );
-                                            }),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
                           ],
                         );
                       }
-                      return Center(child: CircularProgressIndicator(),);
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
                     }),
+              ),
+            ),
+            SizedBox(height: 20.h),
+            Padding(
+              padding: EdgeInsets.all(20.0.sp),
+              child: TextField(
+                onChanged: (value) {
+                  setState(() {
+                    searchText = value;
+                  });
+                },
+                decoration: InputDecoration(
+                  hintText: 'Search Name',
+                  hintStyle: GoogleFonts.poppins(
+                    color: Colors.white,
+                  ),
+                  focusColor: Colors.white,
+                  prefixIcon: const Icon(
+                    Icons.search_sharp,
+                    color: Colors.white,
+                  ),
+                  prefixIconColor: Colors.white,
+                  fillColor: const Color.fromARGB(255, 72, 30, 229),
+                  filled: true,
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.r),
+                      borderSide: BorderSide.none),
+                ),
+                style: GoogleFonts.poppins(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      StyledText("Participants", 24.sp,
+                          fontWeight: FontWeight.w500),
+                      SizedBox(
+                        height: 250,
+                        child: ListView.builder(
+                            itemCount: userDetails.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                padding: EdgeInsets.all(16.0.sp),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.all(20.0.sp),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.transparent,
+                                        border: Border.all(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .tertiary,
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Image.asset(
+                                          "lib/assets/army-ranks/${userDetails[index]['rank'].toString().toLowerCase()}.png",
+                                          width: 20,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .tertiary,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          StyledText(
+                                              userDetails[index]['name']
+                                                  .toString()
+                                                  .titleCase,
+                                              18,
+                                              fontWeight: FontWeight.w600),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              );
+                            }),
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      StyledText("Non-Participants", 24.sp,
+                          fontWeight: FontWeight.w500),
+                      SizedBox(
+                        height: 250,
+                        child: ListView.builder(
+                            itemCount: nonParticipants.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                padding: EdgeInsets.all(16.0.sp),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.all(20.0.sp),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.transparent,
+                                        border: Border.all(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .tertiary,
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Image.asset(
+                                          "lib/assets/army-ranks/${nonParticipants[index]['rank'].toString().toLowerCase()}.png",
+                                          width: 20,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .tertiary,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          StyledText(
+                                              nonParticipants[index]['name']
+                                                  .toString()
+                                                  .titleCase,
+                                              18,
+                                              fontWeight: FontWeight.w600),
+                                          StyledText(
+                                              soldierReason[
+                                                      nonParticipants[index]
+                                                          ['name']] ??
+                                                  excuseText,
+                                              14,
+                                              fontWeight: FontWeight.w400),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              );
+                            }),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ],

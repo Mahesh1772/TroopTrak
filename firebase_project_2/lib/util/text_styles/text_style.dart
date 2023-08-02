@@ -18,7 +18,6 @@ class StyledText extends StatelessWidget {
       style: GoogleFonts.poppins(
         fontSize: fontSize,
         fontWeight: fontWeight,
-        color: Colors.white,
       ),
     );
   }
