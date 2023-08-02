@@ -142,9 +142,18 @@ class _RegisterPageState extends State<RegisterPage> {
         );
         User user = result.user!;
         user.updateDisplayName(_name.text.trim());
+
         //Adding user details
         await addUserDetails();
         await addAttendanceDetails();
+        IconSnackBar.show(
+            duration: const Duration(seconds: 4),
+            direction: DismissDirection.horizontal,
+            context: context,
+            snackBarType: SnackBarType.save,
+            label: 'User Profile created',
+            snackBarStyle: const SnackBarStyle() // this one
+            );
       }
       await FirebaseAuth.instance.signOut();
     } catch (e) {
@@ -895,14 +904,6 @@ class _RegisterPageState extends State<RegisterPage> {
                         key: const Key("signUpButton"),
                         onTap: () async {
                           if (_formKey.currentState!.validate()) {
-                            IconSnackBar.show(
-                                duration: const Duration(seconds: 4),
-                                direction: DismissDirection.horizontal,
-                                context: context,
-                                snackBarType: SnackBarType.save,
-                                label: 'User Profile created',
-                                snackBarStyle: const SnackBarStyle() // this one
-                                );
                             await signUp();
                           } else {
                             IconSnackBar.show(

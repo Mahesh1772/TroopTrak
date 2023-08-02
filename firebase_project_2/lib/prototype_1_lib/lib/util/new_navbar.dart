@@ -26,7 +26,8 @@ class GNavMainScreen extends StatefulWidget {
   }
 }
 
-var fname = FirebaseAuth.instance.currentUser!.displayName.toString();
+var fname;
+var firebase_auth = FirebaseAuth.instance;
 
 class _GNavMainScreen extends State<GNavMainScreen> {
   static final List<Widget> _widgetOptions = <Widget>[
@@ -42,6 +43,10 @@ class _GNavMainScreen extends State<GNavMainScreen> {
       widget.selectedIndex = index;
       displayTitle(index);
     });
+  }
+
+  void getDisplayname() async{
+    fname = firebase_auth.currentUser!.displayName.toString();
   }
 
   String displayTitle(int index) {
@@ -73,6 +78,7 @@ class _GNavMainScreen extends State<GNavMainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    getDisplayname();
     return MaterialApp(
       theme: lightTheme,
       darkTheme: darkTheme,
@@ -125,7 +131,7 @@ class _GNavMainScreen extends State<GNavMainScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => UserProfileScreen(),
+                      builder: (context) => UserProfileScreen(docID: fname,),
                     ),
                   );
                 },
