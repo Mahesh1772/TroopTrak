@@ -34,14 +34,16 @@ class UpdateStatusScreen extends StatefulWidget {
 
 CollectionReference db = FirebaseFirestore.instance.collection('Users');
 TextEditingController sName = TextEditingController();
-bool isFirstTIme = true;
 String _initialsType = '';
 String _inititialSDate = '';
 String _intitialEDate = '';
 String _initialName = '';
 Map<String, dynamic> data = {};
+String start_date = '';
+String end_date = '';
 
 class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
+  bool isFirstTIme = true;
   final _formKey = GlobalKey<FormState>();
   final _statusTypes = [
     "Select status type...",
@@ -97,8 +99,9 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
     });
   }
 
-  void editStatus() {
-    editUserStatus();
+  void editStatus() async{
+    await editUserStatus();
+    //isFirstTIme = true;
     Navigator.pop(context);
   }
 
@@ -122,21 +125,42 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
       'startDate': widget.startDate,
       'endDate': widget.endDate,
     });
+    DateTime end = DateFormat("d MMM yyyy").parse(_intitialEDate);
+    DateTime start = DateFormat("d MMM yyyy").parse(_inititialSDate);
+    DateTime new_end = DateFormat("d MMM yyyy").parse(widget.endDate);
+    DateTime new_start = DateFormat("d MMM yyyy").parse(widget.startDate);
+    start = DateTime(
+        start.year, start.month, start.day, start.hour, start.minute + 30);
+    new_start = DateTime(new_start.year, new_start.month, new_start.day,
+        new_start.hour, new_start.minute + 30);
+    end = DateTime(end.year, end.month, end.day, 22, 0, 0);
+    new_end = DateTime(new_end.year, new_end.month, new_end.day, 22, 0, 0);
     if (widget.selectedStatusType != 'Excuse') {
-      DateTime end = DateFormat("d MMM yyyy").parse(widget.endDate);
-      DateTime now = DateTime.now();
-      now = DateTime(now.year, now.month, now.day, now.hour, now.minute + 30);
-      await addAttendanceDetails(false, now);
-      end = DateTime(end.year, end.month, end.day, 22, 0, 0);
-      await addAttendanceDetails(true, end);
+      await addAttendanceDetails(false, new_start, start);
+      await addAttendanceDetails(true, new_end, end);
+    } else {
+      await deleteAttendanceDetails(
+          //DateFormat('yyyy-MM-dd HH:mm:ss').format(start)
+          start_date);
+      await deleteAttendanceDetails(
+          //DateFormat('yyyy-MM-dd HH:mm:ss').format(end)
+          end_date);
     }
   }
 
-  Future addAttendanceDetails(bool i, DateTime date) async {
+  Future deleteAttendanceDetails(String attendance_id) async {
+    await db
+        .doc(widget.docID)
+        .collection('Attendance')
+        .doc(attendance_id)
+        .delete();
+  }
+
+  Future addAttendanceDetails(bool i, DateTime date, DateTime docID) async {
     db
         .doc(widget.docID)
         .collection('Attendance')
-        .doc(DateFormat('yyyy-MM-dd HH:mm:ss').format(date))
+        .doc(DateFormat('yyyy-MM-dd HH:mm:ss').format(docID))
         .set({
       //User map formatting
       'isInsideCamp': i,
@@ -146,11 +170,13 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
 
   void display() {
     //print(sName.text);
-    print(widget.selectedStatusType);
-    print(widget.startDate);
-    print(widget.endDate);
-    print(widget.docID);
-    print(widget.statusID);
+    //print(widget.selectedStatusType);
+    //print(widget.startDate);
+    //print(widget.endDate);
+    //print(widget.docID);
+    //print(widget.statusID);
+    //print(_inititialSDate);
+    //print(_intitialEDate);
   }
 
   @override
@@ -180,6 +206,8 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
                     widget.statusName =
                         TextEditingController(text: data['statusName']);
                     widget.endDate = data['endDate'];
+                    start_date = data['start_id'];
+                    end_date = data['end_id'];
                   }
                   return Padding(
                     padding: EdgeInsets.symmetric(horizontal: 12.w),

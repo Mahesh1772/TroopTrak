@@ -99,13 +99,13 @@ flutter_native_splash:
   ios: true
   color:  "#f7f6f1"
   color_dark:  "#272727"
-  image: assets/images/books.png
-  image_dark: assets/images/books.png
+  image: assets/images/GOW.jpg
+  image_dark: assets/images/GOW.jpg
 
   android_13:
-    image: assets/images/books.png
+    image: assets/images/GOW.jpg
     icon_background_color: "#f7f6f1"
-    image_dark: assets/images/books.png
+    image_dark: assets/images/GOW.jpg
     icon_background_color_dark: "#272727"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -16,7 +16,9 @@ class SoldierStatusTile extends StatefulWidget {
       required this.startDate,
       required this.endDate,
       required this.docID,
-      required this.statusID});
+      required this.statusID,
+      required this.end_date,
+      required this.start_date});
 
   final String statusType;
   final String startDate;
@@ -24,19 +26,41 @@ class SoldierStatusTile extends StatefulWidget {
   final String statusName;
   final String docID;
   final String statusID;
+  final String start_date;
+  final String end_date;
 
   @override
   State<SoldierStatusTile> createState() => _SoldierStatusTileState();
 }
 
+CollectionReference db = FirebaseFirestore.instance.collection('Users');
+
 class _SoldierStatusTileState extends State<SoldierStatusTile> {
   Future deleteCurrentStatus() async {
-    await FirebaseFirestore.instance
-        .collection('Users')
+    await db
         .doc(widget.docID)
         .collection('Statuses')
         .doc(widget.statusID)
         .delete();
+  }
+
+  Future deleteAttendanceDetails(String attendance_id) async {
+    await db
+        .doc(widget.docID)
+        .collection('Attendance')
+        .doc(attendance_id)
+        .delete();
+  }
+
+  Future deleteDetails() async {
+    //DateTime end = DateFormat("d MMM yyyy").parse(widget.startDate);
+    //DateTime start = DateFormat("d MMM yyyy").parse(widget.endDate);
+    //start = DateTime(
+    //start.year, start.month, start.day, start.hour, start.minute + 30);
+    //end = DateTime(end.year, end.month, end.day, 22, 0, 0);
+    await deleteCurrentStatus();
+    await deleteAttendanceDetails(widget.start_date);
+    await deleteAttendanceDetails(widget.end_date);
   }
 
   @override
@@ -68,9 +92,9 @@ class _SoldierStatusTileState extends State<SoldierStatusTile> {
                   size: 60.sp,
                 ),
                 InkWell(
-                  onTap: () {
+                  onTap: () async {
                     //print(widget.docID);
-                    deleteCurrentStatus();
+                    await deleteDetails();
                   },
                   child: Icon(
                     Icons.delete_rounded,
