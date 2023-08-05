@@ -14,12 +14,10 @@ import 'package:firebase_project_2/prototype_1_lib/lib/user_models/user_details.
 List<Map<String, dynamic>> userCurrentStatus = [];
 
 class StatusesTab extends StatefulWidget {
-  const StatusesTab({
-    super.key,
-    required this.docID,
-  });
+  const StatusesTab({super.key, required this.docID, required this.isToggled});
 
   final String docID;
+  final bool isToggled;
 
   @override
   State<StatusesTab> createState() => _StatusesTabState();
@@ -30,6 +28,7 @@ class _StatusesTabState extends State<StatusesTab> {
 
   @override
   Widget build(BuildContext context) {
+    final Color textColor = widget.isToggled ? Colors.white : Colors.black;
     final statusModel = Provider.of<UserData>(context);
     List<Map<String, dynamic>> userPastStatus = [];
     List<Map<String, dynamic>> toRemove = [];
@@ -72,7 +71,7 @@ class _StatusesTabState extends State<StatusesTab> {
                   children: [
                     Icon(
                       Icons.medical_information_rounded,
-                      color: Colors.white,
+                      color: textColor,
                       size: 30.sp,
                     ),
                     SizedBox(
@@ -82,7 +81,7 @@ class _StatusesTabState extends State<StatusesTab> {
                       "Active Statuses",
                       maxLines: 2,
                       style: GoogleFonts.poppins(
-                        color: Colors.white,
+                        color: textColor,
                         fontSize: 20.sp,
                         fontWeight: FontWeight.w500,
                         letterSpacing: 1.5,
@@ -114,6 +113,7 @@ class _StatusesTabState extends State<StatusesTab> {
                                 startDate: userCurrentStatus[index]
                                     ['startDate'],
                                 endDate: userCurrentStatus[index]['endDate'],
+                                isToggled: widget.isToggled,
                               ),
                             ),
                           );
@@ -136,7 +136,7 @@ class _StatusesTabState extends State<StatusesTab> {
                   children: [
                     Icon(
                       Icons.av_timer_rounded,
-                      color: Colors.white,
+                      color: textColor,
                       size: 30.sp,
                     ),
                     SizedBox(
@@ -146,7 +146,7 @@ class _StatusesTabState extends State<StatusesTab> {
                       "Past Statuses",
                       maxLines: 2,
                       style: GoogleFonts.poppins(
-                        color: Colors.white,
+                        color: textColor,
                         fontSize: 20.sp,
                         fontWeight: FontWeight.w500,
                         letterSpacing: 1.5,
@@ -166,6 +166,7 @@ class _StatusesTabState extends State<StatusesTab> {
                         statusName: userPastStatus[index]['statusName'],
                         startDate: userPastStatus[index]['startDate'],
                         endDate: userPastStatus[index]['endDate'],
+                        isToggled: widget.isToggled,
                       );
                     },
                   ),
@@ -187,6 +188,7 @@ class _StatusesTabState extends State<StatusesTab> {
                                 DateFormat('d MMM yyyy').format(DateTime.now()),
                             endDate:
                                 DateFormat('d MMM yyyy').format(DateTime.now()),
+                            isToggled: widget.isToggled,
                           ),
                         ),
                       );

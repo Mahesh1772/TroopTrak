@@ -407,7 +407,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                             spreadRadius: 2.0.r),
                                       ],
                                       color:
-                                          const Color.fromARGB(255, 32, 36, 51),
+                                          Theme.of(context).colorScheme.primary,
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10.r)),
                                     ),

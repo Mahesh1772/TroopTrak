@@ -17,6 +17,7 @@ class PastSoldierStatusTile extends StatefulWidget {
     required this.endDate,
     required this.docID,
     required this.statusID,
+    required this.isToggled,
   });
 
   final String statusType;
@@ -25,6 +26,8 @@ class PastSoldierStatusTile extends StatefulWidget {
   final String statusName;
   final String docID;
   final String statusID;
+  final bool isToggled;
+
   @override
   State<PastSoldierStatusTile> createState() => _PastSoldierStatusTileState();
 }
@@ -62,6 +65,7 @@ class _PastSoldierStatusTileState extends State<PastSoldierStatusTile> {
                           text: widget.statusName.toString()),
                       startDate: widget.startDate,
                       endDate: widget.endDate,
+                      isToggled: widget.isToggled,
                     ),
                   ),
                 );
@@ -84,7 +88,9 @@ class _PastSoldierStatusTileState extends State<PastSoldierStatusTile> {
         ),
         child: Container(
           decoration: BoxDecoration(
-            color: const Color.fromARGB(104, 158, 158, 158),
+            color: widget.isToggled
+                ? const Color.fromARGB(255, 144, 143, 143)
+                : const Color.fromARGB(255, 32, 36, 51),
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(12.r),
                 bottomLeft: Radius.circular(12.r)),

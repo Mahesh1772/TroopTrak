@@ -3,15 +3,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SoldierDetailedInfoTemplate extends StatelessWidget {
-  const SoldierDetailedInfoTemplate(
-      {super.key,
-      required this.icon,
-      required this.title,
-      required this.content});
+  const SoldierDetailedInfoTemplate({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.content,
+    required this.isToggled,
+  });
 
   final String title;
   final String content;
   final IconData? icon;
+  final bool isToggled;
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +25,8 @@ class SoldierDetailedInfoTemplate extends StatelessWidget {
         children: [
           Icon(
             icon,
-            color: Colors.white,
             size: 30.sp,
+            color: isToggled ? Colors.white : Colors.black,
           ),
           SizedBox(
             width: 20.w,
@@ -35,20 +38,20 @@ class SoldierDetailedInfoTemplate extends StatelessWidget {
                 title,
                 maxLines: 2,
                 style: GoogleFonts.poppins(
-                  color: Colors.white,
                   fontSize: 18.sp,
                   fontWeight: FontWeight.w500,
                   letterSpacing: 1.5,
+                  color: isToggled ? Colors.white : Colors.black,
                 ),
               ),
               Text(
                 content,
                 maxLines: 2,
                 style: GoogleFonts.poppins(
-                  color: Colors.white,
                   fontSize: 20.sp,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.5,
+                  color: isToggled ? Colors.white : Colors.black,
                 ),
               ),
             ],

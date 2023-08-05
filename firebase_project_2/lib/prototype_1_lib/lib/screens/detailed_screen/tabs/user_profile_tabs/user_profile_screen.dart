@@ -13,11 +13,10 @@ import '../../../../main.dart';
 import '../../../../user_models/user_details.dart';
 
 class UserProfileScreen extends StatefulWidget {
-   const UserProfileScreen({
-    required this.docID,
-    super.key,
-  });
+  const UserProfileScreen(
+      {required this.docID, super.key, required this.isToggled});
   final String docID;
+  final bool isToggled;
   @override
   State<UserProfileScreen> createState() => _UserProfileScreenState();
 }
@@ -53,10 +52,12 @@ class _UserProfileScreenState extends State<UserProfileScreen>
 
   @override
   Widget build(BuildContext context) {
+    Color textColor = widget.isToggled ? Colors.white : Colors.black;
     _storeOnBoardInfo(int isViewed) async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setInt('onBoard', isViewed);
     }
+
     name = widget.docID;
     //print(widget.docID);
     //print(name);
@@ -83,7 +84,9 @@ class _UserProfileScreenState extends State<UserProfileScreen>
 
     final statusModel = Provider.of<UserData>(context);
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 21, 25, 34),
+      backgroundColor: widget.isToggled
+          ? const Color.fromARGB(255, 21, 25, 34)
+          : const Color.fromARGB(255, 243, 246, 254),
       body: SingleChildScrollView(
         child: StreamBuilder(
             stream: statusModel.userData_data(name),
@@ -129,32 +132,6 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                         size: 30.sp,
                                       ),
                                     ),
-                                    InkWell(
-                                      key: const Key("signOutButton"),
-                                      onTap: () async {
-                                        //await FirebaseAuth.instance.signOut();
-                                        //Navigator.pop(context);
-                                        //.then((value) => Navigator.pop(context));
-                                        //Navigator.pop(context);
-                                        await FirebaseAuth.instance
-                                            .signOut()
-                                            .then((value) async {
-                                          _storeOnBoardInfo(2);
-                                          Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const MyAppCommander(),
-                                            ),
-                                          );
-                                        });
-                                      },
-                                      child: Icon(
-                                        Icons.exit_to_app_rounded,
-                                        color: Colors.white,
-                                        size: 30.sp,
-                                      ),
-                                    )
                                   ],
                                 ),
                                 SizedBox(
@@ -246,50 +223,100 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                               ],
                             ),
                           ),
-                          SizedBox(
-                            height: 20.h,
-                          ),
                           Center(
-                            child: AnimatedToggleSwitch<bool>.rolling(
-                              current:
-                                  _themeManager.themeMode == ThemeMode.dark,
-                              allowUnlistedValues: true,
-                              values: const [false, true],
-                              onChanged: (i) {
-                                _themeManager.toggleTheme(i);
-                                print(_themeManager.themeMode);
+                            child: InkWell(
+                              key: const Key("signOutButton"),
+                              onTap: () async {
+                                //await FirebaseAuth.instance.signOut();
+                                //Navigator.pop(context);
+                                //.then((value) => Navigator.pop(context));
+                                //Navigator.pop(context);
+                                await FirebaseAuth.instance
+                                    .signOut()
+                                    .then((value) async {
+                                  _storeOnBoardInfo(2);
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const MyAppCommander(),
+                                    ),
+                                  );
+                                });
                               },
-                              iconBuilder: rollingIconBuilder,
-                              borderWidth: 3.0.w,
-                              indicatorColor: Colors.white,
-                              innerGradient: LinearGradient(colors: [
-                                Colors.transparent.withOpacity(0.1),
-                                Colors.transparent.withOpacity(0),
-                              ]),
-                              innerColor: Colors.amber,
-                              height: 40.h,
-                              dif: 10.w,
-                              iconRadius: 10.0.r,
-                              selectedIconRadius: 13.0.r,
-                              borderColor: Colors.transparent,
-                              foregroundBoxShadow: [
-                                BoxShadow(
-                                  color: Colors.black26,
-                                  spreadRadius: 1.r,
-                                  blurRadius: 2.r,
-                                  offset: Offset(0.w, 1.5.h),
-                                )
-                              ],
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black26,
-                                  spreadRadius: 1.r,
-                                  blurRadius: 2.r,
-                                  offset: Offset(0.w, 1.5.h),
-                                )
-                              ],
+                              child: Container(
+                                width: 300.w,
+                                padding: EdgeInsets.all(16.sp),
+                                decoration: BoxDecoration(
+                                  color: Colors.transparent.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(20.r),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.exit_to_app_rounded,
+                                      color: Colors.white,
+                                      size: 35.sp,
+                                    ),
+                                    SizedBox(
+                                      width: 20.w,
+                                    ),
+                                    Text("SIGN OUT",
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 20.sp,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        )),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
+                          // SizedBox(
+                          //   height: 20.h,
+                          // ),
+                          // Center(
+                          //   child: AnimatedToggleSwitch<bool>.rolling(
+                          //     current:
+                          //         _themeManager.themeMode == ThemeMode.dark,
+                          //     allowUnlistedValues: true,
+                          //     values: const [false, true],
+                          //     onChanged: (i) {
+                          //       _themeManager.toggleTheme(i);
+                          //       print(_themeManager.themeMode);
+                          //     },
+                          //     iconBuilder: rollingIconBuilder,
+                          //     borderWidth: 3.0.w,
+                          //     indicatorColor: Colors.white,
+                          //     innerGradient: LinearGradient(colors: [
+                          //       Colors.transparent.withOpacity(0.1),
+                          //       Colors.transparent.withOpacity(0),
+                          //     ]),
+                          //     innerColor: Colors.amber,
+                          //     height: 40.h,
+                          //     dif: 10.w,
+                          //     iconRadius: 10.0.r,
+                          //     selectedIconRadius: 13.0.r,
+                          //     borderColor: Colors.transparent,
+                          //     foregroundBoxShadow: [
+                          //       BoxShadow(
+                          //         color: Colors.black26,
+                          //         spreadRadius: 1.r,
+                          //         blurRadius: 2.r,
+                          //         offset: Offset(0.w, 1.5.h),
+                          //       )
+                          //     ],
+                          //     boxShadow: [
+                          //       BoxShadow(
+                          //         color: Colors.black26,
+                          //         spreadRadius: 1.r,
+                          //         blurRadius: 2.r,
+                          //         offset: Offset(0.w, 1.5.h),
+                          //       )
+                          //     ],
+                          //   ),
+                          // ),
                           SizedBox(
                             height: 30.h,
                           ),
@@ -304,34 +331,32 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                         height: 10.h,
                       ),
                       TabBar(
+                        indicatorColor: const Color.fromARGB(255, 72, 30, 229),
+                        labelColor: textColor,
+                        unselectedLabelStyle: GoogleFonts.poppins(
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: 1.5,
+                            color: textColor),
                         labelStyle: GoogleFonts.poppins(
-                          color: Colors.white,
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.w500,
-                          letterSpacing: 1.5,
-                        ),
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: 1.5,
+                            color: textColor),
                         controller: tabController,
-                        tabs: const [
+                        tabs: [
                           Tab(
                             text: "BASIC INFO",
-                            icon: Icon(
-                              Icons.info,
-                              color: Colors.white,
-                            ),
+                            icon: Icon(Icons.info, color: textColor),
                           ),
                           Tab(
                             text: "STATUSES",
-                            icon: Icon(
-                              Icons.warning_rounded,
-                              color: Colors.white,
-                            ),
+                            icon: Icon(Icons.warning_rounded, color: textColor),
                           ),
                           Tab(
                             text: "ATTENDANCE",
-                            icon: Icon(
-                              Icons.person_add_alt_1,
-                              color: Colors.white,
-                            ),
+                            icon:
+                                Icon(Icons.person_add_alt_1, color: textColor),
                           ),
                         ],
                       ),
@@ -354,12 +379,16 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                               docID: name,
                               ordDate: currentUser['ord'],
                               callback: callback,
+                              isToggled: widget.isToggled,
                             ), //widget.ordDate),
 
                             //Statuses tab
-                            const UserProfileStatusesTab(),
+                            UserProfileStatusesTab(
+                              isToggled: widget.isToggled,
+                            ),
 
-                            const UserProfileAttendanceTab(),
+                            UserProfileAttendanceTab(
+                                isToggled: widget.isToggled),
                           ],
                         ),
                       )

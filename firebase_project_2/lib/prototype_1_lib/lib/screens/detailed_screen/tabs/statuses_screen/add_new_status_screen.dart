@@ -6,24 +6,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:firebase_project_2/prototype_1_lib/lib/util/text_styles/text_style.dart';
 import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 import 'package:easy_autocomplete/easy_autocomplete.dart';
 
 class AddNewStatusScreen extends StatefulWidget {
-  AddNewStatusScreen(
-      {super.key,
-      required this.docID,
-      required this.selectedStatusType,
-      required this.statusName,
-      required this.startDate,
-      required this.endDate});
+  AddNewStatusScreen({
+    super.key,
+    required this.docID,
+    required this.selectedStatusType,
+    required this.statusName,
+    required this.startDate,
+    required this.endDate,
+    required this.isToggled,
+  });
 
   late TextEditingController statusName;
   late String? selectedStatusType;
   late String startDate;
   late String endDate;
   late String docID;
+  final bool isToggled;
 
   @override
   State<AddNewStatusScreen> createState() => _AddNewStatusScreenState();
@@ -157,9 +159,12 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final Color textColor = widget.isToggled ? Colors.white : Colors.black;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: const Color.fromARGB(255, 21, 25, 34),
+      backgroundColor: widget.isToggled
+          ? const Color.fromARGB(255, 21, 25, 34)
+          : const Color.fromARGB(255, 243, 246, 254),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -184,15 +189,21 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
                   SizedBox(
                     height: 20.h,
                   ),
-                  StyledText(
+                  Text(
                     "Let's add a new status for this soldier ✍️",
-                    30.sp,
-                    fontWeight: FontWeight.bold,
+                    style: GoogleFonts.poppins(
+                      fontSize: 30.sp,
+                      fontWeight: FontWeight.bold,
+                      color: textColor,
+                    ),
                   ),
-                  StyledText(
+                  Text(
                     "Fill in the details of the status",
-                    14.sp,
-                    fontWeight: FontWeight.w300,
+                    style: GoogleFonts.poppins(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w300,
+                      color: textColor,
+                    ),
                   ),
                   SizedBox(
                     height: 40.h,
@@ -201,7 +212,7 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.black54,
-                      border: Border.all(color: Colors.white),
+                      border: Border.all(color: textColor),
                       borderRadius: BorderRadius.circular(12.r),
                     ),
                     child: DropdownButtonFormField<String>(
@@ -249,7 +260,7 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.black54,
-                      border: Border.all(color: Colors.white),
+                      border: Border.all(color: textColor),
                       borderRadius: BorderRadius.circular(12.r),
                     ),
                     child: Padding(
@@ -310,7 +321,7 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
                         width: 150.w,
                         decoration: BoxDecoration(
                           color: Colors.black54,
-                          border: Border.all(color: Colors.white),
+                          border: Border.all(color: textColor),
                           borderRadius: BorderRadius.circular(12.r),
                         ),
                         child: Padding(
@@ -329,9 +340,9 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
                           onTap: () {
                             _showStartDatePicker();
                           },
-                          child: const Icon(
+                          child: Icon(
                             Icons.date_range_rounded,
-                            color: Colors.white,
+                            color: textColor,
                           ),
                         ),
                       ),
@@ -346,7 +357,7 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
                         height: 55.h,
                         decoration: BoxDecoration(
                           color: Colors.black54,
-                          border: Border.all(color: Colors.white),
+                          border: Border.all(color: textColor),
                           borderRadius: BorderRadius.circular(12.r),
                         ),
                         child: Padding(
@@ -365,9 +376,9 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
                           onTap: () {
                             _showEndDatePicker();
                           },
-                          child: const Icon(
+                          child: Icon(
                             Icons.date_range_rounded,
-                            color: Colors.white,
+                            color: textColor,
                           ),
                         ),
                       ),
