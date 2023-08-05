@@ -36,11 +36,8 @@ List<Map<String, dynamic>> specDetails = [];
 // List to store all user data, whilst also mapping to name
 List<Map<String, dynamic>> officerDetails = [];
 
-// List to store all user data, whilst also mapping to name
-//List<Map<String, dynamic>> statusDetails = [];
-//
-//// List to store all user data, whilst also mapping to name
-//List<Map<String, dynamic>> _maDetails = [];
+int spec_list_length = 0;
+int officer_list_length = 0;
 
 Map<String, dynamic> currentUserData = {};
 
@@ -61,6 +58,9 @@ late Stream<QuerySnapshot> documentStream;
 // The list of all document IDs,
 //which have access to each their own personal information
 List<String> documentIDs = [];
+
+final now = DateTime.now();
+final today = DateTime(now.year, now.month, now.day);
 
 final FlipCardController _controller = FlipCardController();
 
@@ -150,7 +150,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     counter = 0;
 // Create a Completer to delay the execution until we have collected data from all 'Statuses' subcollections
                     //Completer<void> completer = Completer<void>();
-                    StreamController<void> controller = StreamController<void>();
+                    StreamController<void> controller =
+                        StreamController<void>();
                     List? users = snapshot.data?.docs.toList();
                     var docsmapshot = snapshot.data!;
                     for (var i = 0; i < users!.length; i++) {
@@ -183,8 +184,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             var statusData = element.data();
                             DateTime end = DateFormat("d MMM yyyy")
                                 .parse(statusData['endDate']);
+                            DateTime start = DateFormat("d MMM yyyy")
+                                .parse(statusData['startDate']);
                             if (DateTime(end.year, end.month, end.day + 1)
-                                .isAfter(DateTime.now())) {
+                                    .isAfter(DateTime.now()) &&
+                                today ==
+                                    DateTime(
+                                        start.year, start.month, start.day)) {
                               if (statusData['statusType'] ==
                                   'Medical Appointment') {
                                 //_maList.add(uid);
@@ -201,6 +207,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             //completer.complete();
                             controller.add(null);
                           }
+                          spec_list_length = specDetails.length;
+                          officer_list_length = officerDetails.length;
+                          print(officer_list_length);
+                          specDetails.removeWhere((element) => fullList[element['name']] == false);
+                          officerDetails.removeWhere((element) => fullList[element['name']] == false);
                         }
                       });
                     }
@@ -327,8 +338,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           currentStatus:
                                               inCamp(statusDetails, true),
                                           currentMA: inCamp(_maDetails, true),
-                                          totalOfficers: officerDetails.length,
-                                          totalWOSEs: specDetails.length,
+                                          totalOfficers: officer_list_length,
+                                          totalWOSEs: spec_list_length,
                                         ),
                                         SizedBox(
                                           height: defaultPadding.h,
@@ -339,8 +350,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               "lib/assets/icons8-medals-64.png",
                                           currentNumOfSoldiers:
                                               inCamp(officerDetails, false),
-                                          totalNumOfSoldiers:
-                                              officerDetails.length,
+                                          totalNumOfSoldiers:officer_list_length,
+                                              //officerDetails.length,
                                           imgColor: Colors.red,
                                           userDetails: officerDetails,
                                           fullList: fullList,
@@ -351,8 +362,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               "lib/assets/icons8-soldier-man-64.png",
                                           currentNumOfSoldiers:
                                               inCamp(specDetails, false),
-                                          totalNumOfSoldiers:
-                                              specDetails.length,
+                                          totalNumOfSoldiers:spec_list_length,
+                                              //specDetails.length,
                                           imgColor: Colors.blue,
                                           userDetails: specDetails,
                                           fullList: fullList,
