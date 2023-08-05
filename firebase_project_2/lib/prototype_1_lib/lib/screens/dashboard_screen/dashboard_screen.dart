@@ -149,7 +149,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     fullList = {};
                     counter = 0;
 // Create a Completer to delay the execution until we have collected data from all 'Statuses' subcollections
-                    Completer<void> completer = Completer<void>();
+                    //Completer<void> completer = Completer<void>();
+                    StreamController<void> controller = StreamController<void>();
                     List? users = snapshot.data?.docs.toList();
                     var docsmapshot = snapshot.data!;
                     for (var i = 0; i < users!.length; i++) {
@@ -197,7 +198,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             //statusDetails.add(data);
                           });
                           if (counter == users.length) {
-                            completer.complete();
+                            //completer.complete();
+                            controller.add(null);
                           }
                         }
                       });
@@ -219,12 +221,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         SizedBox(
                           height: 20.h,
                         ),
-                        FutureBuilder<void>(
-                          future: completer.future,
+                        StreamBuilder<void>(
+                          stream: controller.stream,
                           //stream: Stream.empty(),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
-                                ConnectionState.done) {
+                                ConnectionState.active) {
                               statusDetails =
                                   LinkedHashSet<Map<String, dynamic>>.from(
                                           statusDetails)

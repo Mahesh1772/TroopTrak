@@ -125,6 +125,8 @@ class _UserProfileStatusesTabState extends State<UserProfileStatusesTab> {
                           statusName: userCurrentStatus[index]['statusName'],
                           startDate: userCurrentStatus[index]['startDate'],
                           endDate: userCurrentStatus[index]['endDate'],
+                          start_date: userCurrentStatus[index]['start_id'],
+                          end_date: userCurrentStatus[index]['end_id'],
                         ),
                       );
                     },

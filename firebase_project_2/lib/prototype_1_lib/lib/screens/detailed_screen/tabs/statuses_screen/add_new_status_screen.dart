@@ -110,21 +110,24 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
     widget.selectedStatusType = sType;
     widget.endDate = eDate;
     widget.startDate = sDate;
-    db.doc(widget.docID).collection('Statuses').add({
-      //User map formatting
-      'statusName': widget.statusName.text.trim(), //sName.text.trim(),
-      'statusType': widget.selectedStatusType, //sType,
-      'startDate': widget.startDate, //sDate,
-      'endDate': widget.endDate, //eDate,
-    });
+    DateTime end = DateFormat("d MMM yyyy").parse(widget.endDate);
+    DateTime start = DateFormat("d MMM yyyy").parse(widget.startDate);
+    start = DateTime(
+        start.year, start.month, start.day, start.hour, start.minute + 30);
+    end = DateTime(end.year, end.month, end.day, 22, 0, 0);
     if (widget.selectedStatusType != 'Excuse') {
-      DateTime end = DateFormat("d MMM yyyy").parse(widget.endDate);
-      DateTime now = DateTime.now();
-      now = DateTime(now.year, now.month, now.day, now.hour, now.minute + 30);
-      await addAttendanceDetails(false, now);
-      end = DateTime(end.year, end.month, end.day, 22, 0, 0);
+      await addAttendanceDetails(false, start);
       await addAttendanceDetails(true, end);
     }
+    db.doc(widget.docID).collection('Statuses').add({
+      //User map formatting
+      'statusName': widget.statusName.text.trim(),
+      'statusType': widget.selectedStatusType,
+      'startDate': widget.startDate,
+      'endDate': widget.endDate,
+      'start_id': DateFormat('yyyy-MM-dd HH:mm:ss').format(start),
+      'end_id': DateFormat('yyyy-MM-dd HH:mm:ss').format(end),
+    });
     Navigator.pop(context);
   }
 
@@ -141,11 +144,11 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
   }
 
   void display() {
-    print(widget.statusName.text.trim());
-    print(widget.selectedStatusType);
-    print(widget.startDate);
-    print(widget.endDate);
-    print(widget.docID);
+    //print(widget.statusName.text.trim());
+    //print(widget.selectedStatusType);
+    //print(widget.startDate);
+    //print(widget.endDate);
+    //print(widget.docID);
   }
 
   @override
