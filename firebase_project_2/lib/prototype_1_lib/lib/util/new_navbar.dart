@@ -45,7 +45,7 @@ class _GNavMainScreen extends State<GNavMainScreen> {
     });
   }
 
-  void getDisplayname() async{
+  void getDisplayname() async {
     fname = firebase_auth.currentUser!.displayName.toString();
   }
 
@@ -131,7 +131,10 @@ class _GNavMainScreen extends State<GNavMainScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => UserProfileScreen(docID: fname,),
+                      builder: (context) => UserProfileScreen(
+                        isToggled: isToggled,
+                        docID: fname,
+                      ),
                     ),
                   );
                 },

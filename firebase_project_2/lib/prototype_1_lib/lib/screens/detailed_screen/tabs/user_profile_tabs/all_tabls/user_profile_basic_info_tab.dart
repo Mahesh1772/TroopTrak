@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/user_models/user_details.dart';
-import 'package:firebase_project_2/prototype_1_lib/lib/util/text_styles/text_style.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/util/soldier_detailed_screen_info_template.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,6 +23,7 @@ class UserProfileBasicInfoTab extends StatefulWidget {
   final String ordDate;
   final String docID;
   late Function callback;
+  final bool isToggled;
 
   UserProfileBasicInfoTab({
     super.key,
@@ -33,6 +34,7 @@ class UserProfileBasicInfoTab extends StatefulWidget {
     required this.docID,
     required this.ordDate,
     required this.callback,
+    required this.isToggled,
   });
 
   @override
@@ -101,26 +103,31 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab>
                     title: "Date Of Birth",
                     content: data['dob'].toString().toUpperCase(),
                     icon: Icons.cake_rounded,
+                    isToggled: widget.isToggled,
                   ),
                   SoldierDetailedInfoTemplate(
                     title: "Ration Type:",
                     content: data['rationType'].toUpperCase(),
                     icon: Icons.food_bank_rounded,
+                    isToggled: widget.isToggled,
                   ),
                   SoldierDetailedInfoTemplate(
                     title: "Blood Type:",
                     content: data['bloodgroup'].toString(),
                     icon: Icons.bloodtype_rounded,
+                    isToggled: widget.isToggled,
                   ),
                   SoldierDetailedInfoTemplate(
                     title: "Enlistment Date:",
                     content: data['enlistment'].toString().toUpperCase(),
                     icon: Icons.date_range_rounded,
+                    isToggled: widget.isToggled,
                   ),
                   SoldierDetailedInfoTemplate(
                     title: "ORD:",
                     content: data['ord'].toString().toUpperCase(),
                     icon: Icons.military_tech_rounded,
+                    isToggled: widget.isToggled,
                   ),
                   SizedBox(
                     height: 30.h,
@@ -132,23 +139,25 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab>
                           context,
                           MaterialPageRoute(
                             builder: (context) => UpdateCurrentUserDetailsPage(
-                                callback: widget.callback,
-                                docID: widget.docID,
-                                name: TextEditingController(text: data['name']),
-                                company: TextEditingController(
-                                    text: data['company']),
-                                platoon: TextEditingController(
-                                    text: data['platoon']),
-                                section: TextEditingController(
-                                    text: data['section']),
-                                appointment: TextEditingController(
-                                    text: data['appointment']),
-                                dob: data['dob'],
-                                ord: data['ord'],
-                                enlistment: data['enlistment'],
-                                selectedItem: data['rationType'],
-                                selectedRank: data['rank'],
-                                selectedBloodType: data['bloodgroup']),
+                              callback: widget.callback,
+                              docID: widget.docID,
+                              name: TextEditingController(text: data['name']),
+                              company:
+                                  TextEditingController(text: data['company']),
+                              platoon:
+                                  TextEditingController(text: data['platoon']),
+                              section:
+                                  TextEditingController(text: data['section']),
+                              appointment: TextEditingController(
+                                  text: data['appointment']),
+                              dob: data['dob'],
+                              ord: data['ord'],
+                              enlistment: data['enlistment'],
+                              selectedItem: data['rationType'],
+                              selectedRank: data['rank'],
+                              selectedBloodType: data['bloodgroup'],
+                              isToggled: widget.isToggled,
+                            ),
                           ),
                         ).then((value) => widget.callback);
                       },
@@ -174,8 +183,13 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab>
                             SizedBox(
                               width: 20.w,
                             ),
-                            StyledText("EDIT SOLDIER DETAILS", 18.sp,
-                                fontWeight: FontWeight.bold),
+                            Text(
+                              "EDIT SOLDIER DETAILS",
+                              style: GoogleFonts.poppins(
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
                           ],
                         ),
                       ),
@@ -221,8 +235,13 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab>
                             SizedBox(
                               width: 20.w,
                             ),
-                            StyledText("DELETE SOLDIER DETAILS", 18.sp,
-                                fontWeight: FontWeight.bold),
+                            Text(
+                              "DELETE SOLDIER DETAILS",
+                              style: GoogleFonts.poppins(
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
                             SizedBox(
                               height: 30.h,
                             )

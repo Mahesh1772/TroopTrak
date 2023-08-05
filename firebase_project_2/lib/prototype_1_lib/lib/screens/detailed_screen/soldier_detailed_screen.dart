@@ -8,12 +8,11 @@ import 'package:provider/provider.dart';
 import '../../user_models/user_details.dart';
 
 class SoldierDetailedScreen extends StatefulWidget {
-  const SoldierDetailedScreen({
-    super.key,
-    required this.docID,
-  });
+  const SoldierDetailedScreen(
+      {super.key, required this.docID, required this.isToggled});
 
   final String docID;
+  final bool isToggled;
 
   @override
   State<SoldierDetailedScreen> createState() => _SoldierDetailedScreenState();
@@ -230,11 +229,13 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
                             BasicInfoTab(
                               docID: widget.docID,
                               callback: callback,
+                              isToggled: widget.isToggled,
                             ),
 
                             //Statuses tab
                             StatusesTab(
                               docID: widget.docID,
+                              isToggled: widget.isToggled,
                             ),
 
                             AttendanceTab(

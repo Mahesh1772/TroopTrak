@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:firebase_project_2/prototype_1_lib/lib/util/text_styles/text_style.dart';
 import 'package:provider/provider.dart';
 
 import 'package:firebase_project_2/prototype_1_lib/lib/user_models/user_details.dart';
@@ -19,6 +18,7 @@ class UpdateStatusScreen extends StatefulWidget {
     required this.startDate,
     required this.endDate,
     required this.statusID,
+    required this.isToggled,
   });
 
   late TextEditingController statusName;
@@ -27,6 +27,7 @@ class UpdateStatusScreen extends StatefulWidget {
   late String endDate;
   late String docID;
   late String statusID;
+  final bool isToggled;
 
   @override
   State<UpdateStatusScreen> createState() => _UpdateStatusScreenState();
@@ -161,10 +162,13 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final Color textColor = widget.isToggled ? Colors.white : Colors.black;
     final userStatusModel = Provider.of<UserData>(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: const Color.fromARGB(255, 21, 25, 34),
+      backgroundColor: widget.isToggled
+          ? const Color.fromARGB(255, 21, 25, 34)
+          : const Color.fromARGB(255, 243, 246, 254),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Form(
@@ -194,23 +198,31 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
                           },
                           child: Icon(
                             Icons.arrow_back_sharp,
-                            color: Colors.white,
+                            color: textColor,
                             size: 25.sp,
                           ),
                         ),
                         SizedBox(
                           height: 20.h,
                         ),
-                        StyledText(
-                          "Let's add a new status for this soldier ✍️",
-                          30.sp,
-                          fontWeight: FontWeight.bold,
+                        Text(
+                          "Edit the status for this soldier ✍️",
+                          style: GoogleFonts.poppins(
+                            fontSize: 30.sp,
+                            fontWeight: FontWeight.bold,
+                            color: textColor,
+                          ),
                         ),
-                        StyledText(
+
+                        Text(
                           "Fill in the details of the status",
-                          14.sp,
-                          fontWeight: FontWeight.w300,
+                          style: GoogleFonts.poppins(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w300,
+                            color: textColor,
+                          ),
                         ),
+
                         SizedBox(
                           height: 40.h,
                         ),
@@ -218,7 +230,7 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
                         Container(
                           decoration: BoxDecoration(
                             color: Colors.black54,
-                            border: Border.all(color: Colors.white),
+                            border: Border.all(color: textColor),
                             borderRadius: BorderRadius.circular(12.r),
                           ),
                           child: DropdownButtonFormField<String>(
@@ -264,7 +276,7 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
                         Container(
                           decoration: BoxDecoration(
                             color: Colors.black54,
-                            border: Border.all(color: Colors.white),
+                            border: Border.all(color: textColor),
                             borderRadius: BorderRadius.circular(12.r),
                           ),
                           child: Padding(
@@ -300,7 +312,7 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
                               width: 150.w,
                               decoration: BoxDecoration(
                                 color: Colors.black54,
-                                border: Border.all(color: Colors.white),
+                                border: Border.all(color: textColor),
                                 borderRadius: BorderRadius.circular(12.r),
                               ),
                               child: Padding(
@@ -320,9 +332,9 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
                                 onTap: () {
                                   _showStartDatePicker();
                                 },
-                                child: const Icon(
+                                child: Icon(
                                   Icons.date_range_rounded,
-                                  color: Colors.white,
+                                  color: textColor,
                                 ),
                               ),
                             ),
@@ -337,7 +349,7 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
                               height: 55.h,
                               decoration: BoxDecoration(
                                 color: Colors.black54,
-                                border: Border.all(color: Colors.white),
+                                border: Border.all(color: textColor),
                                 borderRadius: BorderRadius.circular(12.r),
                               ),
                               child: Padding(
@@ -357,9 +369,9 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
                                 onTap: () {
                                   _showEndDatePicker();
                                 },
-                                child: const Icon(
+                                child: Icon(
                                   Icons.date_range_rounded,
-                                  color: Colors.white,
+                                  color: textColor,
                                 ),
                               ),
                             ),
@@ -389,7 +401,7 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(
-                                    Icons.add_to_photos_rounded,
+                                    Icons.edit_document,
                                     color: Colors.white,
                                     size: 30.sp,
                                   ),
@@ -397,7 +409,7 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
                                     width: 20.w,
                                   ),
                                   AutoSizeText(
-                                    'ADD STATUS',
+                                    'UPDATE STATUS',
                                     style: GoogleFonts.poppins(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,

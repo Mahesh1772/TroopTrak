@@ -96,22 +96,6 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 20.h,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.0.w),
-                child: Text(
-                  'Our Family of Soldiers:',
-                  style: GoogleFonts.poppins(
-                      fontSize: 24.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).textTheme.bodyMedium?.color),
-                ),
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
               Padding(
                 padding: EdgeInsets.all(20.0.sp),
                 child: TextField(
@@ -121,7 +105,7 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                     });
                   },
                   decoration: InputDecoration(
-                    hintText: 'Search Name',
+                    hintText: 'Search...',
                     hintStyle: GoogleFonts.poppins(
                       color: Colors.white,
                     ),
@@ -142,20 +126,38 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                   ),
                 ),
               ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0.sp),
+                child: Text(
+                  "Search Mode: ",
+                  style: GoogleFonts.poppins(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.tertiary,
+                  ),
+                ),
+              ),
               Container(
-                padding: const EdgeInsets.all(5),
-                margin: const EdgeInsets.all(5),
+                padding: EdgeInsets.all(5.sp),
+                margin: EdgeInsets.all(5.sp),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Wrap(
-                      spacing: 10,
+                      spacing: 10.w,
                       children: categories
                           .asMap()
                           .entries
                           .map(
                             (category) => ChoiceChip(
+                              elevation: 5,
+                              pressElevation: 0,
+                              
                               selected: isSelectedList[category.key],
                               label: Text(category.value),
+                              labelStyle: GoogleFonts.poppins(
+                                color: Theme.of(context).colorScheme.tertiary,
+                                fontSize: 16.sp,
+                              ),
                               onSelected: (selected) {
                                 setState(() {
                                   isSelectedList = List.filled(
@@ -168,9 +170,12 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                                   print(selectedCategory);
                                 });
                               },
-                              selectedColor:
-                                  const Color.fromARGB(255, 198, 103, 214),
-                              backgroundColor: Colors.white,
+                              selectedColor: (_themeManager.themeMode ==
+                                      ThemeMode.dark)
+                                  ? const Color.fromARGB(255, 72, 30, 229)
+                                  : const Color.fromARGB(255, 198, 103, 214),
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.primary,
                             ),
                           )
                           .toList()),
@@ -245,6 +250,9 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                           enlistmentDate: userDetails[index]['enlistment'],
                           ordDate: userDetails[index]['ord'],
                           isInsideCamp: false,
+                          isToggled: (_themeManager.themeMode == ThemeMode.dark)
+                              ? true
+                              : false,
                         );
                       },
                     ),

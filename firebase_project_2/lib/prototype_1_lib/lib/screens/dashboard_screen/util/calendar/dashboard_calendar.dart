@@ -65,7 +65,8 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
                   DateFormat('d MMM yyyy h:mm a').parse(nowStrartTime);
 
               DateTime eDate;
-              if (conduct['endTime'].contains('AM') && conduct['startTime'].contains('PM')) {
+              if (conduct['endTime'].contains('AM') &&
+                  conduct['startTime'].contains('PM')) {
                 DateTime newDate =
                     DateFormat('d MMM yyyy').parse(conduct['startDate']);
                 newDate =
@@ -102,7 +103,8 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
               DateTime sDate =
                   DateFormat('d MMM yyyy').add_jm().parse(nowStrartTime);
               DateTime eDate;
-              if (duty['endTime'].contains('AM') && duty['startTime'].contains('PM')) {
+              if (duty['endTime'].contains('AM') &&
+                  duty['startTime'].contains('PM')) {
                 DateTime newDate =
                     DateFormat('d MMM yyyy').parse(duty['dutyDate']);
                 newDate =
@@ -127,14 +129,14 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
           return Scaffold(
             body: SfCalendarTheme(
               data: SfCalendarThemeData(
-                brightness: Brightness.dark,
-                backgroundColor: const Color.fromARGB(255, 21, 25, 34),
+                brightness: Theme.of(context).brightness,
+                backgroundColor: Theme.of(context).colorScheme.background,
               ),
               child: SfCalendar(
                 blackoutDatesTextStyle: GoogleFonts.poppins(
                   fontWeight: FontWeight.w500,
                   fontSize: 18.sp,
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.tertiary,
                 ),
                 allowedViews: const [
                   CalendarView.day,
@@ -154,7 +156,7 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
                 controller: _controller,
                 allowViewNavigation: true,
                 showCurrentTimeIndicator: true,
-                cellBorderColor: Colors.white,
+                cellBorderColor: Theme.of(context).colorScheme.tertiary,
                 appointmentTextStyle: GoogleFonts.poppins(
                     color: Colors.black,
                     fontSize: 18.sp,
@@ -166,60 +168,66 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
                     appointmentTextStyle: GoogleFonts.poppins(
                       fontWeight: FontWeight.w500,
                       fontSize: 18.sp,
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.tertiary,
                     ),
                     dayTextStyle: GoogleFonts.poppins(
                       fontWeight: FontWeight.w500,
                       fontSize: 18.sp,
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.tertiary,
                     ),
                     dateTextStyle: GoogleFonts.poppins(
                       fontWeight: FontWeight.w500,
                       fontSize: 18.sp,
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.tertiary,
                     ),
                   ),
                   monthCellStyle: MonthCellStyle(
                     textStyle: GoogleFonts.poppins(
                       fontWeight: FontWeight.w500,
                       fontSize: 18.sp,
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.tertiary,
                     ),
                     trailingDatesTextStyle: GoogleFonts.poppins(
                       fontWeight: FontWeight.w500,
-                      fontSize: 18.sp,
-                      color: Colors.white70,
+                      fontSize: 16.sp,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .tertiary
+                          .withOpacity(0.7),
                     ),
                     leadingDatesTextStyle: GoogleFonts.poppins(
                       fontWeight: FontWeight.w500,
-                      fontSize: 18.sp,
-                      color: Colors.white70,
+                      fontSize: 16.sp,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .tertiary
+                          .withOpacity(0.7),
                     ),
                   ),
                 ),
-                backgroundColor: const Color.fromARGB(255, 21, 25, 34),
+                backgroundColor: Theme.of(context).colorScheme.background,
                 showDatePickerButton: true,
                 headerStyle: CalendarHeaderStyle(
                   backgroundColor: Colors.deepPurple.shade400,
                   textStyle: GoogleFonts.poppins(
                     fontWeight: FontWeight.w500,
                     fontSize: 24.sp,
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
                   textAlign: TextAlign.center,
                 ),
                 todayTextStyle: GoogleFonts.poppins(
                   fontSize: 16.sp,
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.tertiary,
                 ),
                 viewHeaderStyle: ViewHeaderStyle(
                   dateTextStyle: GoogleFonts.poppins(
                     fontSize: 14.sp,
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
                   dayTextStyle: GoogleFonts.poppins(
                     fontSize: 18.sp,
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
                 ),
                 view: CalendarView.schedule,
@@ -230,7 +238,7 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
                   //numberOfDaysInView: 1,
                   timeIntervalHeight: 100.h,
                   timeTextStyle: GoogleFonts.poppins(
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.tertiary,
                     fontWeight: FontWeight.w500,
                     fontSize: 16.sp,
                   ),
@@ -248,12 +256,12 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
                     dayTextStyle: GoogleFonts.poppins(
                       fontSize: 10.sp,
                       fontWeight: FontWeight.w400,
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.tertiary,
                     ),
                     dateTextStyle: GoogleFonts.poppins(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.w500,
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.tertiary,
                     ),
                   ),
                   monthHeaderSettings: MonthHeaderSettings(
@@ -268,12 +276,15 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
                     weekTextStyle: GoogleFonts.poppins(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w400,
-                        color: Colors.white70),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .tertiary
+                            .withOpacity(0.7)),
                   ),
                   placeholderTextStyle: GoogleFonts.poppins(
                     fontSize: 15.sp,
                     fontWeight: FontWeight.w400,
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
                 ),
               ),
@@ -305,6 +316,7 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
             style: GoogleFonts.poppins(
               fontSize: 20.sp,
               fontWeight: FontWeight.w500,
+              color: Colors.black,
             ),
           ),
         )

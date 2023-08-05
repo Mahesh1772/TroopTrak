@@ -9,14 +9,15 @@ import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/u
 
 // ignore: must_be_immutable
 class BasicInfoTab extends StatefulWidget {
-  BasicInfoTab({
-    super.key,
-    required this.docID,
-    required this.callback,
-  });
+  BasicInfoTab(
+      {super.key,
+      required this.docID,
+      required this.callback,
+      required this.isToggled});
 
   final String docID;
   late Function callback;
+  final bool isToggled;
 
   @override
   State<BasicInfoTab> createState() => _BasicInfoTabState();
@@ -77,26 +78,31 @@ class _BasicInfoTabState extends State<BasicInfoTab> {
                     title: "Date Of Birth",
                     content: data['dob'].toString().toUpperCase(),
                     icon: Icons.cake_rounded,
+                    isToggled: widget.isToggled,
                   ),
                   SoldierDetailedInfoTemplate(
                     title: "Ration Type:",
                     content: data['rationType'].toUpperCase(),
                     icon: Icons.food_bank_rounded,
+                    isToggled: widget.isToggled,
                   ),
                   SoldierDetailedInfoTemplate(
                     title: "Blood Type:",
                     content: data['bloodgroup'].toString(),
                     icon: Icons.bloodtype_rounded,
+                    isToggled: widget.isToggled,
                   ),
                   SoldierDetailedInfoTemplate(
                     title: "Enlistment Date:",
                     content: data['enlistment'].toString().toUpperCase(),
                     icon: Icons.date_range_rounded,
+                    isToggled: widget.isToggled,
                   ),
                   SoldierDetailedInfoTemplate(
                     title: "ORD:",
                     content: data['ord'].toString().toUpperCase(),
                     icon: Icons.military_tech_rounded,
+                    isToggled: widget.isToggled,
                   ),
                   SizedBox(
                     height: 30.h,

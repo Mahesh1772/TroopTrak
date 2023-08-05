@@ -18,7 +18,10 @@ List<Map<String, dynamic>> userBookInStatus = [];
 class UserProfileAttendanceTab extends StatefulWidget {
   const UserProfileAttendanceTab({
     super.key,
+    required this.isToggled,
   });
+
+  final bool isToggled;
 
   @override
   State<UserProfileAttendanceTab> createState() =>
@@ -28,6 +31,7 @@ class UserProfileAttendanceTab extends StatefulWidget {
 class _UserProfileAttendanceTabState extends State<UserProfileAttendanceTab> {
   @override
   Widget build(BuildContext context) {
+    final Color textColor = widget.isToggled ? Colors.white : Colors.black;
     final statusModel = Provider.of<UserData>(context);
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -67,7 +71,7 @@ class _UserProfileAttendanceTabState extends State<UserProfileAttendanceTab> {
                   children: [
                     Icon(
                       Icons.outbond,
-                      color: Colors.white,
+                      color: textColor,
                       size: 30.sp,
                     ),
                     SizedBox(
@@ -77,7 +81,7 @@ class _UserProfileAttendanceTabState extends State<UserProfileAttendanceTab> {
                       "Book In / Book Out",
                       maxLines: 2,
                       style: GoogleFonts.poppins(
-                        color: Colors.white,
+                        color: textColor,
                         fontSize: 20.sp,
                         fontWeight: FontWeight.w500,
                         letterSpacing: 1.5,

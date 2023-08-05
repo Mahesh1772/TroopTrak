@@ -98,7 +98,7 @@ class _UpdateAttendanceScreenState extends State<UpdateAttendanceScreen> {
     //final userStatusModel = Provider.of<UserData>(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: const Color.fromARGB(255, 21, 25, 34),
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: SingleChildScrollView(
         child: SafeArea(
           child: Form(

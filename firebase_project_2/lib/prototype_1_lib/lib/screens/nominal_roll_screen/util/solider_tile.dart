@@ -26,6 +26,7 @@ class SoldierTile extends StatefulWidget {
   final String ordDate;
   late bool isInsideCamp;
   final String docID;
+  final bool isToggled;
 
   SoldierTile({
     super.key,
@@ -42,6 +43,7 @@ class SoldierTile extends StatefulWidget {
     required this.ordDate,
     required this.isInsideCamp,
     required this.docID,
+    required this.isToggled,
   });
 
   @override
@@ -329,6 +331,7 @@ class _SoldierTileState extends State<SoldierTile> {
           (BuildContext context, void Function({Object? returnValue}) action) {
         return SoldierDetailedScreen(
           docID: widget.docID,
+          isToggled: widget.isToggled,
         );
       },
       closedColor: Colors.transparent,

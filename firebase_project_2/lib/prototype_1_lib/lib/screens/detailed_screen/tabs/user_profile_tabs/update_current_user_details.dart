@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:firebase_project_2/prototype_1_lib/lib/util/text_styles/text_style.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -26,6 +25,7 @@ class UpdateCurrentUserDetailsPage extends StatefulWidget {
     required this.selectedBloodType,
     required this.docID,
     required this.callback,
+    required this.isToggled,
   });
 
   late TextEditingController name;
@@ -41,6 +41,7 @@ class UpdateCurrentUserDetailsPage extends StatefulWidget {
   late String? selectedRank;
   late String? selectedBloodType;
   late Function callback;
+  final bool isToggled;
 
   @override
   State<UpdateCurrentUserDetailsPage> createState() =>
@@ -63,10 +64,7 @@ class _UpdateCurrentUserDetailsPageState
   String _selectedBloodType = '';
 
   Future goBackWithoutChanges() async {
-    await FirebaseFirestore.instance
-        .collection('Users')
-        .doc(name)
-        .update({
+    await FirebaseFirestore.instance.collection('Users').doc(name).update({
       //User map formatting
       'rank': _selectedRank,
       'name': _name,
@@ -215,10 +213,7 @@ class _UpdateCurrentUserDetailsPageState
   }
 
   Future addUserDetails() async {
-    await FirebaseFirestore.instance
-        .collection('Users')
-        .doc(name)
-        .set({
+    await FirebaseFirestore.instance.collection('Users').doc(name).set({
       //User map formatting
       'rank': widget.selectedRank,
       'name': _name.text.trim(), //widget.name.text.trim(),
@@ -245,10 +240,13 @@ class _UpdateCurrentUserDetailsPageState
 
   @override
   Widget build(context) {
+    final Color textColor = widget.isToggled ? Colors.white : Colors.black;
     print(name);
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: const Color.fromARGB(255, 21, 25, 34),
+      backgroundColor: widget.isToggled
+          ? const Color.fromARGB(255, 21, 25, 34)
+          : const Color.fromARGB(255, 243, 246, 254),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -264,22 +262,26 @@ class _UpdateCurrentUserDetailsPageState
                   },
                   child: Icon(
                     Icons.arrow_back_sharp,
-                    color: Colors.white,
+                    color: textColor,
                     size: 25.sp,
                   ),
                 ),
                 SizedBox(
                   height: 20.h,
                 ),
-                StyledText(
+                Text(
                   "Change details  ✍️",
-                  30.sp,
-                  fontWeight: FontWeight.bold,
+                  style: GoogleFonts.poppins(
+                      fontSize: 30.sp,
+                      fontWeight: FontWeight.bold,
+                      color: textColor),
                 ),
-                StyledText(
+                Text(
                   "Update the details of an existing soldier.",
-                  14.sp,
-                  fontWeight: FontWeight.w300,
+                  style: GoogleFonts.poppins(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w300,
+                      color: textColor),
                 ),
 
                 SizedBox(
@@ -290,7 +292,7 @@ class _UpdateCurrentUserDetailsPageState
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.black54,
-                    border: Border.all(color: Colors.white),
+                    border: Border.all(color: textColor),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Padding(
@@ -328,7 +330,7 @@ class _UpdateCurrentUserDetailsPageState
                         width: 177.w,
                         decoration: BoxDecoration(
                           color: Colors.black54,
-                          border: Border.all(color: Colors.white),
+                          border: Border.all(color: textColor),
                           borderRadius: BorderRadius.circular(12.r),
                         ),
                         child: Row(
@@ -361,7 +363,7 @@ class _UpdateCurrentUserDetailsPageState
                       width: 240.w,
                       decoration: BoxDecoration(
                         color: Colors.black54,
-                        border: Border.all(color: Colors.white),
+                        border: Border.all(color: textColor),
                         borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: Center(
@@ -420,7 +422,7 @@ class _UpdateCurrentUserDetailsPageState
                       width: 185.w,
                       decoration: BoxDecoration(
                         color: Colors.black54,
-                        border: Border.all(color: Colors.white),
+                        border: Border.all(color: textColor),
                         borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: Center(
@@ -462,15 +464,14 @@ class _UpdateCurrentUserDetailsPageState
                       width: 235.w,
                       decoration: BoxDecoration(
                         color: Colors.black54,
-                        border: Border.all(color: Colors.white),
+                        border: Border.all(color: textColor),
                         borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: Center(
                         child: DropdownButtonFormField<String>(
                           dropdownColor: Colors.black54,
                           alignment: Alignment.center,
-                          value:
-                              widget.selectedBloodType,
+                          value: widget.selectedBloodType,
                           icon: const Icon(
                             Icons.water_drop_sharp,
                             color: Colors.red,
@@ -509,7 +510,7 @@ class _UpdateCurrentUserDetailsPageState
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.black54,
-                    border: Border.all(color: Colors.white),
+                    border: Border.all(color: textColor),
                     borderRadius: BorderRadius.circular(12.r),
                   ),
                   child: Padding(
@@ -539,7 +540,7 @@ class _UpdateCurrentUserDetailsPageState
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.black54,
-                    border: Border.all(color: Colors.white),
+                    border: Border.all(color: textColor),
                     borderRadius: BorderRadius.circular(12.r),
                   ),
                   child: Padding(
@@ -569,7 +570,7 @@ class _UpdateCurrentUserDetailsPageState
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.black54,
-                    border: Border.all(color: Colors.white),
+                    border: Border.all(color: textColor),
                     borderRadius: BorderRadius.circular(12.r),
                   ),
                   child: Padding(
@@ -599,7 +600,7 @@ class _UpdateCurrentUserDetailsPageState
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.black54,
-                    border: Border.all(color: Colors.white),
+                    border: Border.all(color: textColor),
                     borderRadius: BorderRadius.circular(12.r),
                   ),
                   child: Padding(
@@ -637,7 +638,7 @@ class _UpdateCurrentUserDetailsPageState
                         width: 200.w,
                         decoration: BoxDecoration(
                           color: Colors.black54,
-                          border: Border.all(color: Colors.white),
+                          border: Border.all(color: textColor),
                           borderRadius: BorderRadius.circular(12.r),
                         ),
                         child: Row(
@@ -677,7 +678,7 @@ class _UpdateCurrentUserDetailsPageState
                         width: 200.w,
                         decoration: BoxDecoration(
                           color: Colors.black54,
-                          border: Border.all(color: Colors.white),
+                          border: Border.all(color: textColor),
                           borderRadius: BorderRadius.circular(12.r),
                         ),
                         child: Row(
