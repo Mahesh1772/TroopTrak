@@ -148,6 +148,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     specDetails = [];
                     fullList = {};
                     counter = 0;
+                    statusDetails = [];
+                    _maDetails = [];
 // Create a Completer to delay the execution until we have collected data from all 'Statuses' subcollections
 
                     StreamController<void> controller =
