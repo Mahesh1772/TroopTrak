@@ -117,94 +117,94 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(12.0.r)),
-                gradient: const LinearGradient(
-                  colors: [
-                    Color.fromARGB(255, 72, 30, 229),
-                    Color.fromARGB(255, 130, 60, 229),
-                  ],
-                ),
-              ),
-              child: SafeArea(
-                child: StreamBuilder2<DocumentSnapshot<Map<String, dynamic>>,
-                        QuerySnapshot>(
-                    streams: StreamTuple2(
-                        conductModel.conduct_data(widget.conductID),
-                        conductModel.data),
-                    builder: (context, snapshots) {
-                      if (snapshots.snapshot1.hasData) {
-                        conductData = snapshots.snapshot1.data!.data()
-                            as Map<String, dynamic>;
-                        conductData
-                            .addEntries({'ID': widget.conductID}.entries);
+            SafeArea(
+              child: StreamBuilder2<DocumentSnapshot<Map<String, dynamic>>,
+                      QuerySnapshot>(
+                  streams: StreamTuple2(
+                      conductModel.conduct_data(widget.conductID),
+                      conductModel.data),
+                  builder: (context, snapshots) {
+                    if (snapshots.snapshot1.hasData) {
+                      conductData = snapshots.snapshot1.data!.data()
+                          as Map<String, dynamic>;
+                      conductData.addEntries({'ID': widget.conductID}.entries);
 
-                        documentIDs.removeWhere((element) =>
-                            conductData['participants'].contains(element));
-                      }
-                      if (snapshots.snapshot2.hasData) {
-                        List? users = snapshots.snapshot2.data?.docs.toList();
-                        documentIDs = [];
-                        userDetails = [];
-                        nonParticipants = [];
+                      documentIDs.removeWhere((element) =>
+                          conductData['participants'].contains(element));
+                    }
+                    if (snapshots.snapshot2.hasData) {
+                      List? users = snapshots.snapshot2.data?.docs.toList();
+                      documentIDs = [];
+                      userDetails = [];
+                      nonParticipants = [];
 
-                        if (searchText.isNotEmpty) {
-                          users = users!.where((element) {
-                            return element
-                                .get('name')
-                                .toString()
-                                .toLowerCase()
-                                .contains(searchText.toLowerCase());
-                          }).toList();
-                          for (var user in users) {
-                            var data = user.data();
-                            if (conductData['participants']
-                                .contains(user['name'])) {
-                              userDetails.add(data as Map<String, dynamic>);
-                            } else {
-                              nonParticipants.add(data as Map<String, dynamic>);
-                            }
-                          }
-
-                          if (userDetails.isEmpty && nonParticipants.isEmpty) {
-                            return Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Center(
-                                  child: Text(
-                                    'Nothing to see here...yet.',
-                                    style: GoogleFonts.poppins(
-                                      color: Colors.lightBlue,
-                                      fontSize: 24.sp,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              ],
-                            );
-                          }
-                        } else {
-                          for (var user in users!) {
-                            var data = user.data();
-                            if (conductData['participants']
-                                .contains(user['name'])) {
-                              userDetails.add(data as Map<String, dynamic>);
-                            } else {
-                              nonParticipants.add(data as Map<String, dynamic>);
-                            }
+                      if (searchText.isNotEmpty) {
+                        users = users!.where((element) {
+                          return element
+                              .get('name')
+                              .toString()
+                              .toLowerCase()
+                              .contains(searchText.toLowerCase());
+                        }).toList();
+                        for (var user in users) {
+                          var data = user.data();
+                          if (conductData['participants']
+                              .contains(user['name'])) {
+                            userDetails.add(data as Map<String, dynamic>);
+                          } else {
+                            nonParticipants.add(data as Map<String, dynamic>);
                           }
                         }
-                        userDetails.removeWhere(
-                            (element) => toRemove.contains(element));
-                        nonParticipants.removeWhere(
-                            (element) => toRemove.contains(element));
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
+
+                        if (userDetails.isEmpty && nonParticipants.isEmpty) {
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Center(
+                                child: Text(
+                                  'Nothing to see here...yet.',
+                                  style: GoogleFonts.poppins(
+                                    color: Colors.lightBlue,
+                                    fontSize: 24.sp,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          );
+                        }
+                      } else {
+                        for (var user in users!) {
+                          var data = user.data();
+                          if (conductData['participants']
+                              .contains(user['name'])) {
+                            userDetails.add(data as Map<String, dynamic>);
+                          } else {
+                            nonParticipants.add(data as Map<String, dynamic>);
+                          }
+                        }
+                      }
+                      userDetails
+                          .removeWhere((element) => toRemove.contains(element));
+                      nonParticipants
+                          .removeWhere((element) => toRemove.contains(element));
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12.0.r)),
+                              gradient: const LinearGradient(
+                                colors: [
+                                  Color.fromARGB(255, 72, 30, 229),
+                                  Color.fromARGB(255, 130, 60, 229),
+                                ],
+                              ),
+                            ),
+                            child: Padding(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 10.w, vertical: 20.h),
                               child: Column(
@@ -375,177 +375,197 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
                                 ],
                               ),
                             ),
-                            SizedBox(
-                              height: 10.h,
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(20.0.sp),
+                            child: TextField(
+                              onChanged: (value) {
+                                setState(() {
+                                  searchText = value;
+                                });
+                              },
+                              decoration: InputDecoration(
+                                hintText: 'Search Name',
+                                hintStyle: GoogleFonts.poppins(
+                                  color: Colors.white,
+                                ),
+                                focusColor: Colors.white,
+                                prefixIcon: const Icon(
+                                  Icons.search_sharp,
+                                  color: Colors.white,
+                                ),
+                                prefixIconColor: Colors.white,
+                                fillColor:
+                                    const Color.fromARGB(255, 72, 30, 229),
+                                filled: true,
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.r),
+                                    borderSide: BorderSide.none),
+                              ),
+                              style: GoogleFonts.poppins(
+                                color: Colors.white,
+                              ),
                             ),
-                          ],
-                        );
-                      }
-                      return const Center(
-                        child: CircularProgressIndicator(),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    StyledText("Participants", 24.sp,
+                                        fontWeight: FontWeight.w500),
+                                    SizedBox(
+                                      height: 250,
+                                      child: ListView.builder(
+                                          itemCount: userDetails.length,
+                                          itemBuilder: (context, index) {
+                                            return Container(
+                                              padding: EdgeInsets.all(16.0.sp),
+                                              child: Row(
+                                                children: [
+                                                  Container(
+                                                    padding:
+                                                        EdgeInsets.all(20.0.sp),
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: Colors.transparent,
+                                                      border: Border.all(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .tertiary,
+                                                      ),
+                                                    ),
+                                                    child: Center(
+                                                      child: Image.asset(
+                                                        "lib/assets/army-ranks/${userDetails[index]['rank'].toString().toLowerCase()}.png",
+                                                        width: 20,
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .tertiary,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            16.0),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        StyledText(
+                                                            userDetails[index]
+                                                                    ['name']
+                                                                .toString()
+                                                                .titleCase,
+                                                            18,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600),
+                                                      ],
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            );
+                                          }),
+                                    ),
+                                    SizedBox(
+                                      height: 20.h,
+                                    ),
+                                    StyledText("Non-Participants", 24.sp,
+                                        fontWeight: FontWeight.w500),
+                                    SizedBox(
+                                      height: 250,
+                                      child: ListView.builder(
+                                          itemCount: nonParticipants.length,
+                                          itemBuilder: (context, index) {
+                                            return Container(
+                                              padding: EdgeInsets.all(16.0.sp),
+                                              child: Row(
+                                                children: [
+                                                  Container(
+                                                    padding:
+                                                        EdgeInsets.all(20.0.sp),
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: Colors.transparent,
+                                                      border: Border.all(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .tertiary,
+                                                      ),
+                                                    ),
+                                                    child: Center(
+                                                      child: Image.asset(
+                                                        "lib/assets/army-ranks/${nonParticipants[index]['rank'].toString().toLowerCase()}.png",
+                                                        width: 20,
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .tertiary,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            16.0),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        StyledText(
+                                                            nonParticipants[
+                                                                        index]
+                                                                    ['name']
+                                                                .toString()
+                                                                .titleCase,
+                                                            18,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600),
+                                                        StyledText(
+                                                            soldierReason[
+                                                                    nonParticipants[
+                                                                            index]
+                                                                        [
+                                                                        'name']] ??
+                                                                excuseText,
+                                                            14,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w400),
+                                                      ],
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            );
+                                          }),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       );
-                    }),
-              ),
+                    }
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }),
             ),
             SizedBox(height: 20.h),
-            Padding(
-              padding: EdgeInsets.all(20.0.sp),
-              child: TextField(
-                onChanged: (value) {
-                  setState(() {
-                    searchText = value;
-                  });
-                },
-                decoration: InputDecoration(
-                  hintText: 'Search Name',
-                  hintStyle: GoogleFonts.poppins(
-                    color: Colors.white,
-                  ),
-                  focusColor: Colors.white,
-                  prefixIcon: const Icon(
-                    Icons.search_sharp,
-                    color: Colors.white,
-                  ),
-                  prefixIconColor: Colors.white,
-                  fillColor: const Color.fromARGB(255, 72, 30, 229),
-                  filled: true,
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.r),
-                      borderSide: BorderSide.none),
-                ),
-                style: GoogleFonts.poppins(
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      StyledText("Participants", 24.sp,
-                          fontWeight: FontWeight.w500),
-                      SizedBox(
-                        height: 250,
-                        child: ListView.builder(
-                            itemCount: userDetails.length,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                padding: EdgeInsets.all(16.0.sp),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.all(20.0.sp),
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.transparent,
-                                        border: Border.all(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .tertiary,
-                                        ),
-                                      ),
-                                      child: Center(
-                                        child: Image.asset(
-                                          "lib/assets/army-ranks/${userDetails[index]['rank'].toString().toLowerCase()}.png",
-                                          width: 20,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .tertiary,
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(16.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          StyledText(
-                                              userDetails[index]['name']
-                                                  .toString()
-                                                  .titleCase,
-                                              18,
-                                              fontWeight: FontWeight.w600),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              );
-                            }),
-                      ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      StyledText("Non-Participants", 24.sp,
-                          fontWeight: FontWeight.w500),
-                      SizedBox(
-                        height: 250,
-                        child: ListView.builder(
-                            itemCount: nonParticipants.length,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                padding: EdgeInsets.all(16.0.sp),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.all(20.0.sp),
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.transparent,
-                                        border: Border.all(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .tertiary,
-                                        ),
-                                      ),
-                                      child: Center(
-                                        child: Image.asset(
-                                          "lib/assets/army-ranks/${nonParticipants[index]['rank'].toString().toLowerCase()}.png",
-                                          width: 20,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .tertiary,
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(16.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          StyledText(
-                                              nonParticipants[index]['name']
-                                                  .toString()
-                                                  .titleCase,
-                                              18,
-                                              fontWeight: FontWeight.w600),
-                                          StyledText(
-                                              soldierReason[
-                                                      nonParticipants[index]
-                                                          ['name']] ??
-                                                  excuseText,
-                                              14,
-                                              fontWeight: FontWeight.w400),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              );
-                            }),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
           ],
         ),
       ),

@@ -51,7 +51,9 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
     }
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 21, 25, 34),
+      backgroundColor: widget.isToggled
+          ? const Color.fromARGB(255, 21, 25, 34)
+          : const Color.fromARGB(255, 243, 246, 254),
       body: SingleChildScrollView(
         child: StreamBuilder(
             stream: soldierModel.userData_data(widget.docID),
@@ -240,6 +242,7 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
 
                             AttendanceTab(
                               docID: widget.docID,
+                              isToggled: widget.isToggled,
                             ),
                           ],
                         ),

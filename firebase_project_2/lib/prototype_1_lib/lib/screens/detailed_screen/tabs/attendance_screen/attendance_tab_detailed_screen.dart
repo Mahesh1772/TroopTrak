@@ -14,9 +14,11 @@ class AttendanceTab extends StatefulWidget {
   const AttendanceTab({
     super.key,
     required this.docID,
+    required this.isToggled,
   });
 
   final String docID;
+  final bool isToggled;
 
   @override
   State<AttendanceTab> createState() => _AttendanceTabState();
@@ -113,6 +115,7 @@ class _AttendanceTabState extends State<AttendanceTab> {
                           attendanceID: userBookInStatus[index]['ID'],
                           timeStamp: userBookInStatus[index]['date&time'],
                           isInsideCamp: userBookInStatus[index]['isInsideCamp'],
+                          isToggled: widget.isToggled,
                         );
                       },
                     ),
