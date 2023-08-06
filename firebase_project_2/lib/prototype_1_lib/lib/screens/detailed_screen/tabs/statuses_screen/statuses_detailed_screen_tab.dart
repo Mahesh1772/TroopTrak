@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/tabs/statuses_screen/add_new_status_screen.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/tabs/statuses_screen/update_status_screen.dart';
-import 'package:firebase_project_2/prototype_1_lib/lib/util/text_styles/text_style.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/util/current_status_detailed_screen_tile.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/util/past_status_detailed_screen_tile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -125,8 +124,8 @@ class _StatusesTabState extends State<StatusesTab> {
                           statusName: userCurrentStatus[index]['statusName'],
                           startDate: userCurrentStatus[index]['startDate'],
                           endDate: userCurrentStatus[index]['endDate'],
-                          start_date:  userCurrentStatus[index]['start_id'],
-                          end_date:  userCurrentStatus[index]['end_id'],
+                          start_date: userCurrentStatus[index]['start_id'],
+                          end_date: userCurrentStatus[index]['end_id'],
                         ),
                       );
                     },
@@ -216,8 +215,14 @@ class _StatusesTabState extends State<StatusesTab> {
                           SizedBox(
                             width: 20.w,
                           ),
-                          StyledText("ADD NEW STATUS", 18.sp,
-                              fontWeight: FontWeight.bold),
+                          Text(
+                            "ADD NEW STATUS",
+                            style: GoogleFonts.poppins(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
                         ],
                       ),
                     ),

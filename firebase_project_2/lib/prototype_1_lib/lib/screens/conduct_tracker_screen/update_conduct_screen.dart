@@ -217,7 +217,7 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
     final userModel = Provider.of<UserData>(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: const Color.fromARGB(255, 21, 25, 34),
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -234,7 +234,7 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
                   },
                   child: Icon(
                     Icons.arrow_back_sharp,
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.tertiary,
                     size: 25.sp,
                   ),
                 ),
@@ -259,7 +259,8 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
                   height: 70.h,
                   decoration: BoxDecoration(
                     color: Colors.black54,
-                    border: Border.all(color: Colors.white),
+                    border: Border.all(
+                        color: Theme.of(context).colorScheme.tertiary),
                     borderRadius: BorderRadius.circular(12.r),
                   ),
                   child: Center(
@@ -302,7 +303,8 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.black54,
-                    border: Border.all(color: Colors.white),
+                    border: Border.all(
+                        color: Theme.of(context).colorScheme.tertiary),
                     borderRadius: BorderRadius.circular(12.r),
                   ),
                   child: Padding(
@@ -338,7 +340,8 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
                     width: double.maxFinite,
                     decoration: BoxDecoration(
                       color: Colors.black54,
-                      border: Border.all(color: Colors.white),
+                      border: Border.all(
+                          color: Theme.of(context).colorScheme.tertiary),
                       borderRadius: BorderRadius.circular(12.r),
                     ),
                     child: Row(
@@ -380,7 +383,8 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
                         width: 200.w,
                         decoration: BoxDecoration(
                           color: Colors.black54,
-                          border: Border.all(color: Colors.white),
+                          border: Border.all(
+                              color: Theme.of(context).colorScheme.tertiary),
                           borderRadius: BorderRadius.circular(12.r),
                         ),
                         child: Row(
@@ -418,7 +422,8 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
                         width: 200.w,
                         decoration: BoxDecoration(
                           color: Colors.black54,
-                          border: Border.all(color: Colors.white),
+                          border: Border.all(
+                              color: Theme.of(context).colorScheme.tertiary),
                           borderRadius: BorderRadius.circular(12.r),
                         ),
                         child: Row(
@@ -464,14 +469,24 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
                       });
                     },
                     decoration: InputDecoration(
-                      hintText: 'Search Name',
-                      prefixIcon: const Icon(Icons.search_sharp),
-                      prefixIconColor: Colors.indigo.shade900,
-                      fillColor: Colors.amber,
+                      hintText: 'Search...',
+                      hintStyle: GoogleFonts.poppins(
+                        color: Colors.white,
+                      ),
+                      focusColor: Colors.white,
+                      prefixIcon: const Icon(
+                        Icons.search_sharp,
+                        color: Colors.white,
+                      ),
+                      prefixIconColor: Colors.white,
+                      fillColor: const Color.fromARGB(255, 72, 30, 229),
                       filled: true,
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.r),
                           borderSide: BorderSide.none),
+                    ),
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
                     ),
                   ),
                 ),
@@ -559,12 +574,16 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
                               child: Card(
                                 color: Colors.black54,
                                 child: ListTile(
-                                  title: StyledText(
-                                      userDetails[index]['name']
-                                          .toString()
-                                          .titleCase,
-                                      16.sp,
-                                      fontWeight: FontWeight.w500),
+                                  title: Text(
+                                    userDetails[index]['name']
+                                        .toString()
+                                        .titleCase,
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                   leading: Container(
                                     height: 40.h,
                                     width: 100.w,
@@ -577,14 +596,18 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Center(
-                                      child: StyledText(
-                                          tempArray.contains(userDetails[index]
-                                                      ['name']
-                                                  .toString())
-                                              ? "REMOVE"
-                                              : "ADD",
-                                          18.sp,
-                                          fontWeight: FontWeight.bold),
+                                      child: Text(
+                                        tempArray.contains(userDetails[index]
+                                                    ['name']
+                                                .toString())
+                                            ? "REMOVE"
+                                            : "ADD",
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 18.sp,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),

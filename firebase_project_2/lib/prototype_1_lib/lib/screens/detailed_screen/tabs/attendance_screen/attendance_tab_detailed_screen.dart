@@ -35,6 +35,7 @@ class _AttendanceTabState extends State<AttendanceTab> {
 
   @override
   Widget build(BuildContext context) {
+    Color textColor = widget.isToggled ? Colors.white : Colors.black;
     print(widget.docID);
     final statusModel = Provider.of<UserData>(context);
     return Scaffold(
@@ -85,7 +86,7 @@ class _AttendanceTabState extends State<AttendanceTab> {
                     children: [
                       Icon(
                         Icons.outbond,
-                        color: Colors.white,
+                        color: textColor,
                         size: 30.sp,
                       ),
                       SizedBox(
@@ -95,7 +96,7 @@ class _AttendanceTabState extends State<AttendanceTab> {
                         "Book In / Book Out",
                         maxLines: 2,
                         style: GoogleFonts.poppins(
-                          color: Colors.white,
+                          color: textColor,
                           fontSize: 20.sp,
                           fontWeight: FontWeight.w500,
                           letterSpacing: 1.5,

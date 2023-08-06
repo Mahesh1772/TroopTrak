@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/tabs/basic_info_screen/update_soldier_details_screen.dart';
-import 'package:firebase_project_2/prototype_1_lib/lib/util/text_styles/text_style.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/user_models/user_details.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/util/soldier_detailed_screen_info_template.dart';
@@ -157,8 +157,14 @@ class _BasicInfoTabState extends State<BasicInfoTab> {
                             SizedBox(
                               width: 20.w,
                             ),
-                            StyledText("EDIT SOLDIER DETAILS", 18.sp,
-                                fontWeight: FontWeight.bold),
+                            Text(
+                              "EDIT SOLDIER DETAILS",
+                              style: GoogleFonts.poppins(
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -194,8 +200,14 @@ class _BasicInfoTabState extends State<BasicInfoTab> {
                             SizedBox(
                               width: 20.w,
                             ),
-                            StyledText("DELETE SOLDIER DETAILS", 18.sp,
-                                fontWeight: FontWeight.bold),
+                            Text(
+                              "DELETE SOLDIER DETAILS",
+                              style: GoogleFonts.poppins(
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
                             SizedBox(
                               height: 30.h,
                             )

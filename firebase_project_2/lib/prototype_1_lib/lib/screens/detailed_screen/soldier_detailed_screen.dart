@@ -28,6 +28,8 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
 
   @override
   Widget build(BuildContext context) {
+    Color textColor = widget.isToggled ? Colors.white : Colors.black;
+
     final soldierModel = Provider.of<UserData>(context);
     TabController tabController = TabController(length: 3, vsync: this);
 
@@ -190,33 +192,39 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
                         height: 10.h,
                       ),
                       TabBar(
+                        indicatorColor: const Color.fromARGB(255, 72, 30, 229),
+                        labelColor: textColor,
+                        unselectedLabelStyle: GoogleFonts.poppins(
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: 1.5,
+                            color: textColor),
                         labelStyle: GoogleFonts.poppins(
-                          color: Colors.white,
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.w500,
-                          letterSpacing: 1.5,
-                        ),
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: 1.5,
+                            color: textColor),
                         controller: tabController,
-                        tabs: const [
+                        tabs: [
                           Tab(
                             text: "BASIC INFO",
                             icon: Icon(
                               Icons.info,
-                              color: Colors.white,
+                              color: textColor,
                             ),
                           ),
                           Tab(
                             text: "STATUSES",
                             icon: Icon(
                               Icons.warning_rounded,
-                              color: Colors.white,
+                              color: textColor,
                             ),
                           ),
                           Tab(
                             text: "ATTENDANCE",
                             icon: Icon(
                               Icons.person_add_alt_1,
-                              color: Colors.white,
+                              color: textColor,
                             ),
                           ),
                         ],

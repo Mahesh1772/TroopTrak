@@ -110,6 +110,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Color backgroundColor = Theme.of(context).colorScheme.background;
     statusList = [];
     _maList = [];
     List<Map<String, dynamic>> _maDetails = [];
@@ -136,7 +137,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: backgroundColor,
         body: SingleChildScrollView(
           child: SafeArea(
             child: StreamBuilder<QuerySnapshot>(
@@ -349,6 +350,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           userDetails:
                                               inCamp(officerDetails, false),
                                           fullList: fullList,
+                                          isToggled: (backgroundColor ==
+                                                  const Color.fromARGB(
+                                                      255, 243, 246, 254))
+                                              ? false
+                                              : true,
                                         ),
                                         CurrentStrengthBreakdownTile(
                                           title: "Total WOSEs",
@@ -362,6 +368,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           userDetails:
                                               inCamp(specDetails, false),
                                           fullList: fullList,
+                                          isToggled: (backgroundColor ==
+                                                  const Color.fromARGB(
+                                                      255, 243, 246, 254))
+                                              ? false
+                                              : true,
                                         ),
                                         CurrentStrengthBreakdownTile(
                                           title: "On Status",
@@ -375,6 +386,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           imgColor: Colors.yellow,
                                           userDetails: statusDetails,
                                           fullList: fullList,
+                                          isToggled: (backgroundColor ==
+                                                  const Color.fromARGB(
+                                                      255, 243, 246, 254))
+                                              ? false
+                                              : true,
                                         ),
                                         CurrentStrengthBreakdownTile(
                                           title: "On MA",
@@ -388,6 +404,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           imgColor: Colors.lightBlueAccent,
                                           userDetails: _maDetails,
                                           fullList: fullList,
+                                          isToggled: (backgroundColor ==
+                                                  const Color.fromARGB(
+                                                      255, 243, 246, 254))
+                                              ? false
+                                              : true,
                                         ),
                                       ],
                                     ),

@@ -1,5 +1,4 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:firebase_project_2/themes/theme_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/soldier_detailed_screen.dart';
@@ -18,6 +17,7 @@ class DashboardSoldierTile extends StatelessWidget {
   final String enlistmentDate;
   final String ordDate;
   final String docID;
+  final bool isToggled;
 
   const DashboardSoldierTile({
     super.key,
@@ -33,12 +33,11 @@ class DashboardSoldierTile extends StatelessWidget {
     required this.enlistmentDate,
     required this.ordDate,
     required this.docID,
+    required this.isToggled,
   });
 
   @override
   Widget build(BuildContext context) {
-    ThemeManager _themeManager = ThemeManager();
-
     String soldierIconGenerator(String rank) {
       if (rank == 'lib/assets/army-ranks/rec.png' ||
           rank == 'lib/assets/army-ranks/pte.png' ||
@@ -93,8 +92,7 @@ class DashboardSoldierTile extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) => SoldierDetailedScreen(
                 docID: docID,
-                isToggled:
-                    (_themeManager.themeMode == ThemeMode.dark) ? true : false,
+                isToggled: isToggled,
               ),
             ),
           );

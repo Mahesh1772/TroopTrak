@@ -69,6 +69,7 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
   @override
   Widget build(BuildContext context) {
     ThemeManager _themeManager = ThemeManager();
+    Color backgroundColor = Theme.of(context).colorScheme.background;
 
     print(_themeManager.themeMode);
     final userModel = Provider.of<UserData>(context);
@@ -89,9 +90,8 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
           },
           child: const Icon(Icons.add),
         ),
-        backgroundColor: Theme.of(context)
-            .colorScheme
-            .background, //const Color.fromARGB(255, 254, 251, 234),//const Color.fromARGB(255, 21, 25, 34),
+        backgroundColor:
+            backgroundColor, //const Color.fromARGB(255, 254, 251, 234),//const Color.fromARGB(255, 21, 25, 34),
         body: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,7 +151,6 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                             (category) => ChoiceChip(
                               elevation: 5,
                               pressElevation: 0,
-                              
                               selected: isSelectedList[category.key],
                               label: Text(category.value),
                               labelStyle: GoogleFonts.poppins(
@@ -250,9 +249,10 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                           enlistmentDate: userDetails[index]['enlistment'],
                           ordDate: userDetails[index]['ord'],
                           isInsideCamp: false,
-                          isToggled: (_themeManager.themeMode == ThemeMode.dark)
-                              ? true
-                              : false,
+                          isToggled: (backgroundColor ==
+                                  const Color.fromARGB(255, 243, 246, 254))
+                              ? false
+                              : true,
                         );
                       },
                     ),

@@ -15,12 +15,14 @@ class CurrentStrengthBreakdownTile extends StatelessWidget {
     required this.imgColor,
     required this.userDetails,
     required this.fullList,
+    required this.isToggled,
   });
 
   final String title, imgSrc;
   final int currentNumOfSoldiers, totalNumOfSoldiers;
   final Color imgColor;
   final List<Map<String, dynamic>> userDetails;
+  final bool isToggled;
 
   Map<String, dynamic> fullList;
 
@@ -117,6 +119,7 @@ class CurrentStrengthBreakdownTile extends StatelessWidget {
                   bloodType: userDetails[index]['bloodgroup'],
                   enlistmentDate: userDetails[index]['enlistment'],
                   ordDate: userDetails[index]['ord'],
+                  isToggled: isToggled,
                 );
               },
             ),

@@ -310,7 +310,7 @@ class _UpdateDutyScreenState extends State<UpdateDutyScreen> {
     }
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: const Color.fromARGB(255, 21, 25, 34),
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -326,16 +326,16 @@ class _UpdateDutyScreenState extends State<UpdateDutyScreen> {
                   },
                   child: Icon(
                     Icons.arrow_back_sharp,
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.tertiary,
                     size: 25.sp,
                   ),
                 ),
                 SizedBox(
                   height: 20.h,
                 ),
-                StyledText("Who is performing this duty?", 26.sp,
+                StyledText("Edit an existing duty.", 26.sp,
                     fontWeight: FontWeight.bold),
-                StyledText("Add details of the guard duty.", 16.sp,
+                StyledText("Fill in the details of the guard duty.", 16.sp,
                     fontWeight: FontWeight.w400),
                 SizedBox(
                   height: 30.h,
@@ -488,18 +488,32 @@ class _UpdateDutyScreenState extends State<UpdateDutyScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        StyledText("EXPECTED POINTS PER PERSON", 14.sp,
-                            fontWeight: FontWeight.w400),
+                        Text(
+                          "EXPECTED POINTS PER PERSON",
+                          style: GoogleFonts.poppins(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white),
+                        ),
                         SizedBox(
                           height: 15.h,
                         ),
-                        StyledText(typeOfDay, 24.sp,
-                            fontWeight: FontWeight.w500),
+                        Text(
+                          typeOfDay,
+                          style: GoogleFonts.poppins(
+                              fontSize: 24.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white),
+                        ),
                         SizedBox(
                           height: 10.h,
                         ),
-                        StyledText("${points.toString()} Points", 32.sp,
-                            fontWeight: FontWeight.bold),
+                        Text("${points.toString()} Points",
+                            style: GoogleFonts.poppins(
+                              fontSize: 32.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            )),
                       ],
                     ),
                   ),
@@ -518,7 +532,8 @@ class _UpdateDutyScreenState extends State<UpdateDutyScreen> {
                         width: double.maxFinite,
                         decoration: BoxDecoration(
                           color: Colors.black54,
-                          border: Border.all(color: Colors.white),
+                          border: Border.all(
+                              color: Theme.of(context).colorScheme.tertiary),
                           borderRadius: BorderRadius.circular(12.r),
                         ),
                         child: Row(
@@ -559,7 +574,9 @@ class _UpdateDutyScreenState extends State<UpdateDutyScreen> {
                             width: 200.w,
                             decoration: BoxDecoration(
                               color: Colors.black54,
-                              border: Border.all(color: Colors.white),
+                              border: Border.all(
+                                  color:
+                                      Theme.of(context).colorScheme.tertiary),
                               borderRadius: BorderRadius.circular(12.r),
                             ),
                             child: Row(
@@ -597,7 +614,9 @@ class _UpdateDutyScreenState extends State<UpdateDutyScreen> {
                             width: 200.w,
                             decoration: BoxDecoration(
                               color: Colors.black54,
-                              border: Border.all(color: Colors.white),
+                              border: Border.all(
+                                  color:
+                                      Theme.of(context).colorScheme.tertiary),
                               borderRadius: BorderRadius.circular(12.r),
                             ),
                             child: Row(

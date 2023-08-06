@@ -182,7 +182,7 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
                     },
                     child: Icon(
                       Icons.arrow_back_sharp,
-                      color: Colors.white,
+                      color: textColor,
                       size: 25.sp,
                     ),
                   ),
