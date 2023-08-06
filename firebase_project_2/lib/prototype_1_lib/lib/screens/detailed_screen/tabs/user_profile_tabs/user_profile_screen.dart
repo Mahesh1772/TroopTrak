@@ -13,10 +13,15 @@ import '../../../../main.dart';
 import '../../../../user_models/user_details.dart';
 
 class UserProfileScreen extends StatefulWidget {
-  const UserProfileScreen(
-      {required this.docID, super.key, required this.isToggled});
+  UserProfileScreen(
+      {required this.docID,
+      super.key,
+      required this.isToggled,
+      required this.callbackThemeChanger});
   final String docID;
-  final bool isToggled;
+  bool isToggled;
+  final Function callbackThemeChanger;
+
   @override
   State<UserProfileScreen> createState() => _UserProfileScreenState();
 }
@@ -273,50 +278,52 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                               ),
                             ),
                           ),
-                          // SizedBox(
-                          //   height: 20.h,
-                          // ),
-                          // Center(
-                          //   child: AnimatedToggleSwitch<bool>.rolling(
-                          //     current:
-                          //         _themeManager.themeMode == ThemeMode.dark,
-                          //     allowUnlistedValues: true,
-                          //     values: const [false, true],
-                          //     onChanged: (i) {
-                          //       _themeManager.toggleTheme(i);
-                          //       print(_themeManager.themeMode);
-                          //     },
-                          //     iconBuilder: rollingIconBuilder,
-                          //     borderWidth: 3.0.w,
-                          //     indicatorColor: Colors.white,
-                          //     innerGradient: LinearGradient(colors: [
-                          //       Colors.transparent.withOpacity(0.1),
-                          //       Colors.transparent.withOpacity(0),
-                          //     ]),
-                          //     innerColor: Colors.amber,
-                          //     height: 40.h,
-                          //     dif: 10.w,
-                          //     iconRadius: 10.0.r,
-                          //     selectedIconRadius: 13.0.r,
-                          //     borderColor: Colors.transparent,
-                          //     foregroundBoxShadow: [
-                          //       BoxShadow(
-                          //         color: Colors.black26,
-                          //         spreadRadius: 1.r,
-                          //         blurRadius: 2.r,
-                          //         offset: Offset(0.w, 1.5.h),
-                          //       )
-                          //     ],
-                          //     boxShadow: [
-                          //       BoxShadow(
-                          //         color: Colors.black26,
-                          //         spreadRadius: 1.r,
-                          //         blurRadius: 2.r,
-                          //         offset: Offset(0.w, 1.5.h),
-                          //       )
-                          //     ],
-                          //   ),
-                          // ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          Center(
+                            child: AnimatedToggleSwitch<bool>.rolling(
+                              current: widget.isToggled,
+                              allowUnlistedValues: true,
+                              values: const [false, true],
+                              onChanged: (i) {
+                                setState(() {
+                                  i = !i;
+                                  widget.callbackThemeChanger(i);
+                                  widget.isToggled = !i;
+                                });
+                              },
+                              iconBuilder: rollingIconBuilder,
+                              borderWidth: 3.0.w,
+                              indicatorColor: Colors.white,
+                              innerGradient: LinearGradient(colors: [
+                                Colors.transparent.withOpacity(0.1),
+                                Colors.transparent.withOpacity(0),
+                              ]),
+                              innerColor: Colors.amber,
+                              height: 40.h,
+                              dif: 10.w,
+                              iconRadius: 10.0.r,
+                              selectedIconRadius: 13.0.r,
+                              borderColor: Colors.transparent,
+                              foregroundBoxShadow: [
+                                BoxShadow(
+                                  color: Colors.black26,
+                                  spreadRadius: 1.r,
+                                  blurRadius: 2.r,
+                                  offset: Offset(0.w, 1.5.h),
+                                )
+                              ],
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black26,
+                                  spreadRadius: 1.r,
+                                  blurRadius: 2.r,
+                                  offset: Offset(0.w, 1.5.h),
+                                )
+                              ],
+                            ),
+                          ),
                           SizedBox(
                             height: 30.h,
                           ),

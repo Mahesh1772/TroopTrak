@@ -12,12 +12,14 @@ class BookInOutTile extends StatefulWidget {
       required this.timeStamp,
       required this.isInsideCamp,
       required this.docID,
-      required this.attendanceID});
+      required this.attendanceID,
+      required this.isToggled});
 
   final String timeStamp;
   final bool isInsideCamp;
   final String docID;
   final String attendanceID;
+  final bool isToggled;
 
   //final String docID;
 
@@ -54,7 +56,9 @@ class _BookInOutTileState extends State<BookInOutTile> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => UpdateAttendanceScreen(
-                        docID: widget.docID, attendanceID: widget.attendanceID),
+                        docID: widget.docID,
+                        attendanceID: widget.attendanceID,
+                        isToggled: widget.isToggled),
                   ),
                 );
               },
@@ -84,18 +88,18 @@ class _BookInOutTileState extends State<BookInOutTile> {
           child: Padding(
             padding: EdgeInsets.all(16.0.sp),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Icon(
                   tileIcon,
                   color: Colors.white,
-                  size: 30.sp,
+                  size: 25.sp,
                 ),
-                SizedBox(width: 20.w),
+                SizedBox(width: 15.w),
                 SizedBox(
-                  width: 100.w,
+                  width: 80.w,
                   child: AutoSizeText(
-                    widget.isInsideCamp ? "BOOK IN" : "BOOK OUT",
+                    widget.isInsideCamp ? "BOOK IN" : "BOOKOUT",
                     style: GoogleFonts.poppins(
                         fontWeight: FontWeight.bold,
                         fontSize: 16.sp,
@@ -104,8 +108,9 @@ class _BookInOutTileState extends State<BookInOutTile> {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
+                SizedBox(width: 15.w),
                 SizedBox(
-                  width: 180.w,
+                  width: 185.w,
                   child: AutoSizeText(
                     widget.timeStamp,
                     style: GoogleFonts.poppins(

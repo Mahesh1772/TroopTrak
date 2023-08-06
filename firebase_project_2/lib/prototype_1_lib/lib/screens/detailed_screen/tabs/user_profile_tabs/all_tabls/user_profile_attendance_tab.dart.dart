@@ -101,6 +101,7 @@ class _UserProfileAttendanceTabState extends State<UserProfileAttendanceTab> {
                         attendanceID: userBookInStatus[index]['ID'],
                         timeStamp: userBookInStatus[index]['date&time'],
                         isInsideCamp: userBookInStatus[index]['isInsideCamp'],
+                        isToggled: widget.isToggled,
                       );
                     },
                   ),

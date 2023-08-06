@@ -76,6 +76,20 @@ class _GNavMainScreen extends State<GNavMainScreen> {
   ThemeManager _themeManager = ThemeManager();
   bool isToggled = true;
 
+  callbackThemeChanger(bool isDarkMode) {
+    if (isDarkMode) {
+      setState(() {
+        isToggled = false;
+        _themeManager.toggleTheme(isToggled);
+      });
+    } else {
+      setState(() {
+        isToggled = true;
+        _themeManager.toggleTheme(isToggled);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     getDisplayname();
@@ -134,6 +148,7 @@ class _GNavMainScreen extends State<GNavMainScreen> {
                       builder: (context) => UserProfileScreen(
                         isToggled: isToggled,
                         docID: fname,
+                        callbackThemeChanger: callbackThemeChanger,
                       ),
                     ),
                   );

@@ -1,6 +1,5 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:animations/animations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -165,177 +164,169 @@ class _SoldierTileState extends State<SoldierTile> {
     final userModel = Provider.of<UserData>(context);
     Color tileColor = soldierColorGenerator(
         "lib/assets/army-ranks/${widget.soldierRank.toString().toLowerCase()}.png");
-    return OpenContainer(
-      closedElevation: 0,
-      closedBuilder: (context, action) {
-        return Padding(
-          padding: EdgeInsets.all(8.0.sp),
-          child: StreamBuilder<QuerySnapshot>(
-              stream: userModel.attendance_data(widget.docID),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  var attendenceData = snapshot.data?.docs.toList();
-                  List<Map<String, dynamic>> all_data = [];
-                  var length = attendenceData!.length;
-                  for (var i = 0; i < length; i++) {
-                    var data = attendenceData[i].data();
-                    all_data.add(data as Map<String, dynamic>);
-                    all_data[i].addEntries(
-                        {'ID': attendenceData[i].reference.id}.entries);
-                  }
-                  all_data = all_data
-                      .where((element) =>
-                          calculateDifference(
-                              DateFormat('E d MMM yyyy HH:mm:ss')
-                                  .parse(element['date&time'])) <=
-                          0)
-                      .toList();
-                  widget.isInsideCamp = all_data.last['isInsideCamp'];
-                  addFieldDetails(widget.isInsideCamp);
-                  inCampStatusText =
-                      inCampStatusTextChanger(widget.isInsideCamp);
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SoldierDetailedScreen(
+                docID: widget.docID, isToggled: widget.isToggled),
+          ),
+        );
+      },
+      child: Padding(
+        padding: EdgeInsets.all(8.0.sp),
+        child: StreamBuilder<QuerySnapshot>(
+            stream: userModel.attendance_data(widget.docID),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                var attendenceData = snapshot.data?.docs.toList();
+                List<Map<String, dynamic>> all_data = [];
+                var length = attendenceData!.length;
+                for (var i = 0; i < length; i++) {
+                  var data = attendenceData[i].data();
+                  all_data.add(data as Map<String, dynamic>);
+                  all_data[i].addEntries(
+                      {'ID': attendenceData[i].reference.id}.entries);
                 }
-                return Container(
-                  decoration: BoxDecoration(
+                all_data = all_data
+                    .where((element) =>
+                        calculateDifference(DateFormat('E d MMM yyyy HH:mm:ss')
+                            .parse(element['date&time'])) <=
+                        0)
+                    .toList();
+                widget.isInsideCamp = all_data.last['isInsideCamp'];
+                addFieldDetails(widget.isInsideCamp);
+                inCampStatusText = inCampStatusTextChanger(widget.isInsideCamp);
+              }
+              return Container(
+                decoration: BoxDecoration(boxShadow: [
+                  BoxShadow(
+                      blurRadius: 2.0.r,
+                      spreadRadius: 2.0.r,
+                      offset: Offset(10.w, 10.h),
+                      color: Colors.black54)
+                ], color: tileColor, borderRadius: BorderRadius.circular(12.r)),
+                child: Column(
+                  children: [
+                    //rank insignia
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                          width: 40.w,
+                          height: 40.h,
+                          padding: EdgeInsets.all(5.sp),
+                          decoration: BoxDecoration(
+                            color: Colors.transparent.withOpacity(0.15),
+                            borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(12.r),
+                                bottomLeft: Radius.circular(12.r)),
+                          ),
+                          child: Image.asset(
+                            "lib/assets/army-ranks/${widget.soldierRank.toString().toLowerCase()}.png",
+                            color: rankColorPicker(widget.soldierRank)
+                                ? Colors.white70
+                                : null,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    //soldier icon
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 24.0.w, vertical: 8.0.h),
+                      child: Image.asset(
+                        soldierIconGenerator(
+                            "lib/assets/army-ranks/${widget.soldierRank.toString().toLowerCase()}.png"),
+                        width: 90.w,
+                      ),
+                    ),
+
+                    //name
+
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.0.w),
+                      child: SizedBox(
+                        height: 40.h,
+                        width: double.maxFinite,
+                        child: Center(
+                            child: AutoSizeText(
+                          widget.soldierName,
+                          maxLines: 2,
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.poppins(
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        )),
+                      ),
+                    ),
+
+                    SizedBox(
+                      height: 10.h,
+                    ),
+
+                    Text(
+                      inCampStatusText,
+                      style: GoogleFonts.poppins(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white,
+                      ),
+                    ),
+
+                    SizedBox(
+                      height: 15.h,
+                    ),
+
+                    AnimatedToggleSwitch<bool>.rolling(
+                      current: widget.isInsideCamp,
+                      allowUnlistedValues: true,
+                      values: const [false, true],
+                      onChanged: (i) {
+                        inCampStatusText = inCampStatusTextChanger(i);
+                        addAttendanceDetails(i);
+                        addFieldDetails(i);
+                      },
+                      iconBuilder: rollingIconBuilder,
+                      borderWidth: 3.0.w,
+                      indicatorColor: Colors.white,
+                      innerGradient: LinearGradient(colors: [
+                        Colors.transparent.withOpacity(0.1),
+                        Colors.transparent.withOpacity(0),
+                      ]),
+                      innerColor: Colors.amber,
+                      height: 40.h,
+                      dif: 10.w,
+                      iconRadius: 10.0.r,
+                      selectedIconRadius: 13.0.r,
+                      borderColor: Colors.transparent,
+                      loading: loading,
+                      foregroundBoxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          spreadRadius: 1.r,
+                          blurRadius: 2.r,
+                          offset: Offset(0.w, 1.5.h),
+                        )
+                      ],
                       boxShadow: [
                         BoxShadow(
-                            blurRadius: 2.0.r,
-                            spreadRadius: 2.0.r,
-                            offset: Offset(10.w, 10.h),
-                            color: Colors.black54)
+                          color: Colors.black26,
+                          spreadRadius: 1.r,
+                          blurRadius: 2.r,
+                          offset: Offset(0.w, 1.5.h),
+                        )
                       ],
-                      color: tileColor,
-                      borderRadius: BorderRadius.circular(12.r)),
-                  child: Column(
-                    children: [
-                      //rank insignia
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Container(
-                            width: 40.w,
-                            height: 40.h,
-                            padding: EdgeInsets.all(5.sp),
-                            decoration: BoxDecoration(
-                              color: Colors.transparent.withOpacity(0.15),
-                              borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(12.r),
-                                  bottomLeft: Radius.circular(12.r)),
-                            ),
-                            child: Image.asset(
-                              "lib/assets/army-ranks/${widget.soldierRank.toString().toLowerCase()}.png",
-                              color: rankColorPicker(widget.soldierRank)
-                                  ? Colors.white70
-                                  : null,
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      //soldier icon
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 24.0.w, vertical: 8.0.h),
-                        child: Image.asset(
-                          soldierIconGenerator(
-                              "lib/assets/army-ranks/${widget.soldierRank.toString().toLowerCase()}.png"),
-                          width: 90.w,
-                        ),
-                      ),
-
-                      //name
-
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.0.w),
-                        child: SizedBox(
-                          height: 40.h,
-                          width: double.maxFinite,
-                          child: Center(
-                              child: AutoSizeText(
-                            widget.soldierName,
-                            maxLines: 2,
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.poppins(
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          )),
-                        ),
-                      ),
-
-                      SizedBox(
-                        height: 10.h,
-                      ),
-
-                      Text(
-                        inCampStatusText,
-                        style: GoogleFonts.poppins(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.white,
-                        ),
-                      ),
-
-                      SizedBox(
-                        height: 15.h,
-                      ),
-
-                      AnimatedToggleSwitch<bool>.rolling(
-                        current: widget.isInsideCamp,
-                        allowUnlistedValues: true,
-                        values: const [false, true],
-                        onChanged: (i) {
-                          inCampStatusText = inCampStatusTextChanger(i);
-                          addAttendanceDetails(i);
-                          addFieldDetails(i);
-                        },
-                        iconBuilder: rollingIconBuilder,
-                        borderWidth: 3.0.w,
-                        indicatorColor: Colors.white,
-                        innerGradient: LinearGradient(colors: [
-                          Colors.transparent.withOpacity(0.1),
-                          Colors.transparent.withOpacity(0),
-                        ]),
-                        innerColor: Colors.amber,
-                        height: 40.h,
-                        dif: 10.w,
-                        iconRadius: 10.0.r,
-                        selectedIconRadius: 13.0.r,
-                        borderColor: Colors.transparent,
-                        loading: loading,
-                        foregroundBoxShadow: [
-                          BoxShadow(
-                            color: Colors.black26,
-                            spreadRadius: 1.r,
-                            blurRadius: 2.r,
-                            offset: Offset(0.w, 1.5.h),
-                          )
-                        ],
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black26,
-                            spreadRadius: 1.r,
-                            blurRadius: 2.r,
-                            offset: Offset(0.w, 1.5.h),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              }),
-        );
-      },
-      openBuilder:
-          (BuildContext context, void Function({Object? returnValue}) action) {
-        return SoldierDetailedScreen(
-          docID: widget.docID,
-          isToggled: widget.isToggled,
-        );
-      },
-      closedColor: Colors.transparent,
-      transitionDuration: const Duration(milliseconds: 50),
+                    ),
+                  ],
+                ),
+              );
+            }),
+      ),
     );
   }
 }

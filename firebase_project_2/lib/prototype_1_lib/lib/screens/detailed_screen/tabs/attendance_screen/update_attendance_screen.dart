@@ -5,14 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:firebase_project_2/prototype_1_lib/lib/util/text_styles/text_style.dart';
 
 class UpdateAttendanceScreen extends StatefulWidget {
   UpdateAttendanceScreen(
-      {super.key, required this.docID, required this.attendanceID});
+      {super.key,
+      required this.docID,
+      required this.attendanceID,
+      required this.isToggled});
 
   late String docID;
   late String attendanceID;
+  final bool isToggled;
 
   @override
   State<UpdateAttendanceScreen> createState() => _UpdateAttendanceScreenState();
@@ -95,10 +98,13 @@ class _UpdateAttendanceScreenState extends State<UpdateAttendanceScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final Color textColor = widget.isToggled ? Colors.white : Colors.black;
     //final userStatusModel = Provider.of<UserData>(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: widget.isToggled
+          ? const Color.fromARGB(255, 21, 25, 34)
+          : const Color.fromARGB(255, 243, 246, 254),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Form(
@@ -116,22 +122,28 @@ class _UpdateAttendanceScreenState extends State<UpdateAttendanceScreen> {
                     },
                     child: Icon(
                       Icons.arrow_back_sharp,
-                      color: Colors.white,
+                      color: textColor,
                       size: 25.sp,
                     ),
                   ),
                   SizedBox(
                     height: 20.h,
                   ),
-                  StyledText(
+                  Text(
                     "Edit Attendance",
-                    30.sp,
-                    fontWeight: FontWeight.bold,
+                    style: GoogleFonts.poppins(
+                      fontSize: 30.sp,
+                      fontWeight: FontWeight.bold,
+                      color: textColor,
+                    ),
                   ),
-                  StyledText(
+                  Text(
                     "Fill in book in / book out time.",
-                    14.sp,
-                    fontWeight: FontWeight.w300,
+                    style: GoogleFonts.poppins(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w300,
+                      color: textColor,
+                    ),
                   ),
                   SizedBox(
                     height: 40.h,
@@ -144,7 +156,9 @@ class _UpdateAttendanceScreenState extends State<UpdateAttendanceScreen> {
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.black54,
-                        border: Border.all(color: Colors.white),
+                        border: Border.all(
+                          color: textColor,
+                        ),
                         borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: Row(
@@ -182,7 +196,9 @@ class _UpdateAttendanceScreenState extends State<UpdateAttendanceScreen> {
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.black54,
-                        border: Border.all(color: Colors.white),
+                        border: Border.all(
+                          color: textColor,
+                        ),
                         borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: Row(
