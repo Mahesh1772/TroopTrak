@@ -36,11 +36,8 @@ List<Map<String, dynamic>> specDetails = [];
 // List to store all user data, whilst also mapping to name
 List<Map<String, dynamic>> officerDetails = [];
 
-// List to store all user data, whilst also mapping to name
-//List<Map<String, dynamic>> statusDetails = [];
-//
-//// List to store all user data, whilst also mapping to name
-//List<Map<String, dynamic>> _maDetails = [];
+int spec_list_length = 0;
+int officer_list_length = 0;
 
 Map<String, dynamic> currentUserData = {};
 
@@ -61,6 +58,9 @@ late Stream<QuerySnapshot> documentStream;
 // The list of all document IDs,
 //which have access to each their own personal information
 List<String> documentIDs = [];
+
+final now = DateTime.now();
+final today = DateTime(now.year, now.month, now.day);
 
 final FlipCardController _controller = FlipCardController();
 
@@ -114,20 +114,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
     _maList = [];
     List<Map<String, dynamic>> _maDetails = [];
     List<Map<String, dynamic>> statusDetails = [];
-    //Future.delayed(Duration(seconds: 4));
     Map<String, dynamic> fullList = {};
 
-    int inCamp(List userDetails, bool isStatusPersonal) {
-      int insideCamp = 0;
+    List<Map<String, dynamic>> inCamp(
+        List<Map<String, dynamic>> userDetails, bool isStatusPersonal) {
+      List<Map<String, dynamic>> insideCamp = [];
+
+      if (isStatusPersonal) {
+        return userDetails;
+      }
 
       for (var user in userDetails) {
         if (fullList[user['name']]) {
-          insideCamp += 1;
+          insideCamp.add(user);
         }
-      }
-
-      if (isStatusPersonal) {
-        insideCamp = userDetails.length;
       }
       return insideCamp;
     }
@@ -149,8 +149,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     fullList = {};
                     counter = 0;
 // Create a Completer to delay the execution until we have collected data from all 'Statuses' subcollections
-                    //Completer<void> completer = Completer<void>();
-                    StreamController<void> controller = StreamController<void>();
+
+                    StreamController<void> controller =
+                        StreamController<void>();
                     List? users = snapshot.data?.docs.toList();
                     var docsmapshot = snapshot.data!;
                     for (var i = 0; i < users!.length; i++) {
@@ -183,22 +184,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             var statusData = element.data();
                             DateTime end = DateFormat("d MMM yyyy")
                                 .parse(statusData['endDate']);
+                            DateTime start = DateFormat("d MMM yyyy")
+                                .parse(statusData['startDate']);
                             if (DateTime(end.year, end.month, end.day + 1)
-                                .isAfter(DateTime.now())) {
+                                    .isAfter(DateTime.now()) &&
+                                today ==
+                                    DateTime(
+                                        start.year, start.month, start.day)) {
                               if (statusData['statusType'] ==
                                   'Medical Appointment') {
-                                //_maList.add(uid);
                                 _maDetails.add(Map<String, dynamic>.from(data));
                               } else {
-                                // statusList.add(uid);
                                 statusDetails
                                     .add(Map<String, dynamic>.from(data));
                               }
                             }
-                            //statusDetails.add(data);
                           });
                           if (counter == users.length) {
-                            //completer.complete();
                             controller.add(null);
                           }
                         }
@@ -223,7 +225,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ),
                         StreamBuilder<void>(
                           stream: controller.stream,
-                          //stream: Stream.empty(),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.active) {
@@ -235,8 +236,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   LinkedHashSet<Map<String, dynamic>>.from(
                                           _maDetails)
                                       .toList();
-                              //print(statusDetails);
-                              //print(_maDetails);
+
                               return FlipCard(
                                 controller: _controller,
                                 front: Padding(
@@ -321,12 +321,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                         ),
                                         CurrentStrengthChart(
                                           currentOfficers:
-                                              inCamp(officerDetails, false),
+                                              inCamp(officerDetails, false)
+                                                  .length,
                                           currentWOSEs:
-                                              inCamp(specDetails, false),
+                                              inCamp(specDetails, false).length,
                                           currentStatus:
-                                              inCamp(statusDetails, true),
-                                          currentMA: inCamp(_maDetails, true),
+                                              inCamp(statusDetails, true)
+                                                  .length,
+                                          currentMA:
+                                              inCamp(_maDetails, true).length,
                                           totalOfficers: officerDetails.length,
                                           totalWOSEs: specDetails.length,
                                         ),
@@ -338,11 +341,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           imgSrc:
                                               "lib/assets/icons8-medals-64.png",
                                           currentNumOfSoldiers:
-                                              inCamp(officerDetails, false),
+                                              inCamp(officerDetails, false)
+                                                  .length,
                                           totalNumOfSoldiers:
                                               officerDetails.length,
                                           imgColor: Colors.red,
-                                          userDetails: officerDetails,
+                                          userDetails:
+                                              inCamp(officerDetails, false),
                                           fullList: fullList,
                                         ),
                                         CurrentStrengthBreakdownTile(
@@ -350,11 +355,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           imgSrc:
                                               "lib/assets/icons8-soldier-man-64.png",
                                           currentNumOfSoldiers:
-                                              inCamp(specDetails, false),
+                                              inCamp(specDetails, false).length,
                                           totalNumOfSoldiers:
                                               specDetails.length,
                                           imgColor: Colors.blue,
-                                          userDetails: specDetails,
+                                          userDetails:
+                                              inCamp(specDetails, false),
                                           fullList: fullList,
                                         ),
                                         CurrentStrengthBreakdownTile(
@@ -363,7 +369,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               "lib/assets/icons8-error-64.png",
                                           currentNumOfSoldiers:
                                               statusDetails.length,
-                                          //inCamp(statusDetails, true),
                                           totalNumOfSoldiers:
                                               (officerDetails.length +
                                                   specDetails.length),
@@ -377,7 +382,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               "lib/assets/icons8-doctors-folder-64.png",
                                           currentNumOfSoldiers:
                                               _maDetails.length,
-                                          //inCamp(_maDetails, false),
                                           totalNumOfSoldiers:
                                               (officerDetails.length +
                                                   specDetails.length),
