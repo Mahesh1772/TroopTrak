@@ -3,7 +3,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:firebase_project_2/prototype_1_lib/lib/util/text_styles/text_style.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +25,7 @@ class UpdateSoldierDetailsPage extends StatefulWidget {
     required this.selectedBloodType,
     required this.docID,
     required this.callback,
+    required this.isToggled,
   });
 
   late TextEditingController name;
@@ -41,6 +41,7 @@ class UpdateSoldierDetailsPage extends StatefulWidget {
   late String? selectedRank;
   late String? selectedBloodType;
   late Function callback;
+  final bool isToggled;
 
   @override
   State<UpdateSoldierDetailsPage> createState() =>
@@ -252,10 +253,13 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
 
   @override
   Widget build(context) {
+    Color textColor = widget.isToggled ? Colors.white : Colors.black;
     final userDetailsModel = Provider.of<UserData>(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: const Color.fromARGB(255, 21, 25, 34),
+      backgroundColor: widget.isToggled
+          ? const Color.fromARGB(255, 21, 25, 34)
+          : const Color.fromARGB(255, 243, 246, 254),
       body: SingleChildScrollView(
         child: SafeArea(
           child: StreamBuilder(
@@ -280,23 +284,25 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                         },
                         child: Icon(
                           Icons.arrow_back_sharp,
-                          color: Colors.white,
+                          color: textColor,
                           size: 25.sp,
                         ),
                       ),
                       SizedBox(
                         height: 20.h,
                       ),
-                      StyledText(
-                        "Change details  ✍️",
-                        30.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      StyledText(
-                        "Update the details of an existing soldier.",
-                        14.sp,
-                        fontWeight: FontWeight.w300,
-                      ),
+                      Text("Change details  ✍️",
+                          style: GoogleFonts.poppins(
+                            fontSize: 30.sp,
+                            fontWeight: FontWeight.bold,
+                            color: textColor,
+                          )),
+                      Text("Update the details of an existing soldier.",
+                          style: GoogleFonts.poppins(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w300,
+                            color: textColor,
+                          )),
 
                       SizedBox(
                         height: 20.h,
@@ -306,7 +312,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                       Container(
                         decoration: BoxDecoration(
                           color: Colors.black54,
-                          border: Border.all(color: Colors.white),
+                          border: Border.all(color: textColor),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Padding(
@@ -344,7 +350,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                               width: 177.w,
                               decoration: BoxDecoration(
                                 color: Colors.black54,
-                                border: Border.all(color: Colors.white),
+                                border: Border.all(color: textColor),
                                 borderRadius: BorderRadius.circular(12.r),
                               ),
                               child: Row(
@@ -378,7 +384,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                             width: 240.w,
                             decoration: BoxDecoration(
                               color: Colors.black54,
-                              border: Border.all(color: Colors.white),
+                              border: Border.all(color: textColor),
                               borderRadius: BorderRadius.circular(12.r),
                             ),
                             child: Center(
@@ -438,7 +444,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                             width: 185.w,
                             decoration: BoxDecoration(
                               color: Colors.black54,
-                              border: Border.all(color: Colors.white),
+                              border: Border.all(color: textColor),
                               borderRadius: BorderRadius.circular(12.r),
                             ),
                             child: Center(
@@ -480,7 +486,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                             width: 235.w,
                             decoration: BoxDecoration(
                               color: Colors.black54,
-                              border: Border.all(color: Colors.white),
+                              border: Border.all(color: textColor),
                               borderRadius: BorderRadius.circular(12.r),
                             ),
                             child: Center(
@@ -527,7 +533,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                       Container(
                         decoration: BoxDecoration(
                           color: Colors.black54,
-                          border: Border.all(color: Colors.white),
+                          border: Border.all(color: textColor),
                           borderRadius: BorderRadius.circular(12.r),
                         ),
                         child: Padding(
@@ -557,7 +563,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                       Container(
                         decoration: BoxDecoration(
                           color: Colors.black54,
-                          border: Border.all(color: Colors.white),
+                          border: Border.all(color: textColor),
                           borderRadius: BorderRadius.circular(12.r),
                         ),
                         child: Padding(
@@ -587,7 +593,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                       Container(
                         decoration: BoxDecoration(
                           color: Colors.black54,
-                          border: Border.all(color: Colors.white),
+                          border: Border.all(color: textColor),
                           borderRadius: BorderRadius.circular(12.r),
                         ),
                         child: Padding(
@@ -617,7 +623,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                       Container(
                         decoration: BoxDecoration(
                           color: Colors.black54,
-                          border: Border.all(color: Colors.white),
+                          border: Border.all(color: textColor),
                           borderRadius: BorderRadius.circular(12.r),
                         ),
                         child: Padding(
@@ -655,7 +661,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                               width: 200.w,
                               decoration: BoxDecoration(
                                 color: Colors.black54,
-                                border: Border.all(color: Colors.white),
+                                border: Border.all(color: textColor),
                                 borderRadius: BorderRadius.circular(12.r),
                               ),
                               child: Row(
@@ -696,7 +702,7 @@ class _UpdateSoldierDetailsPageState extends State<UpdateSoldierDetailsPage> {
                               width: 200.w,
                               decoration: BoxDecoration(
                                 color: Colors.black54,
-                                border: Border.all(color: Colors.white),
+                                border: Border.all(color: textColor),
                                 borderRadius: BorderRadius.circular(12.r),
                               ),
                               child: Row(

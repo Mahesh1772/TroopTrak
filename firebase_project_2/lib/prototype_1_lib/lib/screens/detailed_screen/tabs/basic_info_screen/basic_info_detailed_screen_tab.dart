@@ -114,24 +114,24 @@ class _BasicInfoTabState extends State<BasicInfoTab> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => UpdateSoldierDetailsPage(
-                              docID: widget.docID,
-                              name: TextEditingController(text: data['name']),
-                              company:
-                                  TextEditingController(text: data['company']),
-                              platoon:
-                                  TextEditingController(text: data['platoon']),
-                              section:
-                                  TextEditingController(text: data['section']),
-                              appointment: TextEditingController(
-                                  text: data['appointment']),
-                              dob: data['dob'],
-                              ord: data['ord'],
-                              enlistment: data['enlistment'],
-                              selectedItem: data['rationType'],
-                              selectedRank: data['rank'],
-                              selectedBloodType: data['bloodgroup'],
-                              callback: widget.callback,
-                            ),
+                                docID: widget.docID,
+                                name: TextEditingController(text: data['name']),
+                                company: TextEditingController(
+                                    text: data['company']),
+                                platoon: TextEditingController(
+                                    text: data['platoon']),
+                                section: TextEditingController(
+                                    text: data['section']),
+                                appointment: TextEditingController(
+                                    text: data['appointment']),
+                                dob: data['dob'],
+                                ord: data['ord'],
+                                enlistment: data['enlistment'],
+                                selectedItem: data['rationType'],
+                                selectedRank: data['rank'],
+                                selectedBloodType: data['bloodgroup'],
+                                callback: widget.callback,
+                                isToggled: widget.isToggled),
                           ),
                         ).then((value) => widget.callback);
                       },
