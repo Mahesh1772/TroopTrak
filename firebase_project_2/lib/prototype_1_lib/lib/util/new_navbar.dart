@@ -113,7 +113,6 @@ class _GNavMainScreen extends State<GNavMainScreen> {
                       : Colors.black),
             ),
             actions: [
-              
               InkWell(
                 key: const Key("userProfileIcon"),
                 onTap: () {
