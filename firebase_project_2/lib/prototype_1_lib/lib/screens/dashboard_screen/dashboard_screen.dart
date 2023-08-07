@@ -191,9 +191,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 .parse(statusData['startDate']);
                             if (DateTime(end.year, end.month, end.day + 1)
                                     .isAfter(DateTime.now()) &&
-                                today ==
-                                    DateTime(
-                                        start.year, start.month, start.day)) {
+                                (today ==
+                                        DateTime(start.year, start.month,
+                                            start.day) ||
+                                    DateTime(start.year, start.month, start.day)
+                                        .isBefore(today))) {
                               if (statusData['statusType'] ==
                                   'Medical Appointment') {
                                 _maDetails.add(Map<String, dynamic>.from(data));
