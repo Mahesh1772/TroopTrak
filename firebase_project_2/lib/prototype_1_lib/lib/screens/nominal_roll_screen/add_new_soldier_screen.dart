@@ -111,6 +111,35 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
       initialDate: DateTime.now(),
       firstDate: DateTime(1960),
       lastDate: DateTime.now(),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: (Theme.of(context).colorScheme.background ==
+                    const Color.fromARGB(255, 243, 246, 254))
+                ? ColorScheme.highContrastLight(
+                    primary:
+                        const Color.fromARGB(255, 129, 71, 230), // <-- SEE HERE
+                    onPrimary: Colors.white, // <-- SEE HERE
+                    onSurface:
+                        Theme.of(context).colorScheme.tertiary, // <-- SEE HERE
+                  )
+                : ColorScheme.highContrastDark(
+                    primary:
+                        const Color.fromARGB(255, 129, 71, 230), // <-- SEE HERE
+                    onPrimary: Colors.white, // <-- SEE HERE
+                    onSurface:
+                        Theme.of(context).colorScheme.tertiary, // <-- SEE HERE
+                  ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor:
+                    Theme.of(context).colorScheme.tertiary, // button text color
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
     ).then((value) {
       setState(() {
         if (value != null) {
@@ -127,6 +156,35 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
       initialDate: DateTime.now(),
       firstDate: DateTime(1960),
       lastDate: DateTime(2030),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: (Theme.of(context).colorScheme.background ==
+                    const Color.fromARGB(255, 243, 246, 254))
+                ? ColorScheme.highContrastLight(
+                    primary:
+                        const Color.fromARGB(255, 129, 71, 230), // <-- SEE HERE
+                    onPrimary: Colors.white, // <-- SEE HERE
+                    onSurface:
+                        Theme.of(context).colorScheme.tertiary, // <-- SEE HERE
+                  )
+                : ColorScheme.highContrastDark(
+                    primary:
+                        const Color.fromARGB(255, 129, 71, 230), // <-- SEE HERE
+                    onPrimary: Colors.white, // <-- SEE HERE
+                    onSurface:
+                        Theme.of(context).colorScheme.tertiary, // <-- SEE HERE
+                  ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor:
+                    Theme.of(context).colorScheme.tertiary, // button text color
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
     ).then((value) {
       setState(() {
         if (value != null) {
@@ -143,6 +201,35 @@ class _AddNewSoldierPageState extends State<AddNewSoldierPage> {
       initialDate: DateTime.now(),
       firstDate: DateTime(1960),
       lastDate: DateTime(2030),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: (Theme.of(context).colorScheme.background ==
+                    const Color.fromARGB(255, 243, 246, 254))
+                ? ColorScheme.highContrastLight(
+                    primary:
+                        const Color.fromARGB(255, 129, 71, 230), // <-- SEE HERE
+                    onPrimary: Colors.white, // <-- SEE HERE
+                    onSurface:
+                        Theme.of(context).colorScheme.tertiary, // <-- SEE HERE
+                  )
+                : ColorScheme.highContrastDark(
+                    primary:
+                        const Color.fromARGB(255, 129, 71, 230), // <-- SEE HERE
+                    onPrimary: Colors.white, // <-- SEE HERE
+                    onSurface:
+                        Theme.of(context).colorScheme.tertiary, // <-- SEE HERE
+                  ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor:
+                    Theme.of(context).colorScheme.tertiary, // button text color
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
     ).then((value) {
       setState(() {
         if (value != null) {
