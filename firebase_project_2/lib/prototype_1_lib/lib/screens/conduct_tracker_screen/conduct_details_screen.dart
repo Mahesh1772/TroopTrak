@@ -131,6 +131,8 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
 
                       documentIDs.removeWhere((element) =>
                           conductData['participants'].contains(element));
+
+                      soldierReason = conductData['soldierReason'];
                     }
                     if (snapshots.snapshot2.hasData) {
                       List? users = snapshots.snapshot2.data?.docs.toList();
