@@ -113,32 +113,7 @@ class _GNavMainScreen extends State<GNavMainScreen> {
                       : Colors.black),
             ),
             actions: [
-              IconButton(
-                onPressed: () {
-                  if (isToggled) {
-                    setState(() {
-                      isToggled = false;
-                      _themeManager.toggleTheme(isToggled);
-                    });
-                  } else {
-                    setState(() {
-                      isToggled = true;
-                      _themeManager.toggleTheme(isToggled);
-                    });
-                  }
-                },
-                icon: isToggled
-                    ? Icon(
-                        Icons.dark_mode_rounded,
-                        color: Colors.white,
-                        size: 30.sp,
-                      )
-                    : Icon(
-                        Icons.light_mode_rounded,
-                        color: Colors.orange,
-                        size: 30.sp,
-                      ),
-              ),
+              
               InkWell(
                 key: const Key("userProfileIcon"),
                 onTap: () {
