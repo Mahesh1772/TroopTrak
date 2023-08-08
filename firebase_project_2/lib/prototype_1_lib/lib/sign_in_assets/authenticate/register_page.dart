@@ -141,7 +141,7 @@ class _RegisterPageState extends State<RegisterPage> {
           password: _password.text.trim(),
         );
         User user = result.user!;
-        user.updateDisplayName(_name.text.trim());
+        await user.updateDisplayName(_name.text.trim());
 
         //Adding user details
         await addUserDetails();
@@ -155,7 +155,7 @@ class _RegisterPageState extends State<RegisterPage> {
             snackBarStyle: const SnackBarStyle() // this one
             );
       }
-      await FirebaseAuth.instance.signOut();
+      FirebaseAuth.instance.signOut();
     } catch (e) {
       IconSnackBar.show(
           context: context,
