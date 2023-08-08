@@ -293,7 +293,7 @@ class _SoldierTileState extends State<SoldierTile> {
                       },
                       iconBuilder: rollingIconBuilder,
                       borderWidth: 3.0.w,
-                      indicatorColor: Colors.white,
+                      indicatorColor: Theme.of(context).colorScheme.primary,
                       innerGradient: LinearGradient(colors: [
                         Colors.transparent.withOpacity(0.1),
                         Colors.transparent.withOpacity(0),

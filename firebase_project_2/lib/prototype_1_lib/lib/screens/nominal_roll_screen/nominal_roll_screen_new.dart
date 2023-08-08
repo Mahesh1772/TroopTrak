@@ -87,7 +87,10 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
               backgroundColor: Colors.transparent,
               isScrollControlled: true);
         },
-        child: const Icon(Icons.add),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
       backgroundColor:
           backgroundColor, //const Color.fromARGB(255, 254, 251, 234),//const Color.fromARGB(255, 21, 25, 34),
