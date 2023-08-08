@@ -74,6 +74,14 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
                 String dateOfDuty = DateFormat('d MMM yyyy').format(newDate);
                 String nowEndTime = dateOfDuty + " " + conduct['endTime'];
                 eDate = DateFormat('d MMM yyyy').add_jm().parse(nowEndTime);
+              } else if (conduct['endTime'] == conduct['startTime']) {
+                DateTime newDate =
+                    DateFormat('d MMM yyyy').parse(conduct['startDate']);
+                newDate =
+                    DateTime(newDate.year, newDate.month, newDate.day + 1);
+                String dateOfDuty = DateFormat('d MMM yyyy').format(newDate);
+                String nowEndTime = dateOfDuty + " " + conduct['endTime'];
+                eDate = DateFormat('d MMM yyyy').add_jm().parse(nowEndTime);
               } else {
                 String nowEndTime =
                     conduct['startDate'] + " " + conduct['endTime'];
@@ -105,6 +113,14 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
               DateTime eDate;
               if (duty['endTime'].contains('AM') &&
                   duty['startTime'].contains('PM')) {
+                DateTime newDate =
+                    DateFormat('d MMM yyyy').parse(duty['dutyDate']);
+                newDate =
+                    DateTime(newDate.year, newDate.month, newDate.day + 1);
+                String dateOfDuty = DateFormat('d MMM yyyy').format(newDate);
+                String nowEndTime = dateOfDuty + " " + duty['endTime'];
+                eDate = DateFormat('d MMM yyyy').add_jm().parse(nowEndTime);
+              } else if (duty['endTime'] == duty['startTime']) {
                 DateTime newDate =
                     DateFormat('d MMM yyyy').parse(duty['dutyDate']);
                 newDate =
