@@ -201,10 +201,6 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                       userDetails[i]
                           .addEntries({'ID': users[i].reference.id}.entries);
                     }
-                    userDetails.removeWhere(
-                      (element) => element['ID'] == name,
-                    );
-
                     if (userDetails.isEmpty) {
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -230,9 +226,6 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                       userDetails[i]
                           .addEntries({'ID': users[i].reference.id}.entries);
                     }
-                    userDetails.removeWhere(
-                      (element) => element['ID'] == name,
-                    );
                   }
                 }
                 return Expanded(
