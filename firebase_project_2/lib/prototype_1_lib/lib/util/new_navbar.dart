@@ -30,25 +30,19 @@ var fname;
 var firebase_auth = FirebaseAuth.instance;
 
 class _GNavMainScreen extends State<GNavMainScreen> {
-  late List<Widget> _widgetOptions;
+  static final List<Widget> _widgetOptions = <Widget>[
+    const DashboardScreen(),
+    const NominalRollNewScreen(),
+    const ConductTrackerScreen(),
+    const GuardDutyTrackerScreen(),
+    //const StyledText('Conduct Tracker', 25),
+    //const StyledText('Parade State', 25),
+  ];
   void itemTapped(int index) {
     setState(() {
       widget.selectedIndex = index;
       displayTitle(index);
     });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _widgetOptions = <Widget>[
-      const DashboardScreen(),
-      NominalRollNewScreen(callbackThemeChanger: callbackThemeChanger),
-      const ConductTrackerScreen(),
-      const GuardDutyTrackerScreen(),
-      //const StyledText('Conduct Tracker', 25),
-      //const StyledText('Parade State', 25),
-    ];
   }
 
   void getDisplayname() async {

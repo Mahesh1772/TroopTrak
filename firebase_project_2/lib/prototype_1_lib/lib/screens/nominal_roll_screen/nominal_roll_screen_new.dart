@@ -11,9 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/user_models/user_details.dart';
 
 class NominalRollNewScreen extends StatefulWidget {
-  const NominalRollNewScreen({super.key, required this.callbackThemeChanger});
-
-  final Function callbackThemeChanger;
+  const NominalRollNewScreen({super.key});
 
   @override
   State<NominalRollNewScreen> createState() => _NominalRollNewScreenState();
@@ -255,7 +253,6 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                                 const Color.fromARGB(255, 243, 246, 254))
                             ? false
                             : true,
-                        callbackThemeChanger: widget.callbackThemeChanger,
                       );
                     },
                   ),
