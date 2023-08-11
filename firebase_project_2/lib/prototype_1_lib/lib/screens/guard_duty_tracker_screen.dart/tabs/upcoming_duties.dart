@@ -262,26 +262,38 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
                               1)
                           .toList();
                     }
-                    return ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      physics: const PageScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: dutyDetails.length,
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () {},
-                          child: GuardDutyTile(
-                            docID: dutyDetails[index]['ID'],
-                            participants: dutyDetails[index]['participants'],
-                            dutyDate: dutyDetails[index]['dutyDate'],
-                            startTime: dutyDetails[index]['startTime'],
-                            endTime: dutyDetails[index]['endTime'],
-                            dutyType: dutyDetails[index]['dayType'],
-                            numberOfPoints: dutyDetails[index]['points'],
-                          ),
-                        );
-                      },
-                    );
+                    return dutyDetails.isNotEmpty
+                        ? ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            physics: const PageScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: dutyDetails.length,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () {},
+                                child: GuardDutyTile(
+                                  docID: dutyDetails[index]['ID'],
+                                  participants: dutyDetails[index]
+                                      ['participants'],
+                                  dutyDate: dutyDetails[index]['dutyDate'],
+                                  startTime: dutyDetails[index]['startTime'],
+                                  endTime: dutyDetails[index]['endTime'],
+                                  dutyType: dutyDetails[index]['dayType'],
+                                  numberOfPoints: dutyDetails[index]['points'],
+                                ),
+                              );
+                            },
+                          )
+                        : Center(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset("lib/assets/noConductspng.png"),
+                                StyledText("NO DUTIES FOR TODAY!", 28.sp,
+                                    fontWeight: FontWeight.w500),
+                              ],
+                            ),
+                          );
                   }),
               SizedBox(
                 height: 50.h,

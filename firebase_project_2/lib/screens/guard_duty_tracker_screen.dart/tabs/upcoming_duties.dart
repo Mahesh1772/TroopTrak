@@ -266,7 +266,7 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
                               1)
                           .toList();
                     }
-                    return ListView.builder(
+                    return  dutyDetails.isNotEmpty ? ListView.builder(
                       scrollDirection: Axis.vertical,
                       physics: const PageScrollPhysics(),
                       shrinkWrap: true,
@@ -285,7 +285,16 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
                           ),
                         );
                       },
-                    );
+                    )  : Center(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Image.asset("lib/assets/noConductspng.png"),
+                              StyledText("NO DUTIES FOR TODAY!", 28.sp,
+                                  fontWeight: FontWeight.w500),
+                            ],
+                          ),
+                        );
                   }),
               SizedBox(
                 height: 50.h,
