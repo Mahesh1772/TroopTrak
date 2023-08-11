@@ -34,6 +34,14 @@ class MenUserData extends ChangeNotifier {
     });
   }
 
+  Stream<DocumentSnapshot<Map<String, dynamic>>> conduct_data(String docID) {
+    userData = FirebaseFirestore.instance
+        .collection('Conducts')
+        .doc(docID)
+        .snapshots();
+    return userData;
+  }
+
   Stream<QuerySnapshot> attendance_data(String docID) {
     status = FirebaseFirestore.instance
         .collection('Users')
