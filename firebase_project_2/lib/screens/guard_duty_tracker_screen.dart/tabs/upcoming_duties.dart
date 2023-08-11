@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/util/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,8 +19,6 @@ class UpcomingDuties extends StatefulWidget {
 
 //Stream we listen to
 late Stream<QuerySnapshot> documentStream;
-
-final name = FirebaseAuth.instance.currentUser!.displayName.toString();
 
 //Used to track participation
 bool isAParticipant = false;
@@ -51,14 +48,6 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
         .difference(DateTime(
             _selectedDate.year, _selectedDate.month, _selectedDate.day))
         .inDays;
-  }
-
-  bool isPartcipant(Map<String, dynamic> todayConducts, String name) {
-    List<String> part = todayConducts['participants'].cast<String>();
-    if (part.contains(name)) {
-      return true;
-    }
-    return false;
   }
 
   @override
@@ -217,8 +206,6 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
                             return InkWell(
                               onTap: () {},
                               child: GuardDutyTile(
-                                isUserParticipating: isPartcipant(
-                                    todayDuties[index]['participants'], name),
                                 docID: todayDuties[index]['ID'],
                                 participants: todayDuties[index]
                                     ['participants'],
@@ -288,8 +275,6 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
                         return InkWell(
                           onTap: () {},
                           child: GuardDutyTile(
-                            isUserParticipating: isPartcipant(
-                                dutyDetails[index]['participants'], name),
                             docID: dutyDetails[index]['ID'],
                             participants: dutyDetails[index]['participants'],
                             dutyDate: dutyDetails[index]['dutyDate'],

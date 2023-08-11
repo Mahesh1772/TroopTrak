@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,9 +17,8 @@ class GuardDutyTile extends StatefulWidget {
   final double numberOfPoints;
   final String docID;
   final Map<String, dynamic> participants;
-  final bool isUserParticipating;
 
-  const GuardDutyTile({
+  GuardDutyTile({
     super.key,
     required this.dutyDate,
     required this.startTime,
@@ -27,7 +27,6 @@ class GuardDutyTile extends StatefulWidget {
     required this.numberOfPoints,
     required this.docID,
     required this.participants,
-    required this.isUserParticipating,
   });
 
   @override
@@ -37,6 +36,8 @@ class GuardDutyTile extends StatefulWidget {
 class _GuardDutyTileState extends State<GuardDutyTile>
     with TickerProviderStateMixin {
   late AnimationController _isParticipatingIconController;
+  final name = FirebaseAuth.instance.currentUser!.displayName.toString();
+  late bool isUserParticipating;
 
   @override
   void initState() {
@@ -44,8 +45,19 @@ class _GuardDutyTileState extends State<GuardDutyTile>
       vsync: this,
     );
 
+    print(widget.participants);
+
+    isUserParticipating = isPartcipant(widget.participants, name);
+
     _isParticipatingIconController.repeat(period: Duration(seconds: 2));
     super.initState();
+  }
+
+  bool isPartcipant(Map<String, dynamic> todayConducts, String name) {
+    if (todayConducts.keys.contains(name)) {
+      return true;
+    }
+    return false;
   }
 
   Future deleteDutyDetails() async {
@@ -143,7 +155,7 @@ class _GuardDutyTileState extends State<GuardDutyTile>
                 ],
               ),
               Center(
-                child: widget.isUserParticipating
+                child: isUserParticipating
                     ? Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Stack(
