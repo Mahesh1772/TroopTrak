@@ -80,6 +80,7 @@ dependencies:
   mobile_scanner: ^3.3.0
   image_picker: ^1.0.1
   multiple_stream_builder: ^3.0.2
+  flutter_native_splash: ^2.3.1
 
 
 
@@ -93,6 +94,25 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  flutter_launcher_icons: "^0.13.1"
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/TroopTrakAppIcon.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "assets/TroopTrakAppIcon.png"
+    background_color: "#ffffff"
+    theme_color: "#ffffff"
+  windows:
+    generate: true
+    image_path: "assets/TroopTrakAppIcon.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/TroopTrakAppIcon.png"
 
 flutter_native_splash:
   android: true
@@ -103,10 +123,9 @@ flutter_native_splash:
   image_dark: assets/images/TroopTrakSplashscreen.jpg
 
   android_13:
-    image: assets/images/GOW.jpg
-    icon_background_color: "#f7f6f1"
-    image_dark: assets/images/TroopTrakSplashscreen.jpg
-    icon_background_color_dark: "#272727"
+    image: assets/TroopTrakAnimated.gif
+    image_dark: assets/TroopTrakAnimated.gif
+    branding: assets/BladesOfOlympusLogo.png
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -160,6 +179,8 @@ flutter:
       - lib/assets/phone_auth/troopTrak_logo.png
       - lib/assets/noConductspng.png
       - lib/assets/icons8-user-96.png
+
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

@@ -3,13 +3,13 @@ flutter_native_splash:
   ios: true
   color:  "#f7f6f1"
   color_dark:  "#272727"
-  image: assets/images/books.png
-  image_dark: assets/images/books.png
+  background_image: assets/TroopTrakSplashscreen.png
+  
 
   android_13:
-    image: assets/images/books.png
-    icon_background_color: "#f7f6f1"
-    image_dark: assets/images/books.png
-    icon_background_color_dark: "#272727"
+    image: assets/TroopTrakAnimated.gif
+    image_dark: assets/TroopTrakAnimated.gif
+    branding: assets/BladesOfOlympusLogo.png
+    
 
   web: false
