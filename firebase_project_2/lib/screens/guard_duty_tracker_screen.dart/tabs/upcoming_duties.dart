@@ -247,46 +247,59 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
                 height: 15.h,
               ),
               StreamBuilder<QuerySnapshot>(
-                  stream: userDetailsModel.duty_data,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      dutyDetails = [];
-                      var duties = snapshot.data?.docs.toList();
+                stream: userDetailsModel.duty_data,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    dutyDetails = [];
+                    var duties = snapshot.data?.docs.toList();
 
-                      for (var i = 0; i < duties!.length; i++) {
-                        var data = duties[i].data();
-                        dutyDetails.add(data as Map<String, dynamic>);
-                        dutyDetails[i]
-                            .addEntries({'ID': duties[i].reference.id}.entries);
-                      }
-                      dutyDetails = dutyDetails
-                          .where((element) =>
-                              calculateDifference(DateFormat('d MMM yyyy')
-                                  .parse(element['dutyDate'])) >=
-                              1)
-                          .toList();
+                    for (var i = 0; i < duties!.length; i++) {
+                      var data = duties[i].data();
+                      dutyDetails.add(data as Map<String, dynamic>);
+                      dutyDetails[i]
+                          .addEntries({'ID': duties[i].reference.id}.entries);
                     }
-                    return ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      physics: const PageScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: dutyDetails.length,
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () {},
-                          child: GuardDutyTile(
-                            docID: dutyDetails[index]['ID'],
-                            participants: dutyDetails[index]['participants'],
-                            dutyDate: dutyDetails[index]['dutyDate'],
-                            startTime: dutyDetails[index]['startTime'],
-                            endTime: dutyDetails[index]['endTime'],
-                            dutyType: dutyDetails[index]['dayType'],
-                            numberOfPoints: dutyDetails[index]['points'],
+                    dutyDetails = dutyDetails
+                        .where((element) =>
+                            calculateDifference(DateFormat('d MMM yyyy')
+                                .parse(element['dutyDate'])) >=
+                            1)
+                        .toList();
+                  }
+                  return dutyDetails.isNotEmpty
+                      ? ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          physics: const PageScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: dutyDetails.length,
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                              onTap: () {},
+                              child: GuardDutyTile(
+                                docID: dutyDetails[index]['ID'],
+                                participants: dutyDetails[index]
+                                    ['participants'],
+                                dutyDate: dutyDetails[index]['dutyDate'],
+                                startTime: dutyDetails[index]['startTime'],
+                                endTime: dutyDetails[index]['endTime'],
+                                dutyType: dutyDetails[index]['dayType'],
+                                numberOfPoints: dutyDetails[index]['points'],
+                              ),
+                            );
+                          },
+                        )
+                      : Center(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Image.asset("lib/assets/noConductspng.png"),
+                              StyledText("NO UPCOMING DUTIES!", 28.sp,
+                                  fontWeight: FontWeight.w500),
+                            ],
                           ),
                         );
-                      },
-                    );
-                  }),
+                },
+              ),
               SizedBox(
                 height: 50.h,
               ),
