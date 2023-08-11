@@ -1,13 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_project_2/prototype_1_lib/lib/util/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_project_2/screens/guard_duty_tracker_screen.dart/util/guard_duty_main_page_tiles.dart';
-import 'package:firebase_project_2/util/text_styles/text_style.dart';
+import 'package:firebase_project_2/prototype_1_lib/lib/util/text_styles/text_style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:lottie/lottie.dart';
+
 import '../../../user_models/user_details.dart';
 
 class UpcomingDuties extends StatefulWidget {
@@ -20,6 +21,11 @@ class UpcomingDuties extends StatefulWidget {
 //Stream we listen to
 late Stream<QuerySnapshot> documentStream;
 
+final name = FirebaseAuth.instance.currentUser!.displayName.toString();
+
+//Used to track participation
+bool isAParticipant = false;
+
 // List to store all user data, whilst also mapping to name
 List<Map<String, dynamic>> dutyDetails = [];
 
@@ -29,32 +35,13 @@ List<Map<String, dynamic>> todayDuties = [];
 //Loop variable
 int i = 0;
 
-String fname = FirebaseAuth.instance.currentUser!.displayName.toString();
-
 class _UpcomingDutiesState extends State<UpcomingDuties>
     with TickerProviderStateMixin {
   DateTime _selectedDate = DateTime.now();
 
-  late AnimationController _noConducts;
-
-  bool isPartcipant(Map<String, dynamic> todayConducts, String name) {
-    if (todayConducts.containsKey(name)) {
-      return true;
-    }
-    return false;
-  }
-
   @override
   void initState() {
-    _noConducts =
-        AnimationController(vsync: this, duration: const Duration(seconds: 5));
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _noConducts.dispose();
-    super.dispose();
   }
 
   /// Returns the difference (in full days) between the provided date and today.
@@ -64,6 +51,14 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
         .difference(DateTime(
             _selectedDate.year, _selectedDate.month, _selectedDate.day))
         .inDays;
+  }
+
+  bool isPartcipant(Map<String, dynamic> todayConducts, String name) {
+    List<String> part = todayConducts['participants'].cast<String>();
+    if (part.contains(name)) {
+      return true;
+    }
+    return false;
   }
 
   @override
@@ -85,17 +80,17 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
               ),
               Container(
                 margin: EdgeInsets.only(
-                  top: 16.h,
+                  top: defaultPadding.h,
                 ),
-                padding: EdgeInsets.all(16.sp),
+                padding: EdgeInsets.all(defaultPadding.sp),
                 decoration: BoxDecoration(
                   border: Border.all(
                     width: 2.w,
                     color: const Color.fromARGB(255, 72, 30, 229)
                         .withOpacity(0.35),
                   ),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(16.r),
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(defaultPadding),
                   ),
                 ),
                 child: Row(
@@ -155,7 +150,6 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
                       },
                       child: Icon(
                         Icons.date_range_rounded,
-                        color: Colors.white,
                         size: 45.sp,
                       ),
                     ),
@@ -168,7 +162,11 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
                         Text(
                           DateFormat.yMMMMd().format(_selectedDate),
                           style: GoogleFonts.poppins(
-                              color: Colors.white54,
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.color
+                                  ?.withOpacity(0.54),
                               fontWeight: FontWeight.w400,
                               fontSize: 28.sp),
                         ),
@@ -177,9 +175,7 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
                               ? "Today"
                               : DateFormat('EEEE').format(_selectedDate),
                           style: GoogleFonts.poppins(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 32.sp),
+                              fontWeight: FontWeight.w500, fontSize: 32.sp),
                         ),
                       ],
                     ),
@@ -210,12 +206,6 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
                         todayDuties.add(duty);
                       }
                     }
-                    dutyDetails = dutyDetails
-                        .where((element) =>
-                            calculateDifference(DateFormat('d MMM yyyy')
-                                .parse(element['dutyDate'])) >=
-                            1)
-                        .toList();
                   }
                   return todayDuties.isNotEmpty
                       ? ListView.builder(
@@ -227,6 +217,8 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
                             return InkWell(
                               onTap: () {},
                               child: GuardDutyTile(
+                                isUserParticipating: isPartcipant(
+                                    todayDuties[index]['participants'], name),
                                 docID: todayDuties[index]['ID'],
                                 participants: todayDuties[index]
                                     ['participants'],
@@ -235,8 +227,6 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
                                 endTime: todayDuties[index]['endTime'],
                                 dutyType: todayDuties[index]['dayType'],
                                 numberOfPoints: todayDuties[index]['points'],
-                                isUserParticipating: isPartcipant(
-                                    dutyDetails[index]['participants'], fname),
                               ),
                             );
                           },
@@ -245,11 +235,7 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              LottieBuilder.network(
-                                "https://lottie.host/d086ee86-2d40-45e6-a68d-fc1b5b9ebe58/QpGAG0CLkf.json",
-                                controller: _noConducts,
-                                height: 400.h,
-                              ),
+                              Image.asset("lib/assets/noConductspng.png"),
                               StyledText("NO DUTIES FOR TODAY!", 28.sp,
                                   fontWeight: FontWeight.w500),
                             ],
@@ -262,8 +248,13 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.0.w),
-                child: StyledText("Upcoming Duties", 24.sp,
-                    fontWeight: FontWeight.w600),
+                child: Text(
+                  "Upcoming Duties",
+                  style: GoogleFonts.poppins(
+                    fontSize: 24.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
               ),
               SizedBox(
                 height: 15.h,
@@ -297,6 +288,8 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
                         return InkWell(
                           onTap: () {},
                           child: GuardDutyTile(
+                            isUserParticipating: isPartcipant(
+                                dutyDetails[index]['participants'], name),
                             docID: dutyDetails[index]['ID'],
                             participants: dutyDetails[index]['participants'],
                             dutyDate: dutyDetails[index]['dutyDate'],
@@ -304,8 +297,6 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
                             endTime: dutyDetails[index]['endTime'],
                             dutyType: dutyDetails[index]['dayType'],
                             numberOfPoints: dutyDetails[index]['points'],
-                            isUserParticipating: isPartcipant(
-                                dutyDetails[index]['participants'], fname),
                           ),
                         );
                       },
@@ -313,7 +304,7 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
                   }),
               SizedBox(
                 height: 50.h,
-              )
+              ),
             ],
           ),
         ),
