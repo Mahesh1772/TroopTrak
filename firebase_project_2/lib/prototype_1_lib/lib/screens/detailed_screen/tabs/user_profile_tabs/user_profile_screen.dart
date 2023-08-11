@@ -297,7 +297,9 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                               },
                               iconBuilder: rollingIconBuilder,
                               borderWidth: 3.0.w,
-                              indicatorColor: Colors.white,
+                              indicatorColor: widget.isToggled
+                                  ? Colors.black
+                                  : Colors.white,
                               innerGradient: LinearGradient(colors: [
                                 Colors.transparent.withOpacity(0.1),
                                 Colors.transparent.withOpacity(0),
@@ -412,15 +414,20 @@ class _UserProfileScreenState extends State<UserProfileScreen>
 }
 
 Widget rollingIconBuilder(bool value, Size iconSize, bool foreground) {
-  IconData data;
+  Icon data;
 
   if (value) {
-    data = Icons.dark_mode_rounded;
+    data = Icon(
+      Icons.dark_mode_rounded,
+      color: Colors.white,
+      size: iconSize.shortestSide,
+    );
   } else {
-    data = Icons.light_mode_rounded;
+    data = Icon(
+      Icons.light_mode_rounded,
+      color: Colors.amber.shade600,
+      size: iconSize.shortestSide,
+    );
   }
-  return Icon(
-    data,
-    size: iconSize.shortestSide,
-  );
+  return data;
 }

@@ -1,6 +1,8 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_project_2/prototype_1_lib/lib/screens/detailed_screen/tabs/user_profile_tabs/user_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -26,24 +28,25 @@ class SoldierTile extends StatefulWidget {
   late bool isInsideCamp;
   final String docID;
   final bool isToggled;
+  final Function callbackThemeChanger;
 
-  SoldierTile({
-    super.key,
-    required this.soldierName,
-    required this.soldierRank,
-    required this.company,
-    required this.platoon,
-    required this.section,
-    required this.soldierAppointment,
-    required this.dateOfBirth,
-    required this.rationType,
-    required this.bloodType,
-    required this.enlistmentDate,
-    required this.ordDate,
-    required this.isInsideCamp,
-    required this.docID,
-    required this.isToggled,
-  });
+  SoldierTile(
+      {super.key,
+      required this.soldierName,
+      required this.soldierRank,
+      required this.company,
+      required this.platoon,
+      required this.section,
+      required this.soldierAppointment,
+      required this.dateOfBirth,
+      required this.rationType,
+      required this.bloodType,
+      required this.enlistmentDate,
+      required this.ordDate,
+      required this.isInsideCamp,
+      required this.docID,
+      required this.isToggled,
+      required this.callbackThemeChanger});
 
   @override
   State<SoldierTile> createState() => _SoldierTileState();
@@ -52,6 +55,7 @@ class SoldierTile extends StatefulWidget {
 class _SoldierTileState extends State<SoldierTile> {
   bool loading = false;
   String inCampStatusText = '';
+  String name = FirebaseAuth.instance.currentUser!.displayName.toString();
 
   Future addAttendanceDetails(bool i) async {
     await FirebaseFirestore.instance
@@ -166,13 +170,25 @@ class _SoldierTileState extends State<SoldierTile> {
         "lib/assets/army-ranks/${widget.soldierRank.toString().toLowerCase()}.png");
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SoldierDetailedScreen(
-                docID: widget.docID, isToggled: widget.isToggled),
-          ),
-        );
+        if (name == widget.docID) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => UserProfileScreen(
+                  docID: widget.docID,
+                  isToggled: widget.isToggled,
+                  callbackThemeChanger: widget.callbackThemeChanger),
+            ),
+          );
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SoldierDetailedScreen(
+                  docID: widget.docID, isToggled: widget.isToggled),
+            ),
+          );
+        }
       },
       child: Padding(
         padding: EdgeInsets.all(8.0.sp),
