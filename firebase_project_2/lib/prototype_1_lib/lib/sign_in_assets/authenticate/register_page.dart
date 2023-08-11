@@ -141,7 +141,7 @@ class _RegisterPageState extends State<RegisterPage> {
           password: _password.text.trim(),
         );
         User user = result.user!;
-        await user.updateDisplayName(_name.text.trim());
+        await user.updateDisplayName(_name.text.titleCase.trim());
 
         //Adding user details
         await addUserDetails();
