@@ -10,7 +10,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../phone_authentication/provider/auth_provider.dart';
-import '../../../../phone_authentication/wrapper.dart';
 
 final fname = FirebaseAuth.instance.currentUser!.uid.toString();
 final name = FirebaseAuth.instance.currentUser!.displayName.toString();
@@ -190,58 +189,7 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab>
                     ),
                   ),
                   SizedBox(
-                    height: 20.h,
-                  ),
-                  Center(
-                    child: TextButton(
-                      onPressed: () async {
-                        await deleteUserAccount().then(
-                          (value) async {
-                            //await ap.userSignOut().then(
-                            //  (value) async {
-                            _storeOnBoardInfo(1);
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const Wrapper(),
-                              ),
-                            );
-                            //  },
-                            //);
-                          },
-                        );
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 30.0.w, vertical: 16.0.h),
-                        decoration: BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            gradient: const LinearGradient(
-                              colors: [
-                                Colors.red,
-                                Color.fromARGB(255, 237, 131, 124)
-                              ],
-                            ),
-                            borderRadius: BorderRadius.circular(50.0.r)),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(
-                              Icons.delete,
-                              color: Colors.white,
-                            ),
-                            SizedBox(
-                              width: 20.w,
-                            ),
-                            StyledText("DELETE SOLDIER DETAILS", 18.sp,
-                                fontWeight: FontWeight.bold),
-                            SizedBox(
-                              height: 30.h,
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
+                    height: 30.h,
                   ),
                 ],
               );
