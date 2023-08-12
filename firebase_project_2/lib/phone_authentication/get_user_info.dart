@@ -81,6 +81,35 @@ class _AddNewMenState extends State<AddNewMen> {
       initialDate: DateTime.now(),
       firstDate: DateTime(1960),
       lastDate: DateTime.now(),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: (Theme.of(context).colorScheme.background ==
+                    const Color.fromARGB(255, 243, 246, 254))
+                ? ColorScheme.highContrastLight(
+                    primary:
+                        const Color.fromARGB(255, 129, 71, 230), // <-- SEE HERE
+                    onPrimary: Colors.white, // <-- SEE HERE
+                    onSurface:
+                        Theme.of(context).colorScheme.tertiary, // <-- SEE HERE
+                  )
+                : ColorScheme.highContrastDark(
+                    primary:
+                        const Color.fromARGB(255, 129, 71, 230), // <-- SEE HERE
+                    onPrimary: Colors.white, // <-- SEE HERE
+                    onSurface:
+                        Theme.of(context).colorScheme.tertiary, // <-- SEE HERE
+                  ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor:
+                    Theme.of(context).colorScheme.tertiary, // button text color
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
     ).then((value) {
       setState(() {
         if (value != null) {
@@ -97,6 +126,35 @@ class _AddNewMenState extends State<AddNewMen> {
       initialDate: DateTime.now(),
       firstDate: DateTime(1960),
       lastDate: DateTime(2030),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: (Theme.of(context).colorScheme.background ==
+                    const Color.fromARGB(255, 243, 246, 254))
+                ? ColorScheme.highContrastLight(
+                    primary:
+                        const Color.fromARGB(255, 129, 71, 230), // <-- SEE HERE
+                    onPrimary: Colors.white, // <-- SEE HERE
+                    onSurface:
+                        Theme.of(context).colorScheme.tertiary, // <-- SEE HERE
+                  )
+                : ColorScheme.highContrastDark(
+                    primary:
+                        const Color.fromARGB(255, 129, 71, 230), // <-- SEE HERE
+                    onPrimary: Colors.white, // <-- SEE HERE
+                    onSurface:
+                        Theme.of(context).colorScheme.tertiary, // <-- SEE HERE
+                  ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor:
+                    Theme.of(context).colorScheme.tertiary, // button text color
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
     ).then((value) {
       setState(() {
         if (value != null) {
@@ -113,6 +171,35 @@ class _AddNewMenState extends State<AddNewMen> {
       initialDate: DateTime.now(),
       firstDate: DateTime(1960),
       lastDate: DateTime(2030),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: (Theme.of(context).colorScheme.background ==
+                    const Color.fromARGB(255, 243, 246, 254))
+                ? ColorScheme.highContrastLight(
+                    primary:
+                        const Color.fromARGB(255, 129, 71, 230), // <-- SEE HERE
+                    onPrimary: Colors.white, // <-- SEE HERE
+                    onSurface:
+                        Theme.of(context).colorScheme.tertiary, // <-- SEE HERE
+                  )
+                : ColorScheme.highContrastDark(
+                    primary:
+                        const Color.fromARGB(255, 129, 71, 230), // <-- SEE HERE
+                    onPrimary: Colors.white, // <-- SEE HERE
+                    onSurface:
+                        Theme.of(context).colorScheme.tertiary, // <-- SEE HERE
+                  ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor:
+                    Theme.of(context).colorScheme.tertiary, // button text color
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
     ).then((value) {
       setState(() {
         if (value != null) {
@@ -286,7 +373,7 @@ class _AddNewMenState extends State<AddNewMen> {
                                   ),
                                 ),
                               ),
-                    
+
                               //Ration type dropdown menu
                               Container(
                                 height: 70.h,
@@ -299,7 +386,8 @@ class _AddNewMenState extends State<AddNewMen> {
                                 child: Center(
                                   child: DropdownButtonFormField<String>(
                                     validator: (value) {
-                                      if (value == "Select your ration type...") {
+                                      if (value ==
+                                          "Select your ration type...") {
                                         return 'Walao what food you eat?';
                                       }
                                       return null;
@@ -398,7 +486,7 @@ class _AddNewMenState extends State<AddNewMen> {
                                   ),
                                 ),
                               ),
-                    
+
                               //Blood type dropdown menu
                               Container(
                                 height: 70.h,
@@ -411,7 +499,8 @@ class _AddNewMenState extends State<AddNewMen> {
                                 child: Center(
                                   child: DropdownButtonFormField<String>(
                                     validator: (value) {
-                                      if (value == "Select your blood type...") {
+                                      if (value ==
+                                          "Select your blood type...") {
                                         return 'Why your blood field empty ah?';
                                       }
                                       return null;
@@ -456,7 +545,7 @@ class _AddNewMenState extends State<AddNewMen> {
                           SizedBox(
                             height: 20.h,
                           ),
-                    
+
                           //Company textfield
                           Container(
                             decoration: BoxDecoration(
@@ -492,7 +581,7 @@ class _AddNewMenState extends State<AddNewMen> {
                             ),
                           ),
                           SizedBox(height: 20.h),
-                    
+
                           //Platoon textfield
                           Container(
                             decoration: BoxDecoration(
@@ -528,7 +617,7 @@ class _AddNewMenState extends State<AddNewMen> {
                             ),
                           ),
                           SizedBox(height: 20.h),
-                    
+
                           //Section textfield
                           Container(
                             decoration: BoxDecoration(
@@ -564,7 +653,7 @@ class _AddNewMenState extends State<AddNewMen> {
                             ),
                           ),
                           SizedBox(height: 20.h),
-                    
+
                           //Soldier Appointment text field
                           Container(
                             decoration: BoxDecoration(
@@ -599,11 +688,11 @@ class _AddNewMenState extends State<AddNewMen> {
                               ),
                             ),
                           ),
-                    
+
                           SizedBox(
                             height: 20.h,
                           ),
-                    
+
                           //Enlistment Date picker
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -645,9 +734,9 @@ class _AddNewMenState extends State<AddNewMen> {
                                   ),
                                 ),
                               ),
-                    
+
                               //comment
-                    
+
                               //ORD picker
                               InkWell(
                                 onTap: () {
@@ -688,11 +777,11 @@ class _AddNewMenState extends State<AddNewMen> {
                               ),
                             ],
                           ),
-                    
+
                           SizedBox(
                             height: 30.h,
                           ),
-                    
+
                           GestureDetector(
                             onTap: () {
                               //print(widget.selectedItem);
