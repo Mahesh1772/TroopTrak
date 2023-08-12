@@ -79,7 +79,7 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab>
   }
 
   Future deleteCurrentUser() async {
-    FirebaseFirestore.instance.collection("Users").doc(fname).delete();
+    await FirebaseFirestore.instance.collection("Users").doc(fname).delete();
   }
 
   @override
@@ -201,17 +201,19 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab>
                   Center(
                     child: TextButton(
                       onPressed: () async {
-                        //await deleteUserAccount();
-                        FirebaseAuth.instance.signOut().then((value) async {
-                          _storeOnBoardInfo(2);
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const MyAppCommander(),
-                            ),
-                          );
-                          await deleteUserAccount();
-                        });
+                        await deleteUserAccount().then(
+                          (value) async {
+                            _storeOnBoardInfo(2);
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const MyAppCommander(),
+                              ),
+                            ).then((value) {
+                              Navigator.pop(context);
+                            });
+                          },
+                        );
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric(

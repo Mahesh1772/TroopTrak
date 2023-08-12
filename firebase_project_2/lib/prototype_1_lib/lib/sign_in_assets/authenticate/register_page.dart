@@ -146,6 +146,7 @@ class _RegisterPageState extends State<RegisterPage> {
         //Adding user details
         await addUserDetails();
         await addAttendanceDetails();
+        await FirebaseAuth.instance.signOut();
         IconSnackBar.show(
             duration: const Duration(seconds: 4),
             direction: DismissDirection.horizontal,
@@ -155,7 +156,6 @@ class _RegisterPageState extends State<RegisterPage> {
             snackBarStyle: const SnackBarStyle() // this one
             );
       }
-      FirebaseAuth.instance.signOut();
     } catch (e) {
       IconSnackBar.show(
           context: context,

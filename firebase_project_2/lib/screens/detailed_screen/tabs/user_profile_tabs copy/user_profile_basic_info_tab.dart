@@ -193,16 +193,31 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab>
                   Center(
                     child: TextButton(
                       onPressed: () async {
-                        await ap.userSignOut().then((value) async {
-                          _storeOnBoardInfo(1);
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const Wrapper(),
-                            ),
-                          );
-                          await deleteUserAccount();
-                        });
+                        await deleteUserAccount().then(
+                          (value) async {
+                            _storeOnBoardInfo(1);
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Wrapper(),
+                              ),
+                            ).then(
+                              (value) {
+                                Navigator.pop(context);
+                              },
+                            );
+                          },
+                        );
+                        //await ap.userSignOut().then((value) async {
+                        //  _storeOnBoardInfo(1);
+                        //  Navigator.pushReplacement(
+                        //    context,
+                        //    MaterialPageRoute(
+                        //      builder: (context) => const Wrapper(),
+                        //    ),
+                        //  );
+                        //  await deleteUserAccount();
+                        //});
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric(
