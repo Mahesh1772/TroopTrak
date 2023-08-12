@@ -31,11 +31,13 @@ class _GenerateQRScreenState extends State<GenerateQRScreen> {
     countdownTimer = Timer.periodic(
       const Duration(seconds: 1),
       (_) {
-        setState(() async{
+        setState(() {
           final seconds = myDuration.inSeconds - 1;
+          print(seconds);
           if (seconds < 0) {
-            _.cancel();
-            await firestore.doc(fname).set({
+            countdownTimer?.cancel();
+            //_.cancel();
+            firestore.doc(fname).set({
               'QRid': null,
             }, SetOptions(merge: true));
             Navigator.pop(context);
@@ -56,7 +58,7 @@ class _GenerateQRScreenState extends State<GenerateQRScreen> {
   }
 
   @override
-  void initState() async{
+  void initState() {
     generateRandomId();
     startTimer();
     super.initState();

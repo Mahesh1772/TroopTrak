@@ -45,9 +45,11 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab>
   }
 
   Future deleteUserAccount() async {
+    final ap = Provider.of<AuthProvider>(context, listen: false);
     await deleteAttendance();
     await deleteStatuses();
     await deleteCurrentUser();
+    await ap.userSignOut().then((value) => id.delete());
     await id.delete();
   }
 
@@ -89,7 +91,7 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab>
   @override
   Widget build(BuildContext context) {
     final userDetailsModel = Provider.of<MenUserData>(context);
-    final ap = Provider.of<AuthProvider>(context, listen: false);
+
     return SingleChildScrollView(
       child: SizedBox(
         height: 750.h,
@@ -197,13 +199,13 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab>
                           (value) async {
                             //await ap.userSignOut().then(
                             //  (value) async {
-                                _storeOnBoardInfo(1);
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const Wrapper(),
-                                  ),
-                                );
+                            _storeOnBoardInfo(1);
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Wrapper(),
+                              ),
+                            );
                             //  },
                             //);
                           },
