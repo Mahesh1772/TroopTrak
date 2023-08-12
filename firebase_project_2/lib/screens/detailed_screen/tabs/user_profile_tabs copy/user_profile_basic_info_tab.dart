@@ -195,15 +195,15 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab>
                       onPressed: () async {
                         await deleteUserAccount().then(
                           (value) async {
-                            _storeOnBoardInfo(1);
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const Wrapper(),
-                              ),
-                            ).then(
-                              (value) {
-                                Navigator.pop(context);
+                            await ap.userSignOut().then(
+                              (value) async {
+                                _storeOnBoardInfo(1);
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const Wrapper(),
+                                  ),
+                                );
                               },
                             );
                           },
