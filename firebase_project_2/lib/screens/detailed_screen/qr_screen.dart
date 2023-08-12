@@ -65,6 +65,12 @@ class _GenerateQRScreenState extends State<GenerateQRScreen> {
   }
 
   @override
+  void dispose() {
+    countdownTimer?.cancel(); // Cancel the timer if it's still running
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     String strDigits(int n) => n.toString().padLeft(2, '0');
     final minutes = strDigits(myDuration.inMinutes.remainder(60));
@@ -95,7 +101,7 @@ class _GenerateQRScreenState extends State<GenerateQRScreen> {
                       children: [
                         InkWell(
                           hoverColor: Colors.amber,
-                          onTap: () async{
+                          onTap: () async {
                             await firestore.doc(fname).set({
                               'QRid': null,
                             }, SetOptions(merge: true));
