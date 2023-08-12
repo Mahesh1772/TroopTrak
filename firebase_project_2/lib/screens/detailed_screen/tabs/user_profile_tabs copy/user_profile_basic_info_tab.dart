@@ -193,31 +193,33 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab>
                   Center(
                     child: TextButton(
                       onPressed: () async {
-                        await deleteUserAccount().then(
+                        //await deleteUserAccount().then(
+                        //  (value) async {
+                        //    await ap.userSignOut().then(
+                        //      (value) async {
+                        //        _storeOnBoardInfo(1);
+                        //        Navigator.pushReplacement(
+                        //          context,
+                        //          MaterialPageRoute(
+                        //            builder: (context) => const Wrapper(),
+                        //          ),
+                        //        );
+                        //      },
+                        //    );
+                        //  },
+                        //);
+                        await ap.userSignOut().then(
                           (value) async {
-                            await ap.userSignOut().then(
-                              (value) async {
-                                _storeOnBoardInfo(1);
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const Wrapper(),
-                                  ),
-                                );
-                              },
+                            await deleteUserAccount();
+                            _storeOnBoardInfo(1);
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Wrapper(),
+                              ),
                             );
                           },
                         );
-                        //await ap.userSignOut().then((value) async {
-                        //  _storeOnBoardInfo(1);
-                        //  Navigator.pushReplacement(
-                        //    context,
-                        //    MaterialPageRoute(
-                        //      builder: (context) => const Wrapper(),
-                        //    ),
-                        //  );
-                        //  await deleteUserAccount();
-                        //});
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric(
