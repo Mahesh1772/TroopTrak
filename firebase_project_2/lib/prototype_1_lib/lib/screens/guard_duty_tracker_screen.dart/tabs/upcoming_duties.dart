@@ -289,7 +289,7 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Image.asset("lib/assets/noConductspng.png"),
-                                StyledText("NO DUTIES FOR TODAY!", 28.sp,
+                                StyledText("NO UPCOMING DUTIES!", 28.sp,
                                     fontWeight: FontWeight.w500),
                               ],
                             ),
