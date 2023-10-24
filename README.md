@@ -1,6 +1,6 @@
 # Orbital 
  Flutter App
-### TroopTrak 🚀
+# TroopTrak 🚀
 
 ### Your Comprehensive Military Management App
 
@@ -8,38 +8,45 @@ TroopTrak is a cutting-edge mobile application designed for military organizatio
 
 [![TroopTrak Demo Video](https://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=VIDEO_ID)
 
-## Installation
+## Installation Guide
 
-To install TroopTrak, follow these simple steps:
+### Android Users:
 
-1. Clone the repository to your local machine.
-   ```bash
-   git clone https://github.com/your_username/TroopTrak.git
-   ```
-2. Ensure you have the latest version of Flutter installed.
-3. Run the application on your preferred emulator or physical device.
+1. Download the APK file from [here](https://www.example.com/TroopTrak.apk) on your mobile phone.
+2. Open the file with a "Package Installer."
+3. Click "Install" to initiate the installation process.
+4. If prompted with a security warning, select "Install anyway."
+5. Opt for "Don't send" if prompted for a security check.
+6. Open the installed "TroopTrak” app and enjoy!
 
-## Software Engineering Principles
+### iOS Users:
 
-### Modularity 🛠️
+Access the application through an online Android emulator [here](https://www.example.com/android_emulator).
 
-TroopTrak adheres to the principles of modularity, enabling a seamless combination of specialized functions. The use of independent modules enhances code readability and flexibility, ensuring a smoother user interface experience.
+## Login Details
 
-### DRY (Don't Repeat Yourself) Principle 🔄
+### Commander View:
 
-By implementing the DRY principle, TroopTrak avoids unnecessary code duplication and repetition. Through modular coding and parameter-based UI components, the app optimizes code reusability, readability, and functionality.
+- Email: valid@email.com
+- Password: Thisisastr0ngpassword!
 
-### Version Control with Git and GitHub 🌲
+### Man View:
 
-TroopTrak employs Git and GitHub for effective version control, branching, and seamless integration. By utilizing pull requests and regular communication, the app ensures a structured and collaborative development process.
+- Mobile Number: 98765432
+- OTP: 123456
 
-### Project Management with Agile Methodology 📈
+## Features
 
-The app follows Agile methodology, employing sprint cycles, a defined timeline, and a Kanban board for efficient project management. Regular communication and goal-oriented sprints drive the app's development and integration processes.
-
-### Design Patterns and State Management 🎨
-
-TroopTrak utilizes the Observer Pattern for real-time data updates and state management for centralized data control and efficient UI rendering. These strategies ensure seamless app responsiveness and a stable user experience.
+- **Nominal Roll Screen**: View all soldiers with individual details and credentials.
+- **Attendance and Statuses Tracking**: Monitor soldiers' attendance and current/past statuses.
+- **User Interface Widgets**: Modular design for reusable visual components.
+- **Conducts and Duties Management**: Plan and track conducts and guard duties.
+- **Observer Pattern Integration**: Real-time data updates and event handling for a responsive UI.
+- **Centralized State Management**: Efficient handling of application state for coherence and reactivity.
+- **Version Control with Git and GitHub**: Branching, pull requests, and effective collaboration.
+- **Project Management with Agile Methodology**: Sprint cycles, timeline, and Kanban board for organized development.
+- **MINDEF Intranet Integration**: Streamlined data retrieval for accurate and secure information.
+- **Cross-Platform Compatibility**: Smooth functioning on both Android and iOS devices.
 
 ## Known Issues
 
