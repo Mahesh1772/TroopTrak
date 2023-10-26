@@ -1,6 +1,11 @@
 # Orbital 
- Flutter App
+
+![BladesOfOlympusLogo](https://github.com/Mahesh1772/Orbital/assets/110832731/89887ef3-dc10-4ef4-8ffa-82a6ef1fe143)
+Made by Aakash Ramaswamy and Sivagnanam Maheshwaran.
+
 # TroopTrak 🚀
+
+![5493](https://github.com/Mahesh1772/Orbital/assets/110832731/a83e397e-ad8e-4fe5-9935-d295c71580db)
 
 ### Your Comprehensive Military Management App
 
