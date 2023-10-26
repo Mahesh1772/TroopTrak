@@ -1,6 +1,5 @@
 # Orbital 
-
-![BladesOfOlympusLogo](https://github.com/Mahesh1772/Orbital/assets/110832731/89887ef3-dc10-4ef4-8ffa-82a6ef1fe143)
+![BladesOfOlympusLogo](https://github.com/Mahesh1772/Orbital/assets/110832731/6aa388e9-f47e-4bb1-8449-288a1e63a478)
 Made by Aakash Ramaswamy and Sivagnanam Maheshwaran.
 
 # TroopTrak 🚀
