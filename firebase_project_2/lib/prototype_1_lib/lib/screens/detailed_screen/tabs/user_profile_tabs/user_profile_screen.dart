@@ -15,18 +15,23 @@ import '../../../../main.dart';
 import '../../../../user_models/user_details.dart';
 
 class UserProfileScreen extends StatefulWidget {
-  UserProfileScreen(
-      {required this.docID,
-      super.key,
-      required this.isToggled,
-      required this.callbackThemeChanger});
+  UserProfileScreen({
+    required this.docID,
+    super.key,
+    required this.isToggled,
+    required this.callbackThemeChanger,
+    required this.deletion,
+  });
   final String docID;
   bool isToggled;
   final Function callbackThemeChanger;
+  late Function deletion;
 
   @override
   State<UserProfileScreen> createState() => _UserProfileScreenState();
 }
+
+var id = FirebaseAuth.instance.currentUser;
 
 ThemeManager _themeManager = ThemeManager();
 var name = FirebaseAuth.instance.currentUser!.displayName.toString();
@@ -57,6 +62,17 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     setState(() {});
   }
 
+  deletion() {
+    //_storeOnBoardInfo(2);
+    widget.deletion;
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const MyAppCommander(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Color textColor = widget.isToggled ? Colors.white : Colors.black;
@@ -66,8 +82,6 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     }
 
     name = widget.docID;
-    //print(widget.docID);
-    //print(name);
     TabController tabController = TabController(length: 3, vsync: this);
 
     bool rankColorPicker(String rank) {
@@ -379,6 +393,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                           children: [
                             //Basic Info tab
                             UserProfileBasicInfoTab(
+                              deletion: deletion,
                               dateOfBirth:
                                   currentUser['dob'], //widget.dateOfBirth,
                               rationType: currentUser[

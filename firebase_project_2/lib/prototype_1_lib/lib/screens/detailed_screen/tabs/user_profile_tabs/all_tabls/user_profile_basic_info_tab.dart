@@ -12,7 +12,7 @@ import '../../../../../main.dart';
 import '../update_current_user_details.dart';
 
 var fname = FirebaseAuth.instance.currentUser!.displayName.toString();
-var id = FirebaseAuth.instance.currentUser!;
+//var id = FirebaseAuth.instance.currentUser!;
 
 // ignore: must_be_immutable
 class UserProfileBasicInfoTab extends StatefulWidget {
@@ -23,6 +23,7 @@ class UserProfileBasicInfoTab extends StatefulWidget {
   final String ordDate;
   final String docID;
   late Function callback;
+  late Function deletion;
   final bool isToggled;
 
   UserProfileBasicInfoTab({
@@ -35,6 +36,7 @@ class UserProfileBasicInfoTab extends StatefulWidget {
     required this.ordDate,
     required this.callback,
     required this.isToggled,
+    required this.deletion,
   });
 
   @override
@@ -53,7 +55,9 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab>
     await deleteAttendance();
     await deleteStatuses();
     await deleteCurrentUser();
-    await id.delete();
+
+    User? id = await FirebaseAuth.instance.currentUser;
+    await id!.delete().then((value) => widget.deletion);
   }
 
   Future deleteStatuses() async {
@@ -201,19 +205,20 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab>
                   Center(
                     child: TextButton(
                       onPressed: () async {
-                        await deleteUserAccount().then(
-                          (value) async {
-                            _storeOnBoardInfo(2);
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const MyAppCommander(),
-                              ),
-                            ).then((value) {
-                              Navigator.pop(context);
-                            });
-                          },
-                        );
+                        await deleteUserAccount();
+
+                        //  (value) async {
+                        //    //_storeOnBoardInfo(2);
+                        //    Navigator.pop(context);
+                        //    //Navigator.pushReplacement(
+                        //    //  context,
+                        //    //  MaterialPageRoute(
+                        //    //    builder: (context) => const MyAppCommander(),
+                        //    //  ),
+                        //    //).then((value) {
+                        //    //  Navigator.pop(context);
+                        //    //});
+                        //  },
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric(

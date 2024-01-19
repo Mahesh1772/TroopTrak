@@ -2,6 +2,7 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_project_2/prototype_1_lib/lib/main.dart';
 import 'package:firebase_project_2/themes/dark_theme.dart';
 import 'package:firebase_project_2/themes/light_theme.dart';
 import 'package:firebase_project_2/themes/theme_manager.dart';
@@ -43,6 +44,16 @@ class _GNavMainScreen extends State<GNavMainScreen> {
       widget.selectedIndex = index;
       displayTitle(index);
     });
+  }
+
+  deletion() {
+    //_storeOnBoardInfo(2);
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const MyAppCommander(),
+      ),
+    );
   }
 
   void getDisplayname() async {
@@ -122,6 +133,7 @@ class _GNavMainScreen extends State<GNavMainScreen> {
                       builder: (context) => UserProfileScreen(
                         isToggled: isToggled,
                         docID: fname,
+                        deletion: deletion,
                         callbackThemeChanger: callbackThemeChanger,
                       ),
                     ),
