@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "951642527853",
+    "project_id": "trooptrak-54337",
+    "storage_bucket": "trooptrak-54337.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951642527853:android:e176495b9f204332be8764",
+        "android_client_info": {
+          "package_name": "com.example.trooptrak_final_application"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDV8KZJveSmHU3D8lWWiguVyaoHfd5OulE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

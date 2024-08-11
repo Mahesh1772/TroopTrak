@@ -8,7 +8,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../../../main.dart';
 import '../update_current_user_details.dart';
 
 var fname = FirebaseAuth.instance.currentUser!.displayName.toString();
