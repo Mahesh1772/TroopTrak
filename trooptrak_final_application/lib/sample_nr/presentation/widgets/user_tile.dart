@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
+import 'package:provider/provider.dart';
+import 'package:trooptrak_final_application/sample_nr/presentation/providers/user_provider.dart';
 import '../../domain/entities/user.dart';
 
 class UserTile extends StatefulWidget {
@@ -17,11 +19,11 @@ class _UserTileState extends State<UserTile> {
   late bool isInsideCamp;
   bool loading = false;
 
-  @override
-  void initState() {
-    super.initState();
-    isInsideCamp = widget.user.currentAttendance == 'Inside Camp';
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   isInsideCamp = widget.user.currentAttendance == 'Inside Camp';
+  // }
 
   String inCampStatusTextChanger(bool value) {
     return value ? "IN CAMP" : "NOT IN CAMP";
@@ -131,7 +133,7 @@ class _UserTileState extends State<UserTile> {
               ),
               const SizedBox(height: 10),
               Text(
-                inCampStatusTextChanger(isInsideCamp),
+                inCampStatusTextChanger(widget.user.currentAttendance == 'Inside Camp'),
                 style: GoogleFonts.poppins(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
@@ -140,14 +142,11 @@ class _UserTileState extends State<UserTile> {
               ),
               const SizedBox(height: 15),
               AnimatedToggleSwitch<bool>.rolling(
-                current: isInsideCamp,
+                current: widget.user.currentAttendance == 'Inside Camp',
                 values: const [false, true],
-                onChanged: (value) {
-                  setState(() {
-                    isInsideCamp = value;
-                  });
-                  // Here you would typically update the user's attendance status
-                  // You might need to implement this functionality in your UserProvider
+                 onChanged: (value) async {
+                  final userProvider = Provider.of<UserProvider>(context, listen: false);
+                  await userProvider.updateUserAttendance(widget.user.id, value);
                 },
                 iconBuilder: rollingIconBuilder,
                 borderWidth: 3.0,

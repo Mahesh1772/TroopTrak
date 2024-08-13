@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:trooptrak_final_application/default_app/counter_model.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({super.key, required this.title});
   final String title;
 
   @override

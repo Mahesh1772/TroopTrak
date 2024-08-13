@@ -1,10 +1,11 @@
 class User {
+  final String id;
   final String name;
   final String rank;
   final String company;
   final String apppointment;
   final String bloodgroup;
-  final String currentAttendance;
+  String currentAttendance;
   final String dob;
   final String enlistment;
   final String platoon;
@@ -13,6 +14,7 @@ class User {
   final String section;
 
   User({
+    required this.id,
     required this.name,
     required this.rank,
     required this.company,
