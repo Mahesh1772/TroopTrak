@@ -10,6 +10,22 @@ class NominalRollPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: const Color.fromARGB(255, 72, 30, 229),
+        onPressed: () {
+          showModalBottomSheet(
+              context: context,
+              builder: (BuildContext context) {
+                return Container();
+              },
+              backgroundColor: Colors.transparent,
+              isScrollControlled: true);
+        },
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+      ),
       appBar: AppBar(
         title: const Text('Nominal Roll'),
       ),
@@ -44,3 +60,4 @@ class NominalRollPage extends StatelessWidget {
     );
   }
 }
+
