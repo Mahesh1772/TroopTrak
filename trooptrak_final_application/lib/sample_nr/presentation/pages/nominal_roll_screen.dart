@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trooptrak_final_application/sample_nr/domain/entities/user.dart';
+import 'package:trooptrak_final_application/sample_nr/presentation/pages/qr_scanner_page.dart';
 import '../providers/user_provider.dart';
 import '../widgets/user_tile.dart';
 
@@ -12,14 +13,18 @@ class NominalRollPage extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color.fromARGB(255, 72, 30, 229),
-        onPressed: () {
-          showModalBottomSheet(
-              context: context,
-              builder: (BuildContext context) {
-                return Container();
-              },
-              backgroundColor: Colors.transparent,
-              isScrollControlled: true);
+         onPressed: () async {
+          final result = await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const QRScannerPage()),
+          );
+          if (result != null) {
+            // Handle the scanned soldier data
+            // ignore: use_build_context_synchronously
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Soldier ${result.name} added')),
+            );
+          }
         },
         child: const Icon(
           Icons.add,
