@@ -50,13 +50,12 @@
 //     );
 //   }
 // }
-// main.dart
+// lib/main.dart
 
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'sample_nr/data/repositories/user_repository_impl.dart';
 import 'sample_nr/data/repositories/qr_scanner_repository_impl.dart';
 import 'sample_nr/domain/usecases/get_users_usecase.dart';
@@ -79,11 +78,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        Provider<FirebaseFirestore>(
+          create: (_) => FirebaseFirestore.instance,
+        ),
         Provider<UserRepositoryImpl>(
-          create: (_) => UserRepositoryImpl(),
+          create: (context) => UserRepositoryImpl(context.read<FirebaseFirestore>()),
         ),
         Provider<QRScannerRepositoryImpl>(
-          create: (_) => QRScannerRepositoryImpl(FirebaseFirestore.instance),
+          create: (context) => QRScannerRepositoryImpl(context.read<FirebaseFirestore>()),
         ),
         ProxyProvider<UserRepositoryImpl, GetUsersUseCase>(
           update: (_, repo, __) => GetUsersUseCase(repo),

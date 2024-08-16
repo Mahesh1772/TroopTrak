@@ -4,12 +4,14 @@ class ScannedSoldier {
   final String rank;
   final String company;
   final String appointment;
-  final String bloodGroup;
+  final String bloodgroup;
+  String currentAttendance;
   final String dob;
   final String enlistment;
   final String platoon;
   final String section;
   final String rationType;
+  final String points;
 
   ScannedSoldier({
     required this.id,
@@ -17,11 +19,13 @@ class ScannedSoldier {
     required this.rank,
     required this.company,
     required this.appointment,
-    required this.bloodGroup,
+    required this.bloodgroup,
+    required this.currentAttendance,
     required this.dob,
     required this.enlistment,
     required this.platoon,
     required this.section,
     required this.rationType,
+    required this.points,
   });
 }

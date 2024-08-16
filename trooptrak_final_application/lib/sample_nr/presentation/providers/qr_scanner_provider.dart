@@ -1,3 +1,5 @@
+// lib/sample_nr/presentation/providers/qr_scanner_provider.dart
+
 import 'package:flutter/foundation.dart';
 import '../../domain/usecases/scan_qr_code_usecase.dart';
 import '../../domain/entities/scanned_soldier.dart';
@@ -13,8 +15,8 @@ class QRScannerProvider extends ChangeNotifier {
   ScannedSoldier? get scannedSoldier => _scannedSoldier;
   String? get error => _error;
 
-  Future<void> scanQRCode() async {
-    final result = await scanQRCodeUseCase();
+  Future<void> scanQRCode(String qrData) async {
+    final result = await scanQRCodeUseCase(qrData);
     result.fold(
       (error) {
         _error = error;

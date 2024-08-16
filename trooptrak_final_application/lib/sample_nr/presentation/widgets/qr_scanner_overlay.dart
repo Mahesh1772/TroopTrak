@@ -1,9 +1,11 @@
+// lib/sample_nr/presentation/widgets/qr_scanner_overlay.dart
+
 import 'package:flutter/material.dart';
 
 class QRScannerOverlay extends StatelessWidget {
-  const QRScannerOverlay({super.key, required this.overlayColour});
+  final Color overlayColor;
 
-  final Color overlayColour;
+  const QRScannerOverlay({Key? key, this.overlayColor = Colors.black54}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -11,11 +13,11 @@ class QRScannerOverlay extends StatelessWidget {
             MediaQuery.of(context).size.height < 400)
         ? 200.0
         : 330.0;
+
     return Stack(
       children: [
         ColorFiltered(
-          colorFilter: ColorFilter.mode(
-              overlayColour, BlendMode.srcOut),
+          colorFilter: ColorFilter.mode(overlayColor, BlendMode.srcOut),
           child: Stack(
             children: [
               Container(
