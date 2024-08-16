@@ -82,10 +82,12 @@ class MyApp extends StatelessWidget {
           create: (_) => FirebaseFirestore.instance,
         ),
         Provider<UserRepositoryImpl>(
-          create: (context) => UserRepositoryImpl(context.read<FirebaseFirestore>()),
+          create: (context) =>
+              UserRepositoryImpl(context.read<FirebaseFirestore>()),
         ),
         Provider<QRScannerRepositoryImpl>(
-          create: (context) => QRScannerRepositoryImpl(context.read<FirebaseFirestore>()),
+          create: (context) =>
+              QRScannerRepositoryImpl(context.read<FirebaseFirestore>()),
         ),
         ProxyProvider<UserRepositoryImpl, GetUsersUseCase>(
           update: (_, repo, __) => GetUsersUseCase(repo),
@@ -96,12 +98,15 @@ class MyApp extends StatelessWidget {
         ProxyProvider<QRScannerRepositoryImpl, ScanQRCodeUseCase>(
           update: (_, repo, __) => ScanQRCodeUseCase(repo),
         ),
-        ChangeNotifierProxyProvider2<GetUsersUseCase, UpdateUserAttendanceUseCase, UserProvider>(
+        ChangeNotifierProxyProvider2<GetUsersUseCase,
+            UpdateUserAttendanceUseCase, UserProvider>(
           create: (context) => UserProvider(
             getUsersUseCase: context.read<GetUsersUseCase>(),
-            updateUserAttendanceUseCase: context.read<UpdateUserAttendanceUseCase>(),
+            updateUserAttendanceUseCase:
+                context.read<UpdateUserAttendanceUseCase>(),
           ),
-          update: (_, getUsersUseCase, updateUserAttendanceUseCase, __) => UserProvider(
+          update: (_, getUsersUseCase, updateUserAttendanceUseCase, __) =>
+              UserProvider(
             getUsersUseCase: getUsersUseCase,
             updateUserAttendanceUseCase: updateUserAttendanceUseCase,
           ),

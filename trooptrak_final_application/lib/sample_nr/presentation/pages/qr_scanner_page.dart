@@ -63,7 +63,8 @@ class _QRScannerPageState extends State<QRScannerPage> {
           maxChildSize: 1,
           builder: (_, controller) => Container(
             decoration: BoxDecoration(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(20)),
               color: Theme.of(context).colorScheme.primary,
             ),
             padding: const EdgeInsets.all(12),
@@ -76,20 +77,27 @@ class _QRScannerPageState extends State<QRScannerPage> {
                     children: [
                       Icon(
                         Icons.minimize_rounded,
-                        color: Theme.of(context).colorScheme.tertiary.withOpacity(0.7),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .tertiary
+                            .withOpacity(0.7),
                         size: 50,
                       ),
                       const SizedBox(height: 20),
                       const Text(
                         "Scan QR Code",
-                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 20),
                       Text(
                         "Please scan the QR code on the soldier's profile by placing it within the frame to add their details.",
                         style: TextStyle(
-                          color: Theme.of(context).colorScheme.tertiary.withOpacity(0.7),
+                          color: Theme.of(context)
+                              .colorScheme
+                              .tertiary
+                              .withOpacity(0.7),
                           fontSize: 16,
                         ),
                         textAlign: TextAlign.center,
@@ -132,13 +140,12 @@ class _QRScannerPageState extends State<QRScannerPage> {
                               builder: (context, state, child) {
                                 switch (state as TorchState) {
                                   case TorchState.off:
-                                    return const Icon(Icons.flash_off, color: Colors.grey);
+                                    return const Icon(Icons.flash_off,
+                                        color: Colors.grey);
                                   case TorchState.on:
-                                    return const Icon(Icons.flash_on, color: Color.fromARGB(255, 72, 30, 229));
-                                  case TorchState.auto:
-                                    // TODO: Handle this case.
-                                  case TorchState.unavailable:
-                                    // TODO: Handle this case.
+                                    return const Icon(Icons.flash_on,
+                                        color:
+                                            Color.fromARGB(255, 72, 30, 229));
                                 }
                               },
                             ),
@@ -146,13 +153,16 @@ class _QRScannerPageState extends State<QRScannerPage> {
                             onPressed: () => scannerController.toggleTorch(),
                           ),
                           IconButton(
-                            icon: isStarted ? const Icon(Icons.stop) : const Icon(Icons.play_arrow),
+                            icon: isStarted
+                                ? const Icon(Icons.stop)
+                                : const Icon(Icons.play_arrow),
                             iconSize: 30.0,
                             onPressed: _startOrStop,
                           ),
                           IconButton(
                             icon: ValueListenableBuilder(
-                              valueListenable: scannerController.cameraFacingState,
+                              valueListenable:
+                                  scannerController.cameraFacingState,
                               builder: (context, state, child) {
                                 switch (state as CameraFacing) {
                                   case CameraFacing.front:
@@ -171,30 +181,39 @@ class _QRScannerPageState extends State<QRScannerPage> {
                       Stack(
                         alignment: Alignment.center,
                         children: [
-                          Divider(color: Theme.of(context).colorScheme.tertiary),
+                          Divider(
+                              color: Theme.of(context).colorScheme.tertiary),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                            decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.primary),
                             child: const Text(
                               "OR",
-                              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
+                              style: TextStyle(
+                                  fontSize: 22, fontWeight: FontWeight.w500),
                               textAlign: TextAlign.center,
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(height: 30),
+                      const SizedBox(height: 30),
                       GestureDetector(
                         onTap: () async {
                           final ImagePicker picker = ImagePicker();
-                          final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+                          final XFile? image = await picker.pickImage(
+                              source: ImageSource.gallery);
                           if (image != null) {
-                            final String? barcode = (await scannerController.analyzeImage(image.path)) as String?;
+                            final String? barcode = (await scannerController
+                                .analyzeImage(image.path)) as String?;
                             if (barcode != null) {
                               provider.scanQRCode(barcode);
                             } else {
+                              // ignore: use_build_context_synchronously
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('No barcode found!'), backgroundColor: Colors.red),
+                                const SnackBar(
+                                    content: Text('No barcode found!'),
+                                    backgroundColor: Colors.red),
                               );
                             }
                           }
@@ -215,11 +234,15 @@ class _QRScannerPageState extends State<QRScannerPage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.image, color: Colors.white, size: 30),
+                                Icon(Icons.image,
+                                    color: Colors.white, size: 30),
                                 SizedBox(width: 20),
                                 Text(
                                   'SELECT FROM GALLERY',
-                                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 22),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 22),
                                 ),
                               ],
                             ),

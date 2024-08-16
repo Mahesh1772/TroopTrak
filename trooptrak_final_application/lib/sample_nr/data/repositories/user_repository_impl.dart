@@ -7,6 +7,8 @@ import '../models/user_model.dart';
 class UserRepositoryImpl implements UserRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  UserRepositoryImpl(FirebaseFirestore read);
+
   @override
   Stream<List<User>> getUsers() {
     return _firestore.collection('Users').snapshots().map((snapshot) {
@@ -30,7 +32,7 @@ class UserRepositoryImpl implements UserRepository {
       }).toList();
     });
   }
-  
+
   @override
   Future<void> updateUserAttendance(String id, bool isInsideCamp) async {
     await _firestore.collection('Users').doc(id).update({
@@ -38,7 +40,12 @@ class UserRepositoryImpl implements UserRepository {
     });
 
     // Add the attendance record
-    await _firestore.collection('Users').doc(id).collection('Attendance').doc(DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now())).set({
+    await _firestore
+        .collection('Users')
+        .doc(id)
+        .collection('Attendance')
+        .doc(DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()))
+        .set({
       'date&time': DateFormat('E d MMM yyyy HH:mm:ss').format(DateTime.now()),
       'isInsideCamp': isInsideCamp,
     });
