@@ -1,5 +1,3 @@
-// lib/sample_nr/data/repositories/qr_scanner_repository_impl.dart
-
 import 'package:dartz/dartz.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../domain/entities/scanned_soldier.dart';
@@ -12,29 +10,31 @@ class QRScannerRepositoryImpl implements QRScannerRepository {
 
   @override
   Future<Either<String, ScannedSoldier>> scanQRCode(String qrData) async {
-    try {
-      final soldierData = await _firestore.collection('Men').doc(qrData).get();
-
-      if (soldierData.exists) {
-        final data = soldierData.data() as Map<String, dynamic>;
+  try {
+    final QuerySnapshot querySnapshot = await _firestore.collection('Men').get();
+    
+    for (var doc in querySnapshot.docs) {
+      final data = doc.data() as Map<String, dynamic>;
+      if (data['QRid'] == qrData) {
         return Right(ScannedSoldier(
-          id: soldierData.id,
+          id: doc.id,
           name: data['name'] ?? '',
           rank: data['rank'] ?? '',
           company: data['company'] ?? '',
           appointment: data['appointment'] ?? '',
           bloodgroup: data['bloodgroup'] ?? '',
-          currentAttendance: data['currentAttendance'] ?? '',
+          currentAttendance: 'Inside Camp',
           dob: data['dob'] ?? '',
           enlistment: data['enlistment'] ?? '',
+          ord: data['ord'] ?? '',
           platoon: data['platoon'] ?? '',
           section: data['section'] ?? '',
           rationType: data['rationType'] ?? '',
-          points: data['points'] ?? '',
+          points: data['points'] ?? ''
         ));
-      } else {
-        return const Left('Soldier not found');
       }
+    }
+    return const Left('QRid not found');
     } catch (e) {
       return Left('Error scanning QR code: $e');
     }

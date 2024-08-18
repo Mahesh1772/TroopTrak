@@ -8,6 +8,7 @@ class ScannedSoldier {
   String currentAttendance;
   final String dob;
   final String enlistment;
+  final String ord;
   final String platoon;
   final String section;
   final String rationType;
@@ -23,6 +24,7 @@ class ScannedSoldier {
     required this.currentAttendance,
     required this.dob,
     required this.enlistment,
+    required this.ord,
     required this.platoon,
     required this.section,
     required this.rationType,

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class QRScannerErrorWidget extends StatelessWidget {
-  const QRScannerErrorWidget({Key? key, required this.error}) : super(key: key);
+  const QRScannerErrorWidget({super.key, required this.error});
 
   final MobileScannerException error;
 
