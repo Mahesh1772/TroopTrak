@@ -57,6 +57,23 @@ class _QRScannerPageState extends State<QRScannerPage> {
   Widget build(BuildContext context) {
     return Consumer<QRScannerProvider>(
       builder: (context, provider, child) {
+        if (provider.isUserAdded) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: const Text('User added successfully!'),
+                duration: const Duration(seconds: 2),
+                action: SnackBarAction(
+                  label: 'Close',
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close the QR scanner
+                  },
+                ),
+              ),
+            );
+            provider.resetUserAdded();
+          });
+        }
         return DraggableScrollableSheet(
           initialChildSize: 0.9,
           minChildSize: 0.9,

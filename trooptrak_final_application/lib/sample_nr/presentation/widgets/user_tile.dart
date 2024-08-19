@@ -19,12 +19,6 @@ class _UserTileState extends State<UserTile> {
   late bool isInsideCamp;
   bool loading = false;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   isInsideCamp = widget.user.currentAttendance == 'Inside Camp';
-  // }
-
   String inCampStatusTextChanger(bool value) {
     return value ? "IN CAMP" : "NOT IN CAMP";
   }
