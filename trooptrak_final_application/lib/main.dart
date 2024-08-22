@@ -12,10 +12,15 @@ import 'sample_nr/domain/usecases/scan_qr_code_usecase.dart';
 import 'sample_nr/presentation/providers/user_provider.dart';
 import 'sample_nr/presentation/providers/qr_scanner_provider.dart';
 import 'sample_nr/presentation/pages/nominal_roll_screen.dart';
+import 'sample_nr/domain/usecases/get_user_by_id_usecase.dart';
+import 'sample_nr/domain/usecases/get_user_attendance_usecase.dart';
+import 'sample_nr/domain/usecases/get_user_statuses_usecase.dart';
+import 'sample_nr/presentation/providers/user_detail_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  Provider.debugCheckInvalidValueType = null;
   runApp(const MyApp());
 }
 
@@ -71,6 +76,22 @@ class MyApp extends StatelessWidget {
               QRScannerProvider(
             scanQRCodeUseCase: scanQRCodeUseCase,
             addUserUseCase: addUserUseCase,
+          ),
+        ),
+        ProxyProvider<UserRepositoryImpl, GetUserByIdUseCase>(
+          update: (_, repo, __) => GetUserByIdUseCase(repo),
+        ),
+        ProxyProvider<UserRepositoryImpl, GetUserAttendanceUseCase>(
+          update: (_, repo, __) => GetUserAttendanceUseCase(repo),
+        ),
+        ProxyProvider<UserRepositoryImpl, GetUserStatusesUseCase>(
+          update: (_, repo, __) => GetUserStatusesUseCase(repo),
+        ),
+        ProxyProvider3<GetUserByIdUseCase, GetUserAttendanceUseCase, GetUserStatusesUseCase, UserDetailProvider>(
+          update: (_, getUserByIdUseCase, getUserAttendanceUseCase, getUserStatusesUseCase, __) => UserDetailProvider(
+            getUserByIdUseCase: getUserByIdUseCase,
+            getUserAttendanceUseCase: getUserAttendanceUseCase,
+            getUserStatusesUseCase: getUserStatusesUseCase,
           ),
         ),
       ],

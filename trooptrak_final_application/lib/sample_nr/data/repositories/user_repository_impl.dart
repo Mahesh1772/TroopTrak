@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:intl/intl.dart';
+import 'package:trooptrak_final_application/sample_nr/domain/entities/attendance_record.dart';
 import 'package:trooptrak_final_application/sample_nr/domain/entities/scanned_soldier.dart';
+import 'package:trooptrak_final_application/sample_nr/domain/entities/status.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/repositories/user_repository.dart';
 import '../models/user_model.dart';
@@ -85,5 +87,62 @@ class UserRepositoryImpl implements UserRepository {
     } catch (e) {
       return Left('Error adding user: $e');
     }
+  }
+
+  // Add these methods to the existing UserRepositoryImpl class
+
+  @override
+  Future<User> getUserById(String id) async {
+    final doc = await _firestore.collection('Users').doc(id).get();
+    final data = doc.data() as Map<String, dynamic>;
+    return User(
+      id: doc.id,
+      name: data['name'],
+      rank: data['rank'],
+      company: data['company'],
+      apppointment: data['appointment'],
+      bloodgroup: data['bloodgroup'],
+      currentAttendance: data['currentAttendance'],
+      dob: data['dob'],
+      enlistment: data['enlistment'],
+      platoon: data['platoon'],
+      points: data['points'],
+      rationType: data['rationType'],
+      section: data['section'],
+    );
+  }
+
+  @override
+  Stream<List<AttendanceRecord>> getUserAttendance(String id) {
+    return _firestore
+        .collection('Users')
+        .doc(id)
+        .collection('Attendance')
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => AttendanceRecord(
+                  dateTime: doc['date&time'],
+                  isInsideCamp: doc['isInsideCamp'],
+                ))
+            .toList());
+  }
+
+  @override
+  Stream<List<Status>> getUserStatuses(String id) {
+    return _firestore
+        .collection('Users')
+        .doc(id)
+        .collection('Statuses')
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => Status(
+                  statusName: doc['statusName'],
+                  statusType: doc['statusType'],
+                  startDate: doc['startDate'],
+                  endDate: doc['endDate'],
+                  startId: doc['start_id'],
+                  endId: doc['end_id'],
+                ))
+            .toList());
   }
 }

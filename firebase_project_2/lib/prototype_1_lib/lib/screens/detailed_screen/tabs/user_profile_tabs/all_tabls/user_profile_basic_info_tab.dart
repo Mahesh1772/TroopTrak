@@ -205,19 +205,6 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab>
                     child: TextButton(
                       onPressed: () async {
                         await deleteUserAccount();
-
-                        //  (value) async {
-                        //    //_storeOnBoardInfo(2);
-                        //    Navigator.pop(context);
-                        //    //Navigator.pushReplacement(
-                        //    //  context,
-                        //    //  MaterialPageRoute(
-                        //    //    builder: (context) => const MyAppCommander(),
-                        //    //  ),
-                        //    //).then((value) {
-                        //    //  Navigator.pop(context);
-                        //    //});
-                        //  },
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric(

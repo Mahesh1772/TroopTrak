@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:provider/provider.dart';
+import 'package:trooptrak_final_application/sample_nr/presentation/pages/soldier_detailed_screen.dart';
 import 'package:trooptrak_final_application/sample_nr/presentation/providers/user_provider.dart';
 import '../../domain/entities/user.dart';
 
@@ -59,7 +60,12 @@ class _UserTileState extends State<UserTile> {
 
     return GestureDetector(
       onTap: () {
-        // Navigate to detailed screen if needed
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SoldierDetailedScreen(userId: widget.user.id),
+          ),
+        );
       },
       child: Padding(
         padding: const EdgeInsets.all(1.0),
