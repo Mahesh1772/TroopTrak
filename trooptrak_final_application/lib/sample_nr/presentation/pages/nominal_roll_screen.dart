@@ -1,5 +1,3 @@
-// lib/sample_nr/presentation/pages/nominal_roll_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../domain/entities/user.dart';
@@ -63,4 +61,6 @@ class NominalRollPage extends StatelessWidget {
       ),
     );
   }
+
+  
 }

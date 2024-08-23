@@ -16,6 +16,7 @@ class SoldierDetailedScreen extends StatefulWidget {
 
 class _SoldierDetailedScreenState extends State<SoldierDetailedScreen> with TickerProviderStateMixin {
   late TabController _tabController;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -33,8 +34,24 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen> with Tick
   }
 
   void _loadUserData() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<UserDetailProvider>().loadUser(widget.userId);
+    setState(() {
+      _isLoading = true;
+    });
+
+    final userProvider = context.read<UserDetailProvider>();
+    userProvider.loadUser(widget.userId);
+
+    userProvider.waitForInitialLoad().then((_) {
+      setState(() {
+        _isLoading = false;
+      });
+    }).catchError((error) {
+      setState(() {
+        _isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error loading user data: $error')),
+      );
     });
   }
 
@@ -52,14 +69,24 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen> with Tick
           ],
         ),
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          BasicInfoTab(userId: widget.userId),
-          AttendanceTab(userId: widget.userId),
-          StatusesTab(userId: widget.userId),
-        ],
-      ),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : Consumer<UserDetailProvider>(
+              builder: (context, provider, child) {
+                final user = provider.user;
+                if (user == null) {
+                  return const Center(child: Text('User not found'));
+                }
+                return TabBarView(
+                  controller: _tabController,
+                  children: [
+                    BasicInfoTab(userId: widget.userId),
+                    AttendanceTab(userId: widget.userId),
+                    StatusesTab(userId: widget.userId),
+                  ],
+                );
+              },
+            ),
     );
   }
 

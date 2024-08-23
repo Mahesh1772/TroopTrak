@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../providers/user_detail_provider.dart';
 
 class BasicInfoTab extends StatelessWidget {
@@ -11,33 +12,64 @@ class BasicInfoTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<UserDetailProvider>(
       builder: (context, provider, child) {
-        if (provider.isLoading) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        if (provider.user == null) {
+        final user = provider.user;
+        if (user == null) {
           return const Center(child: Text('User data not available'));
         }
 
-        final user = provider.user!;
         return ListView(
           padding: const EdgeInsets.all(16.0),
           children: [
-            ListTile(title: Text('Name: ${user.name}')),
-            ListTile(title: Text('Rank: ${user.rank}')),
-            ListTile(title: Text('Company: ${user.company}')),
-            ListTile(title: Text('Appointment: ${user.apppointment}')),
-            ListTile(title: Text('Blood Group: ${user.bloodgroup}')),
-            ListTile(title: Text('Current Attendance: ${user.currentAttendance}')),
-            ListTile(title: Text('Date of Birth: ${user.dob}')),
-            ListTile(title: Text('Enlistment: ${user.enlistment}')),
-            ListTile(title: Text('Platoon: ${user.platoon}')),
-            ListTile(title: Text('Points: ${user.points.toString()}')),
-            ListTile(title: Text('Ration Type: ${user.rationType}')),
-            ListTile(title: Text('Section: ${user.section}')),
+            buildInfoTile('Name', user.name),
+            buildInfoTile('Rank', user.rank),
+            buildInfoTile('Company', user.company),
+            buildInfoTile('Appointment', user.apppointment),
+            buildInfoTile('Blood Group', user.bloodgroup),
+            buildInfoTile('Current Attendance', user.currentAttendance),
+            buildInfoTile('Date of Birth', user.dob),
+            buildInfoTile('Enlistment', user.enlistment),
+            buildInfoTile('Platoon', user.platoon),
+            buildInfoTile('Points', user.points.toString()),
+            buildInfoTile('Ration Type', user.rationType),
+            buildInfoTile('Section', user.section),
           ],
         );
       },
+    );
+  }
+
+  Widget buildInfoTile(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 32, 36, 51),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                label,
+                style: GoogleFonts.poppins(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+              Text(
+                value,
+                style: GoogleFonts.poppins(
+                  color: Colors.white,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

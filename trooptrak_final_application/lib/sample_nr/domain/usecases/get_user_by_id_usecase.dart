@@ -6,7 +6,7 @@ class GetUserByIdUseCase {
 
   GetUserByIdUseCase(this.repository);
 
-  Future<User> call(String id) {
+  Stream<User> call(String id) {
     return repository.getUserById(id);
   }
 }

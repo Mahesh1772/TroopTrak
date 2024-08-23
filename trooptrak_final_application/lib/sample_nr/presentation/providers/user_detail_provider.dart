@@ -6,6 +6,8 @@ import '../../domain/usecases/get_user_by_id_usecase.dart';
 import '../../domain/usecases/get_user_attendance_usecase.dart';
 import '../../domain/usecases/get_user_statuses_usecase.dart';
 
+import 'dart:async';
+
 class UserDetailProvider extends ChangeNotifier {
   final GetUserByIdUseCase getUserByIdUseCase;
   final GetUserAttendanceUseCase getUserAttendanceUseCase;
@@ -22,20 +24,40 @@ class UserDetailProvider extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  Future<void> loadUser(String id) async {
+  Completer<void>? _loadingCompleter;
+  bool _initialDataLoaded = false;
+
+  void loadUser(String id) {
     _isLoading = true;
-    _user = null; // Reset user data
+    _initialDataLoaded = false;
+    _loadingCompleter = Completer<void>();
     notifyListeners();
 
-    try {
-      _user = await getUserByIdUseCase(id);
-    } catch (e) {
-      print('Error loading user: $e');
-      _user = null;
-    } finally {
-      _isLoading = false;
-      notifyListeners();
-    }
+    getUserByIdUseCase(id).listen(
+      (user) {
+        _user = user;
+        _isLoading = false;
+        if (!_initialDataLoaded) {
+          _initialDataLoaded = true;
+          _loadingCompleter?.complete();
+        }
+        notifyListeners();
+      },
+      onError: (error) {
+        print('Error loading user: $error');
+        _isLoading = false;
+        if (!_initialDataLoaded) {
+          _initialDataLoaded = true;
+          _loadingCompleter?.completeError(error);
+        }
+        notifyListeners();
+      },
+    );
+  }
+
+  Future<void> waitForInitialLoad() async {
+    if (_initialDataLoaded) return;
+    await _loadingCompleter?.future;
   }
 
   Stream<List<AttendanceRecord>> getUserAttendance(String id) {

@@ -89,27 +89,29 @@ class UserRepositoryImpl implements UserRepository {
     }
   }
 
-  // Add these methods to the existing UserRepositoryImpl class
-
   @override
-  Future<User> getUserById(String id) async {
-    final doc = await _firestore.collection('Users').doc(id).get();
-    final data = doc.data() as Map<String, dynamic>;
-    return User(
-      id: doc.id,
-      name: data['name'],
-      rank: data['rank'],
-      company: data['company'],
-      apppointment: data['appointment'],
-      bloodgroup: data['bloodgroup'],
-      currentAttendance: data['currentAttendance'],
-      dob: data['dob'],
-      enlistment: data['enlistment'],
-      platoon: data['platoon'],
-      points: data['points'],
-      rationType: data['rationType'],
-      section: data['section'],
-    );
+  Stream<User> getUserById(String id) {
+    return _firestore.collection('Users').doc(id).snapshots().map((doc) {
+      if (!doc.exists) {
+        throw Exception('User not found');
+      }
+      final data = doc.data() as Map<String, dynamic>;
+      return User(
+        id: doc.id,
+        name: data['name'],
+        rank: data['rank'],
+        company: data['company'],
+        apppointment: data['appointment'],
+        bloodgroup: data['bloodgroup'],
+        currentAttendance: data['currentAttendance'],
+        dob: data['dob'],
+        enlistment: data['enlistment'],
+        platoon: data['platoon'],
+        points: data['points'],
+        rationType: data['rationType'],
+        section: data['section'],
+      );
+    });
   }
 
   @override
@@ -136,12 +138,12 @@ class UserRepositoryImpl implements UserRepository {
         .snapshots()
         .map((snapshot) => snapshot.docs
             .map((doc) => Status(
-                  statusName: doc['statusName'],
-                  statusType: doc['statusType'],
-                  startDate: doc['startDate'],
-                  endDate: doc['endDate'],
-                  startId: doc['start_id'],
-                  endId: doc['end_id'],
+                  statusName: doc['statusName'] ?? '',
+                  statusType: doc['statusType'] ?? '', // Ensure this field is mapped
+                  startDate: doc['startDate'] ?? '',
+                  endDate: doc['endDate'] ?? '',
+                  startId: doc['start_id'] ?? '',
+                  endId: doc['end_id'] ?? '',
                 ))
             .toList());
   }
