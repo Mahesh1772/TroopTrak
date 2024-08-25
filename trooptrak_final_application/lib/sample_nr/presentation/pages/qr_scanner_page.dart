@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:provider/provider.dart';
 import '../providers/qr_scanner_provider.dart';
@@ -85,15 +86,14 @@ class _QRScannerPageState extends State<QRScannerPage> {
           maxChildSize: 1,
           builder: (_, controller) => Container(
             decoration: BoxDecoration(
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(20)),
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
               color: Theme.of(context).colorScheme.primary,
             ),
-            padding: const EdgeInsets.all(12),
+            padding: EdgeInsets.all(12.sp),
             child: Column(
               children: [
                 SizedBox(
-                  height: 200,
+                  height: 200.h,
                   child: ListView(
                     controller: controller,
                     children: [
@@ -103,32 +103,25 @@ class _QRScannerPageState extends State<QRScannerPage> {
                             .colorScheme
                             .tertiary
                             .withOpacity(0.7),
-                        size: 50,
+                        size: 50.sp,
                       ),
-                      const SizedBox(height: 20),
-                      const Text(
+                      SizedBox(height: 20.h),
+                      Text(
                         "Scan QR Code",
-                        style: TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold),
+                        style: Theme.of(context).textTheme.displayMedium,
                         textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20.h),
                       Text(
                         "Please scan the QR code on the soldier's profile by placing it within the frame to add their details.",
-                        style: TextStyle(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .tertiary
-                              .withOpacity(0.7),
-                          fontSize: 16,
-                        ),
+                        style: Theme.of(context).textTheme.bodyLarge,
                         textAlign: TextAlign.center,
                       ),
                     ],
                   ),
                 ),
                 SizedBox(
-                  height: 400,
+                  height: 400.h,
                   child: Stack(
                     children: [
                       MobileScanner(
@@ -143,12 +136,17 @@ class _QRScannerPageState extends State<QRScannerPage> {
                           return QRScannerErrorWidget(error: error);
                         },
                       ),
-                      const QRScannerOverlay(overlayColor: Colors.black54),
+                      QRScannerOverlay(
+                        overlayColor: Theme.of(context)
+                            .colorScheme
+                            .primary
+                            .withOpacity(0.54),
+                      ),
                     ],
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: EdgeInsets.all(16.sp),
                   alignment: Alignment.center,
                   child: Column(
                     children: [
@@ -171,14 +169,14 @@ class _QRScannerPageState extends State<QRScannerPage> {
                                 }
                               },
                             ),
-                            iconSize: 30.0,
+                            iconSize: 30.0.sp,
                             onPressed: () => scannerController.toggleTorch(),
                           ),
                           IconButton(
                             icon: isStarted
                                 ? const Icon(Icons.stop)
                                 : const Icon(Icons.play_arrow),
-                            iconSize: 30.0,
+                            iconSize: 30.0.sp,
                             onPressed: _startOrStop,
                           ),
                           IconButton(
@@ -194,32 +192,31 @@ class _QRScannerPageState extends State<QRScannerPage> {
                                 }
                               },
                             ),
-                            iconSize: 30.0,
+                            iconSize: 30.0.sp,
                             onPressed: () => scannerController.switchCamera(),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 10),
+                      SizedBox(height: 10.h),
                       Stack(
                         alignment: Alignment.center,
                         children: [
                           Divider(
                               color: Theme.of(context).colorScheme.tertiary),
                           Container(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            padding: EdgeInsets.symmetric(horizontal: 16.0.w),
                             decoration: BoxDecoration(
                                 color: Theme.of(context).colorScheme.primary),
-                            child: const Text(
+                            child: Text(
                               "OR",
                               style: TextStyle(
-                                  fontSize: 22, fontWeight: FontWeight.w500),
+                                  fontSize: 22.sp, fontWeight: FontWeight.w500),
                               textAlign: TextAlign.center,
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 30),
+                      SizedBox(height: 30.h),
                       GestureDetector(
                         onTap: () async {
                           final ImagePicker picker = ImagePicker();
@@ -241,10 +238,10 @@ class _QRScannerPageState extends State<QRScannerPage> {
                           }
                         },
                         child: Container(
-                          height: 70,
-                          padding: const EdgeInsets.all(10),
+                          height: 70.h,
+                          padding: EdgeInsets.all(10.sp),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(10.r),
                             gradient: const LinearGradient(
                               colors: [
                                 Color.fromARGB(255, 72, 30, 229),
@@ -252,19 +249,21 @@ class _QRScannerPageState extends State<QRScannerPage> {
                               ],
                             ),
                           ),
-                          child: const Center(
+                          child: Center(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(Icons.image,
-                                    color: Colors.white, size: 30),
-                                SizedBox(width: 20),
+                                    color: Colors.white, size: 30.sp),
+                                SizedBox(width: 20.w),
                                 Text(
                                   'SELECT FROM GALLERY',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 22),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .displayLarge!
+                                      .copyWith(
+                                        color: Colors.white,
+                                      ),
                                 ),
                               ],
                             ),

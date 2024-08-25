@@ -11,6 +11,7 @@ class NominalRollPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color.fromARGB(255, 72, 30, 229),
         onPressed: () {
@@ -29,7 +30,9 @@ class NominalRollPage extends StatelessWidget {
         ),
       ),
       appBar: AppBar(
-        title: const Text('Nominal Roll'),
+        backgroundColor: Colors.transparent,
+        title: Text('Nominal Roll',
+            style: Theme.of(context).textTheme.displayLarge),
       ),
       body: StreamBuilder<List<User>>(
         stream: context.read<UserProvider>().users,

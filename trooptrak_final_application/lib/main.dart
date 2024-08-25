@@ -1,8 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:trooptrak_final_application/core/theme/theme.dart';
 import 'package:trooptrak_final_application/sample_nr/domain/usecases/add_user_usecase.dart';
 import 'sample_nr/data/repositories/user_repository_impl.dart';
 import 'sample_nr/data/repositories/qr_scanner_repository_impl.dart';
@@ -29,55 +30,59 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        Provider<FirebaseFirestore>(
-          create: (_) => FirebaseFirestore.instance,
-        ),
-        Provider<UserRepositoryImpl>(
-          create: (context) =>
-              UserRepositoryImpl(context.read<FirebaseFirestore>()),
-        ),
-        Provider<QRScannerRepositoryImpl>(
-          create: (context) =>
-              QRScannerRepositoryImpl(context.read<FirebaseFirestore>()),
-        ),
-        ProxyProvider<UserRepositoryImpl, GetUsersUseCase>(
-          update: (_, repo, __) => GetUsersUseCase(repo),
-        ),
-        ProxyProvider<UserRepositoryImpl, UpdateUserAttendanceUseCase>(
-          update: (_, repo, __) => UpdateUserAttendanceUseCase(repo),
-        ),
-        ProxyProvider<QRScannerRepositoryImpl, ScanQRCodeUseCase>(
-          update: (_, repo, __) => ScanQRCodeUseCase(repo),
-        ),
-        ChangeNotifierProxyProvider2<GetUsersUseCase,
-            UpdateUserAttendanceUseCase, UserProvider>(
-          create: (context) => UserProvider(
-            getUsersUseCase: context.read<GetUsersUseCase>(),
-            updateUserAttendanceUseCase:
-                context.read<UpdateUserAttendanceUseCase>(),
+    return ScreenUtilInit(
+      designSize: const Size(450, 1000),
+      child: MultiProvider(
+        providers: [
+          Provider<FirebaseFirestore>(
+            create: (_) => FirebaseFirestore.instance,
           ),
-          update: (_, getUsersUseCase, updateUserAttendanceUseCase, __) =>
-              UserProvider(
-            getUsersUseCase: getUsersUseCase,
-            updateUserAttendanceUseCase: updateUserAttendanceUseCase,
+          Provider<UserRepositoryImpl>(
+            create: (context) =>
+                UserRepositoryImpl(context.read<FirebaseFirestore>()),
           ),
-        ),
-        Provider<AddUserUseCase>(
-          create: (context) => AddUserUseCase(context.read<UserRepositoryImpl>()),
-        ),
-        ChangeNotifierProxyProvider3<ScanQRCodeUseCase, AddUserUseCase, UpdateUserAttendanceUseCase, QRScannerProvider>(
-          create: (context) => QRScannerProvider(
-            scanQRCodeUseCase: context.read<ScanQRCodeUseCase>(),
-            addUserUseCase: context.read<AddUserUseCase>(),
+          Provider<QRScannerRepositoryImpl>(
+            create: (context) =>
+                QRScannerRepositoryImpl(context.read<FirebaseFirestore>()),
           ),
-          update: (_, scanQRCodeUseCase, addUserUseCase, __, previous) =>
-              QRScannerProvider(
-            scanQRCodeUseCase: scanQRCodeUseCase,
-            addUserUseCase: addUserUseCase,
+          ProxyProvider<UserRepositoryImpl, GetUsersUseCase>(
+            update: (_, repo, __) => GetUsersUseCase(repo),
           ),
-        ),
+          ProxyProvider<UserRepositoryImpl, UpdateUserAttendanceUseCase>(
+            update: (_, repo, __) => UpdateUserAttendanceUseCase(repo),
+          ),
+          ProxyProvider<QRScannerRepositoryImpl, ScanQRCodeUseCase>(
+            update: (_, repo, __) => ScanQRCodeUseCase(repo),
+          ),
+          ChangeNotifierProxyProvider2<GetUsersUseCase,
+              UpdateUserAttendanceUseCase, UserProvider>(
+            create: (context) => UserProvider(
+              getUsersUseCase: context.read<GetUsersUseCase>(),
+              updateUserAttendanceUseCase:
+                  context.read<UpdateUserAttendanceUseCase>(),
+            ),
+            update: (_, getUsersUseCase, updateUserAttendanceUseCase, __) =>
+                UserProvider(
+              getUsersUseCase: getUsersUseCase,
+              updateUserAttendanceUseCase: updateUserAttendanceUseCase,
+            ),
+          ),
+          Provider<AddUserUseCase>(
+            create: (context) =>
+                AddUserUseCase(context.read<UserRepositoryImpl>()),
+          ),
+          ChangeNotifierProxyProvider3<ScanQRCodeUseCase, AddUserUseCase,
+              UpdateUserAttendanceUseCase, QRScannerProvider>(
+            create: (context) => QRScannerProvider(
+              scanQRCodeUseCase: context.read<ScanQRCodeUseCase>(),
+              addUserUseCase: context.read<AddUserUseCase>(),
+            ),
+            update: (_, scanQRCodeUseCase, addUserUseCase, __, previous) =>
+                QRScannerProvider(
+              scanQRCodeUseCase: scanQRCodeUseCase,
+              addUserUseCase: addUserUseCase,
+            ),
+          ),
         ProxyProvider<UserRepositoryImpl, GetUserByIdUseCase>(
           update: (_, repo, __) => GetUserByIdUseCase(repo),
         ),
@@ -95,13 +100,12 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ],
-      child: MaterialApp(
-        title: 'User List App',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
+     child: MaterialApp(
+          title: 'User List App',
+          theme: lightTheme,
+          darkTheme: darkTheme,
+          home: const NominalRollPage(),
         ),
-        home: const NominalRollPage(),
-      ),
     );
   }
 }
