@@ -28,6 +28,7 @@ class BasicInfoTab extends StatelessWidget {
             buildInfoTile('Current Attendance', user.currentAttendance),
             buildInfoTile('Date of Birth', user.dob),
             buildInfoTile('Enlistment', user.enlistment),
+            buildInfoTile('ORD', user.ord),
             buildInfoTile('Platoon', user.platoon),
             buildInfoTile('Points', user.points.toString()),
             buildInfoTile('Ration Type', user.rationType),

@@ -7,6 +7,7 @@ class UserModel {
   final String currentAttendance;
   final String dob;
   final String enlistment;
+  final String ord;
   final String platoon;
   final String points;
   final String rationType;
@@ -21,6 +22,7 @@ class UserModel {
     required this.currentAttendance,
     required this.dob,
     required this.enlistment,
+    required this.ord,
     required this.platoon,
     required this.points,
     required this.rationType,
@@ -37,6 +39,7 @@ class UserModel {
       currentAttendance: map['currentAttendance'] ?? '',
       dob: map['dob'] ?? '',
       enlistment: map['enlistment'] ?? '',
+      ord: map['ord'] ?? '',
       platoon: map['platoon'] ?? '',
       points: map['points'] ?? '',
       rationType: map['rationType'] ?? '',

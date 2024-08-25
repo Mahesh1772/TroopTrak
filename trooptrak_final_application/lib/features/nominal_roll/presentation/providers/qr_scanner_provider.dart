@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:trooptrak_final_application/sample_nr/domain/usecases/add_user_usecase.dart';
+import 'package:trooptrak_final_application/features/nominal_roll/domain/usecases/add_user_usecase.dart';
 import '../../domain/usecases/scan_qr_code_usecase.dart';
 import '../../domain/entities/scanned_soldier.dart';
 

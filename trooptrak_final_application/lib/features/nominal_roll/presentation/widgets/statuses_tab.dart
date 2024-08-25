@@ -15,7 +15,6 @@ class StatusesTab extends StatelessWidget {
         return StreamBuilder<List<Status>>(
           stream: provider.getUserStatuses(userId),
           builder: (context, snapshot) {
-            print(userId);
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             }
@@ -31,7 +30,7 @@ class StatusesTab extends StatelessWidget {
             }
 
             final statuses = snapshot.data!;
-
+            print(statuses[0].toString());
             if (statuses.isEmpty) {
               return const Center(child: Text('No statuses found.'));
             }
@@ -54,7 +53,7 @@ class StatusesTab extends StatelessWidget {
     Color statusColor = Colors.blue;
 
     // Use a default value if statusType is null
-    String statusTypeString = status.statusType?.toLowerCase() ?? 'unknown';
+    String statusTypeString = status.statusType.toLowerCase();
 
     switch (statusTypeString) {
       case 'excuse':
@@ -120,7 +119,6 @@ class StatusesTab extends StatelessWidget {
               ),
               const SizedBox(height: 5),
               Text(
-                // Use the null-aware operator to handle potential null values
                 (statusTypeString).toUpperCase(),
                 style: GoogleFonts.poppins(
                   color: Colors.white,

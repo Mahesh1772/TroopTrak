@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:intl/intl.dart';
-import 'package:trooptrak_final_application/sample_nr/domain/entities/attendance_record.dart';
-import 'package:trooptrak_final_application/sample_nr/domain/entities/scanned_soldier.dart';
-import 'package:trooptrak_final_application/sample_nr/domain/entities/status.dart';
+import 'package:trooptrak_final_application/features/nominal_roll/domain/entities/attendance_record.dart';
+import 'package:trooptrak_final_application/features/nominal_roll/domain/entities/scanned_soldier.dart';
+import 'package:trooptrak_final_application/features/nominal_roll/domain/entities/status.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/repositories/user_repository.dart';
 import '../models/user_model.dart';
@@ -28,6 +28,7 @@ class UserRepositoryImpl implements UserRepository {
           currentAttendance: userModel.currentAttendance,
           dob: userModel.dob,
           enlistment: userModel.enlistment,
+          ord: userModel.ord,
           platoon: userModel.platoon,
           points: userModel.points,
           rationType: userModel.rationType,
@@ -105,6 +106,7 @@ class UserRepositoryImpl implements UserRepository {
         bloodgroup: data['bloodgroup'],
         currentAttendance: data['currentAttendance'],
         dob: data['dob'],
+        ord: data['ord'],
         enlistment: data['enlistment'],
         platoon: data['platoon'],
         points: data['points'],
@@ -130,21 +132,24 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Stream<List<Status>> getUserStatuses(String id) {
-    return _firestore
-        .collection('Users')
-        .doc(id)
-        .collection('Statuses')
-        .snapshots()
-        .map((snapshot) => snapshot.docs
-            .map((doc) => Status(
-                  statusName: doc['statusName'] ?? '',
-                  statusType: doc['statusType'] ?? '', // Ensure this field is mapped
-                  startDate: doc['startDate'] ?? '',
-                  endDate: doc['endDate'] ?? '',
-                  startId: doc['start_id'] ?? '',
-                  endId: doc['end_id'] ?? '',
-                ))
-            .toList());
-  }
+Stream<List<Status>> getUserStatuses(String id) {
+  return _firestore
+      .collection('Users')
+      .doc(id)
+      .collection('Statuses')
+      .snapshots()
+      .map((snapshot) {
+    return snapshot.docs.map((doc) {
+      final data = doc.data();
+      return Status(
+        statusName: data['statusName'] ?? '',
+        statusType: data['statusType'] ?? '',
+        startDate: data['startDate'] ?? '',
+        endDate: data['endDate'] ?? '',
+        startId: data['start_id'] ?? '',
+        endId: data['end_id'] ?? '',
+      );
+    }).toList();
+  });
+}
 }

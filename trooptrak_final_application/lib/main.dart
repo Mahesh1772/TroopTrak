@@ -4,19 +4,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:trooptrak_final_application/core/theme/theme.dart';
-import 'package:trooptrak_final_application/sample_nr/domain/usecases/add_user_usecase.dart';
-import 'sample_nr/data/repositories/user_repository_impl.dart';
-import 'sample_nr/data/repositories/qr_scanner_repository_impl.dart';
-import 'sample_nr/domain/usecases/get_users_usecase.dart';
-import 'sample_nr/domain/usecases/update_user_attendance_usecase.dart';
-import 'sample_nr/domain/usecases/scan_qr_code_usecase.dart';
-import 'sample_nr/presentation/providers/user_provider.dart';
-import 'sample_nr/presentation/providers/qr_scanner_provider.dart';
-import 'sample_nr/presentation/pages/nominal_roll_screen.dart';
-import 'sample_nr/domain/usecases/get_user_by_id_usecase.dart';
-import 'sample_nr/domain/usecases/get_user_attendance_usecase.dart';
-import 'sample_nr/domain/usecases/get_user_statuses_usecase.dart';
-import 'sample_nr/presentation/providers/user_detail_provider.dart';
+import 'package:trooptrak_final_application/features/nominal_roll/domain/usecases/add_user_usecase.dart';
+import 'features/nominal_roll/data/repositories/user_repository_impl.dart';
+import 'features/nominal_roll/data/repositories/qr_scanner_repository_impl.dart';
+import 'features/nominal_roll/domain/usecases/get_users_usecase.dart';
+import 'features/nominal_roll/domain/usecases/update_user_attendance_usecase.dart';
+import 'features/nominal_roll/domain/usecases/scan_qr_code_usecase.dart';
+import 'features/nominal_roll/presentation/providers/user_provider.dart';
+import 'features/nominal_roll/presentation/providers/qr_scanner_provider.dart';
+import 'features/nominal_roll/presentation/pages/nominal_roll_screen.dart';
+import 'features/nominal_roll/domain/usecases/get_user_by_id_usecase.dart';
+import 'features/nominal_roll/domain/usecases/get_user_attendance_usecase.dart';
+import 'features/nominal_roll/domain/usecases/get_user_statuses_usecase.dart';
+import 'features/nominal_roll/presentation/providers/user_detail_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -106,6 +106,6 @@ class MyApp extends StatelessWidget {
           darkTheme: darkTheme,
           home: const NominalRollPage(),
         ),
-    );
+    ),);
   }
 }

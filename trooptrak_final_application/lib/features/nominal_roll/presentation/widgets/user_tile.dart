@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:provider/provider.dart';
-import 'package:trooptrak_final_application/sample_nr/presentation/pages/soldier_detailed_screen.dart';
-import 'package:trooptrak_final_application/sample_nr/presentation/providers/user_provider.dart';
+import 'package:trooptrak_final_application/features/nominal_roll/presentation/pages/soldier_detailed_screen.dart';
+import 'package:trooptrak_final_application/features/nominal_roll/presentation/providers/user_provider.dart';
 import '../../domain/entities/user.dart';
 
 class UserTile extends StatefulWidget {

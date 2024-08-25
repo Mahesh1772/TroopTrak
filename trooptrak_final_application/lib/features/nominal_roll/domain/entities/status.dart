@@ -14,4 +14,9 @@ class Status {
     required this.startId,
     required this.endId,
   });
+
+  @override
+  String toString() {
+    return 'Status(statusName: $statusName, statusType: $statusType, startDate: $startDate, endDate: $endDate, startId: $startId, endId: $endId)';
+  }
 }

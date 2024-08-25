@@ -7,7 +7,7 @@ import '../../domain/entities/attendance_record.dart';
 class AttendanceTab extends StatelessWidget {
   final String userId;
 
-  const AttendanceTab({Key? key, required this.userId}) : super(key: key);
+  const AttendanceTab({super.key, required this.userId});
 
   @override
   Widget build(BuildContext context) {
