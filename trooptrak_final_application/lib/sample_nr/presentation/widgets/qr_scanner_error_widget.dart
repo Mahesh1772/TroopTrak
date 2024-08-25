@@ -1,5 +1,3 @@
-// lib/sample_nr/presentation/widgets/qr_scanner_error_widget.dart
-
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 

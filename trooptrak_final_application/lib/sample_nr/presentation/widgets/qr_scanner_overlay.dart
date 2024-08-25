@@ -1,5 +1,3 @@
-// lib/sample_nr/presentation/widgets/qr_scanner_overlay.dart
-
 import 'package:flutter/material.dart';
 
 class QRScannerOverlay extends StatelessWidget {

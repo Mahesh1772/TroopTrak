@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:provider/provider.dart';
+import 'package:trooptrak_final_application/sample_nr/presentation/pages/soldier_detailed_screen.dart';
 import 'package:trooptrak_final_application/sample_nr/presentation/providers/user_provider.dart';
 import '../../domain/entities/user.dart';
 
@@ -18,12 +19,6 @@ class UserTile extends StatefulWidget {
 class _UserTileState extends State<UserTile> {
   late bool isInsideCamp;
   bool loading = false;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   isInsideCamp = widget.user.currentAttendance == 'Inside Camp';
-  // }
 
   String inCampStatusTextChanger(bool value) {
     return value ? "IN CAMP" : "NOT IN CAMP";
@@ -82,7 +77,12 @@ class _UserTileState extends State<UserTile> {
 
     return GestureDetector(
       onTap: () {
-        // Navigate to detailed screen if needed
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SoldierDetailedScreen(userId: widget.user.name),
+          ),
+        );
       },
       child: Padding(
         padding: EdgeInsets.all(1.0.sp),
@@ -162,11 +162,9 @@ class _UserTileState extends State<UserTile> {
               AnimatedToggleSwitch<bool>.rolling(
                 current: widget.user.currentAttendance == 'Inside Camp',
                 values: const [false, true],
-                onChanged: (value) async {
-                  final userProvider =
-                      Provider.of<UserProvider>(context, listen: false);
-                  await userProvider.updateUserAttendance(
-                      widget.user.id, value);
+                 onChanged: (value) async {
+                  final userProvider = Provider.of<UserProvider>(context, listen: false);
+                  await userProvider.updateUserAttendance(widget.user.name, value);
                 },
                 iconBuilder: rollingIconBuilder,
                 borderWidth: 3.0.w,

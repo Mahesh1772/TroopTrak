@@ -58,6 +58,28 @@ class _QRScannerPageState extends State<QRScannerPage> {
   Widget build(BuildContext context) {
     return Consumer<QRScannerProvider>(
       builder: (context, provider, child) {
+        if (provider.showSuccessMessage) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Success'),
+                content: const Text('User added successfully!'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('Close'),
+                    onPressed: () {
+                      provider.hideSuccessMessage();
+                      Navigator.of(context).pop(); // Close the dialog
+                      Navigator.of(context).pop(); // Close the QR scanner
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        }
+
         return DraggableScrollableSheet(
           initialChildSize: 0.9,
           minChildSize: 0.9,
