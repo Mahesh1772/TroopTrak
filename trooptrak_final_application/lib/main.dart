@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:trooptrak_final_application/core/theme/theme.dart';
 import 'package:trooptrak_final_application/sample_nr/domain/usecases/add_user_usecase.dart';
 import 'sample_nr/data/repositories/user_repository_impl.dart';
 import 'sample_nr/data/repositories/qr_scanner_repository_impl.dart';
@@ -80,9 +81,8 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           title: 'User List App',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
+          theme: lightTheme,
+          darkTheme: darkTheme,
           home: const NominalRollPage(),
         ),
       ),

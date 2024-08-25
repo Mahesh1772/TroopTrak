@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:provider/provider.dart';
@@ -56,7 +56,24 @@ class _UserTileState extends State<UserTile> {
   }
 
   bool rankColorPicker(String rank) {
-    return ['REC', 'PTE', 'LCP', 'CPL', 'CFC', '3SG', '2SG', '1SG', 'SSG', 'MSG', '3WO', '2WO', '1WO', 'MWO', 'SWO', 'CWO'].contains(rank);
+    return [
+      'REC',
+      'PTE',
+      'LCP',
+      'CPL',
+      'CFC',
+      '3SG',
+      '2SG',
+      '1SG',
+      'SSG',
+      'MSG',
+      '3WO',
+      '2WO',
+      '1WO',
+      'MWO',
+      'SWO',
+      'CWO'
+    ].contains(rank);
   }
 
   @override
@@ -68,19 +85,19 @@ class _UserTileState extends State<UserTile> {
         // Navigate to detailed screen if needed
       },
       child: Padding(
-        padding: const EdgeInsets.all(1.0),
+        padding: EdgeInsets.all(1.0.sp),
         child: Container(
           decoration: BoxDecoration(
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
-                blurRadius: 2.0,
-                spreadRadius: 2.0,
-                offset: Offset(10, 10),
+                blurRadius: 2.0.r,
+                spreadRadius: 2.0.r,
+                offset: Offset(10.w, 10.h),
                 color: Colors.black54,
               )
             ],
             color: tileColor,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(12.r),
           ),
           child: Column(
             children: [
@@ -88,74 +105,77 @@ class _UserTileState extends State<UserTile> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Container(
-                    width: 40,
-                    height: 40,
-                    padding: const EdgeInsets.all(5),
+                    width: 40.w,
+                    height: 40.h,
+                    padding: EdgeInsets.all(5.sp),
                     decoration: BoxDecoration(
                       color: Colors.transparent.withOpacity(0.15),
-                      borderRadius: const BorderRadius.only(
-                        topRight: Radius.circular(12),
-                        bottomLeft: Radius.circular(12),
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(12.r),
+                        bottomLeft: Radius.circular(12.r),
                       ),
                     ),
                     child: Image.asset(
                       "lib/assets/army-ranks/${widget.user.rank.toLowerCase()}.png",
-                      color: rankColorPicker(widget.user.rank) ? Colors.white70 : null,
+                      color: rankColorPicker(widget.user.rank)
+                          ? Colors.white70
+                          : null,
                     ),
                   ),
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
+                padding:
+                    EdgeInsets.symmetric(horizontal: 24.0.w, vertical: 8.0.h),
                 child: Image.asset(
                   soldierIconGenerator(widget.user.rank),
-                  width: 90,
+                  width: 90.w,
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: EdgeInsets.symmetric(horizontal: 8.0.h),
                 child: SizedBox(
-                  height: 40,
+                  height: 40.h,
                   width: double.maxFinite,
                   child: Center(
                     child: AutoSizeText(
                       widget.user.name,
                       maxLines: 2,
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.poppins(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+                      style:
+                          Theme.of(context).textTheme.displayMedium?.copyWith(
+                                color: Colors.white,
+                              ),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: 10.h),
               Text(
-                inCampStatusTextChanger(widget.user.currentAttendance == 'Inside Camp'),
-                style: GoogleFonts.poppins(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.white,
-                ),
+                inCampStatusTextChanger(
+                    widget.user.currentAttendance == 'Inside Camp'),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Colors.white,
+                    ),
               ),
               const SizedBox(height: 15),
               AnimatedToggleSwitch<bool>.rolling(
                 current: widget.user.currentAttendance == 'Inside Camp',
                 values: const [false, true],
-                 onChanged: (value) async {
-                  final userProvider = Provider.of<UserProvider>(context, listen: false);
-                  await userProvider.updateUserAttendance(widget.user.id, value);
+                onChanged: (value) async {
+                  final userProvider =
+                      Provider.of<UserProvider>(context, listen: false);
+                  await userProvider.updateUserAttendance(
+                      widget.user.id, value);
                 },
                 iconBuilder: rollingIconBuilder,
-                borderWidth: 3.0,
+                borderWidth: 3.0.w,
                 indicatorColor: Theme.of(context).colorScheme.primary,
                 innerColor: Colors.amber,
-                height: 40,
+                height: 40.h,
                 dif: 10,
-                iconRadius: 10.0,
-                selectedIconRadius: 13.0,
+                iconRadius: 10.0.r,
+                selectedIconRadius: 13.0.r,
                 borderColor: Colors.transparent,
                 loading: loading,
               ),

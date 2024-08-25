@@ -87,17 +87,12 @@ class _QRScannerPageState extends State<QRScannerPage> {
                       Text(
                         "Scan QR Code",
                         style: Theme.of(context).textTheme.displayMedium,
+                        textAlign: TextAlign.center,
                       ),
                       SizedBox(height: 20.h),
                       Text(
                         "Please scan the QR code on the soldier's profile by placing it within the frame to add their details.",
-                        style: TextStyle(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .tertiary
-                              .withOpacity(0.7),
-                          fontSize: 16.sp,
-                        ),
+                        style: Theme.of(context).textTheme.bodyLarge,
                         textAlign: TextAlign.center,
                       ),
                     ],
@@ -119,7 +114,12 @@ class _QRScannerPageState extends State<QRScannerPage> {
                           return QRScannerErrorWidget(error: error);
                         },
                       ),
-                      const QRScannerOverlay(overlayColor: Colors.black54),
+                      QRScannerOverlay(
+                        overlayColor: Theme.of(context)
+                            .colorScheme
+                            .primary
+                            .withOpacity(0.54),
+                      ),
                     ],
                   ),
                 ),
@@ -236,10 +236,12 @@ class _QRScannerPageState extends State<QRScannerPage> {
                                 SizedBox(width: 20.w),
                                 Text(
                                   'SELECT FROM GALLERY',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 22.sp),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .displayLarge!
+                                      .copyWith(
+                                        color: Colors.white,
+                                      ),
                                 ),
                               ],
                             ),
