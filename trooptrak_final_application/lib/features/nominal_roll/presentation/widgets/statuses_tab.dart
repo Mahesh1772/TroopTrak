@@ -135,7 +135,7 @@ class StatusesTab extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-            ],
+            ]
           ),
         ),
       ),
