@@ -6,7 +6,7 @@ class GetStatusesUseCase {
 
   GetStatusesUseCase(this.repository);
 
-  Future<List<Status>> call(String userId) async {
-    return await repository.getStatuses(userId);
+  Stream<List<Status>> call(String userId) {
+    return repository.getStatuses(userId);
   }
 }

@@ -5,7 +5,7 @@ class DeleteStatusUseCase {
 
   DeleteStatusUseCase(this.repository);
 
-  Future<void> call(String userId, String statusId) async {
-    await repository.deleteStatus(userId, statusId);
+  Stream<void> call(String userId, String statusId) {
+    return repository.deleteStatus(userId, statusId);
   }
 }

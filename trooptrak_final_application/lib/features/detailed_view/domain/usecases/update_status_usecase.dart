@@ -6,7 +6,7 @@ class UpdateStatusUseCase {
 
   UpdateStatusUseCase(this.repository);
 
-  Future<void> call(String userId, Status status) async {
-    await repository.updateStatus(userId, status);
+  Stream<void> call(String userId, Status status) {
+    return repository.updateStatus(userId, status);
   }
 }

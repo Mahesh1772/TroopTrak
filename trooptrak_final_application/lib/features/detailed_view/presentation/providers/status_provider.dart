@@ -11,7 +11,7 @@ class StatusProvider extends ChangeNotifier {
   final UpdateStatusUseCase _updateStatusUseCase;
   final DeleteStatusUseCase _deleteStatusUseCase;
 
-  List<Status> _statuses = [];
+  Stream<List<Status>>? _statusesStream;
 
   StatusProvider(
     this._getStatusesUseCase,
@@ -20,29 +20,23 @@ class StatusProvider extends ChangeNotifier {
     this._deleteStatusUseCase,
   );
 
-  List<Status> get statuses => _statuses;
+  Stream<List<Status>>? get statusesStream => _statusesStream;
 
-  Future<void> loadStatuses(String userId) async {
-    _statuses = await _getStatusesUseCase(userId);
+  void loadStatuses(String userId) {
+    print('Loading statuses for user: $userId');
+    _statusesStream = _getStatusesUseCase(userId);
     notifyListeners();
   }
 
-  Future<void> addStatus(String userId, Status status) async {
-    await _addStatusUseCase(userId, status);
-    await loadStatuses(userId);
+  Stream<void> addStatus(String userId, Status status) {
+    return _addStatusUseCase(userId, status);
   }
 
-  Future<void> updateStatus(String userId, Status status) async {
-    await _updateStatusUseCase(userId, status);
-    await loadStatuses(userId);
+  Stream<void> updateStatus(String userId, Status status) {
+    return _updateStatusUseCase(userId, status);
   }
 
-  Future<void> deleteStatus(String userId, String statusId) async {
-    await _deleteStatusUseCase(userId, statusId);
-    await loadStatuses(userId);
-  }
-
-  Status? getStatusById(String statusId) {
-    return _statuses.firstWhere((status) => status.id == statusId);
+  Stream<void> deleteStatus(String userId, String statusId) {
+    return _deleteStatusUseCase(userId, statusId);
   }
 }

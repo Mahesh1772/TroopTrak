@@ -7,48 +7,74 @@ class StatusRepositoryImpl implements StatusRepository {
   final FirebaseFirestore _firestore;
 
   StatusRepositoryImpl(this._firestore);
-      // : _firestore = firestore ?? FirebaseFirestore.instance;
 
-  
   @override
-  Future<List<Status>> getStatuses(String userId) async {
-    final snapshot = await _firestore
+  Stream<List<Status>> getStatuses(String userId) {
+    return _firestore
         .collection('Users')
         .doc(userId)
         .collection('Statuses')
-        .get();
-
-    return snapshot.docs
-        .map((doc) => StatusModel.fromJson(doc.data()..addAll({'ID': doc.id})))
-        .toList();
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) {
+        final data = doc.data();
+        return Status(
+          id: doc.id,
+          statusName: data['statusName'] ?? '',
+          statusType: data['statusType'] ?? '',
+          startDate: data['startDate'] ?? '',
+          endDate: data['endDate'] ?? '',
+          startId: data['start_id'] ?? '',
+          endId: data['end_id'] ?? '',
+        );
+      }).toList();
+    });
   }
 
   @override
-  Future<void> addStatus(String userId, Status status) async {
-    await _firestore
+  Stream<void> addStatus(String userId, Status status) {
+    final statusModel = StatusModel(
+      id: status.id,
+      statusType: status.statusType,
+      statusName: status.statusName,
+      startDate: status.startDate,
+      endDate: status.endDate,
+      startId: status.startId,
+      endId: status.endId,
+    );
+    return Stream.fromFuture(_firestore
         .collection('Users')
         .doc(userId)
         .collection('Statuses')
-        .add((status as StatusModel).toJson());
+        .add(statusModel.toJson()));
   }
 
   @override
-  Future<void> updateStatus(String userId, Status status) async {
-    await _firestore
+  Stream<void> updateStatus(String userId, Status status) {
+    final statusModel = StatusModel(
+      id: status.id,
+      statusType: status.statusType,
+      statusName: status.statusName,
+      startDate: status.startDate,
+      endDate: status.endDate,
+      startId: status.startId,
+      endId: status.endId,
+    );
+    return Stream.fromFuture(_firestore
         .collection('Users')
         .doc(userId)
         .collection('Statuses')
         .doc(status.id)
-        .update((status as StatusModel).toJson());
+        .update(statusModel.toJson()));
   }
 
   @override
-  Future<void> deleteStatus(String userId, String statusId) async {
-    await _firestore
+  Stream<void> deleteStatus(String userId, String statusId) {
+    return Stream.fromFuture(_firestore
         .collection('Users')
         .doc(userId)
         .collection('Statuses')
         .doc(statusId)
-        .delete();
+        .delete());
   }
 }
