@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:trooptrak_final_application/features/detailed_view/presentation/widgets/statuses_tab.dart';
 import '../providers/user_detail_provider.dart';
 import '../widgets/basic_info_tab.dart';
-import '../widgets/attendance_tab.dart';
+import '../../../detailed_view/presentation/widgets/attendance_tab.dart';
 
 
 
