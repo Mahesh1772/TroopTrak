@@ -1,4 +1,4 @@
-// add_update_status_page.dart
+// lib/presentation/pages/add_update_status_page.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
@@ -10,10 +10,10 @@ class AddUpdateStatusPage extends StatefulWidget {
   final Status? status;
 
   const AddUpdateStatusPage({
-    super.key,
+    Key? key,
     required this.userId,
     this.status,
-  });
+  }) : super(key: key);
 
   @override
   _AddUpdateStatusPageState createState() => _AddUpdateStatusPageState();
@@ -23,8 +23,8 @@ class _AddUpdateStatusPageState extends State<AddUpdateStatusPage> {
   final _formKey = GlobalKey<FormState>();
   late String _statusType;
   late TextEditingController _statusNameController;
-  late String _startDate;
-  late String _endDate;
+  late DateTime _startDateTime;
+  late DateTime _endDateTime;
 
   final List<String> _statusTypes = [
     "Select status type...",
@@ -38,8 +38,8 @@ class _AddUpdateStatusPageState extends State<AddUpdateStatusPage> {
     super.initState();
     _statusType = widget.status?.statusType ?? _statusTypes[0];
     _statusNameController = TextEditingController(text: widget.status?.statusName ?? '');
-    _startDate = widget.status?.startDate ?? DateFormat('d MMM yyyy').format(DateTime.now());
-    _endDate = widget.status?.endDate ?? DateFormat('d MMM yyyy').format(DateTime.now());
+    _startDateTime = widget.status != null ? DateTime.parse(widget.status!.startId) : DateTime.now();
+    _endDateTime = widget.status != null ? DateTime.parse(widget.status!.endId) : DateTime.now().add(const Duration(hours: 1));
   }
 
   @override
@@ -48,23 +48,42 @@ class _AddUpdateStatusPageState extends State<AddUpdateStatusPage> {
     super.dispose();
   }
 
-  void _showDatePicker(bool isStartDate) {
-    showDatePicker(
+  void _showDateTimePicker(bool isStartDate) async {
+    final pickedDate = await showDatePicker(
       context: context,
-      initialDate: DateFormat('d MMM yyyy').parse(isStartDate ? _startDate : _endDate),
+      initialDate: isStartDate ? _startDateTime : _endDateTime,
       firstDate: DateTime(1960),
       lastDate: DateTime(2030),
-    ).then((value) {
-      if (value != null) {
+    );
+
+    if (pickedDate != null) {
+      final pickedTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.fromDateTime(isStartDate ? _startDateTime : _endDateTime),
+      );
+
+      if (pickedTime != null) {
         setState(() {
           if (isStartDate) {
-            _startDate = DateFormat('d MMM yyyy').format(value);
+            _startDateTime = DateTime(
+              pickedDate.year,
+              pickedDate.month,
+              pickedDate.day,
+              pickedTime.hour,
+              pickedTime.minute,
+            );
           } else {
-            _endDate = DateFormat('d MMM yyyy').format(value);
+            _endDateTime = DateTime(
+              pickedDate.year,
+              pickedDate.month,
+              pickedDate.day,
+              pickedTime.hour,
+              pickedTime.minute,
+            );
           }
         });
       }
-    });
+    }
   }
 
   @override
@@ -119,24 +138,28 @@ class _AddUpdateStatusPageState extends State<AddUpdateStatusPage> {
                     Expanded(
                       child: TextFormField(
                         readOnly: true,
-                        controller: TextEditingController(text: _startDate),
+                        controller: TextEditingController(
+                          text: DateFormat('dd MMM yyyy HH:mm').format(_startDateTime),
+                        ),
                         decoration: const InputDecoration(
-                          labelText: 'Start Date',
+                          labelText: 'Start Date & Time',
                           border: OutlineInputBorder(),
                         ),
-                        onTap: () => _showDatePicker(true),
+                        onTap: () => _showDateTimePicker(true),
                       ),
                     ),
                     const SizedBox(width: 16),
                     Expanded(
                       child: TextFormField(
                         readOnly: true,
-                        controller: TextEditingController(text: _endDate),
+                        controller: TextEditingController(
+                          text: DateFormat('dd MMM yyyy HH:mm').format(_endDateTime),
+                        ),
                         decoration: const InputDecoration(
-                          labelText: 'End Date',
+                          labelText: 'End Date & Time',
                           border: OutlineInputBorder(),
                         ),
-                        onTap: () => _showDatePicker(false),
+                        onTap: () => _showDateTimePicker(false),
                       ),
                     ),
                   ],
@@ -149,10 +172,8 @@ class _AddUpdateStatusPageState extends State<AddUpdateStatusPage> {
                         id: widget.status?.id ?? '',
                         statusType: _statusType,
                         statusName: _statusNameController.text,
-                        startDate: _startDate,
-                        endDate: _endDate,
-                        startId: DateFormat('yyyy-MM-dd HH:mm:ss').format(DateFormat('d MMM yyyy').parse(_startDate)),
-                        endId: DateFormat('yyyy-MM-dd HH:mm:ss').format(DateFormat('d MMM yyyy').parse(_endDate)),
+                        startId: _startDateTime.toIso8601String(),
+                        endId: _endDateTime.toIso8601String(),
                       );
 
                       if (widget.status == null) {

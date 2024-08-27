@@ -31,6 +31,20 @@ class _StatusesTabState extends State<StatusesTab> {
     return currentDate.isAfter(endDate);
   }
 
+  List<Status> sortStatuses(List<Status> statuses) {
+    final activeStatuses = statuses.where((status) => !isPastStatus(status)).toList();
+    final pastStatuses = statuses.where((status) => isPastStatus(status)).toList();
+
+    // Sort active statuses by endDate in descending order (latest end date first)
+    activeStatuses.sort((a, b) => DateTime.parse(b.endId).compareTo(DateTime.parse(a.endId)));
+
+    // Sort past statuses by endDate in descending order (latest end date first)
+    pastStatuses.sort((a, b) => DateTime.parse(b.endId).compareTo(DateTime.parse(a.endId)));
+
+    // Combine the sorted lists with active statuses at the top
+    return [...activeStatuses, ...pastStatuses];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<StatusProvider>(
@@ -58,10 +72,12 @@ class _StatusesTabState extends State<StatusesTab> {
                     return const Center(child: Text('No statuses found.'));
                   }
 
+                  final sortedStatuses = sortStatuses(statuses);
+
                   return ListView.builder(
-                    itemCount: statuses.length,
+                    itemCount: sortedStatuses.length,
                     itemBuilder: (context, index) {
-                      final status = statuses[index];
+                      final status = sortedStatuses[index];
                       if (isPastStatus(status)) {
                         return PastStatusTile(status: status, userId: widget.userId);
                       } else {

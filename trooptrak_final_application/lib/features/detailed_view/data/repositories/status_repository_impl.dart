@@ -22,8 +22,6 @@ class StatusRepositoryImpl implements StatusRepository {
           id: doc.id,
           statusName: data['statusName'] ?? '',
           statusType: data['statusType'] ?? '',
-          startDate: data['startDate'] ?? '',
-          endDate: data['endDate'] ?? '',
           startId: data['start_id'] ?? '',
           endId: data['end_id'] ?? '',
         );
@@ -37,8 +35,6 @@ class StatusRepositoryImpl implements StatusRepository {
       id: status.id,
       statusType: status.statusType,
       statusName: status.statusName,
-      startDate: status.startDate,
-      endDate: status.endDate,
       startId: status.startId,
       endId: status.endId,
     );
@@ -55,8 +51,6 @@ class StatusRepositoryImpl implements StatusRepository {
       id: status.id,
       statusType: status.statusType,
       statusName: status.statusName,
-      startDate: status.startDate,
-      endDate: status.endDate,
       startId: status.startId,
       endId: status.endId,
     );
@@ -67,6 +61,7 @@ class StatusRepositoryImpl implements StatusRepository {
         .doc(status.id)
         .update(statusModel.toJson()));
   }
+
 
   @override
   Stream<void> deleteStatus(String userId, String statusId) {

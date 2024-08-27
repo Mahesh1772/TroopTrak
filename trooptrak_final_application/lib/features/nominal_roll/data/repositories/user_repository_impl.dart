@@ -3,7 +3,6 @@ import 'package:dartz/dartz.dart';
 import 'package:intl/intl.dart';
 import 'package:trooptrak_final_application/features/nominal_roll/domain/entities/attendance_record.dart';
 import 'package:trooptrak_final_application/features/nominal_roll/domain/entities/scanned_soldier.dart';
-import 'package:trooptrak_final_application/features/nominal_roll/domain/entities/status.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/repositories/user_repository.dart';
 import '../models/user_model.dart';
@@ -130,26 +129,4 @@ class UserRepositoryImpl implements UserRepository {
                 ))
             .toList());
   }
-
-  @override
-Stream<List<Status>> getUserStatuses(String id) {
-  return _firestore
-      .collection('Users')
-      .doc(id)
-      .collection('Statuses')
-      .snapshots()
-      .map((snapshot) {
-    return snapshot.docs.map((doc) {
-      final data = doc.data();
-      return Status(
-        statusName: data['statusName'] ?? '',
-        statusType: data['statusType'] ?? '',
-        startDate: data['startDate'] ?? '',
-        endDate: data['endDate'] ?? '',
-        startId: data['start_id'] ?? '',
-        endId: data['end_id'] ?? '',
-      );
-    }).toList();
-  });
-}
 }
