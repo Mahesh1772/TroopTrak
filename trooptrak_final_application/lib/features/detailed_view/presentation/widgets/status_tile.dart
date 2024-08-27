@@ -10,7 +10,7 @@ class StatusTile extends StatelessWidget {
   final Status status;
   final String userId;
 
-  const StatusTile({Key? key, required this.status, required this.userId}) : super(key: key);
+  const StatusTile({super.key, required this.status, required this.userId});
 
   @override
   Widget build(BuildContext context) {

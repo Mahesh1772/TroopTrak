@@ -10,10 +10,10 @@ class AddUpdateStatusPage extends StatefulWidget {
   final Status? status;
 
   const AddUpdateStatusPage({
-    Key? key,
+    super.key,
     required this.userId,
     this.status,
-  }) : super(key: key);
+  });
 
   @override
   _AddUpdateStatusPageState createState() => _AddUpdateStatusPageState();

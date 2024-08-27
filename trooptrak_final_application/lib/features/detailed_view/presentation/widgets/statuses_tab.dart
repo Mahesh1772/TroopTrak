@@ -1,15 +1,16 @@
-// statuses_tab.dart
+// lib/presentation/pages/statuses_tab.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../domain/entities/status.dart';
 import '../providers/status_provider.dart';
 import '../pages/add_update_status_page.dart';
 import '../widgets/status_tile.dart';
+import '../widgets/past_status_tile.dart';
 
 class StatusesTab extends StatefulWidget {
   final String userId;
 
-  const StatusesTab({Key? key, required this.userId}) : super(key: key);
+  const StatusesTab({super.key, required this.userId});
 
   @override
   _StatusesTabState createState() => _StatusesTabState();
@@ -22,6 +23,12 @@ class _StatusesTabState extends State<StatusesTab> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<StatusProvider>(context, listen: false).loadStatuses(widget.userId);
     });
+  }
+
+  bool isPastStatus(Status status) {
+    final currentDate = DateTime.now();
+    final endDate = DateTime.parse(status.endId);
+    return currentDate.isAfter(endDate);
   }
 
   @override
@@ -55,7 +62,11 @@ class _StatusesTabState extends State<StatusesTab> {
                     itemCount: statuses.length,
                     itemBuilder: (context, index) {
                       final status = statuses[index];
-                      return StatusTile(status: status, userId: widget.userId);
+                      if (isPastStatus(status)) {
+                        return PastStatusTile(status: status, userId: widget.userId);
+                      } else {
+                        return StatusTile(status: status, userId: widget.userId);
+                      }
                     },
                   );
                 },
