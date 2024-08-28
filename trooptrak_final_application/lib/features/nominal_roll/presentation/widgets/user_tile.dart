@@ -4,7 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:provider/provider.dart';
 import 'package:trooptrak_final_application/features/nominal_roll/presentation/pages/soldier_detailed_screen.dart';
-import 'package:trooptrak_final_application/features/nominal_roll/presentation/providers/user_provider.dart';
+import '../../../detailed_view/presentation/providers/attendance_provider.dart';
 import '../../domain/entities/user.dart';
 
 class UserTile extends StatefulWidget {
@@ -163,8 +163,8 @@ class _UserTileState extends State<UserTile> {
                 current: widget.user.currentAttendance == 'Inside Camp',
                 values: const [false, true],
                  onChanged: (value) async {
-                  final userProvider = Provider.of<UserProvider>(context, listen: false);
-                  await userProvider.updateUserAttendance(widget.user.name, value);
+                  final attendanceProvider = Provider.of<AttendanceProvider>(context, listen: false);
+                  await attendanceProvider.updateUserAttendanceRecord(widget.user.name, value).first;
                 },
                 iconBuilder: rollingIconBuilder,
                 borderWidth: 3.0.w,

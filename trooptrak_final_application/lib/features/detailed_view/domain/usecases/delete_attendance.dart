@@ -5,7 +5,7 @@ class DeleteAttendance {
 
   DeleteAttendance(this.repository);
 
-  Future<void> call(String userId, String recordId) {
+  Stream<void> call(String userId, String recordId) {
     return repository.deleteAttendance(userId, recordId);
   }
 }

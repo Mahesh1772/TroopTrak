@@ -1,8 +1,6 @@
-// lib/features/attendance/presentation/pages/attendance_tab.dart
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
+import '../pages/edit_attendance_page.dart';
 import '../providers/attendance_provider.dart';
 import '../widgets/attendance_tile.dart';
 import '../../domain/entities/attendance_record.dart';
@@ -35,7 +33,7 @@ class AttendanceTab extends StatelessWidget {
                 final record = attendanceRecords[index];
                 return AttendanceTile(
                   record: record,
-                  onEdit: (record) => _showEditDialog(context, provider, record),
+                  onEdit: (record) => _navigateToEditPage(context, provider, record),
                   onDelete: (recordId) => _showDeleteConfirmation(context, provider, recordId),
                 );
               },
@@ -46,84 +44,14 @@ class AttendanceTab extends StatelessWidget {
     );
   }
 
-  void _showEditDialog(BuildContext context, AttendanceProvider provider, AttendanceRecord record) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        DateTime selectedDateTime = DateTime.parse(record.dateTime);
-        bool isInsideCamp = record.isInsideCamp;
-
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              title: const Text('Edit Attendance Record'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ListTile(
-                    title: const Text('Date and Time'),
-                    subtitle: Text(DateFormat('yyyy-MM-dd HH:mm').format(selectedDateTime)),
-                    trailing: const Icon(Icons.calendar_today),
-                    onTap: () async {
-                      final date = await showDatePicker(
-                        context: context,
-                        initialDate: selectedDateTime,
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime(2100),
-                      );
-                      if (date != null) {
-                        final time = await showTimePicker(
-                          context: context,
-                          initialTime: TimeOfDay.fromDateTime(selectedDateTime),
-                        );
-                        if (time != null) {
-                          setState(() {
-                            selectedDateTime = DateTime(
-                              date.year,
-                              date.month,
-                              date.day,
-                              time.hour,
-                              time.minute,
-                            );
-                          });
-                        }
-                      }
-                    },
-                  ),
-                  SwitchListTile(
-                    title: const Text('Status'),
-                    subtitle: Text(isInsideCamp ? 'Inside Camp' : 'Outside Camp'),
-                    value: isInsideCamp,
-                    onChanged: (bool value) {
-                      setState(() {
-                        isInsideCamp = value;
-                      });
-                    },
-                  ),
-                ],
-              ),
-              actions: [
-                TextButton(
-                  child: const Text('Cancel'),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-                TextButton(
-                  child: const Text('Save'),
-                  onPressed: () {
-                    final updatedRecord = AttendanceRecord(
-                      id: record.id,
-                      dateTime: DateFormat('yyyy-MM-dd HH:mm:ss').format(selectedDateTime),
-                      isInsideCamp: isInsideCamp,
-                    );
-                    provider.updateAttendanceRecord(userId, updatedRecord);
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      },
+  void _navigateToEditPage(BuildContext context, AttendanceProvider provider, AttendanceRecord record) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => EditAttendancePage(
+          userId: userId,
+          record: record,
+        ),
+      ),
     );
   }
 
@@ -142,8 +70,20 @@ class AttendanceTab extends StatelessWidget {
             TextButton(
               child: const Text('Delete'),
               onPressed: () {
-                provider.deleteAttendanceRecord(userId, recordId);
-                Navigator.of(context).pop();
+                provider.deleteAttendanceRecord(userId, recordId).listen(
+                  (_) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Attendance record deleted successfully')),
+                    );
+                    Navigator.of(context).pop();
+                  },
+                  onError: (error) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Error deleting attendance record: $error')),
+                    );
+                    Navigator.of(context).pop();
+                  },
+                );
               },
             ),
           ],

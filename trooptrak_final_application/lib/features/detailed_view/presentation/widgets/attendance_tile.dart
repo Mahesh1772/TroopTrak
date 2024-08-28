@@ -9,11 +9,11 @@ class AttendanceTile extends StatelessWidget {
   final Function(String) onDelete;
 
   const AttendanceTile({
-    Key? key,
+    super.key,
     required this.record,
     required this.onEdit,
     required this.onDelete,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

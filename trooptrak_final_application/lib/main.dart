@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:trooptrak_final_application/core/theme/theme.dart';
+import 'package:trooptrak_final_application/features/detailed_view/domain/usecases/update_user_attendance.dart';
 import 'package:trooptrak_final_application/features/nominal_roll/domain/usecases/add_user_usecase.dart';
 import 'features/detailed_view/data/repositories/attendance_repository_impl.dart';
 import 'features/detailed_view/domain/usecases/delete_attendance.dart';
@@ -142,6 +143,7 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider(
               create: (context) => AttendanceProvider(
+              updateUserAttendance: UpdateUserAttendance(AttendanceRepositoryImpl(FirebaseFirestore.instance)),
               getUserAttendance: GetUserAttendance(AttendanceRepositoryImpl(FirebaseFirestore.instance)),
               updateAttendance: UpdateAttendance(AttendanceRepositoryImpl(FirebaseFirestore.instance)),
               deleteAttendance: DeleteAttendance(AttendanceRepositoryImpl(FirebaseFirestore.instance)),

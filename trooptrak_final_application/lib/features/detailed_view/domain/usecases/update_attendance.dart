@@ -6,7 +6,7 @@ class UpdateAttendance {
 
   UpdateAttendance(this.repository);
 
-  Future<void> call(String userId, AttendanceRecord record) {
+  Stream<void> call(String userId, AttendanceRecord record) {
     return repository.updateAttendance(userId, record);
   }
 }
