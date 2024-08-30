@@ -1,5 +1,6 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import '../../domain/entities/attendance_record.dart';
 
@@ -22,7 +23,7 @@ class AttendanceTile extends StatelessWidget {
     final IconData tileIcon = isInsideCamp ? Icons.work_history : Icons.home;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+      padding: EdgeInsets.only(bottom: 8.0.h),
       child: Slidable(
         endActionPane: ActionPane(
           motion: const ScrollMotion(),
@@ -31,14 +32,14 @@ class AttendanceTile extends StatelessWidget {
               onPressed: (context) => onEdit(record),
               backgroundColor: Colors.blue,
               foregroundColor: Colors.white,
-              icon: Icons.edit,
+              icon: Icons.pending_actions_outlined,
               label: 'Edit',
             ),
             SlidableAction(
               onPressed: (context) => onDelete(record.id),
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
-              icon: Icons.delete,
+              icon: Icons.delete_forever_rounded,
               label: 'Delete',
             ),
           ],
@@ -46,41 +47,45 @@ class AttendanceTile extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             color: tileColor,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(12.r),
+              bottomLeft: Radius.circular(12.r),
+            ),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(16.0.sp),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Icon(
                   tileIcon,
                   color: Colors.white,
-                  size: 25,
+                  size: 30.sp,
                 ),
-                const SizedBox(width: 15),
+                SizedBox(width: 20.w),
                 SizedBox(
-                  width: 80,
-                  child: Text(
+                  width: 100.w,
+                  child: AutoSizeText(
                     isInsideCamp ? "BOOK IN" : "BOOK OUT",
-                    style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      color: Colors.white,
-                    ),
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20.sp,
+                          color: Colors.white,
+                        ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                const SizedBox(width: 15),
-                Expanded(
-                  child: Text(
+                SizedBox(width: 20.w),
+                SizedBox(
+                  width: 180.w,
+                  child: AutoSizeText(
                     record.dateTime,
-                    style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                      color: Colors.white,
-                    ),
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14.sp,
+                          color: Colors.white,
+                        ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),

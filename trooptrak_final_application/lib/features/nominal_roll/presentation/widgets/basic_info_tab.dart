@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:trooptrak_final_application/features/nominal_roll/presentation/widgets/action_button.dart';
 import '../providers/user_detail_provider.dart';
 
 class BasicInfoTab extends StatelessWidget {
@@ -10,66 +11,127 @@ class BasicInfoTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserDetailProvider>(
-      builder: (context, provider, child) {
-        final user = provider.user;
-        if (user == null) {
-          return const Center(child: Text('User data not available'));
-        }
-
-        return ListView(
-          padding: const EdgeInsets.all(16.0),
-          children: [
-            buildInfoTile('Name', user.name),
-            buildInfoTile('Rank', user.rank),
-            buildInfoTile('Company', user.company),
-            buildInfoTile('Appointment', user.apppointment),
-            buildInfoTile('Blood Group', user.bloodgroup),
-            buildInfoTile('Current Attendance', user.currentAttendance),
-            buildInfoTile('Date of Birth', user.dob),
-            buildInfoTile('Enlistment', user.enlistment),
-            buildInfoTile('ORD', user.ord),
-            buildInfoTile('Platoon', user.platoon),
-            buildInfoTile('Points', user.points.toString()),
-            buildInfoTile('Ration Type', user.rationType),
-            buildInfoTile('Section', user.section),
-          ],
-        );
-      },
+    return SingleChildScrollView(
+      child: SizedBox(
+        height: 900.h,
+        child: Consumer<UserDetailProvider>(
+          builder: (context, provider, child) {
+            final user = provider.user;
+            if (user == null) {
+              return const Center(child: Text('User data not available'));
+            }
+            return Column(
+              children: [
+                buildInfoTile(
+                  context,
+                  Icons.cake_rounded,
+                  'Date of Birth',
+                  user.dob,
+                ),
+                buildInfoTile(
+                  context,
+                  Icons.food_bank_rounded,
+                  'Ration Type',
+                  user.rationType,
+                ),
+                buildInfoTile(
+                  context,
+                  Icons.bloodtype_rounded,
+                  'Blood Group',
+                  user.bloodgroup,
+                ),
+                buildInfoTile(
+                  context,
+                  Icons.date_range_rounded,
+                  'Enlistment',
+                  user.enlistment,
+                ),
+                buildInfoTile(
+                  context,
+                  Icons.military_tech_rounded,
+                  'ORD',
+                  user.ord,
+                ),
+                buildInfoTile(
+                  context,
+                  Icons.attribution_outlined,
+                  'Current Attendance',
+                  user.currentAttendance,
+                ),
+                buildInfoTile(
+                  context,
+                  Icons.control_point_duplicate_rounded,
+                  'Points',
+                  user.points.toString(),
+                ),
+                SizedBox(
+                  height: 30.h,
+                ),
+                ActionButton(
+                    gradientColors: const [
+                      Color.fromARGB(255, 72, 30, 229),
+                      Color.fromARGB(255, 130, 60, 229),
+                    ],
+                    text: "EDIT SOLDIER DETAILS",
+                    onPressed: () {},
+                    icon: Icons.edit),
+                SizedBox(
+                  height: 10.h,
+                ),
+                ActionButton(
+                    gradientColors: const [
+                      Color.fromARGB(255, 229, 30, 30),
+                      Color.fromARGB(255, 229, 60, 60),
+                    ],
+                    text: "DELETE SOLDIER",
+                    onPressed: () {},
+                    icon: Icons.delete),
+              ],
+            );
+          },
+        ),
+      ),
     );
   }
 
-  Widget buildInfoTile(String label, String value) {
+  Widget buildInfoTile(
+      BuildContext context, IconData? icon, String label, String value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 32, 36, 51),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      padding: EdgeInsets.only(left: 30.0.w, right: 30.0.w, top: 30.0.h),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Icon(
+            icon,
+            size: 30.sp,
+          ),
+          SizedBox(
+            width: 20.w,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 label,
-                style: GoogleFonts.poppins(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
+                maxLines: 2,
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: 1.5,
+                      fontSize: 18.sp,
+                    ),
               ),
               Text(
                 value,
-                style: GoogleFonts.poppins(
-                  color: Colors.white,
-                  fontSize: 14,
-                ),
+                maxLines: 2,
+                style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.5,
+                      fontSize: 20.sp,
+                    ),
               ),
             ],
           ),
-        ),
+        ],
       ),
     );
   }

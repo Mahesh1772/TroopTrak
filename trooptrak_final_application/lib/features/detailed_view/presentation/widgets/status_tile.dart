@@ -1,6 +1,7 @@
 // status_tile.dart
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../domain/entities/status.dart';
 import '../providers/status_provider.dart';
@@ -36,111 +37,109 @@ class StatusTile extends StatelessWidget {
     }
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      padding: EdgeInsets.all(15.0.sp),
       child: Container(
+        width: 230.w,
+        height: 300.h,
+        padding: EdgeInsets.all(12.sp),
         decoration: BoxDecoration(
           color: statusColor,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: const [
+          borderRadius: BorderRadius.circular(12.r),
+          boxShadow: [
             BoxShadow(
-              blurRadius: 2.0,
-              spreadRadius: 2.0,
-              offset: Offset(10, 10),
+              blurRadius: 2.0.r,
+              spreadRadius: 2.0.r,
+              offset: Offset(10.w, 10.h),
               color: Colors.black54,
             )
           ],
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Icon(
-                    statusIcon,
-                    color: Colors.white,
-                    size: 60,
-                  ),
-                  Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AddUpdateStatusPage(
-                                userId: userId,
-                                status: status,
-                              ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Icon(
+                  statusIcon,
+                  color: Colors.white,
+                  size: 60.sp,
+                ),
+                Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AddUpdateStatusPage(
+                              userId: userId,
+                              status: status,
                             ),
-                          );
-                        },
-                        child: const Icon(
-                          Icons.edit,
-                          color: Colors.white,
-                          size: 30,
-                        ),
+                          ),
+                        );
+                      },
+                      child: Icon(
+                        Icons.edit,
+                        color: Colors.white,
+                        size: 30.sp,
                       ),
-                      const SizedBox(width: 16),
-                      GestureDetector(
-                        onTap: () {
-                          Provider.of<StatusProvider>(context, listen: false)
-                              .deleteStatus(userId, status.id)
-                              .listen(
-                                (event) {},
-                                onDone: () {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text('Status deleted')),
-                                  );
-                                },
-                                onError: (error) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text('Error deleting status: $error')),
-                                  );
-                                },
-                              );
-                        },
-                        child: const Icon(
-                          Icons.delete_rounded,
-                          color: Colors.white,
-                          size: 30,
-                        ),
+                    ),
+                    SizedBox(width: 16.w),
+                    GestureDetector(
+                      onTap: () {
+                        Provider.of<StatusProvider>(context, listen: false)
+                            .deleteStatus(userId, status.id)
+                            .listen(
+                          (event) {},
+                          onDone: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Status deleted')),
+                            );
+                          },
+                          onError: (error) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  content:
+                                      Text('Error deleting status: $error')),
+                            );
+                          },
+                        );
+                      },
+                      child: Icon(
+                        Icons.delete_rounded,
+                        color: Colors.white,
+                        size: 30.sp,
                       ),
-                    ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            SizedBox(height: 10.h),
+            AutoSizeText(
+              status.statusName,
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: Colors.white,
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.bold,
                   ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Text(
-                status.statusName,
-                style: GoogleFonts.poppins(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 5),
-              Text(
-                status.statusType.toUpperCase(),
-                style: GoogleFonts.poppins(
-                  color: Colors.white,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(height: 5),
-              Text(
-                "${status.startDate} - ${status.endDate}",
-                style: GoogleFonts.poppins(
-                  color: Colors.white,
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
+            ),
+            SizedBox(height: 5.h),
+            AutoSizeText(status.statusType.toUpperCase(),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Colors.white,
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w500,
+                    )),
+            SizedBox(height: 5.h),
+            AutoSizeText("${status.startDate} - ${status.endDate}",
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Colors.white,
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.bold,
+                    )),
+          ],
         ),
       ),
     );

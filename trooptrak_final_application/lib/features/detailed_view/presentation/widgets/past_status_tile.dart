@@ -1,7 +1,7 @@
 // lib/presentation/widgets/past_status_tile.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import '../../domain/entities/status.dart';
 import '../pages/add_update_status_page.dart';
@@ -29,72 +29,84 @@ class PastStatusTile extends StatelessWidget {
 
     return Padding(
       padding: EdgeInsets.only(bottom: 8.0.h),
-      child: Container(
-        decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 144, 143, 143),
-          borderRadius: BorderRadius.circular(12.r),
+      child: Slidable(
+        endActionPane: ActionPane(
+          motion: const StretchMotion(),
+          children: [
+            SlidableAction(
+              onPressed: (context) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AddUpdateStatusPage(
+                      userId: userId,
+                      status: status,
+                    ),
+                  ),
+                );
+              },
+              icon: Icons.info_rounded,
+              backgroundColor: Colors.blue,
+            ),
+            SlidableAction(
+              onPressed: (context) {
+                Provider.of<StatusProvider>(context, listen: false)
+                    .deleteStatus(userId, status.id);
+              },
+              icon: Icons.delete_forever_rounded,
+              backgroundColor: Colors.red,
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(12.r),
+                bottomRight: Radius.circular(12.r),
+              ),
+            ),
+          ],
         ),
-        child: Padding(
-          padding: EdgeInsets.all(16.0.sp),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Icon(
-                tileIcon,
-                color: Colors.white,
-                size: 30.sp,
-              ),
-              SizedBox(
-                width: 100.w,
-                child: AutoSizeText(
-                  status.statusName,
-                  style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.sp,
-                    color: Colors.white,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+        child: Container(
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(255, 144, 143, 143),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(12.r),
+              bottomLeft: Radius.circular(12.r),
+            ),
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(16.0.sp),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Icon(
+                  tileIcon,
+                  color: Colors.white,
+                  size: 30.sp,
                 ),
-              ),
-              SizedBox(
-                width: 200.w,
-                child: AutoSizeText(
-                  "${status.startDate} - ${status.endDate}",
-                  style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14.sp,
-                    color: Colors.white,
-                  ),
-                  maxLines: 1,
-                ),
-              ),
-              Row(
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.edit, color: Colors.white),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AddUpdateStatusPage(
-                            userId: userId,
-                            status: status,
-                          ),
+                SizedBox(
+                  width: 100.w,
+                  child: AutoSizeText(
+                    status.statusName,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16.sp,
+                          color: Colors.white,
                         ),
-                      );
-                    },
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.delete, color: Colors.white),
-                    onPressed: () {
-                      Provider.of<StatusProvider>(context, listen: false)
-                          .deleteStatus(userId, status.id);
-                    },
+                ),
+                SizedBox(
+                  width: 200.w,
+                  child: AutoSizeText(
+                    "${status.startDate} - ${status.endDate}",
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14.sp,
+                          color: Colors.white,
+                        ),
+                    maxLines: 1,
                   ),
-                ],
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
