@@ -11,16 +11,14 @@ class ActionButton extends StatelessWidget {
 
   final List<Color> gradientColors;
   final String text;
-  final Function onPressed;
+  final Function()? onPressed;
   final IconData icon;
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: TextButton(
-        onPressed: () {
-          onPressed;
-        },
+        onPressed: onPressed,
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 40.0.w, vertical: 16.0.h),
           decoration: BoxDecoration(

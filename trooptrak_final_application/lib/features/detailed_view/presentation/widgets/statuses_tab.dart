@@ -197,11 +197,13 @@ class _StatusesTabState extends State<StatusesTab> {
                           ],
                           text: "ADD STATUS",
                           onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => AddUpdateStatusPage(
-                                userId: widget.userId,
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    AddUpdateStatusPage(userId: widget.userId),
                               ),
-                            ));
+                            );
                           },
                           icon: Icons.add,
                         ),
