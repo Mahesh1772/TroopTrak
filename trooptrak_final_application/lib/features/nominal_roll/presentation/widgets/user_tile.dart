@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:provider/provider.dart';
-import 'package:trooptrak_final_application/features/nominal_roll/presentation/pages/soldier_detailed_screen.dart';
+import 'package:trooptrak_final_application/features/detailed_view/presentation/pages/soldier_detailed_screen.dart';
 import '../../../detailed_view/presentation/providers/attendance_provider.dart';
 import '../../domain/entities/user.dart';
 

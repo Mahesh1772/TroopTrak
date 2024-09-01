@@ -3,9 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:recase/recase.dart';
 import 'package:trooptrak_final_application/features/detailed_view/presentation/widgets/statuses_tab.dart';
-import '../providers/user_detail_provider.dart';
-import '../widgets/basic_info_tab.dart';
-import '../../../detailed_view/presentation/pages/attendance_tab.dart';
+import '../../../nominal_roll/presentation/providers/user_detail_provider.dart';
+import '../../../nominal_roll/presentation/widgets/basic_info_tab.dart';
+import 'attendance_tab.dart';
 
 class SoldierDetailedScreen extends StatefulWidget {
   final String userId;
