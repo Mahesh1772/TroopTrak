@@ -129,4 +129,28 @@ class UserRepositoryImpl implements UserRepository {
                 ))
             .toList());
   }
+
+  @override
+  Future<Either<String, void>> updateUser(User user) async {
+    try {
+      await _firestore.collection('Users').doc(user.id).update({
+        'name': user.name,
+        'rank': user.rank,
+        'company': user.company,
+        'appointment': user.apppointment,
+        'bloodgroup': user.bloodgroup,
+        'currentAttendance': user.currentAttendance,
+        'dob': user.dob,
+        'ord': user.ord,
+        'enlistment': user.enlistment,
+        'platoon': user.platoon,
+        'section': user.section,
+        'rationType': user.rationType,
+        'points': user.points,
+      });
+      return const Right(null);
+    } catch (e) {
+      return Left('Error updating user: $e');
+    }
+  }
 }

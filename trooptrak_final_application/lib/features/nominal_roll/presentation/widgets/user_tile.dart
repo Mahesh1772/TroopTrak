@@ -80,7 +80,7 @@ class _UserTileState extends State<UserTile> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => SoldierDetailedScreen(userId: widget.user.name),
+            builder: (context) => SoldierDetailedScreen(userId: widget.user.id),
           ),
         );
       },
@@ -164,7 +164,7 @@ class _UserTileState extends State<UserTile> {
                 values: const [false, true],
                  onChanged: (value) async {
                   final attendanceProvider = Provider.of<AttendanceProvider>(context, listen: false);
-                  await attendanceProvider.updateUserAttendanceRecord(widget.user.name, value).first;
+                  await attendanceProvider.updateUserAttendanceRecord(widget.user.id, value).first;
                 },
                 iconBuilder: rollingIconBuilder,
                 borderWidth: 3.0.w,

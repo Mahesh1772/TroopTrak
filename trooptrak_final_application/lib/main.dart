@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:trooptrak_final_application/core/theme/theme.dart';
 import 'package:trooptrak_final_application/features/detailed_view/domain/usecases/update_user_attendance.dart';
 import 'package:trooptrak_final_application/features/nominal_roll/domain/usecases/add_user_usecase.dart';
+import 'package:trooptrak_final_application/features/nominal_roll/domain/usecases/update_user_usecase.dart';
 import 'features/detailed_view/data/repositories/attendance_repository_impl.dart';
 import 'features/detailed_view/domain/usecases/delete_attendance.dart';
 import 'features/detailed_view/domain/usecases/get_user_attendance.dart';
@@ -104,10 +105,14 @@ class MyApp extends StatelessWidget {
           ProxyProvider<UserRepositoryImpl, GetUserAttendanceUseCase>(
             update: (_, repo, __) => GetUserAttendanceUseCase(repo),
           ),
-          ProxyProvider2<GetUserByIdUseCase, GetUserAttendanceUseCase,  UserDetailProvider>(
-            update: (_, getUserByIdUseCase, getUserAttendanceUseCase,  __) => UserDetailProvider(
+          ProxyProvider<UserRepositoryImpl, UpdateUserUseCase>(
+            update: (_, repo, __) => UpdateUserUseCase(repo),
+          ),
+          ProxyProvider3<GetUserByIdUseCase, GetUserAttendanceUseCase, UpdateUserUseCase, UserDetailProvider>(
+              update: (_, getUserByIdUseCase, getUserAttendanceUseCase, updateUserUseCase, __) => UserDetailProvider(
               getUserByIdUseCase: getUserByIdUseCase,
               getUserAttendanceUseCase: getUserAttendanceUseCase,
+              updateUserUseCase: updateUserUseCase,
             ),
           ),
           ProxyProvider<StatusRepositoryImpl, GetStatusesUseCase>(

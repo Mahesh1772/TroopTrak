@@ -6,13 +6,17 @@ import '../../domain/usecases/get_user_attendance_usecase.dart';
 
 import 'dart:async';
 
+import '../../domain/usecases/update_user_usecase.dart';
+
 class UserDetailProvider extends ChangeNotifier {
   final GetUserByIdUseCase getUserByIdUseCase;
   final GetUserAttendanceUseCase getUserAttendanceUseCase;
+  final UpdateUserUseCase updateUserUseCase;
 
-  UserDetailProvider({
+  UserDetailProvider( {
     required this.getUserByIdUseCase,
     required this.getUserAttendanceUseCase,
+    required this.updateUserUseCase,
   });
 
   User? _user;
@@ -60,4 +64,17 @@ class UserDetailProvider extends ChangeNotifier {
     return getUserAttendanceUseCase(id);
   }
 
+  Future<void> updateUser(User updatedUser) async {
+    final result = await updateUserUseCase(updatedUser);
+    result.fold(
+      (failure) {
+        // Handle the error, maybe show a snackbar
+        print('Error updating user: $failure');
+      },
+      (_) {
+        // Update was successful, refresh the user data
+        loadUser(updatedUser.id);
+      },
+    );
+  }
 }

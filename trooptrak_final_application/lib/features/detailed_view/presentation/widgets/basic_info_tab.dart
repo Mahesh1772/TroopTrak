@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:trooptrak_final_application/features/detailed_view/domain/usecases/update_user_usecase.dart';
-import 'package:trooptrak_final_application/features/detailed_view/presentation/pages/edit_soldier_screen.dart';
-import 'package:trooptrak_final_application/features/nominal_roll/domain/usecases/get_user_by_id_usecase.dart';
 import 'package:trooptrak_final_application/features/nominal_roll/presentation/widgets/action_button.dart';
+import '../../../nominal_roll/presentation/pages/edit_soldier_screen.dart';
 import '../../../nominal_roll/presentation/providers/user_detail_provider.dart';
 
 class BasicInfoTab extends StatelessWidget {
@@ -80,11 +78,7 @@ class BasicInfoTab extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => EditSoldierScreen(
-                            userId: userId,
-                            getUserByIdUseCase: context.read<GetUserByIdUseCase>(),
-                            updateUserUseCase: context.read<UpdateUserUseCase>(),
-                          ),
+                          builder: (context) => EditSoldierScreen(userId: userId),
                         ),
                       );
                     },
