@@ -10,4 +10,5 @@ abstract class UserRepository {
   Stream<User> getUserById(String id);
   Stream<List<AttendanceRecord>> getUserAttendance(String id);
   Future<Either<String, void>> updateUser(User user);
+  Future<Either<String, void>> deleteUser(String userId); 
 }

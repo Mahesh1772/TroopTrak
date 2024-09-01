@@ -1,4 +1,6 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
+import 'package:trooptrak_final_application/features/nominal_roll/domain/usecases/delete_user_usecase.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/entities/attendance_record.dart';
 import '../../domain/usecases/get_user_by_id_usecase.dart';
@@ -12,11 +14,13 @@ class UserDetailProvider extends ChangeNotifier {
   final GetUserByIdUseCase getUserByIdUseCase;
   final GetUserAttendanceUseCase getUserAttendanceUseCase;
   final UpdateUserUseCase updateUserUseCase;
+  final DeleteUserUseCase deleteUserUseCase;
 
-  UserDetailProvider( {
+  UserDetailProvider(  {
     required this.getUserByIdUseCase,
     required this.getUserAttendanceUseCase,
     required this.updateUserUseCase,
+    required this.deleteUserUseCase,
   });
 
   User? _user;
@@ -76,5 +80,10 @@ class UserDetailProvider extends ChangeNotifier {
         loadUser(updatedUser.id);
       },
     );
+  }
+   
+  Future<Either<String, void>> deleteUser(String userId) async {
+    final result = await deleteUserUseCase(userId);
+    return result;
   }
 }

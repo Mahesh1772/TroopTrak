@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:trooptrak_final_application/features/nominal_roll/presentation/widgets/action_button.dart';
 import '../../../nominal_roll/presentation/pages/edit_soldier_screen.dart';
+import '../../../nominal_roll/presentation/pages/nominal_roll_screen.dart';
 import '../../../nominal_roll/presentation/providers/user_detail_provider.dart';
 
 class BasicInfoTab extends StatelessWidget {
@@ -87,13 +88,14 @@ class BasicInfoTab extends StatelessWidget {
                   height: 10.h,
                 ),
                 ActionButton(
-                    gradientColors: const [
-                      Color.fromARGB(255, 229, 30, 30),
-                      Color.fromARGB(255, 229, 60, 60),
-                    ],
-                    text: "DELETE SOLDIER",
-                    onPressed: () {},
-                    icon: Icons.delete),
+                  gradientColors: const [
+                    Color.fromARGB(255, 229, 30, 30),
+                    Color.fromARGB(255, 229, 60, 60),
+                  ],
+                  text: "DELETE SOLDIER",
+                  onPressed: () => _showDeleteConfirmationDialog(context, provider),
+                  icon: Icons.delete,
+                ),
               ],
             );
           },
@@ -141,6 +143,49 @@ class BasicInfoTab extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  void _showDeleteConfirmationDialog(BuildContext context, UserDetailProvider provider) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Confirm Deletion"),
+          content: const Text("Are you sure you want to delete this soldier? This action cannot be undone."),
+          actions: <Widget>[
+            TextButton(
+              child: const Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text("Delete"),
+              onPressed: () async {
+                Navigator.of(context).pop();
+                final result = await provider.deleteUser(userId);
+                result.fold(
+                  (error) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Error: $error')),
+                    );
+                  },
+                  (_) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Soldier deleted successfully')),
+                    );
+                     Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => const NominalRollPage()),
+                      (Route<dynamic> route) => false,
+                    );
+                  },
+                );
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

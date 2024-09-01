@@ -153,4 +153,38 @@ class UserRepositoryImpl implements UserRepository {
       return Left('Error updating user: $e');
     }
   }
+
+  @override
+  Future<Either<String, void>> deleteUser(String userId) async {
+    try {
+      // Delete the user document
+      await _firestore.collection('Users').doc(userId).delete();
+      
+      // Delete the user's attendance subcollection
+      final attendanceSnapshot = await _firestore
+          .collection('Users')
+          .doc(userId)
+          .collection('Attendance')
+          .get();
+      
+      for (var doc in attendanceSnapshot.docs) {
+        await doc.reference.delete();
+      }
+
+      // Delete the user's Statuses subcollection
+      final statusSnapshot = await _firestore
+          .collection('Users')
+          .doc(userId)
+          .collection('Statuses')
+          .get();
+      
+      for (var doc in statusSnapshot.docs) {
+        await doc.reference.delete();
+      }
+
+      return const Right(null);
+    } catch (e) {
+      return Left('Error deleting user: $e');
+    }
+  }
 }
