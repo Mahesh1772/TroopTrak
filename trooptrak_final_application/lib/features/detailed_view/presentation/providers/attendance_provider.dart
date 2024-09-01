@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 import 'package:trooptrak_final_application/features/detailed_view/domain/usecases/update_attendance.dart';
 import '../../domain/entities/attendance_record.dart';
 import '../../domain/usecases/get_user_attendance.dart';
@@ -19,7 +20,14 @@ class AttendanceProvider extends ChangeNotifier {
   });
 
   Stream<List<AttendanceRecord>> getUserAttendanceStream(String userId) {
-    return getUserAttendance(userId);
+    return getUserAttendance(userId).map((records) {
+      records.sort((a, b) {
+        DateTime dateA = DateFormat('E d MMM yyyy HH:mm:ss').parse(a.dateTime);
+        DateTime dateB = DateFormat('E d MMM yyyy HH:mm:ss').parse(b.dateTime);
+        return dateB.compareTo(dateA); // Sort in descending order
+      });
+      return records;
+    });
   }
 
   Stream<void> updateAttendanceRecord(String userId, AttendanceRecord record) {

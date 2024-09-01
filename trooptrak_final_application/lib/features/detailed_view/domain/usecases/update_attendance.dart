@@ -7,6 +7,6 @@ class UpdateAttendance {
   UpdateAttendance(this.repository);
 
   Stream<void> call(String userId, AttendanceRecord record) {
-    return repository.updateAttendance(userId, record);
+    return repository.updateAttendanceAndUserStatus(userId, record, record.isInsideCamp);
   }
 }
