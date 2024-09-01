@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:recase/recase.dart';
 import 'package:trooptrak_final_application/features/detailed_view/presentation/widgets/statuses_tab.dart';
 import '../../../nominal_roll/presentation/providers/user_detail_provider.dart';
-import '../../../nominal_roll/presentation/widgets/basic_info_tab.dart';
+import '../widgets/basic_info_tab.dart';
 import 'attendance_tab.dart';
 
 class SoldierDetailedScreen extends StatefulWidget {

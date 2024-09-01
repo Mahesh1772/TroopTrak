@@ -104,14 +104,10 @@ class MyApp extends StatelessWidget {
           ProxyProvider<UserRepositoryImpl, GetUserAttendanceUseCase>(
             update: (_, repo, __) => GetUserAttendanceUseCase(repo),
           ),
-          // ProxyProvider<UserRepositoryImpl, GetUserStatusesUseCase>(
-          //   update: (_, repo, __) => GetUserStatusesUseCase(repo),
-          // ),
           ProxyProvider2<GetUserByIdUseCase, GetUserAttendanceUseCase,  UserDetailProvider>(
             update: (_, getUserByIdUseCase, getUserAttendanceUseCase,  __) => UserDetailProvider(
               getUserByIdUseCase: getUserByIdUseCase,
               getUserAttendanceUseCase: getUserAttendanceUseCase,
-              // getUserStatusesUseCase: getUserStatusesUseCase,
             ),
           ),
           ProxyProvider<StatusRepositoryImpl, GetStatusesUseCase>(

@@ -9,12 +9,10 @@ import 'dart:async';
 class UserDetailProvider extends ChangeNotifier {
   final GetUserByIdUseCase getUserByIdUseCase;
   final GetUserAttendanceUseCase getUserAttendanceUseCase;
-  // final GetUserStatusesUseCase getUserStatusesUseCase;
 
   UserDetailProvider({
     required this.getUserByIdUseCase,
     required this.getUserAttendanceUseCase,
-    // required this.getUserStatusesUseCase,
   });
 
   User? _user;
