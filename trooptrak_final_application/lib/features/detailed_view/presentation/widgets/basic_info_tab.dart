@@ -163,7 +163,7 @@ class BasicInfoTab extends StatelessWidget {
             TextButton(
               child: const Text("Delete"),
               onPressed: () async {
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(); // Close the dialog
                 final result = await provider.deleteUser(userId);
                 result.fold(
                   (error) {
@@ -175,7 +175,7 @@ class BasicInfoTab extends StatelessWidget {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Soldier deleted successfully')),
                     );
-                     Navigator.of(context).pushAndRemoveUntil(
+                    Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(builder: (context) => const NominalRollPage()),
                       (Route<dynamic> route) => false,
                     );

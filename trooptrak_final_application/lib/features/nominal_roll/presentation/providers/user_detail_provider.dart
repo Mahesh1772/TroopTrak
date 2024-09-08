@@ -5,9 +5,7 @@ import '../../domain/entities/user.dart';
 import '../../domain/entities/attendance_record.dart';
 import '../../domain/usecases/get_user_by_id_usecase.dart';
 import '../../domain/usecases/get_user_attendance_usecase.dart';
-
 import 'dart:async';
-
 import '../../domain/usecases/update_user_usecase.dart';
 
 class UserDetailProvider extends ChangeNotifier {
@@ -16,7 +14,7 @@ class UserDetailProvider extends ChangeNotifier {
   final UpdateUserUseCase updateUserUseCase;
   final DeleteUserUseCase deleteUserUseCase;
 
-  UserDetailProvider(  {
+  UserDetailProvider({
     required this.getUserByIdUseCase,
     required this.getUserAttendanceUseCase,
     required this.updateUserUseCase,
@@ -30,6 +28,7 @@ class UserDetailProvider extends ChangeNotifier {
 
   Completer<void>? _loadingCompleter;
   bool _initialDataLoaded = false;
+  StreamSubscription? _userSubscription;
 
   void loadUser(String id) {
     _isLoading = true;
@@ -37,7 +36,8 @@ class UserDetailProvider extends ChangeNotifier {
     _loadingCompleter = Completer<void>();
     notifyListeners();
 
-    getUserByIdUseCase(id).listen(
+    _userSubscription?.cancel();
+    _userSubscription = getUserByIdUseCase(id).listen(
       (user) {
         _user = user;
         _isLoading = false;
@@ -72,18 +72,28 @@ class UserDetailProvider extends ChangeNotifier {
     final result = await updateUserUseCase(updatedUser);
     result.fold(
       (failure) {
-        // Handle the error, maybe show a snackbar
         print('Error updating user: $failure');
       },
       (_) {
-        // Update was successful, refresh the user data
-        loadUser(updatedUser.id);
+        // The stream will automatically update the UI
       },
     );
   }
    
   Future<Either<String, void>> deleteUser(String userId) async {
     final result = await deleteUserUseCase(userId);
+    if (result.isRight()) {
+      // The user has been deleted, so we should clear the local data
+      _user = null;
+      _userSubscription?.cancel();
+      notifyListeners();
+    }
     return result;
+  }
+
+  @override
+  void dispose() {
+    _userSubscription?.cancel();
+    super.dispose();
   }
 }
