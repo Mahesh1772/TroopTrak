@@ -140,8 +140,10 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
     );
   }
 
-  void _submitForm() {
+  void _submitForm() async {
     if (_formKey.currentState!.validate()) {
+      final provider = Provider.of<UserDetailProvider>(context, listen: false);
+      
       final updatedUser = User(
         id: widget.userId,
         name: _nameController.text,
@@ -149,7 +151,7 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
         company: _companyController.text,
         apppointment: _appointmentController.text,
         bloodgroup: _bloodGroupController.text,
-        currentAttendance: Provider.of<UserDetailProvider>(context, listen: false).user!.currentAttendance,
+        currentAttendance: provider.user!.currentAttendance,
         dob: _dobController.text,
         enlistment: _enlistmentController.text,
         ord: _ordController.text,
@@ -159,8 +161,11 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
         section: _sectionController.text,
       );
 
-      Provider.of<UserDetailProvider>(context, listen: false).updateUser(updatedUser);
-      Navigator.pop(context);
+      await provider.updateUser(updatedUser);
+      
+      if (mounted) {
+        Navigator.pop(context);
+      }
     }
   }
 }

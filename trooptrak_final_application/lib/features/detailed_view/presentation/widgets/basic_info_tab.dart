@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:trooptrak_final_application/features/nominal_roll/presentation/widgets/action_button.dart';
+import '../../../nominal_roll/domain/entities/user.dart';
 import '../../../nominal_roll/presentation/pages/edit_soldier_screen.dart';
 import '../../../nominal_roll/presentation/pages/nominal_roll_screen.dart';
 import '../../../nominal_roll/presentation/providers/user_detail_provider.dart';
@@ -18,85 +19,96 @@ class BasicInfoTab extends StatelessWidget {
         height: 900.h,
         child: Consumer<UserDetailProvider>(
           builder: (context, provider, child) {
-            final user = provider.user;
-            if (user == null) {
-              return const Center(child: Text('User data not available'));
-            }
-            return Column(
-              children: [
-                buildInfoTile(
-                  context,
-                  Icons.cake_rounded,
-                  'Date of Birth',
-                  user.dob,
-                ),
-                buildInfoTile(
-                  context,
-                  Icons.food_bank_rounded,
-                  'Ration Type',
-                  user.rationType,
-                ),
-                buildInfoTile(
-                  context,
-                  Icons.bloodtype_rounded,
-                  'Blood Group',
-                  user.bloodgroup,
-                ),
-                buildInfoTile(
-                  context,
-                  Icons.date_range_rounded,
-                  'Enlistment',
-                  user.enlistment,
-                ),
-                buildInfoTile(
-                  context,
-                  Icons.military_tech_rounded,
-                  'ORD',
-                  user.ord,
-                ),
-                buildInfoTile(
-                  context,
-                  Icons.attribution_outlined,
-                  'Current Attendance',
-                  user.currentAttendance,
-                ),
-                buildInfoTile(
-                  context,
-                  Icons.control_point_duplicate_rounded,
-                  'Points',
-                  user.points.toString(),
-                ),
-                SizedBox(
-                  height: 30.h,
-                ),
-                ActionButton(
-                    gradientColors: const [
-                      Color.fromARGB(255, 72, 30, 229),
-                      Color.fromARGB(255, 130, 60, 229),
-                    ],
-                    text: "EDIT SOLDIER DETAILS",
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => EditSoldierScreen(userId: userId),
-                        ),
-                      );
-                    },
-                    icon: Icons.edit),
-                SizedBox(
-                  height: 10.h,
-                ),
-                ActionButton(
-                  gradientColors: const [
-                    Color.fromARGB(255, 229, 30, 30),
-                    Color.fromARGB(255, 229, 60, 60),
+            return StreamBuilder<User?>(
+              stream: provider.userStream,
+              initialData: provider.user,
+              builder: (context, snapshot) {
+                if (provider.isLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                final user = snapshot.data;
+                if (user == null) {
+                  return const Center(child: Text('User data not available'));
+                }
+
+                return Column(
+                  children: [
+                    buildInfoTile(
+                      context,
+                      Icons.cake_rounded,
+                      'Date of Birth',
+                      user.dob,
+                    ),
+                    buildInfoTile(
+                      context,
+                      Icons.food_bank_rounded,
+                      'Ration Type',
+                      user.rationType,
+                    ),
+                    buildInfoTile(
+                      context,
+                      Icons.bloodtype_rounded,
+                      'Blood Group',
+                      user.bloodgroup,
+                    ),
+                    buildInfoTile(
+                      context,
+                      Icons.date_range_rounded,
+                      'Enlistment',
+                      user.enlistment,
+                    ),
+                    buildInfoTile(
+                      context,
+                      Icons.military_tech_rounded,
+                      'ORD',
+                      user.ord,
+                    ),
+                    buildInfoTile(
+                      context,
+                      Icons.attribution_outlined,
+                      'Current Attendance',
+                      user.currentAttendance,
+                    ),
+                    buildInfoTile(
+                      context,
+                      Icons.control_point_duplicate_rounded,
+                      'Points',
+                      user.points.toString(),
+                    ),
+                    SizedBox(
+                      height: 30.h,
+                    ),
+                    ActionButton(
+                        gradientColors: const [
+                          Color.fromARGB(255, 72, 30, 229),
+                          Color.fromARGB(255, 130, 60, 229),
+                        ],
+                        text: "EDIT SOLDIER DETAILS",
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditSoldierScreen(userId: userId),
+                            ),
+                          );
+                        },
+                        icon: Icons.edit),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    ActionButton(
+                      gradientColors: const [
+                        Color.fromARGB(255, 229, 30, 30),
+                        Color.fromARGB(255, 229, 60, 60),
+                      ],
+                      text: "DELETE SOLDIER",
+                      onPressed: () => _showDeleteConfirmationDialog(context, provider),
+                      icon: Icons.delete,
+                    ),
                   ],
-                  text: "DELETE SOLDIER",
-                  onPressed: () => _showDeleteConfirmationDialog(context, provider),
-                  icon: Icons.delete,
-                ),
-              ],
+                );
+              },
             );
           },
         ),

@@ -26,6 +26,9 @@ class UserDetailProvider extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
+  final _userController = StreamController<User?>.broadcast();
+  Stream<User?> get userStream => _userController.stream;
+
   Completer<void>? _loadingCompleter;
   bool _initialDataLoaded = false;
   StreamSubscription? _userSubscription;
@@ -40,6 +43,7 @@ class UserDetailProvider extends ChangeNotifier {
     _userSubscription = getUserByIdUseCase(id).listen(
       (user) {
         _user = user;
+        _userController.add(user);
         _isLoading = false;
         if (!_initialDataLoaded) {
           _initialDataLoaded = true;
@@ -69,15 +73,25 @@ class UserDetailProvider extends ChangeNotifier {
   }
 
   Future<void> updateUser(User updatedUser) async {
+    _isLoading = true;
+    notifyListeners();
+    
     final result = await updateUserUseCase(updatedUser);
     result.fold(
       (failure) {
         print('Error updating user: $failure');
+        _isLoading = false;
+        notifyListeners();
       },
       (_) {
-        // The stream will automatically update the UI
+        // Update local state immediately
+        _user = updatedUser;
+        _userController.add(updatedUser);
       },
     );
+
+    _isLoading = false;
+    notifyListeners();
   }
    
   Future<Either<String, void>> deleteUser(String userId) async {
@@ -94,6 +108,7 @@ class UserDetailProvider extends ChangeNotifier {
   @override
   void dispose() {
     _userSubscription?.cancel();
+    _userController.close();
     super.dispose();
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:recase/recase.dart';
 import 'package:trooptrak_final_application/features/detailed_view/presentation/widgets/statuses_tab.dart';
+import '../../../nominal_roll/domain/entities/user.dart';
 import '../../../nominal_roll/presentation/providers/user_detail_provider.dart';
 import '../widgets/basic_info_tab.dart';
 import 'attendance_tab.dart';
@@ -36,25 +37,6 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
     }
   }
 
-  bool rankColorPicker(String rank) {
-    return (rank == 'REC' ||
-        rank == 'PTE' ||
-        rank == 'LCP' ||
-        rank == 'CPL' ||
-        rank == 'CFC' ||
-        rank == '3SG' ||
-        rank == '2SG' ||
-        rank == '1SG' ||
-        rank == 'SSG' ||
-        rank == 'MSG' ||
-        rank == '3WO' ||
-        rank == '2WO' ||
-        rank == '1WO' ||
-        rank == 'MWO' ||
-        rank == 'SWO' ||
-        rank == 'CWO');
-  }
-
   void _loadUserData() {
     setState(() {
       _isLoading = true;
@@ -79,216 +61,179 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
 
   @override
   Widget build(BuildContext context) {
-    return _isLoading
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
-        : Consumer<UserDetailProvider>(
-            builder: (context, provider, child) {
-              final user = provider.user;
-              if (user == null) {
-                return const Center(child: Text('User not found'));
-              }
-
-              return Scaffold(
-                body: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(12.0.r)),
-                          gradient: const LinearGradient(
-                            colors: [
-                              Color.fromARGB(255, 72, 30, 229),
-                              Color.fromARGB(255, 130, 60, 229),
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                        ),
-                        child: SafeArea(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 10.w),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Icon(
-                                        Icons.arrow_back_sharp,
-                                        color: Colors.white,
-                                        size: 25.sp,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 20.h,
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          left: 20.0.w,
-                                          right: 20.0.w,
-                                          top: 20.0.h),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  user.name.toUpperCase(),
-                                                  maxLines: 3,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .displayLarge!
-                                                      .copyWith(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        letterSpacing: 1.5,
-                                                      ),
-                                                ),
-                                                SizedBox(
-                                                  height: 5.h,
-                                                ),
-                                                Text(
-                                                  user.apppointment.titleCase,
-                                                  maxLines: 2,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyLarge!
-                                                      .copyWith(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        letterSpacing: 1.5,
-                                                      ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Image.asset(
-                                            "lib/assets/army-ranks/${user.rank.toString().toLowerCase()}.png",
-                                            width: 60.w,
-                                            color: rankColorPicker(user.rank)
-                                                ? Colors.white
-                                                : null,
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 20.h,
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 20.0.w),
-                                      child: Text(
-                                        "${user.company.toUpperCase()} COMPANY",
-                                        maxLines: 2,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headlineLarge!
-                                            .copyWith(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w500,
-                                              letterSpacing: 1.5,
-                                            ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          left: 20.0.w, bottom: 50.0.h),
-                                      child: Text(
-                                        "Platoon ${user.platoon}, Section ${user.section}",
-                                        maxLines: 2,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyLarge!
-                                            .copyWith(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w500,
-                                              letterSpacing: 1.5,
-                                            ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Column(
-                        children: [
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                          TabBar(
-                            labelStyle: Theme.of(context)
-                                .textTheme
-                                .bodyLarge!
-                                .copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 1.5,
-                                  color: Theme.of(context).colorScheme.tertiary,
-                                ),
-                            indicatorColor:
-                                Theme.of(context).colorScheme.tertiary,
-                            controller: _tabController,
-                            tabs: [
-                              Tab(
-                                text: "BASIC INFO",
-                                icon: Icon(
-                                  Icons.info,
-                                  color: Theme.of(context).colorScheme.tertiary,
-                                ),
-                              ),
-                              Tab(
-                                text: "STATUSES",
-                                icon: Icon(
-                                  Icons.warning_rounded,
-                                  color: Theme.of(context).colorScheme.tertiary,
-                                ),
-                              ),
-                              Tab(
-                                text: "ATTENDANCE",
-                                icon: Icon(
-                                  Icons.person_add_alt_1,
-                                  color: Theme.of(context).colorScheme.tertiary,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            width: double.maxFinite,
-                            height: 750.h,
-                            child: TabBarView(
-                              controller: _tabController,
-                              children: [
-                                BasicInfoTab(userId: widget.userId),
-                                StatusesTab(userId: widget.userId),
-                                AttendanceTab(userId: widget.userId),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+    return Consumer<UserDetailProvider>(
+      builder: (context, provider, child) {
+        return StreamBuilder<User?>(
+          stream: provider.userStream,
+          initialData: provider.user,
+          builder: (context, snapshot) {
+            if (provider.isLoading) {
+              return const Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(),
                 ),
               );
-            },
-          );
+            }
+
+            final user = snapshot.data;
+            if (user == null) {
+              return const Scaffold(
+                body: Center(child: Text('User not found')),
+              );
+            }
+
+            return Scaffold(
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      width: double.maxFinite,
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 72, 30, 229),
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(30.r),
+                          bottomRight: Radius.circular(30.r),
+                        ),
+                      ),
+                      child: SafeArea(
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  icon: const Icon(
+                                    Icons.arrow_back_ios_new_rounded,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(12.0.sp),
+                                  child: Image.asset(
+                                    "lib/assets/army-ranks/${user.rank.toLowerCase()}.png",
+                                    width: 40.w,
+                                    height: 40.h,
+                                    color: Colors.white70,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 24.0.w),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    user.name.toUpperCase(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayLarge!
+                                        .copyWith(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w500,
+                                          letterSpacing: 1.5,
+                                          fontSize: 26.sp,
+                                        ),
+                                  ),
+                                  Text(
+                                    "${user.rank} ${user.apppointment}",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge!
+                                        .copyWith(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w500,
+                                          letterSpacing: 1.5,
+                                        ),
+                                  ),
+                                  SizedBox(height: 20.h),
+                                  Text(
+                                    "${user.company} COMPANY",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge!
+                                        .copyWith(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w500,
+                                          letterSpacing: 1.5,
+                                        ),
+                                  ),
+                                  Text(
+                                    "Platoon ${user.platoon}, Section ${user.section}",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge!
+                                        .copyWith(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w500,
+                                          letterSpacing: 1.5,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 20.h),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10.h),
+                    TabBar(
+                      labelStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.5,
+                            color: Theme.of(context).colorScheme.tertiary,
+                          ),
+                      indicatorColor: Theme.of(context).colorScheme.tertiary,
+                      controller: _tabController,
+                      tabs: [
+                        Tab(
+                          text: "BASIC INFO",
+                          icon: Icon(
+                            Icons.info,
+                            color: Theme.of(context).colorScheme.tertiary,
+                          ),
+                        ),
+                        Tab(
+                          text: "STATUSES",
+                          icon: Icon(
+                            Icons.warning_rounded,
+                            color: Theme.of(context).colorScheme.tertiary,
+                          ),
+                        ),
+                        Tab(
+                          text: "ATTENDANCE",
+                          icon: Icon(
+                            Icons.person_add_alt_1,
+                            color: Theme.of(context).colorScheme.tertiary,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      width: double.maxFinite,
+                      height: 750.h,
+                      child: TabBarView(
+                        controller: _tabController,
+                        children: [
+                          BasicInfoTab(userId: widget.userId),
+                          StatusesTab(userId: widget.userId),
+                          AttendanceTab(userId: widget.userId),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 
   @override
