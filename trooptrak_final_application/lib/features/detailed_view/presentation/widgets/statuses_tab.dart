@@ -131,8 +131,16 @@ class _StatusesTabState extends State<StatusesTab> {
                 Expanded(
                   child: pastStatuses.isEmpty
                       ? Center(
-                          child: Text('No past statuses found',
-                              style: Theme.of(context).textTheme.bodyLarge),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.error_outline_rounded,
+                                  size: 50.sp, color: Colors.red),
+                              SizedBox(height: 10.h),
+                              Text('No past statuses found!',
+                                  style: Theme.of(context).textTheme.displayMedium),
+                            ],
+                          ),
                         )
                       : ListView.builder(
                           shrinkWrap: true,
