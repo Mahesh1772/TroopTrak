@@ -20,13 +20,11 @@ class EditAttendancePage extends StatefulWidget {
 
 class _EditAttendancePageState extends State<EditAttendancePage> {
   late DateTime selectedDateTime;
-  late bool isInsideCamp;
 
   @override
   void initState() {
     super.initState();
     selectedDateTime = DateFormat("EEE d MMM yyyy HH:mm:ss").parse(widget.record.dateTime);
-    isInsideCamp = widget.record.isInsideCamp;
   }
 
   @override
@@ -40,26 +38,36 @@ class _EditAttendancePageState extends State<EditAttendancePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Display record type (non-editable)
+            ListTile(
+              title: const Text('Record Type'),
+              subtitle: Text(
+                widget.record.isInsideCamp ? 'Book In' : 'Book Out',
+                style: TextStyle(
+                  color: widget.record.isInsideCamp ? Colors.green : Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const Divider(),
+            // Date and time selector
             ListTile(
               title: const Text('Date and Time'),
-              subtitle: Text(DateFormat('EEE d MMM yyyy HH:mm:ss').format(selectedDateTime)),
+              subtitle: Text(
+                DateFormat('EEE d MMM yyyy HH:mm:ss').format(selectedDateTime)
+              ),
               trailing: const Icon(Icons.calendar_today),
               onTap: _selectDateTime,
             ),
-            SwitchListTile(
-              title: const Text('Status'),
-              subtitle: Text(isInsideCamp ? 'Inside Camp' : 'Outside Camp'),
-              value: isInsideCamp,
-              onChanged: (bool value) {
-                setState(() {
-                  isInsideCamp = value;
-                });
-              },
-            ),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _saveChanges,
-              child: const Text('Save Changes'),
+            Center(
+              child: ElevatedButton(
+                onPressed: _saveChanges,
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                ),
+                child: const Text('Save Changes'),
+              ),
             ),
           ],
         ),
@@ -97,7 +105,7 @@ class _EditAttendancePageState extends State<EditAttendancePage> {
     final updatedRecord = AttendanceRecord(
       id: widget.record.id,
       dateTime: DateFormat('EEE d MMM yyyy HH:mm:ss').format(selectedDateTime),
-      isInsideCamp: isInsideCamp,
+      isInsideCamp: widget.record.isInsideCamp, // Maintain original status
     );
     
     final attendanceProvider = Provider.of<AttendanceProvider>(context, listen: false);
