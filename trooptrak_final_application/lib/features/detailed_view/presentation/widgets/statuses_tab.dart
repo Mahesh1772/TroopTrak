@@ -56,164 +56,117 @@ class _StatusesTabState extends State<StatusesTab> {
   Widget build(BuildContext context) {
     return Consumer<StatusProvider>(
       builder: (context, statusProvider, child) {
-        return Column(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.all(30.0.sp),
-                child: StreamBuilder<List<Status>>(
-                  stream: statusProvider.statusesStream,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
+        return StreamBuilder<List<Status>>(
+          stream: statusProvider.statusesStream,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-                    if (snapshot.hasError) {
-                      print('Error in StatusesTab: ${snapshot.error}');
-                      print('Error stack trace: ${snapshot.stackTrace}');
-                      return Center(child: Text('Error: ${snapshot.error}'));
-                    }
+            if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            }
 
-                    final statuses = snapshot.data ?? [];
-                    print('Received ${statuses.length} statuses');
+            final statuses = snapshot.data ?? [];
+            final activeStatuses = statuses.where((s) => !isPastStatus(s)).toList()
+              ..sort((a, b) => DateTime.parse(b.endId).compareTo(DateTime.parse(a.endId)));
+            final pastStatuses = statuses.where((s) => isPastStatus(s)).toList()
+              ..sort((a, b) => DateTime.parse(b.endId).compareTo(DateTime.parse(a.endId)));
 
-                    final sortedStatuses = sortStatuses(statuses);
-
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.medical_information_rounded,
-                              size: 30.sp,
-                            ),
-                            SizedBox(
-                              width: 20.w,
-                            ),
-                            Text(
-                              "Active Statuses",
-                              maxLines: 2,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 1.5,
-                                    fontSize: 20.sp,
-                                  ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 295.h,
-                          child: statuses.isEmpty
-                              ? Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.error_outline_rounded,
-                                        size: 50.sp,
-                                        color: Colors.red,
-                                      ),
-                                      SizedBox(height: 10.h),
-                                      Text(
-                                        'No statuses found!',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .displayMedium,
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              : ListView.builder(
-                                  shrinkWrap: true,
-                                  padding: EdgeInsets.all(12.sp),
-                                  itemCount: sortedStatuses.length,
-                                  scrollDirection: Axis.horizontal,
-                                  itemBuilder: (context, index) {
-                                    final status = sortedStatuses[index];
-
-                                    return StatusTile(
-                                        status: status, userId: widget.userId);
-                                  },
-                                ),
-                        ),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.av_timer_rounded,
-                              size: 30.sp,
-                            ),
-                            SizedBox(
-                              width: 20.w,
-                            ),
-                            Text(
-                              "Past Statuses",
-                              maxLines: 2,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 1.5,
-                                    fontSize: 20.sp,
-                                  ),
-                            ),
-                          ],
-                        ),
-                        Expanded(
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            padding: EdgeInsets.all(12.sp),
-                            itemCount: sortedStatuses.length,
-                            scrollDirection: Axis.vertical,
-                            itemBuilder: (context, index) {
-                              final status = sortedStatuses[index];
-
-                              if (isPastStatus(status)) {
-                                return PastStatusTile(
-                                    status: status, userId: widget.userId);
-                              } else {
-                                return Center(
-                                  child: Text(
-                                    'No past statuses found',
-                                    style:
-                                        Theme.of(context).textTheme.bodyLarge,
-                                  ),
-                                );
-                              }
-                            },
+            return Column(
+              children: [
+                // Active Statuses Section
+                Row(
+                  children: [
+                    Icon(Icons.medical_information_rounded, size: 30.sp),
+                    SizedBox(width: 20.w),
+                    Text("Active Statuses",
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1.5,
+                              fontSize: 20.sp,
+                            )),
+                  ],
+                ),
+                SizedBox(
+                  height: 295.h,
+                  child: activeStatuses.isEmpty
+                      ? Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.error_outline_rounded,
+                                  size: 50.sp, color: Colors.red),
+                              SizedBox(height: 10.h),
+                              Text('No statuses found!',
+                                  style: Theme.of(context).textTheme.displayMedium),
+                            ],
                           ),
-                        ),
-                        ActionButton(
-                          gradientColors: const [
-                            Color.fromARGB(255, 72, 30, 229),
-                            Color.fromARGB(255, 130, 60, 229),
-                          ],
-                          text: "ADD STATUS",
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    AddUpdateStatusPage(userId: widget.userId),
-                              ),
-                            );
+                        )
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          padding: EdgeInsets.all(12.sp),
+                          itemCount: activeStatuses.length,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            return StatusTile(
+                                status: activeStatuses[index], userId: widget.userId);
                           },
-                          icon: Icons.add,
                         ),
-                      ],
+                ),
+
+                // Past Statuses Section
+                Row(
+                  children: [
+                    Icon(Icons.av_timer_rounded, size: 30.sp),
+                    SizedBox(width: 20.w),
+                    Text("Past Statuses",
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1.5,
+                              fontSize: 20.sp,
+                            )),
+                  ],
+                ),
+                Expanded(
+                  child: pastStatuses.isEmpty
+                      ? Center(
+                          child: Text('No past statuses found',
+                              style: Theme.of(context).textTheme.bodyLarge),
+                        )
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          padding: EdgeInsets.all(12.sp),
+                          itemCount: pastStatuses.length,
+                          scrollDirection: Axis.vertical,
+                          itemBuilder: (context, index) {
+                            return PastStatusTile(
+                                status: pastStatuses[index], userId: widget.userId);
+                          },
+                        ),
+                ),
+
+                // Add Status Button
+                ActionButton(
+                  gradientColors: const [
+                    Color.fromARGB(255, 72, 30, 229),
+                    Color.fromARGB(255, 130, 60, 229),
+                  ],
+                  text: "ADD STATUS",
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            AddUpdateStatusPage(userId: widget.userId),
+                      ),
                     );
                   },
+                  icon: Icons.add,
                 ),
-              ),
-            ),
-          ],
+              ],
+            );
+          },
         );
       },
     );

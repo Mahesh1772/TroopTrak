@@ -168,6 +168,16 @@ class _AddUpdateStatusPageState extends State<AddUpdateStatusPage> {
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
+                      if (_endDateTime.isBefore(_startDateTime)) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('End date must be after start date'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                        return;
+                      }
+
                       final status = Status(
                         id: widget.status?.id ?? '',
                         statusType: _statusType,
