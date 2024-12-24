@@ -44,11 +44,11 @@ class _SoldierStatusTileState extends State<SoldierStatusTile> {
         .delete();
   }
 
-  Future deleteAttendanceDetails(String attendance_id) async {
+  Future deleteAttendanceDetails(String attendanceId) async {
     await db
         .doc(widget.docID)
         .collection('Attendance')
-        .doc(attendance_id)
+        .doc(attendanceId)
         .delete();
   }
 

@@ -1,22 +1,24 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
+import 'package:trooptrak_final_application/features/nominal_roll/domain/usecases/delete_user_usecase.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/entities/attendance_record.dart';
-import '../../domain/entities/status.dart';
 import '../../domain/usecases/get_user_by_id_usecase.dart';
 import '../../domain/usecases/get_user_attendance_usecase.dart';
-import '../../domain/usecases/get_user_statuses_usecase.dart';
-
 import 'dart:async';
+import '../../domain/usecases/update_user_usecase.dart';
 
 class UserDetailProvider extends ChangeNotifier {
   final GetUserByIdUseCase getUserByIdUseCase;
   final GetUserAttendanceUseCase getUserAttendanceUseCase;
-  final GetUserStatusesUseCase getUserStatusesUseCase;
+  final UpdateUserUseCase updateUserUseCase;
+  final DeleteUserUseCase deleteUserUseCase;
 
   UserDetailProvider({
     required this.getUserByIdUseCase,
     required this.getUserAttendanceUseCase,
-    required this.getUserStatusesUseCase,
+    required this.updateUserUseCase,
+    required this.deleteUserUseCase,
   });
 
   User? _user;
@@ -24,8 +26,12 @@ class UserDetailProvider extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
+  final _userController = StreamController<User?>.broadcast();
+  Stream<User?> get userStream => _userController.stream;
+
   Completer<void>? _loadingCompleter;
   bool _initialDataLoaded = false;
+  StreamSubscription? _userSubscription;
 
   void loadUser(String id) {
     _isLoading = true;
@@ -33,9 +39,11 @@ class UserDetailProvider extends ChangeNotifier {
     _loadingCompleter = Completer<void>();
     notifyListeners();
 
-    getUserByIdUseCase(id).listen(
+    _userSubscription?.cancel();
+    _userSubscription = getUserByIdUseCase(id).listen(
       (user) {
         _user = user;
+        _userController.add(user);
         _isLoading = false;
         if (!_initialDataLoaded) {
           _initialDataLoaded = true;
@@ -64,7 +72,43 @@ class UserDetailProvider extends ChangeNotifier {
     return getUserAttendanceUseCase(id);
   }
 
-  Stream<List<Status>> getUserStatuses(String id) {
-    return getUserStatusesUseCase(id);
+  Future<void> updateUser(User updatedUser) async {
+    _isLoading = true;
+    notifyListeners();
+    
+    final result = await updateUserUseCase(updatedUser);
+    result.fold(
+      (failure) {
+        print('Error updating user: $failure');
+        _isLoading = false;
+        notifyListeners();
+      },
+      (_) {
+        // Update local state immediately
+        _user = updatedUser;
+        _userController.add(updatedUser);
+      },
+    );
+
+    _isLoading = false;
+    notifyListeners();
+  }
+   
+  Future<Either<String, void>> deleteUser(String userId) async {
+    final result = await deleteUserUseCase(userId);
+    if (result.isRight()) {
+      // The user has been deleted, so we should clear the local data
+      _user = null;
+      _userSubscription?.cancel();
+      notifyListeners();
+    }
+    return result;
+  }
+
+  @override
+  void dispose() {
+    _userSubscription?.cancel();
+    _userController.close();
+    super.dispose();
   }
 }

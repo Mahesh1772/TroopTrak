@@ -110,10 +110,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Color backgroundColor = Theme.of(context).colorScheme.background;
+    Color backgroundColor = Theme.of(context).colorScheme.surface;
     statusList = [];
     _maList = [];
-    List<Map<String, dynamic>> _maDetails = [];
+    List<Map<String, dynamic>> maDetails = [];
     List<Map<String, dynamic>> statusDetails = [];
     Map<String, dynamic> fullList = {};
 
@@ -150,7 +150,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     fullList = {};
                     counter = 0;
                     statusDetails = [];
-                    _maDetails = [];
+                    maDetails = [];
 // Create a Completer to delay the execution until we have collected data from all 'Statuses' subcollections
 
                     StreamController<void> controller =
@@ -183,7 +183,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           .snapshots()
                           .listen((statusesSnapshot) {
                         if (statusesSnapshot.docs.isNotEmpty) {
-                          statusesSnapshot.docs.forEach((element) {
+                          for (var element in statusesSnapshot.docs) {
                             var statusData = element.data();
                             DateTime end = DateFormat("d MMM yyyy")
                                 .parse(statusData['endDate']);
@@ -198,13 +198,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                         .isBefore(today))) {
                               if (statusData['statusType'] ==
                                   'Medical Appointment') {
-                                _maDetails.add(Map<String, dynamic>.from(data));
+                                maDetails.add(Map<String, dynamic>.from(data));
                               } else {
                                 statusDetails
                                     .add(Map<String, dynamic>.from(data));
                               }
                             }
-                          });
+                          }
                           if (counter == users.length) {
                             controller.add(null);
                           }
@@ -237,9 +237,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   LinkedHashSet<Map<String, dynamic>>.from(
                                           statusDetails)
                                       .toList();
-                              _maDetails =
+                              maDetails =
                                   LinkedHashSet<Map<String, dynamic>>.from(
-                                          _maDetails)
+                                          maDetails)
                                       .toList();
 
                               return FlipCard(
@@ -334,7 +334,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               inCamp(statusDetails, true)
                                                   .length,
                                           currentMA:
-                                              inCamp(_maDetails, true).length,
+                                              inCamp(maDetails, true).length,
                                           totalOfficers: officerDetails.length,
                                           totalWOSEs: specDetails.length,
                                         ),
@@ -401,12 +401,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           imgSrc:
                                               "lib/assets/icons8-doctors-folder-64.png",
                                           currentNumOfSoldiers:
-                                              _maDetails.length,
+                                              maDetails.length,
                                           totalNumOfSoldiers:
                                               (officerDetails.length +
                                                   specDetails.length),
                                           imgColor: Colors.lightBlueAccent,
-                                          userDetails: _maDetails,
+                                          userDetails: maDetails,
                                           fullList: fullList,
                                           isToggled: (backgroundColor ==
                                                   const Color.fromARGB(

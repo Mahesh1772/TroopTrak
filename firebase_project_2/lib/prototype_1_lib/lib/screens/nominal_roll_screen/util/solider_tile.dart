@@ -181,21 +181,21 @@ class _SoldierTileState extends State<SoldierTile> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 var attendenceData = snapshot.data?.docs.toList();
-                List<Map<String, dynamic>> all_data = [];
+                List<Map<String, dynamic>> allData = [];
                 var length = attendenceData!.length;
                 for (var i = 0; i < length; i++) {
                   var data = attendenceData[i].data();
-                  all_data.add(data as Map<String, dynamic>);
-                  all_data[i].addEntries(
+                  allData.add(data as Map<String, dynamic>);
+                  allData[i].addEntries(
                       {'ID': attendenceData[i].reference.id}.entries);
                 }
-                all_data = all_data
+                allData = allData
                     .where((element) =>
                         calculateDifference(DateFormat('E d MMM yyyy HH:mm:ss')
                             .parse(element['date&time'])) <=
                         0)
                     .toList();
-                widget.isInsideCamp = all_data.last['isInsideCamp'];
+                widget.isInsideCamp = allData.last['isInsideCamp'];
                 addFieldDetails(widget.isInsideCamp);
                 inCampStatusText = inCampStatusTextChanger(widget.isInsideCamp);
               }

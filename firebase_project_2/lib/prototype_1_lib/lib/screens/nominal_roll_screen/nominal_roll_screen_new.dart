@@ -68,10 +68,10 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
   String selectedCategory = 'name';
   @override
   Widget build(BuildContext context) {
-    ThemeManager _themeManager = ThemeManager();
-    Color backgroundColor = Theme.of(context).colorScheme.background;
+    ThemeManager themeManager = ThemeManager();
+    Color backgroundColor = Theme.of(context).colorScheme.surface;
 
-    print(_themeManager.themeMode);
+    print(themeManager.themeMode);
     final userModel = Provider.of<UserData>(context);
     final searchChip = userModel.categorySelected;
     return Scaffold(
@@ -170,7 +170,7 @@ class _NominalRollNewScreenState extends State<NominalRollNewScreen> {
                               });
                             },
                             selectedColor:
-                                (_themeManager.themeMode == ThemeMode.dark)
+                                (themeManager.themeMode == ThemeMode.dark)
                                     ? const Color.fromARGB(255, 72, 30, 229)
                                     : const Color.fromARGB(255, 198, 103, 214),
                             backgroundColor:

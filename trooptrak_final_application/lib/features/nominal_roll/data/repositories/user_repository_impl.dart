@@ -3,7 +3,6 @@ import 'package:dartz/dartz.dart';
 import 'package:intl/intl.dart';
 import 'package:trooptrak_final_application/features/nominal_roll/domain/entities/attendance_record.dart';
 import 'package:trooptrak_final_application/features/nominal_roll/domain/entities/scanned_soldier.dart';
-import 'package:trooptrak_final_application/features/nominal_roll/domain/entities/status.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/repositories/user_repository.dart';
 import '../models/user_model.dart';
@@ -132,24 +131,60 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-Stream<List<Status>> getUserStatuses(String id) {
-  return _firestore
-      .collection('Users')
-      .doc(id)
-      .collection('Statuses')
-      .snapshots()
-      .map((snapshot) {
-    return snapshot.docs.map((doc) {
-      final data = doc.data();
-      return Status(
-        statusName: data['statusName'] ?? '',
-        statusType: data['statusType'] ?? '',
-        startDate: data['startDate'] ?? '',
-        endDate: data['endDate'] ?? '',
-        startId: data['start_id'] ?? '',
-        endId: data['end_id'] ?? '',
-      );
-    }).toList();
-  });
-}
+  Future<Either<String, void>> updateUser(User user) async {
+    try {
+      await _firestore.collection('Users').doc(user.id).update({
+        'name': user.name,
+        'rank': user.rank,
+        'company': user.company,
+        'appointment': user.apppointment,
+        'bloodgroup': user.bloodgroup,
+        'currentAttendance': user.currentAttendance,
+        'dob': user.dob,
+        'ord': user.ord,
+        'enlistment': user.enlistment,
+        'platoon': user.platoon,
+        'section': user.section,
+        'rationType': user.rationType,
+        'points': user.points,
+      });
+      return const Right(null);
+    } catch (e) {
+      return Left('Error updating user: $e');
+    }
+  }
+
+  @override
+  Future<Either<String, void>> deleteUser(String userId) async {
+    try {
+      // Delete the user document
+      await _firestore.collection('Users').doc(userId).delete();
+      
+      // Delete the user's attendance subcollection
+      final attendanceSnapshot = await _firestore
+          .collection('Users')
+          .doc(userId)
+          .collection('Attendance')
+          .get();
+      
+      for (var doc in attendanceSnapshot.docs) {
+        await doc.reference.delete();
+      }
+
+      // Delete the user's Statuses subcollection
+      final statusSnapshot = await _firestore
+          .collection('Users')
+          .doc(userId)
+          .collection('Statuses')
+          .get();
+      
+      for (var doc in statusSnapshot.docs) {
+        await doc.reference.delete();
+      }
+
+      return const Right(null);
+    } catch (e) {
+      return Left('Error deleting user: $e');
+    }
+  }
 }

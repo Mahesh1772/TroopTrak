@@ -82,7 +82,7 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: (Theme.of(context).colorScheme.background ==
+            colorScheme: (Theme.of(context).colorScheme.surface ==
                     const Color.fromARGB(255, 243, 246, 254))
                 ? ColorScheme.highContrastLight(
                     primary:
@@ -127,7 +127,7 @@ class _AddNewStatusScreenState extends State<AddNewStatusScreen> {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: (Theme.of(context).colorScheme.background ==
+            colorScheme: (Theme.of(context).colorScheme.surface ==
                     const Color.fromARGB(255, 243, 246, 254))
                 ? ColorScheme.highContrastLight(
                     primary:

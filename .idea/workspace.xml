@@ -5,69 +5,41 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b575534-49ac-4b72-9fd7-1e2f1e666160" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/.dart_tool/dartpad/web_plugin_registrant.dart" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/.dart_tool/dartpad/web_plugin_registrant.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contacts_app/.dart_tool/package_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/contacts_app/.dart_tool/package_config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contacts_app/.dart_tool/package_config_subset" beforeDir="false" afterPath="$PROJECT_DIR$/contacts_app/.dart_tool/package_config_subset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contacts_app/.dart_tool/version" beforeDir="false" afterPath="$PROJECT_DIR$/contacts_app/.dart_tool/version" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contacts_app/.flutter-plugins" beforeDir="false" afterPath="$PROJECT_DIR$/contacts_app/.flutter-plugins" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contacts_app/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/contacts_app/.flutter-plugins-dependencies" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contacts_app/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/contacts_app/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contacts_app/windows/flutter/ephemeral/.plugin_symlinks/permission_handler_windows" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase_project_1/.dart_tool/package_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_1/.dart_tool/package_config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase_project_1/.dart_tool/package_config_subset" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_1/.dart_tool/package_config_subset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase_project_1/.dart_tool/version" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_1/.dart_tool/version" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase_project_1/.flutter-plugins" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_1/.flutter-plugins" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase_project_1/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_1/.flutter-plugins-dependencies" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase_project_1/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_1/pubspec.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/firebase_project_2/.dart_tool/package_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/.dart_tool/package_config.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/firebase_project_2/.dart_tool/package_config_subset" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/.dart_tool/package_config_subset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/drawable-hdpi/android12splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/drawable-hdpi/splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/drawable-mdpi/android12splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/drawable-mdpi/splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/drawable-night-hdpi/android12splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/drawable-night-hdpi/splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/drawable-night-mdpi/android12splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/drawable-night-mdpi/splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/drawable-night-v21/background.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/drawable-night-xhdpi/android12splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/drawable-night-xhdpi/splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/drawable-night-xxhdpi/android12splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/drawable-night-xxhdpi/splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/drawable-night-xxxhdpi/android12splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/drawable-night-xxxhdpi/splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/drawable-night/background.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/drawable-v21/launch_background.xml" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/drawable-v21/launch_background.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/drawable-xhdpi/android12splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/drawable-xhdpi/splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/drawable-xxhdpi/android12splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/drawable-xxhdpi/splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/drawable-xxxhdpi/android12splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/drawable-xxxhdpi/splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/drawable/launch_background.xml" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/drawable/launch_background.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/values-night-v31/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/values-night-v31/styles.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/values-night/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/values-night/styles.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/values-v31/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/values-v31/styles.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/values/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/res/values/styles.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/flutter_native_splash-acceptance.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/flutter_native_splash-development.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/flutter_native_splash-production.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/ios/Runner/Assets.xcassets/LaunchBackground.imageset/Contents.json" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/ios/Runner/Assets.xcassets/LaunchBackground.imageset/Contents.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/ios/Runner/Assets.xcassets/LaunchBackground.imageset/darkbackground.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage.png" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@2x.png" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@2x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@3x.png" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@3x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImageDark.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImageDark@2x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImageDark@3x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/ios/Runner/Base.lproj/LaunchScreen.storyboard" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/ios/Runner/Base.lproj/LaunchScreen.storyboard" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/ios/Runner/GeneratedPluginRegistrant.m" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/ios/Runner/GeneratedPluginRegistrant.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/ios/Runner/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/ios/Runner/Info.plist" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/web/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/web/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/web/splash/img/dark-1x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/web/splash/img/dark-2x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/web/splash/img/dark-3x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/web/splash/img/dark-4x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/web/splash/img/light-1x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/web/splash/img/light-2x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/web/splash/img/light-3x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_2/web/splash/img/light-4x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase_project_2/.dart_tool/version" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/.dart_tool/version" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiple_stream_builder_demo/linux/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/multiple_stream_builder_demo/linux/flutter/generated_plugin_registrant.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiple_stream_builder_demo/linux/flutter/generated_plugin_registrant.h" beforeDir="false" afterPath="$PROJECT_DIR$/multiple_stream_builder_demo/linux/flutter/generated_plugin_registrant.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiple_stream_builder_demo/linux/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/multiple_stream_builder_demo/linux/flutter/generated_plugins.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiple_stream_builder_demo/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/multiple_stream_builder_demo/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiple_stream_builder_demo/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/multiple_stream_builder_demo/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiple_stream_builder_demo/windows/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/multiple_stream_builder_demo/windows/flutter/generated_plugin_registrant.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiple_stream_builder_demo/windows/flutter/generated_plugin_registrant.h" beforeDir="false" afterPath="$PROJECT_DIR$/multiple_stream_builder_demo/windows/flutter/generated_plugin_registrant.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiple_stream_builder_demo/windows/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/multiple_stream_builder_demo/windows/flutter/generated_plugins.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prototype_1/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/prototype_1/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trooptrak_final_application/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/trooptrak_final_application/pubspec.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -75,6 +47,10 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 2
+}]]></component>
   <component name="ProjectId" id="2TmZx31DKLx1hvKnwZtsT2rWxsW" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -85,10 +61,15 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "Detailed__Screen__Clean-Architecture",
+    "kotlin-language-version-configured": "true",
     "last_opened_file_path": "D:/Aak242/Documents/Orbital/Orbital",
-    "settings.editor.selected.configurable": "AndroidSdkUpdater"
+    "settings.editor.selected.configurable": "AndroidSdkUpdater",
+    "show.migrate.to.gradle.popup": "false"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />

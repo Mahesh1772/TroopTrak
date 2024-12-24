@@ -7,7 +7,7 @@ class MenUserData extends ChangeNotifier {
   //which have access to each their own personal information
   List<String> documentIDs = [];
 
-  Stream<QuerySnapshot> status = Stream.empty();
+  Stream<QuerySnapshot> status = const Stream.empty();
   Stream<DocumentSnapshot<Map<String, dynamic>>> userData =
       const Stream.empty();
 

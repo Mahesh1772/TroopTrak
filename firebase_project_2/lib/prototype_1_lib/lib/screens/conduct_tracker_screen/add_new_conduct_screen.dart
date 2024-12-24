@@ -321,7 +321,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: (Theme.of(context).colorScheme.background ==
+            colorScheme: (Theme.of(context).colorScheme.surface ==
                     const Color.fromARGB(255, 243, 246, 254))
                 ? ColorScheme.highContrastLight(
                     primary:
@@ -365,7 +365,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
           data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
           child: Theme(
             data: Theme.of(context).copyWith(
-              colorScheme: (Theme.of(context).colorScheme.background ==
+              colorScheme: (Theme.of(context).colorScheme.surface ==
                       const Color.fromARGB(255, 243, 246, 254))
                   ? ColorScheme.highContrastLight(
                       primary: const Color.fromARGB(
@@ -421,7 +421,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
           data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
           child: Theme(
             data: Theme.of(context).copyWith(
-              colorScheme: (Theme.of(context).colorScheme.background ==
+              colorScheme: (Theme.of(context).colorScheme.surface ==
                       const Color.fromARGB(255, 243, 246, 254))
                   ? ColorScheme.highContrastLight(
                       primary: const Color.fromARGB(
@@ -499,7 +499,7 @@ class _AddNewConductScreenState extends State<AddNewConductScreen> {
     final formKey1 = GlobalKey<FormState>();
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(

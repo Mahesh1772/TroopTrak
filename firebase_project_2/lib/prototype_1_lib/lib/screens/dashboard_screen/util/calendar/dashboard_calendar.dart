@@ -72,7 +72,7 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
                 newDate =
                     DateTime(newDate.year, newDate.month, newDate.day + 1);
                 String dateOfDuty = DateFormat('d MMM yyyy').format(newDate);
-                String nowEndTime = dateOfDuty + " " + conduct['endTime'];
+                String nowEndTime = "$dateOfDuty " + conduct['endTime'];
                 eDate = DateFormat('d MMM yyyy').add_jm().parse(nowEndTime);
               } else if (conduct['endTime'] == conduct['startTime']) {
                 DateTime newDate =
@@ -80,7 +80,7 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
                 newDate =
                     DateTime(newDate.year, newDate.month, newDate.day + 1);
                 String dateOfDuty = DateFormat('d MMM yyyy').format(newDate);
-                String nowEndTime = dateOfDuty + " " + conduct['endTime'];
+                String nowEndTime = "$dateOfDuty " + conduct['endTime'];
                 eDate = DateFormat('d MMM yyyy').add_jm().parse(nowEndTime);
               } else {
                 String nowEndTime =
@@ -118,7 +118,7 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
                 newDate =
                     DateTime(newDate.year, newDate.month, newDate.day + 1);
                 String dateOfDuty = DateFormat('d MMM yyyy').format(newDate);
-                String nowEndTime = dateOfDuty + " " + duty['endTime'];
+                String nowEndTime = "$dateOfDuty " + duty['endTime'];
                 eDate = DateFormat('d MMM yyyy').add_jm().parse(nowEndTime);
               } else if (duty['endTime'] == duty['startTime']) {
                 DateTime newDate =
@@ -126,7 +126,7 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
                 newDate =
                     DateTime(newDate.year, newDate.month, newDate.day + 1);
                 String dateOfDuty = DateFormat('d MMM yyyy').format(newDate);
-                String nowEndTime = dateOfDuty + " " + duty['endTime'];
+                String nowEndTime = "$dateOfDuty " + duty['endTime'];
                 eDate = DateFormat('d MMM yyyy').add_jm().parse(nowEndTime);
               } else {
                 String nowEndTime = duty['dutyDate'] + " " + duty['endTime'];
@@ -146,7 +146,7 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
             body: SfCalendarTheme(
               data: SfCalendarThemeData(
                 brightness: Theme.of(context).brightness,
-                backgroundColor: Theme.of(context).colorScheme.background,
+                backgroundColor: Theme.of(context).colorScheme.surface,
               ),
               child: SfCalendar(
                 blackoutDatesTextStyle: GoogleFonts.poppins(
@@ -221,7 +221,7 @@ class _DashboardCalendarState extends State<DashboardCalendar> {
                     ),
                   ),
                 ),
-                backgroundColor: Theme.of(context).colorScheme.background,
+                backgroundColor: Theme.of(context).colorScheme.surface,
                 showDatePickerButton: true,
                 headerStyle: CalendarHeaderStyle(
                   backgroundColor: Colors.deepPurple.shade400,

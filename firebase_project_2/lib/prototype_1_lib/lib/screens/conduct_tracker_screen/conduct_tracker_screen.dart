@@ -78,7 +78,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen>
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SingleChildScrollView(
         child: SafeArea(
           child: StreamBuilder<QuerySnapshot>(
@@ -136,7 +136,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen>
                                     data: Theme.of(context).copyWith(
                                       colorScheme: (Theme.of(context)
                                                   .colorScheme
-                                                  .background ==
+                                                  .surface ==
                                               const Color.fromARGB(
                                                   255, 243, 246, 254))
                                           ? ColorScheme.highContrastLight(

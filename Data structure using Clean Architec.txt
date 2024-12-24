@@ -1,0 +1,111 @@
+Data structure using Clean Architecture:
+
+├── ios/
+├── lib/
+│   ├── assets/
+│   ├── core/
+│   ├── default_app/
+│   ├── features/
+│   │   ├── auth/
+│   │   ├── conduct_tracker/
+│   │   ├── dashboard/
+│   │   ├── detailed_view/
+│   │   │   ├── data/
+│   │   │   │   ├── models/
+│   │   │   │   │   ├── attendance_model.dart
+│   │   │   │   │   ├── status_model.dart
+│   │   │   │   ├── repositories/
+│   │   │   │   │   ├── attendance_repository_impl.dart
+│   │   │   │   │   ├── status_repository_impl.dart
+│   │   │   │   ├── domain/
+│   │   │   │   │   ├── entities/
+│   │   │   │   │   │   ├── attendance_record.dart
+│   │   │   │   │   │   ├── status.dart
+│   │   │   │   │   ├── repositories/
+│   │   │   │   │   │   ├── attendance_repository.dart
+│   │   │   │   │   │   ├── status_repository.dart
+│   │   │   │   │   ├── usecases/
+│   │   │   │   │   │   ├── add_status_usecase.dart
+│   │   │   │   │   │   ├── delete_attendance_usecase.dart
+│   │   │   │   │   │   ├── delete_status_usecase.dart
+│   │   │   │   │   │   ├── get_statuses_usecase.dart
+│   │   │   │   │   │   ├── get_user_attendance_usecase.dart
+│   │   │   │   │   │   ├── update_attendance_usecase.dart
+│   │   │   │   │   │   ├── update_status_usecase.dart
+│   │   │   │   │   │   ├── update_user_attendance_usecase.dart
+│   │   │   │   ├── presentation/
+│   │   │   │   │   ├── pages/
+│   │   │   │   │   │   ├── add_update_status_page.dart
+│   │   │   │   │   │   ├── attendance_tab.dart
+│   │   │   │   │   │   ├── edit_attendance_page.dart
+│   │   │   │   │   │   ├── nominal_roll_screen.dart
+│   │   │   │   │   │   ├── qr_scanner_page.dart
+│   │   │   │   │   │   ├── soldier_detailed_screen.dart
+│   │   │   │   │   ├── providers/
+│   │   │   │   │   │   ├── attendance_provider.dart
+│   │   │   │   │   │   ├── status_provider.dart
+│   │   │   │   │   │   ├── qr_scanner_provider.dart
+│   │   │   │   │   │   ├── user_detail_provider.dart
+│   │   │   │   │   │   ├── user_provider.dart
+│   │   │   │   │   ├── widgets/
+│   │   │   │   │   │   ├── attendance_tile.dart
+│   │   │   │   │   │   ├── custom_rect_tween.dart
+│   │   │   │   │   │   ├── hero_dialog_route.dart
+│   │   │   │   │   │   ├── past_status_tile.dart
+│   │   │   │   │   │   ├── qr_scanner_error_widget.dart
+│   │   │   │   │   │   ├── qr_scanner_overlay.dart
+│   │   │   │   │   │   ├── status_tile.dart
+│   │   │   │   │   │   ├── statuses_tab.dart
+│   │   │   │   │   │   ├── user_tile.dart
+│   │   ├── guard_duty/
+│   │   ├── nominal_roll/
+│   │   │   ├── data/
+│   │   │   │   ├── models/
+│   │   │   │   │   ├── user_model.dart
+│   │   │   │   ├── repositories/
+│   │   │   │   │   ├── qr_scanner_repository_impl.dart
+│   │   │   │   │   ├── user_repository_impl.dart
+│   │   │   ├── domain/
+│   │   │   │   ├── entities/
+│   │   │   │   │   ├── attendance_record.dart
+│   │   │   │   │   ├── scanned_soldier.dart
+│   │   │   │   │   ├── status.dart
+│   │   │   │   │   └── user.dart
+│   │   │   │   ├── repositories/
+│   │   │   │   │   ├── qr_scanner_repository.dart
+│   │   │   │   │   └── user_repository.dart
+│   │   │   │   ├── usecases/
+│   │   │   │   │   ├── add_user_usecase.dart
+│   │   │   │   │   ├── get_user_attendance_usecase.dart
+│   │   │   │   │   ├── get_user_by_id_usecase.dart
+│   │   │   │   │   ├── get_user_statuses_usecase.dart
+│   │   │   │   │   ├── get_users_usecase.dart
+│   │   │   │   │   ├── scan_qr_code_usecase.dart
+│   │   │   │   │   └── update_user_attendance_usecase.dart
+│   │   │   ├── presentation/
+│   │   │   │   ├── pages/
+│   │   │   │   │   ├── nominal_roll_screen.dart
+│   │   │   │   │   ├── qr_scanner_page.dart
+│   │   │   │   │   └── soldier_detailed_screen.dart
+│   │   │   │   ├── providers/
+│   │   │   │   │   ├── qr_scanner_provider.dart
+│   │   │   │   │   ├── user_detail_provider.dart
+│   │   │   │   │   └── user_provider.dart
+│   │   │   │   ├── widgets/
+│   │   │   │   │   ├── attendance_tab.dart
+│   │   │   │   │   ├── basic_info_tab.dart
+│   │   │   │   │   ├── qr_scanner_error_widget.dart
+│   │   │   │   │   ├── qr_scanner_overlay.dart
+│   │   │   │   │   ├── statuses_tab.dart
+│   │   │   │   │   └── user_tile.dart
+│   │   ├── firebase_options.dart
+│   │   ├── main.dart
+├── linux/
+├── macos/
+├── test/
+├── web/
+├── windows/
+├── .flutter-plugins
+├── flutter-plugins-dependencies
+├── .gitignore
+└── .metadata

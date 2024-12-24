@@ -58,7 +58,7 @@ class _OrgChartTileState extends State<OrgChartTile> {
             gradient: LinearGradient(
               colors: [
                 const Color.fromARGB(255, 54, 60, 81),
-                Theme.of(context).colorScheme.background,
+                Theme.of(context).colorScheme.surface,
               ],
             ),
           ),

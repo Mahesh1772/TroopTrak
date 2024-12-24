@@ -69,7 +69,7 @@ class _GuardDutyTrackerScreenState extends State<GuardDutyTrackerScreen>
         ),
       ),
       resizeToAvoidBottomInset: false,
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SingleChildScrollView(
         child: SafeArea(
           child: Column(

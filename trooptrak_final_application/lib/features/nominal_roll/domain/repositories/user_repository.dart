@@ -2,7 +2,6 @@ import 'package:dartz/dartz.dart';
 import 'package:trooptrak_final_application/features/nominal_roll/domain/entities/scanned_soldier.dart';
 import '../entities/user.dart';
 import '../entities/attendance_record.dart';
-import '../entities/status.dart';
 
 abstract class UserRepository {
   Stream<List<User>> getUsers();
@@ -10,5 +9,6 @@ abstract class UserRepository {
   Future<Either<String, void>> addUser(ScannedSoldier soldier);
   Stream<User> getUserById(String id);
   Stream<List<AttendanceRecord>> getUserAttendance(String id);
-  Stream<List<Status>> getUserStatuses(String id);
+  Future<Either<String, void>> updateUser(User user);
+  Future<Either<String, void>> deleteUser(String userId); 
 }

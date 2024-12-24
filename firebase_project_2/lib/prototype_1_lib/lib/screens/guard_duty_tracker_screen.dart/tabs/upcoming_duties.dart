@@ -93,7 +93,7 @@ class _UpcomingDutiesState extends State<UpcomingDuties>
                               data: Theme.of(context).copyWith(
                                 colorScheme: (Theme.of(context)
                                             .colorScheme
-                                            .background ==
+                                            .surface ==
                                         const Color.fromARGB(
                                             255, 243, 246, 254))
                                     ? ColorScheme.highContrastLight(
