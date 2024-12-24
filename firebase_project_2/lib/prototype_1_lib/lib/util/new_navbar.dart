@@ -84,7 +84,7 @@ class _GNavMainScreen extends State<GNavMainScreen> {
     return title;
   }
 
-  ThemeManager _themeManager = ThemeManager();
+  final ThemeManager _themeManager = ThemeManager();
   bool isToggled = true;
 
   callbackThemeChanger(bool isDarkMode) {

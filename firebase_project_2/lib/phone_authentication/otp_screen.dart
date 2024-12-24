@@ -200,7 +200,7 @@ class _OtpScreenState extends State<OtpScreen> {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => GNavMainScreen(),
+                    builder: (context) => const GNavMainScreen(),
                   ),
                   (route) => false,
                 );
@@ -210,7 +210,7 @@ class _OtpScreenState extends State<OtpScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AddNewMen(),
+                  builder: (context) => const AddNewMen(),
                 ),
               );
             }

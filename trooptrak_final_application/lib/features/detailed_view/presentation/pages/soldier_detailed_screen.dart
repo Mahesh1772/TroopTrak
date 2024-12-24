@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:recase/recase.dart';
 import 'package:trooptrak_final_application/features/detailed_view/presentation/widgets/statuses_tab.dart';
 import '../../../nominal_roll/domain/entities/user.dart';
 import '../../../nominal_roll/presentation/providers/user_detail_provider.dart';

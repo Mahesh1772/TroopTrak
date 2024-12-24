@@ -65,7 +65,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Future refreshPage() async {
     setState(() {
-      Future.delayed(Duration(seconds: 2));
+      Future.delayed(const Duration(seconds: 2));
     });
   }
 
@@ -166,15 +166,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
       getUserStatus(names);
 
       getUseronMA(names);
-      Future.delayed(Duration(seconds: 2));
+      Future.delayed(const Duration(seconds: 2));
     }
-    Future.delayed(Duration(seconds: 2));
+    Future.delayed(const Duration(seconds: 2));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration(seconds: 4));
+    Future.delayed(const Duration(seconds: 4));
     Map<String, dynamic> fullList = {};
     print(statusList);
 
@@ -211,7 +211,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       return insideCamp;
     }
 
-    Future.delayed(Duration(seconds: 4));
+    Future.delayed(const Duration(seconds: 4));
     final statusModel = Provider.of<UserData>(context);
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 21, 25, 34),
@@ -311,7 +311,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         fullList.addAll({data['name']: val});
                         getUserStatus(data['name'])
                             .then((value) => getUseronMA(data['name']));
-                        Future.delayed(Duration(seconds: 4));
+                        Future.delayed(const Duration(seconds: 4));
                       }
 
                       specDetails = userDetails
@@ -329,7 +329,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               (element) => officers.contains(element['rank']))
                           .toList();
 
-                      var _maDetails = userDetails
+                      var maDetails = userDetails
                           .where((element) => _maList.contains(element['name']))
                           .toList();
 
@@ -417,7 +417,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                         inCamp(officerDetails, false),
                                     currentWOSEs: inCamp(specDetails, false),
                                     currentStatus: inCamp(statusDetails, true),
-                                    currentMA: inCamp(_maDetails, false),
+                                    currentMA: inCamp(maDetails, false),
                                     totalOfficers: officerDetails.length,
                                     totalWOSEs: specDetails.length,
                                   ),
@@ -461,11 +461,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     imgSrc:
                                         "lib/assets/icons8-doctors-folder-64.png",
                                     currentNumOfSoldiers:
-                                        inCamp(_maDetails, false),
+                                        inCamp(maDetails, false),
                                     totalNumOfSoldiers: (officerDetails.length +
                                         specDetails.length),
                                     imgColor: Colors.lightBlueAccent,
-                                    userDetails: _maDetails,
+                                    userDetails: maDetails,
                                     fullList: fullList,
                                   ),
                                 ],

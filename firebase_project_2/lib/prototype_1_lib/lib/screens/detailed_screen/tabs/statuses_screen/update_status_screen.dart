@@ -75,7 +75,7 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: (Theme.of(context).colorScheme.background ==
+            colorScheme: (Theme.of(context).colorScheme.surface ==
                     const Color.fromARGB(255, 243, 246, 254))
                 ? ColorScheme.highContrastLight(
                     primary:
@@ -121,7 +121,7 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: (Theme.of(context).colorScheme.background ==
+            colorScheme: (Theme.of(context).colorScheme.surface ==
                     const Color.fromARGB(255, 243, 246, 254))
                 ? ColorScheme.highContrastLight(
                     primary:
@@ -186,17 +186,17 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
     });
     DateTime end = DateFormat("d MMM yyyy").parse(_intitialEDate);
     DateTime start = DateFormat("d MMM yyyy").parse(_inititialSDate);
-    DateTime new_end = DateFormat("d MMM yyyy").parse(widget.endDate);
-    DateTime new_start = DateFormat("d MMM yyyy").parse(widget.startDate);
+    DateTime newEnd = DateFormat("d MMM yyyy").parse(widget.endDate);
+    DateTime newStart = DateFormat("d MMM yyyy").parse(widget.startDate);
     start = DateTime(
         start.year, start.month, start.day, start.hour, start.minute + 30);
-    new_start = DateTime(new_start.year, new_start.month, new_start.day,
-        new_start.hour, new_start.minute + 30);
+    newStart = DateTime(newStart.year, newStart.month, newStart.day,
+        newStart.hour, newStart.minute + 30);
     end = DateTime(end.year, end.month, end.day, 22, 0, 0);
-    new_end = DateTime(new_end.year, new_end.month, new_end.day, 22, 0, 0);
+    newEnd = DateTime(newEnd.year, newEnd.month, newEnd.day, 22, 0, 0);
     if (widget.selectedStatusType != 'Excuse') {
-      await addAttendanceDetails(false, new_start, start);
-      await addAttendanceDetails(true, new_end, end);
+      await addAttendanceDetails(false, newStart, start);
+      await addAttendanceDetails(true, newEnd, end);
     } else {
       await deleteAttendanceDetails(
           //DateFormat('yyyy-MM-dd HH:mm:ss').format(start)
@@ -207,11 +207,11 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
     }
   }
 
-  Future deleteAttendanceDetails(String attendance_id) async {
+  Future deleteAttendanceDetails(String attendanceId) async {
     await db
         .doc(widget.docID)
         .collection('Attendance')
-        .doc(attendance_id)
+        .doc(attendanceId)
         .delete();
   }
 

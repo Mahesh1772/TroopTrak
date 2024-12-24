@@ -105,7 +105,7 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormState>();
 
-    bool _isvalidaEmail(String val) {
+    bool isvalidaEmail(String val) {
       if (val.isEmpty) {
         return false;
       } else if (!EmailValidator.validate(val, true)) {
@@ -114,7 +114,7 @@ class _SignInState extends State<SignIn> {
       return true;
     }
 
-    bool _isvalidPassword(String val) {
+    bool isvalidPassword(String val) {
       if (val.isEmpty) {
         return false;
       } else if (val.length < 8) {

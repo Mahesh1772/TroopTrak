@@ -38,7 +38,7 @@ class _ConductTileState extends State<ConductTile>
       vsync: this,
     );
 
-    _isParticipatingIconController.repeat(period: Duration(seconds: 2));
+    _isParticipatingIconController.repeat(period: const Duration(seconds: 2));
   }
 
   @override

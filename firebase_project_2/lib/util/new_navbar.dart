@@ -53,11 +53,11 @@ class _GNavMainScreen extends State<GNavMainScreen> {
     });
   }
 
-  ThemeManager _themeManager = ThemeManager();
+  final ThemeManager _themeManager = ThemeManager();
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> _widgetOptions = <Widget>[
+    final List<Widget> widgetOptions = <Widget>[
       const UserProfileScreen(),
       const ConductTrackerScreen(),
       const GuardDutyTrackerScreen(),
@@ -73,7 +73,7 @@ class _GNavMainScreen extends State<GNavMainScreen> {
           resizeToAvoidBottomInset: false,
           backgroundColor: const Color.fromARGB(255, 21, 25, 34),
           body: Center(
-            child: _widgetOptions.elementAt(selectedIndex),
+            child: widgetOptions.elementAt(selectedIndex),
           ),
           bottomNavigationBar: Container(
             color: const Color.fromARGB(255, 11, 13, 17),

@@ -184,7 +184,7 @@ class _ConductTrackerScreenState extends State<ConductTrackerScreen>
                                     data: Theme.of(context).copyWith(
                                       colorScheme: (Theme.of(context)
                                                   .colorScheme
-                                                  .background ==
+                                                  .surface ==
                                               const Color.fromARGB(
                                                   255, 243, 246, 254))
                                           ? ColorScheme.highContrastLight(

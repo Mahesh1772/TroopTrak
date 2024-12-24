@@ -110,7 +110,7 @@ class _ConductDetailsScreenState extends State<ConductDetailsScreen> {
     final conductModel = Provider.of<MenUserData>(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

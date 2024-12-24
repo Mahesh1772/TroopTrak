@@ -18,7 +18,7 @@ class GuardDutyTile extends StatefulWidget {
   final String docID;
   final Map<String, dynamic> participants;
 
-  GuardDutyTile({
+  const GuardDutyTile({
     super.key,
     required this.dutyDate,
     required this.startTime,
@@ -49,7 +49,7 @@ class _GuardDutyTileState extends State<GuardDutyTile>
 
     isUserParticipating = isPartcipant(widget.participants, name);
 
-    _isParticipatingIconController.repeat(period: Duration(seconds: 2));
+    _isParticipatingIconController.repeat(period: const Duration(seconds: 2));
     super.initState();
   }
 

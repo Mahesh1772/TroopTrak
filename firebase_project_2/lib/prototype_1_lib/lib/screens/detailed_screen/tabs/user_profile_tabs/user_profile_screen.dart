@@ -76,7 +76,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
   @override
   Widget build(BuildContext context) {
     Color textColor = widget.isToggled ? Colors.white : Colors.black;
-    _storeOnBoardInfo(int isViewed) async {
+    storeOnBoardInfo(int isViewed) async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setInt('onBoard', isViewed);
     }
@@ -255,7 +255,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                 await FirebaseAuth.instance
                                     .signOut()
                                     .then((value) async {
-                                  _storeOnBoardInfo(2);
+                                  storeOnBoardInfo(2);
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(

@@ -21,7 +21,7 @@ class _GenerateQRScreenState extends State<GenerateQRScreen> {
   String randomID = '';
   var firestore = FirebaseFirestore.instance.collection('Men');
   var fname = FirebaseAuth.instance.currentUser!.uid.toString();
-  var uuid = Uuid();
+  var uuid = const Uuid();
   Timer? countdownTimer;
   Duration myDuration = const Duration(
     minutes: 2,

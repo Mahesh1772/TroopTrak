@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: HomeScreen(),
     );
   }
@@ -42,10 +42,10 @@ class _HomeScreenState extends State<HomeScreen> {
               size: 300.0,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 24,
           ),
-          Container(
+          SizedBox(
             width: 300.0,
             child: TextField(
               //we will generate a new qr code when the input value change
@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 });
               },
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
               ),
               decoration: InputDecoration(
@@ -66,18 +66,18 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 24.0,
           ),
           RawMaterialButton(
             onPressed: () {},
             fillColor: AppStyle.accentColor,
-            shape: StadiumBorder(),
-            padding: EdgeInsets.symmetric(
+            shape: const StadiumBorder(),
+            padding: const EdgeInsets.symmetric(
               horizontal: 36.0,
               vertical: 16.0,
             ),
-            child: Text(
+            child: const Text(
               "Generate QR Code",
             ),
           )

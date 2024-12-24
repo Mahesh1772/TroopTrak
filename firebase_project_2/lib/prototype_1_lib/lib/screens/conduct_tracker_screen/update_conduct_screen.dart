@@ -152,7 +152,7 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: (Theme.of(context).colorScheme.background ==
+            colorScheme: (Theme.of(context).colorScheme.surface ==
                     const Color.fromARGB(255, 243, 246, 254))
                 ? ColorScheme.highContrastLight(
                     primary:
@@ -196,7 +196,7 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
           data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
           child: Theme(
             data: Theme.of(context).copyWith(
-              colorScheme: (Theme.of(context).colorScheme.background ==
+              colorScheme: (Theme.of(context).colorScheme.surface ==
                       const Color.fromARGB(255, 243, 246, 254))
                   ? ColorScheme.highContrastLight(
                       primary: const Color.fromARGB(
@@ -252,7 +252,7 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
           data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
           child: Theme(
             data: Theme.of(context).copyWith(
-              colorScheme: (Theme.of(context).colorScheme.background ==
+              colorScheme: (Theme.of(context).colorScheme.surface ==
                       const Color.fromARGB(255, 243, 246, 254))
                   ? ColorScheme.highContrastLight(
                       primary: const Color.fromARGB(
@@ -304,7 +304,7 @@ class _UpdateConductScreenState extends State<UpdateConductScreen> {
     final userModel = Provider.of<UserData>(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(

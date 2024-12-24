@@ -102,7 +102,7 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
             return CustomRectTween(begin: begin!, end: end!);
           },
           child: Material(
-            color: Theme.of(context).colorScheme.background,
+            color: Theme.of(context).colorScheme.surface,
             elevation: 2,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),

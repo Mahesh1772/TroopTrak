@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_project_2/prototype_1_lib/lib/util/constants.dart';
 
 class CurrentStrengthChart extends StatelessWidget {
-  CurrentStrengthChart({
+  const CurrentStrengthChart({
     super.key,
     required this.currentOfficers,
     required this.currentWOSEs,

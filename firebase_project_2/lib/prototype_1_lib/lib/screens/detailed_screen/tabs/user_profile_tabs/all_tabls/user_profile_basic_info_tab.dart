@@ -55,7 +55,7 @@ class _UserProfileBasicInfoTabState extends State<UserProfileBasicInfoTab>
     await deleteStatuses();
     await deleteCurrentUser();
 
-    User? id = await FirebaseAuth.instance.currentUser;
+    User? id = FirebaseAuth.instance.currentUser;
     await id!.delete().then((value) => widget.deletion);
   }
 
