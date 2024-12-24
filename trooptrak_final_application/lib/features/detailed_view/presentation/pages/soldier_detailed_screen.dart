@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:trooptrak_final_application/features/detailed_view/presentation/widgets/statuses_tab.dart';
 import '../../../nominal_roll/domain/entities/user.dart';
 import '../../../nominal_roll/presentation/providers/user_detail_provider.dart';
@@ -82,148 +83,156 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
             }
 
             return Scaffold(
-              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              backgroundColor: const Color.fromARGB(255, 243, 246, 254),
               body: SingleChildScrollView(
                 child: Column(
                   children: [
                     Container(
-                      width: double.maxFinite,
                       decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 72, 30, 229),
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(30.r),
-                          bottomRight: Radius.circular(30.r),
+                        borderRadius: BorderRadius.all(Radius.circular(12.0.r)),
+                        gradient: const LinearGradient(
+                          colors: [
+                            Color.fromARGB(255, 72, 30, 229),
+                            Color.fromARGB(255, 130, 60, 229),
+                          ],
                         ),
                       ),
                       child: SafeArea(
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                IconButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  icon: const Icon(
-                                    Icons.arrow_back_ios_new_rounded,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.all(12.0.sp),
-                                  child: Image.asset(
-                                    "lib/assets/army-ranks/${user.rank.toLowerCase()}.png",
-                                    width: 40.w,
-                                    height: 40.h,
-                                    color: Colors.white70,
-                                  ),
-                                ),
-                              ],
-                            ),
                             Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 24.0.w),
+                              padding: EdgeInsets.symmetric(horizontal: 10.w),
                               child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    user.name.toUpperCase(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displayLarge!
-                                        .copyWith(
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Icon(
+                                          Icons.arrow_back_sharp,
                                           color: Colors.white,
-                                          fontWeight: FontWeight.w500,
-                                          letterSpacing: 1.5,
-                                          fontSize: 26.sp,
+                                          size: 30.sp,
                                         ),
-                                  ),
-                                  Text(
-                                    "${user.rank} ${user.apppointment}",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge!
-                                        .copyWith(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w500,
-                                          letterSpacing: 1.5,
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.all(12.0.sp),
+                                        child: Image.asset(
+                                          "lib/assets/army-ranks/${user.rank.toLowerCase()}.png",
+                                          width: 40.w,
+                                          height: 40.h,
+                                          color: Colors.white70,
                                         ),
+                                      ),
+                                    ],
                                   ),
                                   SizedBox(height: 20.h),
-                                  Text(
-                                    "${user.company} COMPANY",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge!
-                                        .copyWith(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w500,
-                                          letterSpacing: 1.5,
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 10.w),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          user.name.toUpperCase(),
+                                          style: GoogleFonts.poppins(
+                                            color: Colors.white,
+                                            fontSize: 26.sp,
+                                            fontWeight: FontWeight.w600,
+                                            letterSpacing: 1.5,
+                                          ),
                                         ),
-                                  ),
-                                  Text(
-                                    "Platoon ${user.platoon}, Section ${user.section}",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge!
-                                        .copyWith(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w500,
-                                          letterSpacing: 1.5,
+                                        Text(
+                                          "${user.rank} ${user.apppointment}",
+                                          style: GoogleFonts.poppins(
+                                            color: Colors.white,
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.w500,
+                                            letterSpacing: 1.5,
+                                          ),
                                         ),
+                                        SizedBox(height: 20.h),
+                                        Text(
+                                          "${user.company} COMPANY",
+                                          style: GoogleFonts.poppins(
+                                            color: Colors.white,
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.w500,
+                                            letterSpacing: 1.5,
+                                          ),
+                                        ),
+                                        Text(
+                                          "Platoon ${user.platoon}, Section ${user.section}",
+                                          style: GoogleFonts.poppins(
+                                            color: Colors.white,
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.w500,
+                                            letterSpacing: 1.5,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
+                                  SizedBox(height: 30.h),
                                 ],
                               ),
                             ),
-                            SizedBox(height: 20.h),
                           ],
                         ),
                       ),
                     ),
-                    SizedBox(height: 10.h),
-                    TabBar(
-                      labelStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            fontWeight: FontWeight.bold,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 10.h),
+                        TabBar(
+                          labelStyle: GoogleFonts.poppins(
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w500,
                             letterSpacing: 1.5,
-                            color: Theme.of(context).colorScheme.tertiary,
                           ),
-                      indicatorColor: Theme.of(context).colorScheme.tertiary,
-                      controller: _tabController,
-                      tabs: [
-                        Tab(
-                          text: "BASIC INFO",
-                          icon: Icon(
-                            Icons.info,
-                            color: Theme.of(context).colorScheme.tertiary,
+                          unselectedLabelStyle: GoogleFonts.poppins(
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: 1.5,
                           ),
+                          labelColor: const Color.fromARGB(255, 72, 30, 229),
+                          unselectedLabelColor: Colors.grey,
+                          indicatorColor: const Color.fromARGB(255, 72, 30, 229),
+                          controller: _tabController,
+                          tabs: const [
+                            Tab(
+                              text: "BASIC INFO",
+                              icon: Icon(Icons.info),
+                            ),
+                            Tab(
+                              text: "STATUSES",
+                              icon: Icon(Icons.warning_rounded),
+                            ),
+                            Tab(
+                              text: "ATTENDANCE",
+                              icon: Icon(Icons.person_add_alt_1),
+                            ),
+                          ],
                         ),
-                        Tab(
-                          text: "STATUSES",
-                          icon: Icon(
-                            Icons.warning_rounded,
-                            color: Theme.of(context).colorScheme.tertiary,
-                          ),
-                        ),
-                        Tab(
-                          text: "ATTENDANCE",
-                          icon: Icon(
-                            Icons.person_add_alt_1,
-                            color: Theme.of(context).colorScheme.tertiary,
+                        SizedBox(
+                          width: double.maxFinite,
+                          height: 750.h,
+                          child: TabBarView(
+                            controller: _tabController,
+                            children: [
+                              BasicInfoTab(userId: widget.userId),
+                              StatusesTab(userId: widget.userId),
+                              AttendanceTab(userId: widget.userId),
+                            ],
                           ),
                         ),
                       ],
-                    ),
-                    SizedBox(
-                      width: double.maxFinite,
-                      height: 750.h,
-                      child: TabBarView(
-                        controller: _tabController,
-                        children: [
-                          BasicInfoTab(userId: widget.userId),
-                          StatusesTab(userId: widget.userId),
-                          AttendanceTab(userId: widget.userId),
-                        ],
-                      ),
                     ),
                   ],
                 ),

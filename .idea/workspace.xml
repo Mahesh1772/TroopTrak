@@ -6,22 +6,57 @@
   <component name="ChangeListManager">
     <list default="true" id="0b575534-49ac-4b72-9fd7-1e2f1e666160" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contacts_app/.dart_tool/dartpad/web_plugin_registrant.dart" beforeDir="false" afterPath="$PROJECT_DIR$/contacts_app/.dart_tool/dartpad/web_plugin_registrant.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/contacts_app/.dart_tool/package_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/contacts_app/.dart_tool/package_config.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/contacts_app/.dart_tool/package_config_subset" beforeDir="false" afterPath="$PROJECT_DIR$/contacts_app/.dart_tool/package_config_subset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/contacts_app/.dart_tool/version" beforeDir="false" afterPath="$PROJECT_DIR$/contacts_app/.dart_tool/version" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/contacts_app/.flutter-plugins" beforeDir="false" afterPath="$PROJECT_DIR$/contacts_app/.flutter-plugins" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/contacts_app/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/contacts_app/.flutter-plugins-dependencies" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contacts_app/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" beforeDir="false" afterPath="$PROJECT_DIR$/contacts_app/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contacts_app/android/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/contacts_app/android/local.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contacts_app/ios/Runner/GeneratedPluginRegistrant.h" beforeDir="false" afterPath="$PROJECT_DIR$/contacts_app/ios/Runner/GeneratedPluginRegistrant.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contacts_app/ios/Runner/GeneratedPluginRegistrant.m" beforeDir="false" afterPath="$PROJECT_DIR$/contacts_app/ios/Runner/GeneratedPluginRegistrant.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contacts_app/linux/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/contacts_app/linux/flutter/generated_plugin_registrant.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contacts_app/linux/flutter/generated_plugin_registrant.h" beforeDir="false" afterPath="$PROJECT_DIR$/contacts_app/linux/flutter/generated_plugin_registrant.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contacts_app/linux/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/contacts_app/linux/flutter/generated_plugins.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contacts_app/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/contacts_app/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/contacts_app/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/contacts_app/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contacts_app/windows/flutter/ephemeral/.plugin_symlinks/permission_handler_windows" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/contacts_app/windows/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/contacts_app/windows/flutter/generated_plugin_registrant.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contacts_app/windows/flutter/generated_plugin_registrant.h" beforeDir="false" afterPath="$PROJECT_DIR$/contacts_app/windows/flutter/generated_plugin_registrant.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contacts_app/windows/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/contacts_app/windows/flutter/generated_plugins.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase_project_1/.dart_tool/dartpad/web_plugin_registrant.dart" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_1/.dart_tool/dartpad/web_plugin_registrant.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/firebase_project_1/.dart_tool/package_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_1/.dart_tool/package_config.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/firebase_project_1/.dart_tool/package_config_subset" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_1/.dart_tool/package_config_subset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/firebase_project_1/.dart_tool/version" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_1/.dart_tool/version" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase_project_1/.flutter-plugins" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_1/.flutter-plugins" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/firebase_project_1/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_1/.flutter-plugins-dependencies" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase_project_1/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_1/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase_project_1/android/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_1/android/local.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase_project_1/ios/Runner/GeneratedPluginRegistrant.h" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_1/ios/Runner/GeneratedPluginRegistrant.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase_project_1/ios/Runner/GeneratedPluginRegistrant.m" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_1/ios/Runner/GeneratedPluginRegistrant.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase_project_1/linux/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_1/linux/flutter/generated_plugin_registrant.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase_project_1/linux/flutter/generated_plugin_registrant.h" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_1/linux/flutter/generated_plugin_registrant.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase_project_1/linux/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_1/linux/flutter/generated_plugins.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase_project_1/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_1/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/firebase_project_1/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_1/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase_project_1/windows/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_1/windows/flutter/generated_plugin_registrant.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase_project_1/windows/flutter/generated_plugin_registrant.h" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_1/windows/flutter/generated_plugin_registrant.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase_project_1/windows/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_1/windows/flutter/generated_plugins.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase_project_2/.dart_tool/dartpad/web_plugin_registrant.dart" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/.dart_tool/dartpad/web_plugin_registrant.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/firebase_project_2/.dart_tool/package_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/.dart_tool/package_config.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/firebase_project_2/.dart_tool/package_config_subset" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/.dart_tool/package_config_subset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/firebase_project_2/.dart_tool/version" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/.dart_tool/version" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase_project_2/android/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/android/local.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase_project_2/ios/Runner/GeneratedPluginRegistrant.h" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/ios/Runner/GeneratedPluginRegistrant.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase_project_2/ios/Runner/GeneratedPluginRegistrant.m" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/ios/Runner/GeneratedPluginRegistrant.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase_project_2/linux/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/linux/flutter/generated_plugin_registrant.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase_project_2/linux/flutter/generated_plugin_registrant.h" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/linux/flutter/generated_plugin_registrant.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase_project_2/linux/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/linux/flutter/generated_plugins.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase_project_2/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase_project_2/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase_project_2/windows/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/windows/flutter/generated_plugin_registrant.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase_project_2/windows/flutter/generated_plugin_registrant.h" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/windows/flutter/generated_plugin_registrant.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase_project_2/windows/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/firebase_project_2/windows/flutter/generated_plugins.cmake" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiple_stream_builder_demo/linux/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/multiple_stream_builder_demo/linux/flutter/generated_plugin_registrant.cc" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiple_stream_builder_demo/linux/flutter/generated_plugin_registrant.h" beforeDir="false" afterPath="$PROJECT_DIR$/multiple_stream_builder_demo/linux/flutter/generated_plugin_registrant.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiple_stream_builder_demo/linux/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/multiple_stream_builder_demo/linux/flutter/generated_plugins.cmake" afterDir="false" />
@@ -31,7 +66,19 @@
       <change beforePath="$PROJECT_DIR$/multiple_stream_builder_demo/windows/flutter/generated_plugin_registrant.h" beforeDir="false" afterPath="$PROJECT_DIR$/multiple_stream_builder_demo/windows/flutter/generated_plugin_registrant.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiple_stream_builder_demo/windows/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/multiple_stream_builder_demo/windows/flutter/generated_plugins.cmake" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prototype_1/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/prototype_1/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trooptrak_final_application/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/trooptrak_final_application/android/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trooptrak_final_application/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/trooptrak_final_application/android/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trooptrak_final_application/android/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/trooptrak_final_application/android/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trooptrak_final_application/android/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/trooptrak_final_application/android/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trooptrak_final_application/android/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/trooptrak_final_application/android/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trooptrak_final_application/linux/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/trooptrak_final_application/linux/flutter/generated_plugin_registrant.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trooptrak_final_application/linux/flutter/generated_plugin_registrant.h" beforeDir="false" afterPath="$PROJECT_DIR$/trooptrak_final_application/linux/flutter/generated_plugin_registrant.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trooptrak_final_application/linux/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/trooptrak_final_application/linux/flutter/generated_plugins.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trooptrak_final_application/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/trooptrak_final_application/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/trooptrak_final_application/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/trooptrak_final_application/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trooptrak_final_application/windows/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/trooptrak_final_application/windows/flutter/generated_plugin_registrant.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trooptrak_final_application/windows/flutter/generated_plugin_registrant.h" beforeDir="false" afterPath="$PROJECT_DIR$/trooptrak_final_application/windows/flutter/generated_plugin_registrant.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trooptrak_final_application/windows/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/trooptrak_final_application/windows/flutter/generated_plugins.cmake" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,10 +94,10 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 2
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 2
+}</component>
   <component name="ProjectId" id="2TmZx31DKLx1hvKnwZtsT2rWxsW" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -66,8 +113,12 @@
     "cidr.known.project.marker": "true",
     "dart.analysis.tool.window.visible": "false",
     "git-widget-placeholder": "Detailed__Screen__Clean-Architecture",
+    "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Aak242/Documents/Orbital/Orbital",
+    "last_opened_file_path": "C:/Users/butte/OneDrive/Documents/GitHub/TroopTrak/trooptrak_final_application/android",
+    "project.structure.last.edited": "Global Libraries",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "AndroidSdkUpdater",
     "show.migrate.to.gradle.popup": "false"
   }

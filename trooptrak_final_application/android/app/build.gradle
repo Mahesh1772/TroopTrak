@@ -34,7 +34,7 @@ dependencies {
 android {
     namespace = "com.example.trooptrak_final_application"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    ndkVersion = '28.0.12674087 rc2'
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
