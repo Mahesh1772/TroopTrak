@@ -10,7 +10,7 @@ import '../widgets/no_conducts_widget.dart';
 import '../../domain/entities/conduct.dart';
 
 class ConductTrackerScreen extends StatelessWidget {
-  const ConductTrackerScreen({Key? key}) : super(key: key);
+  const ConductTrackerScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +21,12 @@ class ConductTrackerScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
+              const Padding(
                 padding: EdgeInsets.all(20.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const DateSelector(),
+                    DateSelector(),
                     AddConductButton(),
                   ],
                 ),

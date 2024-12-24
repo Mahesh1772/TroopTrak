@@ -11,7 +11,7 @@ class ConductCalendar extends StatelessWidget {
     final selectedDate = context.watch<ConductProvider>().selectedDate;
     final currentDate = DateTime.now();
     
-    return Container(
+    return SizedBox(
       height: 110,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
@@ -26,7 +26,7 @@ class ConductCalendar extends StatelessWidget {
             },
             child: Container(
               width: 80,
-              margin: EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+              margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
               decoration: BoxDecoration(
                 color: isSelected 
                     ? Theme.of(context).colorScheme.primary

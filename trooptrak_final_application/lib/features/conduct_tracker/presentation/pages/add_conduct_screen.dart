@@ -8,7 +8,7 @@ import '../widgets/participant_selector.dart';
 class AddConductScreen extends StatefulWidget {
   final Conduct? conduct; // Optional - if provided, we're in edit mode
 
-  const AddConductScreen({Key? key, this.conduct}) : super(key: key);
+  const AddConductScreen({super.key, this.conduct});
 
   @override
   State<AddConductScreen> createState() => _AddConductScreenState();

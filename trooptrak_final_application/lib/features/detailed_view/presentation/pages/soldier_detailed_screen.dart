@@ -20,6 +20,7 @@ class SoldierDetailedScreen extends StatefulWidget {
 class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
     with TickerProviderStateMixin {
   late TabController _tabController;
+  // ignore: unused_field
   bool _isLoading = true;
 
   @override

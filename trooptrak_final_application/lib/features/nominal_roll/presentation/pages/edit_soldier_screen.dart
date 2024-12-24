@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+// ignore: unused_import
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:trooptrak_final_application/features/nominal_roll/presentation/providers/user_detail_provider.dart';
 import 'package:trooptrak_final_application/features/nominal_roll/domain/entities/user.dart';
@@ -422,7 +423,7 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
 
     return Container(
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 229, 229, 229),
+        color: const Color.fromARGB(255, 229, 229, 229),
         borderRadius: BorderRadius.circular(16.r),
         border: Border.all(
           color: Colors.deepPurple.withOpacity(0.3),
@@ -520,7 +521,7 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
 
     return Container(
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 229, 229, 229),
+        color: const Color.fromARGB(255, 229, 229, 229),
         borderRadius: BorderRadius.circular(16.r),
         border: Border.all(
           color: Colors.deepPurple.withOpacity(0.3),
@@ -552,7 +553,7 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
                   color: Colors.deepPurple,
                   size: 24.sp,
                 ),
-                dropdownColor: Color.fromARGB(255, 229, 229, 229),
+                dropdownColor: const Color.fromARGB(255, 229, 229, 229),
                 style: theme.textTheme.bodyMedium?.copyWith(
                   fontSize: 16.sp,
                   color: Colors.black87,
@@ -596,7 +597,7 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 229, 229, 229),
+          color: const Color.fromARGB(255, 229, 229, 229),
           borderRadius: BorderRadius.circular(16.r),
           border: Border.all(
             color: Colors.deepPurple.withOpacity(0.3),

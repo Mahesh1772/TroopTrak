@@ -8,12 +8,12 @@ class ParticipantSelector extends StatefulWidget {
   final Function(List<String>, Map<String, String>) onParticipantsChanged;
 
   const ParticipantSelector({
-    Key? key,
+    super.key,
     required this.selectedParticipants,
     required this.soldierReason,
     required this.conductType,
     required this.onParticipantsChanged,
-  }) : super(key: key);
+  });
 
   @override
   State<ParticipantSelector> createState() => _ParticipantSelectorState();

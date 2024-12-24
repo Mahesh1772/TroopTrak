@@ -2,26 +2,16 @@ import 'package:trooptrak_final_application/features/conduct_tracker/domain/enti
 
 class ConductModel extends Conduct {
   ConductModel({
-    required String id,
-    required String conductName,
-    required String conductType,
-    required String startDate,
-    required String startTime,
-    required String endTime,
-    required List<String> participants,
-    required List<String> nonParticipants,  // Add this
-    required Map<String, String> soldierReason,
-  }) : super(
-          id: id,
-          conductName: conductName,
-          conductType: conductType,
-          startDate: startDate,
-          startTime: startTime,
-          endTime: endTime,
-          participants: participants,
-          nonParticipants: nonParticipants,  // Add this
-          soldierReason: soldierReason,
-        );
+    required super.id,
+    required super.conductName,
+    required super.conductType,
+    required super.startDate,
+    required super.startTime,
+    required super.endTime,
+    required super.participants,
+    required super.nonParticipants,  // Add this
+    required super.soldierReason,
+  });
 
   factory ConductModel.fromJson(Map<String, dynamic> json, String id) {
     return ConductModel(

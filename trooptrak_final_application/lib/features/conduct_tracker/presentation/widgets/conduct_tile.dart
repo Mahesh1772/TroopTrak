@@ -6,11 +6,11 @@ class ConductTile extends StatelessWidget {
   final int conductNumber;
 
   const ConductTile({
-    Key? key,
+    super.key,
     required this.conductName,
     required this.conductType,
     required this.conductNumber,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
