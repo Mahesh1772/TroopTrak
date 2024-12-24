@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:trooptrak_final_application/core/theme/theme.dart';
 import 'package:trooptrak_final_application/core/init/app_init.dart';
 import 'package:trooptrak_final_application/core/providers/provider_setup.dart';
-import 'package:trooptrak_final_application/features/nominal_roll/presentation/pages/nominal_roll_screen.dart';
+import 'package:trooptrak_final_application/features/navigation/presentation/pages/main_navigation_screen.dart';
 
 void main() async {
   await initializeApp();
@@ -21,10 +21,10 @@ class MyApp extends StatelessWidget {
       child: MultiProvider(
         providers: getProviders(),
         child: MaterialApp(
-          title: 'User List App',
+          title: 'TroopTrak',
           theme: lightTheme,
           darkTheme: darkTheme,
-          home: const NominalRollPage(),
+          home: const MainNavigationScreen(),
         ),
       ),
     );

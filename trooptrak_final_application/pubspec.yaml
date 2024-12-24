@@ -48,6 +48,7 @@ dependencies:
   image_picker: ^1.1.2
   flutter_slidable: ^3.1.1
   recase: ^4.1.0
+  google_nav_bar: ^5.0.7
 
 dev_dependencies:
   flutter_test:
