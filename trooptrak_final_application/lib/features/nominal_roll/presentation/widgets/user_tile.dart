@@ -73,6 +73,7 @@ class _UserTileState extends State<UserTile> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     Color tileColor = soldierColorGenerator(widget.user.rank);
 
     return GestureDetector(
@@ -142,10 +143,9 @@ class _UserTileState extends State<UserTile> {
                       widget.user.name,
                       maxLines: 2,
                       textAlign: TextAlign.center,
-                      style:
-                          Theme.of(context).textTheme.displayMedium?.copyWith(
-                                color: Colors.white,
-                              ),
+                      style: theme.textTheme.displayMedium?.copyWith(
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
@@ -154,21 +154,21 @@ class _UserTileState extends State<UserTile> {
               Text(
                 inCampStatusTextChanger(
                     widget.user.currentAttendance == 'Inside Camp'),
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.white,
-                    ),
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: Colors.white,
+                ),
               ),
               const SizedBox(height: 15),
               AnimatedToggleSwitch<bool>.rolling(
                 current: widget.user.currentAttendance == 'Inside Camp',
                 values: const [false, true],
-                 onChanged: (value) async {
+                onChanged: (value) async {
                   final attendanceProvider = Provider.of<AttendanceProvider>(context, listen: false);
                   await attendanceProvider.updateUserAttendanceRecord(widget.user.id, value).first;
                 },
                 iconBuilder: rollingIconBuilder,
                 borderWidth: 3.0.w,
-                indicatorColor: Theme.of(context).colorScheme.primary,
+                indicatorColor: theme.colorScheme.primary,
                 innerColor: Colors.amber,
                 height: 40.h,
                 dif: 10,

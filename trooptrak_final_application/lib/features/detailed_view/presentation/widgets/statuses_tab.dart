@@ -2,12 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:trooptrak_final_application/features/nominal_roll/presentation/widgets/action_button.dart';
 import '../../domain/entities/status.dart';
 import '../providers/status_provider.dart';
 import '../pages/add_update_status_page.dart';
-import '../widgets/status_tile.dart';
-import '../widgets/past_status_tile.dart';
 
 class StatusesTab extends StatefulWidget {
   final String userId;
@@ -15,7 +12,7 @@ class StatusesTab extends StatefulWidget {
   const StatusesTab({super.key, required this.userId});
 
   @override
-  _StatusesTabState createState() => _StatusesTabState();
+  State<StatusesTab> createState() => _StatusesTabState();
 }
 
 class _StatusesTabState extends State<StatusesTab> {
@@ -40,20 +37,18 @@ class _StatusesTabState extends State<StatusesTab> {
     final pastStatuses =
         statuses.where((status) => isPastStatus(status)).toList();
 
-    // Sort active statuses by endDate in descending order (latest end date first)
     activeStatuses.sort(
         (a, b) => DateTime.parse(b.endId).compareTo(DateTime.parse(a.endId)));
 
-    // Sort past statuses by endDate in descending order (latest end date first)
     pastStatuses.sort(
         (a, b) => DateTime.parse(b.endId).compareTo(DateTime.parse(a.endId)));
 
-    // Combine the sorted lists with active statuses at the top
     return [...activeStatuses, ...pastStatuses];
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Consumer<StatusProvider>(
       builder: (context, statusProvider, child) {
         return Column(
@@ -65,18 +60,25 @@ class _StatusesTabState extends State<StatusesTab> {
                   stream: statusProvider.statusesStream,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
+                      return Center(
+                        child: CircularProgressIndicator(
+                          color: theme.colorScheme.secondary,
+                        ),
+                      );
                     }
 
                     if (snapshot.hasError) {
-                      print('Error in StatusesTab: ${snapshot.error}');
-                      print('Error stack trace: ${snapshot.stackTrace}');
-                      return Center(child: Text('Error: ${snapshot.error}'));
+                      return Center(
+                        child: Text(
+                          'Error: ${snapshot.error}',
+                          style: theme.textTheme.bodyLarge?.copyWith(
+                            color: theme.colorScheme.error,
+                          ),
+                        ),
+                      );
                     }
 
                     final statuses = snapshot.data ?? [];
-                    print('Received ${statuses.length} statuses');
-
                     final sortedStatuses = sortStatuses(statuses);
 
                     return Column(
@@ -88,21 +90,16 @@ class _StatusesTabState extends State<StatusesTab> {
                             Icon(
                               Icons.medical_information_rounded,
                               size: 30.sp,
+                              color: theme.colorScheme.tertiary,
                             ),
-                            SizedBox(
-                              width: 20.w,
-                            ),
+                            SizedBox(width: 20.w),
                             Text(
                               "Active Statuses",
                               maxLines: 2,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 1.5,
-                                    fontSize: 20.sp,
-                                  ),
+                              style: theme.textTheme.titleLarge?.copyWith(
+                                color: theme.colorScheme.tertiary,
+                                letterSpacing: 1.5,
+                              ),
                             ),
                           ],
                         ),
@@ -112,20 +109,19 @@ class _StatusesTabState extends State<StatusesTab> {
                               ? Center(
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Icon(
                                         Icons.error_outline_rounded,
                                         size: 50.sp,
-                                        color: Colors.red,
+                                        color: theme.colorScheme.error,
                                       ),
                                       SizedBox(height: 10.h),
                                       Text(
                                         'No statuses found!',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .displayMedium,
+                                        style: theme.textTheme.titleLarge?.copyWith(
+                                          color: theme.colorScheme.tertiary,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -137,9 +133,10 @@ class _StatusesTabState extends State<StatusesTab> {
                                   scrollDirection: Axis.horizontal,
                                   itemBuilder: (context, index) {
                                     final status = sortedStatuses[index];
-
-                                    return StatusTile(
-                                        status: status, userId: widget.userId);
+                                    if (!isPastStatus(status)) {
+                                      return _buildStatusCard(context, status);
+                                    }
+                                    return const SizedBox.shrink();
                                   },
                                 ),
                         ),
@@ -148,21 +145,16 @@ class _StatusesTabState extends State<StatusesTab> {
                             Icon(
                               Icons.av_timer_rounded,
                               size: 30.sp,
+                              color: theme.colorScheme.tertiary,
                             ),
-                            SizedBox(
-                              width: 20.w,
-                            ),
+                            SizedBox(width: 20.w),
                             Text(
                               "Past Statuses",
                               maxLines: 2,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 1.5,
-                                    fontSize: 20.sp,
-                                  ),
+                              style: theme.textTheme.titleLarge?.copyWith(
+                                color: theme.colorScheme.tertiary,
+                                letterSpacing: 1.5,
+                              ),
                             ),
                           ],
                         ),
@@ -174,38 +166,46 @@ class _StatusesTabState extends State<StatusesTab> {
                             scrollDirection: Axis.vertical,
                             itemBuilder: (context, index) {
                               final status = sortedStatuses[index];
-
                               if (isPastStatus(status)) {
-                                return PastStatusTile(
-                                    status: status, userId: widget.userId);
-                              } else {
-                                return Center(
-                                  child: Text(
-                                    'No past statuses found',
-                                    style:
-                                        Theme.of(context).textTheme.bodyLarge,
-                                  ),
-                                );
+                                return _buildPastStatusCard(context, status);
                               }
+                              return const SizedBox.shrink();
                             },
                           ),
                         ),
-                        ActionButton(
-                          gradientColors: const [
-                            Color.fromARGB(255, 72, 30, 229),
-                            Color.fromARGB(255, 130, 60, 229),
-                          ],
-                          text: "ADD STATUS",
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    AddUpdateStatusPage(userId: widget.userId),
+                        Container(
+                          width: double.infinity,
+                          height: 50.h,
+                          margin: EdgeInsets.symmetric(horizontal: 20.w),
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AddUpdateStatusPage(
+                                    userId: widget.userId,
+                                  ),
+                                ),
+                              );
+                            },
+                            icon: Icon(
+                              Icons.add,
+                              color: theme.colorScheme.tertiary,
+                            ),
+                            label: Text(
+                              'ADD STATUS',
+                              style: theme.textTheme.titleMedium?.copyWith(
+                                color: theme.colorScheme.tertiary,
+                                letterSpacing: 1.5,
                               ),
-                            );
-                          },
-                          icon: Icons.add,
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: theme.colorScheme.secondary,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.r),
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     );
@@ -216,6 +216,135 @@ class _StatusesTabState extends State<StatusesTab> {
           ],
         );
       },
+    );
+  }
+
+  Widget _buildStatusCard(BuildContext context, Status status) {
+    final theme = Theme.of(context);
+    return Container(
+      width: 250.w,
+      margin: EdgeInsets.only(right: 15.w),
+      padding: EdgeInsets.all(15.sp),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            status.statusType,
+            style: theme.textTheme.titleMedium?.copyWith(
+              color: theme.colorScheme.tertiary,
+              letterSpacing: 1.5,
+            ),
+          ),
+          SizedBox(height: 10.h),
+          Text(
+            status.statusName,
+            style: theme.textTheme.titleLarge?.copyWith(
+              color: theme.colorScheme.tertiary,
+              letterSpacing: 1.5,
+            ),
+          ),
+          const Spacer(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Start Date',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.tertiary.withOpacity(0.5),
+                    ),
+                  ),
+                  Text(
+                    status.startDate,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.tertiary,
+                    ),
+                  ),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    'End Date',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.tertiary.withOpacity(0.5),
+                    ),
+                  ),
+                  Text(
+                    status.endDate,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.tertiary,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPastStatusCard(BuildContext context, Status status) {
+    final theme = Theme.of(context);
+    return Container(
+      width: double.infinity,
+      margin: EdgeInsets.only(bottom: 15.h),
+      padding: EdgeInsets.all(15.sp),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface.withOpacity(0.5),
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  status.statusType,
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    color: theme.colorScheme.tertiary.withOpacity(0.7),
+                    letterSpacing: 1.5,
+                  ),
+                ),
+                SizedBox(height: 5.h),
+                Text(
+                  status.statusName,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: theme.colorScheme.tertiary,
+                    letterSpacing: 1.5,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                'Start: ${status.startDate}',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.tertiary.withOpacity(0.5),
+                ),
+              ),
+              Text(
+                'End: ${status.endDate}',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.tertiary.withOpacity(0.5),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:trooptrak_final_application/features/detailed_view/presentation/widgets/statuses_tab.dart';
+import '../widgets/statuses_tab.dart';
 import '../../../nominal_roll/domain/entities/user.dart';
 import '../../../nominal_roll/presentation/providers/user_detail_provider.dart';
 import '../widgets/basic_info_tab.dart';
@@ -53,14 +53,24 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
       setState(() {
         _isLoading = false;
       });
+      final theme = Theme.of(context);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error loading user data: $error')),
+        SnackBar(
+          content: Text(
+            'Error loading user data: $error',
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.tertiary,
+            ),
+          ),
+          backgroundColor: theme.colorScheme.error,
+        ),
       );
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Consumer<UserDetailProvider>(
       builder: (context, provider, child) {
         return StreamBuilder<User?>(
@@ -68,32 +78,41 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
           initialData: provider.user,
           builder: (context, snapshot) {
             if (provider.isLoading) {
-              return const Scaffold(
+              return Scaffold(
+                backgroundColor: theme.scaffoldBackgroundColor,
                 body: Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(
+                    color: theme.colorScheme.secondary,
+                  ),
                 ),
               );
             }
 
             final user = snapshot.data;
             if (user == null) {
-              return const Scaffold(
-                body: Center(child: Text('User not found')),
+              return Scaffold(
+                backgroundColor: theme.scaffoldBackgroundColor,
+                body: Center(
+                  child: Text(
+                    'User not found',
+                    style: theme.textTheme.bodyLarge,
+                  ),
+                ),
               );
             }
 
             return Scaffold(
-              backgroundColor: const Color.fromARGB(255, 243, 246, 254),
+              backgroundColor: theme.scaffoldBackgroundColor,
               body: SingleChildScrollView(
                 child: Column(
                   children: [
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(12.0.r)),
-                        gradient: const LinearGradient(
+                        gradient: LinearGradient(
                           colors: [
-                            Color.fromARGB(255, 72, 30, 229),
-                            Color.fromARGB(255, 130, 60, 229),
+                            const Color.fromARGB(255, 72, 30, 229),
+                            const Color.fromARGB(255, 130, 60, 229),
                           ],
                         ),
                       ),
@@ -118,7 +137,7 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
                                         child: Icon(
                                           Icons.arrow_back_sharp,
                                           color: Colors.white,
-                                          size: 30.sp,
+                                          size: 25.sp,
                                         ),
                                       ),
                                       Padding(
@@ -134,7 +153,7 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
                                   ),
                                   SizedBox(height: 20.h),
                                   Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 10.w),
+                                    padding: EdgeInsets.symmetric(horizontal: 20.w),
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
@@ -142,8 +161,8 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
                                           user.name.toUpperCase(),
                                           style: GoogleFonts.poppins(
                                             color: Colors.white,
-                                            fontSize: 26.sp,
-                                            fontWeight: FontWeight.w600,
+                                            fontSize: 25.sp,
+                                            fontWeight: FontWeight.bold,
                                             letterSpacing: 1.5,
                                           ),
                                         ),
@@ -161,24 +180,26 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
                                           "${user.company} COMPANY",
                                           style: GoogleFonts.poppins(
                                             color: Colors.white,
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.w500,
+                                            fontSize: 18.sp,
+                                            fontWeight: FontWeight.bold,
                                             letterSpacing: 1.5,
                                           ),
                                         ),
-                                        Text(
-                                          "Platoon ${user.platoon}, Section ${user.section}",
-                                          style: GoogleFonts.poppins(
-                                            color: Colors.white,
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.w500,
-                                            letterSpacing: 1.5,
+                                        Padding(
+                                          padding: EdgeInsets.only(bottom: 50.h),
+                                          child: Text(
+                                            "Platoon ${user.platoon}, Section ${user.section}",
+                                            style: GoogleFonts.poppins(
+                                              color: Colors.white,
+                                              fontSize: 16.sp,
+                                              fontWeight: FontWeight.w500,
+                                              letterSpacing: 1.5,
+                                            ),
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                  SizedBox(height: 30.h),
                                 ],
                               ),
                             ),
@@ -202,21 +223,30 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
                             letterSpacing: 1.5,
                           ),
                           labelColor: const Color.fromARGB(255, 72, 30, 229),
-                          unselectedLabelColor: Colors.grey,
+                          unselectedLabelColor: theme.colorScheme.tertiary.withOpacity(0.5),
                           indicatorColor: const Color.fromARGB(255, 72, 30, 229),
                           controller: _tabController,
-                          tabs: const [
+                          tabs: [
                             Tab(
                               text: "BASIC INFO",
-                              icon: Icon(Icons.info),
+                              icon: Icon(
+                                Icons.info,
+                                color: const Color.fromARGB(255, 72, 30, 229),
+                              ),
                             ),
                             Tab(
                               text: "STATUSES",
-                              icon: Icon(Icons.warning_rounded),
+                              icon: Icon(
+                                Icons.warning_rounded,
+                                color: const Color.fromARGB(255, 72, 30, 229),
+                              ),
                             ),
                             Tab(
                               text: "ATTENDANCE",
-                              icon: Icon(Icons.person_add_alt_1),
+                              icon: Icon(
+                                Icons.person_add_alt_1,
+                                color: const Color.fromARGB(255, 72, 30, 229),
+                              ),
                             ),
                           ],
                         ),

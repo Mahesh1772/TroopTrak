@@ -5,6 +5,7 @@ import '../../domain/entities/user.dart';
 import '../providers/user_provider.dart';
 import '../widgets/user_tile.dart';
 import 'qr_scanner_page.dart';
+import '../../../../core/theme/theme_manager.dart';
 
 class NominalRollPage extends StatefulWidget {
   const NominalRollPage({super.key});
@@ -18,10 +19,12 @@ class _NominalRollPageState extends State<NominalRollPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final themeManager = Provider.of<ThemeManager>(context);
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: theme.scaffoldBackgroundColor,
       floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color.fromARGB(255, 72, 30, 229),
+        backgroundColor: theme.colorScheme.secondary,
         onPressed: () {
           showModalBottomSheet(
             context: context,
@@ -32,9 +35,9 @@ class _NominalRollPageState extends State<NominalRollPage> {
             isScrollControlled: true,
           );
         },
-        child: const Icon(
+        child: Icon(
           Icons.add,
-          color: Colors.white,
+          color: theme.colorScheme.tertiary,
         ),
       ),
       body: Column(
@@ -47,21 +50,37 @@ class _NominalRollPageState extends State<NominalRollPage> {
                 padding: EdgeInsets.symmetric(horizontal: 24.0.w),
                 child: Text(
                   'Nominal Roll',
-                  style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 26.sp,
-                      ),
-                ),
-              ),
-              InkWell(
-                onTap: () {},
-                child: Padding(
-                  padding: EdgeInsets.all(12.0.sp),
-                  child: Image.asset(
-                    'lib/assets/user.png',
-                    width: 50.w,
+                  style: theme.textTheme.displayLarge?.copyWith(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 26.sp,
                   ),
                 ),
+              ),
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      themeManager.toggleTheme(themeManager.themeMode == ThemeMode.light);
+                    },
+                    icon: Icon(
+                      themeManager.themeMode == ThemeMode.dark 
+                          ? Icons.light_mode_rounded
+                          : Icons.dark_mode_rounded,
+                      color: theme.colorScheme.tertiary,
+                      size: 24.sp,
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {},
+                    child: Padding(
+                      padding: EdgeInsets.all(12.0.sp),
+                      child: Image.asset(
+                        'lib/assets/user.png',
+                        width: 50.w,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -72,7 +91,7 @@ class _NominalRollPageState extends State<NominalRollPage> {
             padding: EdgeInsets.symmetric(horizontal: 24.0.w),
             child: Text(
               'Our Family of Soldiers:',
-              style: Theme.of(context).textTheme.displayMedium,
+              style: theme.textTheme.displayMedium,
             ),
           ),
           SizedBox(
@@ -88,24 +107,25 @@ class _NominalRollPageState extends State<NominalRollPage> {
               },
               decoration: InputDecoration(
                 hintText: 'Search Name',
-                hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Colors.white,
-                    ),
-                focusColor: Colors.white,
-                prefixIcon: const Icon(
-                  Icons.search_sharp,
-                  color: Colors.white,
+                hintStyle: theme.textTheme.bodyLarge?.copyWith(
+                  color: theme.colorScheme.tertiary,
                 ),
-                prefixIconColor: Colors.white,
-                fillColor: const Color.fromARGB(255, 72, 30, 229),
+                focusColor: theme.colorScheme.tertiary,
+                prefixIcon: Icon(
+                  Icons.search_sharp,
+                  color: theme.colorScheme.tertiary,
+                ),
+                prefixIconColor: theme.colorScheme.tertiary,
+                fillColor: theme.colorScheme.secondary,
                 filled: true,
                 border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.r),
-                    borderSide: BorderSide.none),
+                  borderRadius: BorderRadius.circular(10.r),
+                  borderSide: BorderSide.none,
+                ),
               ),
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: Colors.white,
-                  ),
+              style: theme.textTheme.bodyLarge?.copyWith(
+                color: theme.colorScheme.tertiary,
+              ),
             ),
           ),
           Expanded(
@@ -113,10 +133,19 @@ class _NominalRollPageState extends State<NominalRollPage> {
               stream: context.read<UserProvider>().users,
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
+                  return Center(
+                    child: Text(
+                      'Error: ${snapshot.error}',
+                      style: theme.textTheme.bodyLarge,
+                    ),
+                  );
                 }
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: theme.colorScheme.secondary,
+                    ),
+                  );
                 }
                 final users = snapshot.data ?? [];
                 final filteredUsers = users

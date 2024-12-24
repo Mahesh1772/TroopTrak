@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'edit_attendance_page.dart';
-import '../providers/attendance_provider.dart';
-import '../widgets/attendance_tile.dart';
-import '../../domain/entities/attendance_record.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../../../nominal_roll/domain/entities/attendance_record.dart';
+import '../../../nominal_roll/presentation/providers/user_detail_provider.dart';
 
 class AttendanceTab extends StatelessWidget {
   final String userId;
@@ -13,128 +12,163 @@ class AttendanceTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AttendanceProvider>(
-      builder: (context, provider, child) {
-        return Padding(
-          padding: EdgeInsets.all(30.0.sp),
-          child: StreamBuilder<List<AttendanceRecord>>(
-            stream: provider.getUserAttendanceStream(userId),
+    final theme = Theme.of(context);
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Consumer<UserDetailProvider>(
+        builder: (context, provider, child) {
+          return StreamBuilder<List<AttendanceRecord>>(
+            stream: provider.getUserAttendance(userId),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: const Color.fromARGB(255, 72, 30, 229),
+                  ),
+                );
               }
+
               if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
-              }
-              final attendanceRecords = snapshot.data ?? [];
-              if (attendanceRecords.isEmpty) {
-                return const Center(
-                    child: Text('No attendance records found.'));
-              }
-              return SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.outbond,
-                          size: 30.sp,
-                        ),
-                        SizedBox(
-                          width: 20.w,
-                        ),
-                        Text(
-                          "Book In / Book Out",
-                          maxLines: 2,
-                          style:
-                              Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20.sp,
-                                    letterSpacing: 1.5,
-                                  ),
-                        ),
-                      ],
+                return Center(
+                  child: Text(
+                    'Error: ${snapshot.error}',
+                    style: GoogleFonts.poppins(
+                      color: theme.colorScheme.error,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: 1.5,
                     ),
-                    SizedBox(
-                      height: 650.h,
-                      child: ListView.builder(
-                        itemCount: attendanceRecords.length,
-                        itemBuilder: (context, index) {
-                          final record = attendanceRecords[index];
-                          return AttendanceTile(
-                            record: record,
-                            onEdit: (record) =>
-                                _navigateToEditPage(context, provider, record),
-                            onDelete: (recordId) => _showDeleteConfirmation(
-                                context, provider, recordId),
-                          );
-                        },
+                  ),
+                );
+              }
+
+              final records = snapshot.data ?? [];
+              if (records.isEmpty) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.error_outline_rounded,
+                        size: 50.sp,
+                        color: theme.colorScheme.error,
                       ),
-                    ),
-                  ],
+                      SizedBox(height: 10.h),
+                      Text(
+                        'No attendance records found',
+                        style: GoogleFonts.poppins(
+                          color: theme.colorScheme.tertiary,
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 1.5,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
+
+              return Padding(
+                padding: EdgeInsets.all(30.sp),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.outbond,
+                            size: 30.sp,
+                            color: theme.colorScheme.tertiary,
+                          ),
+                          SizedBox(width: 20.w),
+                          Text(
+                            "Book In / Book Out",
+                            maxLines: 2,
+                            style: GoogleFonts.poppins(
+                              color: theme.colorScheme.tertiary,
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: 1.5,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 650.h,
+                        child: ListView.builder(
+                          itemCount: records.length,
+                          padding: EdgeInsets.all(12.sp),
+                          scrollDirection: Axis.vertical,
+                          itemBuilder: (context, index) {
+                            final record = records[index];
+                            return Container(
+                              margin: EdgeInsets.only(bottom: 15.h),
+                              padding: EdgeInsets.all(15.sp),
+                              decoration: BoxDecoration(
+                                color: theme.colorScheme.surface,
+                                borderRadius: BorderRadius.circular(12.r),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 4.r,
+                                    offset: Offset(0, 2.h),
+                                  ),
+                                ],
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        record.dateTime,
+                                        style: GoogleFonts.poppins(
+                                          color: theme.colorScheme.tertiary,
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.w500,
+                                          letterSpacing: 1.5,
+                                        ),
+                                      ),
+                                      SizedBox(height: 5.h),
+                                      Text(
+                                        record.isInsideCamp ? 'Inside Camp' : 'Outside Camp',
+                                        style: GoogleFonts.poppins(
+                                          color: record.isInsideCamp
+                                              ? const Color.fromARGB(255, 72, 30, 229)
+                                              : theme.colorScheme.error,
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w500,
+                                          letterSpacing: 1.5,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Icon(
+                                    record.isInsideCamp
+                                        ? Icons.check_circle_outline_rounded
+                                        : Icons.cancel_outlined,
+                                    color: record.isInsideCamp
+                                        ? const Color.fromARGB(255, 72, 30, 229)
+                                        : theme.colorScheme.error,
+                                    size: 30.sp,
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               );
             },
-          ),
-        );
-      },
-    );
-  }
-
-  void _navigateToEditPage(BuildContext context, AttendanceProvider provider,
-      AttendanceRecord record) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => EditAttendancePage(
-          userId: userId,
-          record: record,
-        ),
+          );
+        },
       ),
-    );
-  }
-
-  void _showDeleteConfirmation(
-      BuildContext context, AttendanceProvider provider, String recordId) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Delete Attendance Record'),
-          content: const Text(
-              'Are you sure you want to delete this attendance record?'),
-          actions: [
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            TextButton(
-              child: const Text('Delete'),
-              onPressed: () {
-                provider.deleteAttendanceRecord(userId, recordId).listen(
-                  (_) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                          content:
-                              Text('Attendance record deleted successfully')),
-                    );
-                    Navigator.of(context).pop();
-                  },
-                  onError: (error) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                          content:
-                              Text('Error deleting attendance record: $error')),
-                    );
-                    Navigator.of(context).pop();
-                  },
-                );
-              },
-            ),
-          ],
-        );
-      },
     );
   }
 }

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:trooptrak_final_application/features/nominal_roll/presentation/providers/user_detail_provider.dart';
 import 'package:trooptrak_final_application/features/nominal_roll/domain/entities/user.dart';
 
@@ -205,12 +203,13 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
       firstDate: firstDate,
       lastDate: lastDate,
       builder: (context, child) {
+        final theme = Theme.of(context);
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.light(
-              primary: Colors.deepPurple.shade400,
-              onPrimary: Colors.white,
-              onSurface: Colors.black,
+            colorScheme: theme.colorScheme.copyWith(
+              primary: theme.colorScheme.secondary,
+              onPrimary: theme.colorScheme.tertiary,
+              onSurface: theme.colorScheme.tertiary,
             ),
           ),
           child: child!,
@@ -422,10 +421,10 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
 
     return Container(
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 229, 229, 229),
+        color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(16.r),
         border: Border.all(
-          color: Colors.deepPurple.withOpacity(0.3),
+          color: theme.colorScheme.secondary.withOpacity(0.3),
           width: 1.5,
         ),
       ),
@@ -434,7 +433,7 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
         controller: controller,
         style: theme.textTheme.bodyMedium?.copyWith(
           fontSize: 16.sp,
-          color: Colors.black87,
+          color: theme.colorScheme.tertiary,
         ),
         decoration: InputDecoration(
           isDense: true,
@@ -444,12 +443,12 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
           hintText: hintText,
           floatingLabelBehavior: FloatingLabelBehavior.auto,
           labelStyle: theme.textTheme.bodyMedium?.copyWith(
-            color: Colors.deepPurple,
+            color: theme.colorScheme.secondary,
             fontSize: 14.sp,
             fontWeight: FontWeight.w500,
           ),
           hintStyle: theme.textTheme.bodyMedium?.copyWith(
-            color: Colors.black54,
+            color: theme.colorScheme.tertiary.withOpacity(0.5),
             fontSize: 16.sp,
           ),
         ),
@@ -520,10 +519,10 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
 
     return Container(
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 229, 229, 229),
+        color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(16.r),
         border: Border.all(
-          color: Colors.deepPurple.withOpacity(0.3),
+          color: theme.colorScheme.secondary.withOpacity(0.3),
           width: 1.5,
         ),
       ),
@@ -535,7 +534,7 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
           Text(
             hint,
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: Colors.deepPurple,
+              color: theme.colorScheme.secondary,
               fontSize: 14.sp,
               fontWeight: FontWeight.w500,
             ),
@@ -549,13 +548,13 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
                 isExpanded: true,
                 icon: Icon(
                   Icons.keyboard_arrow_down_rounded,
-                  color: Colors.deepPurple,
+                  color: theme.colorScheme.secondary,
                   size: 24.sp,
                 ),
-                dropdownColor: Color.fromARGB(255, 229, 229, 229),
+                dropdownColor: theme.colorScheme.surface,
                 style: theme.textTheme.bodyMedium?.copyWith(
                   fontSize: 16.sp,
-                  color: Colors.black87,
+                  color: theme.colorScheme.tertiary,
                 ),
                 items: items.map((String item) {
                   return DropdownMenuItem(
@@ -565,8 +564,8 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
                       style: theme.textTheme.bodyMedium?.copyWith(
                         fontSize: 16.sp,
                         color: item.startsWith('Select') 
-                            ? Colors.black54
-                            : Colors.black87,
+                            ? theme.colorScheme.tertiary.withOpacity(0.5)
+                            : theme.colorScheme.tertiary,
                       ),
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -577,7 +576,7 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
                   hintText,
                   style: theme.textTheme.bodyMedium?.copyWith(
                     fontSize: 16.sp,
-                    color: Colors.black54,
+                    color: theme.colorScheme.tertiary.withOpacity(0.5),
                   ),
                 ),
               ),
@@ -596,10 +595,10 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 229, 229, 229),
+          color: theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(16.r),
           border: Border.all(
-            color: Colors.deepPurple.withOpacity(0.3),
+            color: theme.colorScheme.secondary.withOpacity(0.3),
             width: 1.5,
           ),
         ),
@@ -611,7 +610,7 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
             Text(
               label,
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: Colors.deepPurple,
+                color: theme.colorScheme.secondary,
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w500,
               ),
@@ -626,12 +625,14 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
                     value.isEmpty ? hintText : value,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       fontSize: 16.sp,
-                      color: value.isEmpty ? Colors.black54 : Colors.black87,
+                      color: value.isEmpty 
+                          ? theme.colorScheme.tertiary.withOpacity(0.5)
+                          : theme.colorScheme.tertiary,
                     ),
                   ),
                   Icon(
                     Icons.calendar_today_outlined,
-                    color: Colors.deepPurple,
+                    color: theme.colorScheme.secondary,
                     size: 20.sp,
                   ),
                 ],
@@ -645,6 +646,7 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
 
   Future<void> _submitForm() async {
     bool isValid = _formKey.currentState!.validate();
+    final theme = Theme.of(context);
     
     // Additional date validations
     if (_dob.isEmpty) {
@@ -737,9 +739,11 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
             SnackBar(
               content: Text(
                 'User details updated successfully',
-                style: GoogleFonts.poppins(),
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.tertiary,
+                ),
               ),
-              backgroundColor: Colors.green,
+              backgroundColor: theme.colorScheme.secondary,
             ),
           );
           Navigator.pop(context);
@@ -751,13 +755,16 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
   }
 
   void _showError(String message) {
+    final theme = Theme.of(context);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
           message,
-          style: GoogleFonts.poppins(),
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: theme.colorScheme.tertiary,
+          ),
         ),
-        backgroundColor: Colors.red,
+        backgroundColor: theme.colorScheme.error,
       ),
     );
   }
