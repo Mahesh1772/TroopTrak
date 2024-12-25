@@ -8,6 +8,10 @@ import 'package:trooptrak_final_application/features/detailed_view/domain/usecas
 import 'package:trooptrak_final_application/features/detailed_view/domain/usecases/delete_attendance.dart';
 import 'package:trooptrak_final_application/features/detailed_view/presentation/providers/attendance_provider.dart';
 import 'package:trooptrak_final_application/features/detailed_view/presentation/providers/status_provider.dart';
+import 'package:trooptrak_final_application/features/guard_duty/domain/usecases/add_guard_duty.dart';
+import 'package:trooptrak_final_application/features/guard_duty/domain/usecases/delete_guard_duty.dart';
+import 'package:trooptrak_final_application/features/guard_duty/domain/usecases/get_guard_duties.dart';
+import 'package:trooptrak_final_application/features/guard_duty/domain/usecases/update_guard_duty.dart';
 import 'package:trooptrak_final_application/features/nominal_roll/data/repositories/user_repository_impl.dart';
 import 'package:trooptrak_final_application/features/nominal_roll/data/repositories/qr_scanner_repository_impl.dart';
 import 'package:trooptrak_final_application/features/detailed_view/data/repositories/status_repository_impl.dart';
@@ -33,6 +37,8 @@ import '../../features/conduct_tracker/domain/usecases/update_conduct_usecase.da
 import '../../features/conduct_tracker/domain/usecases/delete_conduct_usecase.dart';
 import '../../features/conduct_tracker/data/repositories/conduct_repository_impl.dart';
 import '../../features/conduct_tracker/domain/usecases/get_conduct_by_id_usecase.dart';
+import 'package:trooptrak_final_application/features/guard_duty/data/repositories/guard_duty_repository_impl.dart';
+import 'package:trooptrak_final_application/features/guard_duty/presentation/providers/guard_duty_provider.dart';
 
 List<SingleChildWidget> getProviders() {
   return [
@@ -153,6 +159,44 @@ List<SingleChildWidget> getProviders() {
       ConductRepositoryImpl(),
     ),
     ),
+  ),
+  // Guard Duty Providers
+  Provider<GuardDutyRepositoryImpl>(
+    create: (context) => GuardDutyRepositoryImpl(
+      context.read<FirebaseFirestore>(),
+    ),
+  ),
+  ProxyProvider<GuardDutyRepositoryImpl, GetGuardDutiesUseCase>(
+    update: (_, repo, __) => GetGuardDutiesUseCase(repo),
+  ),
+  ProxyProvider<GuardDutyRepositoryImpl, AddGuardDutyUseCase>(
+    update: (_, repo, __) => AddGuardDutyUseCase(repo),
+  ),
+  ProxyProvider<GuardDutyRepositoryImpl, UpdateGuardDutyUseCase>(
+    update: (_, repo, __) => UpdateGuardDutyUseCase(repo),
+  ),
+  ProxyProvider<GuardDutyRepositoryImpl, DeleteGuardDutyUseCase>(
+    update: (_, repo, __) => DeleteGuardDutyUseCase(repo),
+  ),
+  ChangeNotifierProxyProvider4<
+      GetGuardDutiesUseCase,
+      AddGuardDutyUseCase,
+      UpdateGuardDutyUseCase,
+      DeleteGuardDutyUseCase,
+      GuardDutyProvider>(
+    create: (context) => GuardDutyProvider(
+      getGuardDuties: context.read<GetGuardDutiesUseCase>(),
+      addGuardDuty: context.read<AddGuardDutyUseCase>(),
+      updateGuardDuty: context.read<UpdateGuardDutyUseCase>(),
+      deleteGuardDuty: context.read<DeleteGuardDutyUseCase>(),
+    ),
+    update: (_, getGuardDuties, addGuardDuty, updateGuardDuty, deleteGuardDuty, __) =>
+        GuardDutyProvider(
+          getGuardDuties: getGuardDuties,
+          addGuardDuty: addGuardDuty,
+          updateGuardDuty: updateGuardDuty,
+          deleteGuardDuty: deleteGuardDuty,
+        ),
   ),
   ];
 } 
