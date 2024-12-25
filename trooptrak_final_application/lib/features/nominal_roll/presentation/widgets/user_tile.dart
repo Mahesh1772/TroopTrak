@@ -180,7 +180,7 @@ class _UserTileState extends State<UserTile> {
                       ),
                       SizedBox(height: 8.h),
                       Text(
-                        inCampStatusTextChanger(widget.user.currentAttendance == 'Inside Camp'),
+                        isInsideCamp ? 'Inside Camp' : 'Outside Camp',
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: isDarkMode ? Colors.white70 : Colors.black54,
                           fontSize: 12.sp,
