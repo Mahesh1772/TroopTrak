@@ -55,7 +55,7 @@ class AttendanceTab extends StatelessWidget {
         builder: (context, provider, child) {
           return StreamBuilder<List<detailed_view.AttendanceRecord>>(
             stream: provider.getUserAttendance(userId),
-            builder: (context, AsyncSnapshot<List<detailed_view.AttendanceRecord>> snapshot) {
+            builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               }
@@ -64,7 +64,7 @@ class AttendanceTab extends StatelessWidget {
                 return const Center(child: Text('No attendance records found'));
               }
 
-              final records = snapshot.data!;
+              final records = snapshot.data!.toList()..sort((a, b) => b.dateTime.compareTo(a.dateTime));
               return ListView.builder(
                 itemCount: records.length,
                 itemBuilder: (context, index) {
