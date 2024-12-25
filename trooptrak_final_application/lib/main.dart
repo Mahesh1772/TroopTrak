@@ -23,12 +23,18 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(450, 1000),
       child: MultiProvider(
-        providers: getProviders(),
-        child: MaterialApp(
-          title: 'TroopTrak',
-          theme: lightTheme,
-          darkTheme: darkTheme,
-          home: const MainNavigationScreen(),
+         providers: [
+          ...getProviders(),
+          ChangeNotifierProvider(create: (_) => _themeManager),
+        ],
+        child: Consumer<ThemeManager>(
+          builder: (context, themeManager, child) => MaterialApp(
+            title: 'TroopTrak',
+            theme: lightTheme,
+            darkTheme: darkTheme,
+            themeMode: themeManager.themeMode,
+            home: const MainNavigationScreen(),
+          ),
         ),
       ),
     );

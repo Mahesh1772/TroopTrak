@@ -160,7 +160,7 @@ class _EditAttendancePageState extends State<EditAttendancePage> {
                             ),
                             SizedBox(height: 4.h),
                             Text(
-                              isInsideCamp ? 'Inside Camp' : 'Outside Camp',
+                              widget.record.isInsideCamp ? 'Inside Camp' : 'Outside Camp',
                               style: GoogleFonts.poppins(
                                 color: theme.colorScheme.tertiary,
                                 fontSize: 16.sp,
@@ -170,10 +170,10 @@ class _EditAttendancePageState extends State<EditAttendancePage> {
                           ],
                         ),
                         Switch(
-                          value: isInsideCamp,
+                          value: widget.record.isInsideCamp,
                           onChanged: (bool value) {
                             setState(() {
-                              isInsideCamp = value;
+                              widget.record.isInsideCamp = value;
                             });
                           },
                           activeColor: theme.colorScheme.secondary,

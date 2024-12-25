@@ -1,7 +1,7 @@
 class AttendanceRecord {
   final String id;
   final String dateTime;
-  final bool isInsideCamp;
+  bool isInsideCamp;
 
   AttendanceRecord({
     required this.id,
