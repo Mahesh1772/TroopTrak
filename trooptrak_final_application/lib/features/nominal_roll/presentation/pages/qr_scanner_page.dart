@@ -94,44 +94,54 @@ class _QRScannerPageState extends State<QRScannerPage> {
         }
 
         return DraggableScrollableSheet(
-          initialChildSize: 0.9,
-          minChildSize: 0.9,
+          initialChildSize: 0.95,
+          minChildSize: 0.95,
           maxChildSize: 1,
           builder: (_, controller) => Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
               color: theme.colorScheme.primary,
             ),
-            padding: EdgeInsets.all(12.sp),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
             child: Column(
               children: [
-                SizedBox(
-                  height: 200.h,
+                // Header Section
+                Container(
+                  height: 160.h,
                   child: ListView(
                     controller: controller,
                     children: [
                       Icon(
                         Icons.minimize_rounded,
                         color: theme.colorScheme.tertiary.withOpacity(0.7),
-                        size: 50.sp,
+                        size: 32.sp,
                       ),
-                      SizedBox(height: 20.h),
+                      SizedBox(height: 16.h),
                       Text(
                         "Scan QR Code",
-                        style: theme.textTheme.displayMedium,
+                        style: theme.textTheme.displayMedium?.copyWith(
+                          fontSize: 24.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
                         textAlign: TextAlign.center,
                       ),
-                      SizedBox(height: 20.h),
+                      SizedBox(height: 16.h),
                       Text(
                         "Please scan the QR code on the soldier's profile by placing it within the frame to add their details.",
-                        style: theme.textTheme.bodyLarge,
+                        style: theme.textTheme.bodyLarge?.copyWith(
+                          fontSize: 14.sp,
+                          color: theme.colorScheme.tertiary.withOpacity(0.8),
+                        ),
                         textAlign: TextAlign.center,
                       ),
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 400.h,
+                SizedBox(height: 16.h),
+                
+                // Scanner Section
+                Container(
+                  height: 380.h,
                   child: Stack(
                     children: [
                       MobileScanner(
@@ -152,9 +162,11 @@ class _QRScannerPageState extends State<QRScannerPage> {
                     ],
                   ),
                 ),
+                SizedBox(height: 24.h),
+
+                // Controls Section
                 Container(
-                  padding: EdgeInsets.all(16.sp),
-                  alignment: Alignment.center,
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
                   child: Column(
                     children: [
                       Row(
@@ -170,24 +182,24 @@ class _QRScannerPageState extends State<QRScannerPage> {
                                     return Icon(
                                       Icons.flash_off,
                                       color: theme.colorScheme.tertiary.withOpacity(0.5),
+                                      size: 24.sp,
                                     );
                                   case TorchState.on:
                                     return Icon(
                                       Icons.flash_on,
                                       color: theme.colorScheme.secondary,
+                                      size: 24.sp,
                                     );
                                 }
                               },
                             ),
-                            iconSize: 30.0.sp,
                             onPressed: () => scannerController.toggleTorch(),
                           ),
                           IconButton(
                             color: theme.colorScheme.tertiary,
                             icon: isStarted
-                                ? const Icon(Icons.stop)
-                                : const Icon(Icons.play_arrow),
-                            iconSize: 30.0.sp,
+                                ? Icon(Icons.stop, size: 24.sp)
+                                : Icon(Icons.play_arrow, size: 24.sp),
                             onPressed: _startOrStop,
                           ),
                           IconButton(
@@ -197,34 +209,39 @@ class _QRScannerPageState extends State<QRScannerPage> {
                               builder: (context, state, child) {
                                 switch (state) {
                                   case CameraFacing.front:
-                                    return const Icon(Icons.camera_front);
+                                    return Icon(Icons.camera_front, size: 24.sp);
                                   case CameraFacing.back:
-                                    return const Icon(Icons.camera_rear);
+                                    return Icon(Icons.camera_rear, size: 24.sp);
                                 }
                               },
                             ),
-                            iconSize: 30.0.sp,
                             onPressed: () => scannerController.switchCamera(),
                           ),
                         ],
                       ),
-                      SizedBox(height: 10.h),
+                      SizedBox(height: 16.h),
                       Stack(
                         alignment: Alignment.center,
                         children: [
-                          Divider(color: theme.colorScheme.tertiary),
+                          Divider(
+                            color: theme.colorScheme.tertiary.withOpacity(0.3),
+                            thickness: 1.h,
+                          ),
                           Container(
-                            padding: EdgeInsets.symmetric(horizontal: 16.0.w),
+                            padding: EdgeInsets.symmetric(horizontal: 16.w),
                             color: theme.colorScheme.primary,
                             child: Text(
                               "OR",
-                              style: theme.textTheme.headlineMedium,
+                              style: theme.textTheme.titleMedium?.copyWith(
+                                color: theme.colorScheme.tertiary.withOpacity(0.7),
+                                fontSize: 14.sp,
+                              ),
                               textAlign: TextAlign.center,
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(height: 30.h),
+                      SizedBox(height: 24.h),
                       GestureDetector(
                         onTap: () async {
                           final ImagePicker picker = ImagePicker();
@@ -240,22 +257,28 @@ class _QRScannerPageState extends State<QRScannerPage> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(
-                                    'No barcode found!',
+                                    'No QR code found in the image',
                                     style: theme.textTheme.bodyMedium?.copyWith(
-                                      color: theme.colorScheme.tertiary,
+                                      color: Colors.white,
+                                      fontSize: 14.sp,
                                     ),
                                   ),
-                                  backgroundColor: Colors.red,
+                                  backgroundColor: theme.colorScheme.error,
+                                  behavior: SnackBarBehavior.floating,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.r),
+                                  ),
+                                  margin: EdgeInsets.all(16.w),
                                 ),
                               );
                             }
                           }
                         },
                         child: Container(
-                          height: 70.h,
-                          padding: EdgeInsets.all(10.sp),
+                          height: 56.h,
+                          padding: EdgeInsets.symmetric(horizontal: 16.w),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.r),
+                            borderRadius: BorderRadius.circular(12.r),
                             gradient: LinearGradient(
                               colors: [
                                 theme.colorScheme.secondary,
@@ -264,7 +287,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: theme.colorScheme.secondary.withOpacity(0.6),
+                                color: theme.colorScheme.secondary.withOpacity(0.3),
                                 spreadRadius: 1.r,
                                 blurRadius: 16.r,
                                 offset: Offset(8.w, 0.h),
@@ -275,12 +298,6 @@ class _QRScannerPageState extends State<QRScannerPage> {
                                 blurRadius: 8.r,
                                 offset: Offset(-8.w, 0.h),
                               ),
-                              BoxShadow(
-                                color: theme.colorScheme.secondary.withOpacity(0.2),
-                                spreadRadius: 8.r,
-                                blurRadius: 8.r,
-                                offset: Offset(8.w, 0.h),
-                              ),
                             ],
                           ),
                           child: Row(
@@ -288,14 +305,16 @@ class _QRScannerPageState extends State<QRScannerPage> {
                             children: [
                               Icon(
                                 Icons.image,
-                                color: theme.colorScheme.tertiary,
-                                size: 30.sp,
+                                color: Colors.white,
+                                size: 24.sp,
                               ),
-                              SizedBox(width: 10.w),
+                              SizedBox(width: 12.w),
                               Text(
                                 'Upload QR Code',
                                 style: theme.textTheme.titleLarge?.copyWith(
-                                  color: theme.colorScheme.tertiary,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16.sp,
                                 ),
                               ),
                             ],

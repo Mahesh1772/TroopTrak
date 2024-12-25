@@ -12,10 +12,7 @@ class QRScannerOverlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    double scanArea = (MediaQuery.of(context).size.width < 400 ||
-            MediaQuery.of(context).size.height < 400)
-        ? 200.0.sp
-        : 330.0.sp;
+    double scanArea = 280.w; // Fixed width relative to screen width
 
     return Stack(
       children: [
@@ -52,10 +49,11 @@ class QRScannerOverlay extends StatelessWidget {
             foregroundPainter: BorderPainter(
               color: theme.colorScheme.tertiary,
               borderRadius: 20.r,
+              borderWidth: 3.w,
             ),
             child: SizedBox(
-              width: scanArea + 25.sp,
-              height: scanArea + 25.sp,
+              width: scanArea + 25.w,
+              height: scanArea + 25.w,
             ),
           ),
         ),
@@ -67,10 +65,12 @@ class QRScannerOverlay extends StatelessWidget {
 class BorderPainter extends CustomPainter {
   final Color color;
   final double borderRadius;
+  final double borderWidth;
 
   BorderPainter({
     required this.color,
     required this.borderRadius,
+    required this.borderWidth,
   });
 
   @override
@@ -80,9 +80,9 @@ class BorderPainter extends CustomPainter {
     final paint = Paint()
       ..color = color
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 3.0;
+      ..strokeWidth = borderWidth;
 
-    final borderLength = size.width / 2;
+    final borderLength = size.width / 3; // Shorter corner lines for cleaner look
     final path = Path();
 
     // Top left corner
