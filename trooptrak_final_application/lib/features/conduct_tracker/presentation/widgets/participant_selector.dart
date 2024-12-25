@@ -22,6 +22,7 @@ class ParticipantSelector extends StatefulWidget {
 class _ParticipantSelectorState extends State<ParticipantSelector> {
   List<Map<String, dynamic>> _allSoldiers = [];
   String _searchQuery = '';
+  bool _isInitialized = false;
 
   @override
   void initState() {
@@ -31,11 +32,21 @@ class _ParticipantSelectorState extends State<ParticipantSelector> {
 
   Future<void> _loadSoldiers() async {
     final snapshot = await FirebaseFirestore.instance.collection('Users').get();
+    final soldiers = snapshot.docs
+        .map((doc) => {...doc.data(), 'id': doc.id})
+        .toList();
+    
     setState(() {
-      _allSoldiers = snapshot.docs
-          .map((doc) => {...doc.data(), 'id': doc.id})
-          .toList();
+      _allSoldiers = soldiers;
     });
+
+    // Auto-select all participants only when the screen is first loaded
+    // and no participants are already selected
+    if (!_isInitialized && widget.selectedParticipants.isEmpty) {
+      final List<String> allSoldierIds = soldiers.map((s) => s['id'].toString()).toList();
+      widget.onParticipantsChanged(allSoldierIds, {});
+      _isInitialized = true;
+    }
   }
 
   List<Map<String, dynamic>> get _filteredSoldiers {
@@ -77,12 +88,34 @@ class _ParticipantSelectorState extends State<ParticipantSelector> {
           },
         ),
         const SizedBox(height: 16),
-        const Text(
-          'Select Participants',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              'Select Participants',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                if (widget.selectedParticipants.length == _allSoldiers.length) {
+                  // Deselect all
+                  widget.onParticipantsChanged([], {});
+                } else {
+                  // Select all
+                  final allSoldierIds = _allSoldiers.map((s) => s['id'].toString()).toList();
+                  widget.onParticipantsChanged(allSoldierIds, {});
+                }
+              },
+              child: Text(
+                widget.selectedParticipants.length == _allSoldiers.length
+                    ? 'Deselect All'
+                    : 'Select All',
+              ),
+            ),
+          ],
         ),
         const SizedBox(height: 8),
         ListView.builder(
