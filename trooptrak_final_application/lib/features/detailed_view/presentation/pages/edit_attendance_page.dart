@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../../domain/entities/attendance_record.dart';
 import '../providers/attendance_provider.dart';
@@ -31,37 +33,191 @@ class _EditAttendancePageState extends State<EditAttendancePage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Edit Attendance Record'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ListTile(
-              title: const Text('Date and Time'),
-              subtitle: Text(DateFormat('EEE d MMM yyyy HH:mm:ss').format(selectedDateTime)),
-              trailing: const Icon(Icons.calendar_today),
-              onTap: _selectDateTime,
+      backgroundColor: theme.scaffoldBackgroundColor,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Back Button and Title
+                InkWell(
+                  onTap: () => Navigator.pop(context),
+                  child: Icon(
+                    Icons.arrow_back_sharp,
+                    color: theme.colorScheme.tertiary,
+                    size: 25.sp,
+                  ),
+                ),
+                SizedBox(height: 20.h),
+                Text(
+                  "Update Attendance  ✍️",
+                  style: GoogleFonts.poppins(
+                    fontSize: 30.sp,
+                    fontWeight: FontWeight.bold,
+                    color: theme.colorScheme.tertiary,
+                  ),
+                ),
+                Text(
+                  "Edit the attendance record details",
+                  style: GoogleFonts.poppins(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w300,
+                    color: theme.colorScheme.tertiary,
+                  ),
+                ),
+                SizedBox(height: 32.h),
+
+                // Date and Time Picker
+                InkWell(
+                  onTap: _selectDateTime,
+                  child: Container(
+                    height: 70.h,
+                    decoration: BoxDecoration(
+                      color: isDarkMode ? Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                      borderRadius: BorderRadius.circular(12.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: isDarkMode ? Colors.black.withOpacity(0.3) : Colors.black.withOpacity(0.1),
+                          blurRadius: 4.r,
+                          offset: Offset(0, 2.h),
+                        ),
+                      ],
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Date and Time',
+                                style: GoogleFonts.poppins(
+                                  color: theme.colorScheme.tertiary.withOpacity(0.7),
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              SizedBox(height: 4.h),
+                              Text(
+                                DateFormat('EEE d MMM yyyy HH:mm:ss').format(selectedDateTime),
+                                style: GoogleFonts.poppins(
+                                  color: theme.colorScheme.tertiary,
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Icon(
+                            Icons.calendar_today_rounded,
+                            color: theme.colorScheme.tertiary,
+                            size: 24.sp,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 24.h),
+
+                // Status Switch
+                Container(
+                  height: 70.h,
+                  decoration: BoxDecoration(
+                    color: isDarkMode ? Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                    borderRadius: BorderRadius.circular(12.r),
+                    boxShadow: [
+                      BoxShadow(
+                        color: isDarkMode ? Colors.black.withOpacity(0.3) : Colors.black.withOpacity(0.1),
+                        blurRadius: 4.r,
+                        offset: Offset(0, 2.h),
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Status',
+                              style: GoogleFonts.poppins(
+                                color: theme.colorScheme.tertiary.withOpacity(0.7),
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            SizedBox(height: 4.h),
+                            Text(
+                              isInsideCamp ? 'Inside Camp' : 'Outside Camp',
+                              style: GoogleFonts.poppins(
+                                color: theme.colorScheme.tertiary,
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Switch(
+                          value: isInsideCamp,
+                          onChanged: (bool value) {
+                            setState(() {
+                              isInsideCamp = value;
+                            });
+                          },
+                          activeColor: theme.colorScheme.secondary,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 32.h),
+
+                // Save Button
+                SizedBox(
+                  width: double.infinity,
+                  height: 48.h,
+                  child: ElevatedButton.icon(
+                    onPressed: _saveChanges,
+                    icon: Icon(
+                      Icons.save_rounded,
+                      size: 20.sp,
+                      color: Colors.white,
+                    ),
+                    label: Text(
+                      'SAVE CHANGES',
+                      style: GoogleFonts.poppins(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.2,
+                        fontSize: 14.sp,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: theme.colorScheme.secondary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 24.h),
+              ],
             ),
-            SwitchListTile(
-              title: const Text('Status'),
-              subtitle: Text(isInsideCamp ? 'Inside Camp' : 'Outside Camp'),
-              value: isInsideCamp,
-              onChanged: (bool value) {
-                setState(() {
-                  isInsideCamp = value;
-                });
-              },
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _saveChanges,
-              child: const Text('Save Changes'),
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -73,11 +229,53 @@ class _EditAttendancePageState extends State<EditAttendancePage> {
       initialDate: selectedDateTime,
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
+      builder: (context, child) {
+        final theme = Theme.of(context);
+        final isDarkMode = theme.brightness == Brightness.dark;
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: theme.colorScheme.copyWith(
+              primary: theme.colorScheme.secondary,
+              onPrimary: Colors.white,
+              surface: isDarkMode ? Color.fromARGB(255, 45, 50, 65) : Colors.white,
+              onSurface: isDarkMode ? Colors.white : theme.colorScheme.onSurface,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: theme.colorScheme.secondary,
+              ),
+            ),
+            dialogBackgroundColor: isDarkMode ? Color.fromARGB(255, 35, 40, 55) : Colors.white,
+          ),
+          child: child!,
+        );
+      },
     );
     if (date != null) {
       final time = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.fromDateTime(selectedDateTime),
+        builder: (context, child) {
+          final theme = Theme.of(context);
+          final isDarkMode = theme.brightness == Brightness.dark;
+          return Theme(
+            data: Theme.of(context).copyWith(
+              colorScheme: theme.colorScheme.copyWith(
+                primary: theme.colorScheme.secondary,
+                onPrimary: Colors.white,
+                surface: isDarkMode ? Color.fromARGB(255, 45, 50, 65) : Colors.white,
+                onSurface: isDarkMode ? Colors.white : theme.colorScheme.onSurface,
+              ),
+              textButtonTheme: TextButtonThemeData(
+                style: TextButton.styleFrom(
+                  foregroundColor: theme.colorScheme.secondary,
+                ),
+              ),
+              dialogBackgroundColor: isDarkMode ? Color.fromARGB(255, 35, 40, 55) : Colors.white,
+            ),
+            child: child!,
+          );
+        },
       );
       if (time != null) {
         setState(() {
@@ -104,13 +302,31 @@ class _EditAttendancePageState extends State<EditAttendancePage> {
     attendanceProvider.updateAttendanceRecord(widget.userId, updatedRecord).listen(
       (_) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Attendance record updated successfully')),
+          SnackBar(
+            content: Text(
+              'Attendance record updated successfully',
+              style: GoogleFonts.poppins(
+                color: Colors.white,
+                fontSize: 14.sp,
+              ),
+            ),
+            backgroundColor: Colors.green,
+          ),
         );
         Navigator.of(context).pop();
       },
       onError: (error) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error updating attendance record: $error')),
+          SnackBar(
+            content: Text(
+              'Error updating attendance record: $error',
+              style: GoogleFonts.poppins(
+                color: Colors.white,
+                fontSize: 14.sp,
+              ),
+            ),
+            backgroundColor: Colors.red,
+          ),
         );
       },
     );

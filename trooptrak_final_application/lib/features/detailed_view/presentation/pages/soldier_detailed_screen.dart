@@ -17,60 +17,24 @@ class SoldierDetailedScreen extends StatefulWidget {
   _SoldierDetailedScreenState createState() => _SoldierDetailedScreenState();
 }
 
-class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
-    with TickerProviderStateMixin {
+class _SoldierDetailedScreenState extends State<SoldierDetailedScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
-    _loadUserData();
-  }
-
-  @override
-  void didUpdateWidget(SoldierDetailedScreen oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.userId != oldWidget.userId) {
-      _loadUserData();
-    }
-  }
-
-  void _loadUserData() {
-    setState(() {
-      _isLoading = true;
-    });
-
-    final userProvider = context.read<UserDetailProvider>();
-    userProvider.loadUser(widget.userId);
-
-    userProvider.waitForInitialLoad().then((_) {
-      setState(() {
-        _isLoading = false;
-      });
-    }).catchError((error) {
-      setState(() {
-        _isLoading = false;
-      });
-      final theme = Theme.of(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Error loading user data: $error',
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.colorScheme.tertiary,
-            ),
-          ),
-          backgroundColor: theme.colorScheme.error,
-        ),
-      );
-    });
+    // Load user data once when the screen is initialized
+    Future.microtask(() =>
+        Provider.of<UserDetailProvider>(context, listen: false)
+            .loadUser(widget.userId));
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+
     return Consumer<UserDetailProvider>(
       builder: (context, provider, child) {
         return StreamBuilder<User?>(
@@ -79,10 +43,11 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
           builder: (context, snapshot) {
             if (provider.isLoading) {
               return Scaffold(
-                backgroundColor: theme.scaffoldBackgroundColor,
+                backgroundColor: isDarkMode ? Color.fromARGB(255, 35, 40, 55) : theme.colorScheme.background,
                 body: Center(
                   child: CircularProgressIndicator(
                     color: theme.colorScheme.secondary,
+                    strokeWidth: 2.w,
                   ),
                 ),
               );
@@ -91,11 +56,26 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
             final user = snapshot.data;
             if (user == null) {
               return Scaffold(
-                backgroundColor: theme.scaffoldBackgroundColor,
+                backgroundColor: isDarkMode ? Color.fromARGB(255, 35, 40, 55) : theme.colorScheme.background,
                 body: Center(
-                  child: Text(
-                    'User not found',
-                    style: theme.textTheme.bodyLarge,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.error_outline_rounded,
+                        size: 32.sp,
+                        color: theme.colorScheme.error,
+                      ),
+                      SizedBox(height: 8.h),
+                      Text(
+                        'User not found',
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          color: theme.colorScheme.tertiary,
+                          letterSpacing: 1.2,
+                          fontSize: 16.sp,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               );
@@ -109,10 +89,10 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(12.0.r)),
-                        gradient: LinearGradient(
+                        gradient: const LinearGradient(
                           colors: [
-                            const Color.fromARGB(255, 72, 30, 229),
-                            const Color.fromARGB(255, 130, 60, 229),
+                            Color.fromARGB(255, 72, 30, 229),
+                            Color.fromARGB(255, 130, 60, 229),
                           ],
                         ),
                       ),
@@ -222,43 +202,55 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen>
                             fontWeight: FontWeight.w500,
                             letterSpacing: 1.5,
                           ),
-                          labelColor: const Color.fromARGB(255, 72, 30, 229),
-                          unselectedLabelColor: theme.colorScheme.tertiary.withOpacity(0.5),
-                          indicatorColor: const Color.fromARGB(255, 72, 30, 229),
+                          labelColor: isDarkMode
+                              ? const Color.fromARGB(255, 130, 100, 255)
+                              : const Color.fromARGB(255, 72, 30, 229),
+                          unselectedLabelColor: isDarkMode 
+                              ? Colors.white.withOpacity(0.8)
+                              : Colors.black.withOpacity(0.7),
+                          indicatorColor: isDarkMode
+                              ? const Color.fromARGB(255, 130, 100, 255)
+                              : const Color.fromARGB(255, 72, 30, 229),
                           controller: _tabController,
                           tabs: [
                             Tab(
                               text: "BASIC INFO",
                               icon: Icon(
                                 Icons.info,
-                                color: const Color.fromARGB(255, 72, 30, 229),
+                                color: isDarkMode 
+                                    ? const Color.fromARGB(255, 130, 100, 255)
+                                    : const Color.fromARGB(255, 72, 30, 229),
                               ),
                             ),
                             Tab(
                               text: "STATUSES",
                               icon: Icon(
                                 Icons.warning_rounded,
-                                color: const Color.fromARGB(255, 72, 30, 229),
+                                color: isDarkMode 
+                                    ? const Color.fromARGB(255, 130, 100, 255)
+                                    : const Color.fromARGB(255, 72, 30, 229),
                               ),
                             ),
                             Tab(
                               text: "ATTENDANCE",
                               icon: Icon(
                                 Icons.person_add_alt_1,
-                                color: const Color.fromARGB(255, 72, 30, 229),
+                                color: isDarkMode 
+                                    ? const Color.fromARGB(255, 130, 100, 255)
+                                    : const Color.fromARGB(255, 72, 30, 229),
                               ),
                             ),
                           ],
                         ),
                         SizedBox(
                           width: double.maxFinite,
-                          height: 750.h,
+                          height: MediaQuery.of(context).size.height * 0.7,
                           child: TabBarView(
                             controller: _tabController,
                             children: [
-                              BasicInfoTab(userId: widget.userId),
-                              StatusesTab(userId: widget.userId),
-                              AttendanceTab(userId: widget.userId),
+                              BasicInfoTab(userId: user.id),
+                              StatusesTab(userId: user.id),
+                              AttendanceTab(userId: user.id),
                             ],
                           ),
                         ),

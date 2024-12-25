@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import '../../domain/entities/status.dart';
 import '../providers/status_provider.dart';
 import '../pages/add_update_status_page.dart';
+import 'status_tile.dart';
+import 'past_status_tile.dart';
 
 class StatusesTab extends StatefulWidget {
   final String userId;
@@ -49,302 +51,239 @@ class _StatusesTabState extends State<StatusesTab> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+    
     return Consumer<StatusProvider>(
       builder: (context, statusProvider, child) {
-        return Column(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.all(30.0.sp),
-                child: StreamBuilder<List<Status>>(
-                  stream: statusProvider.statusesStream,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
-                        child: CircularProgressIndicator(
-                          color: theme.colorScheme.secondary,
-                        ),
-                      );
-                    }
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+          child: StreamBuilder<List<Status>>(
+            stream: statusProvider.statusesStream,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: theme.colorScheme.secondary,
+                    strokeWidth: 3.w,
+                  ),
+                );
+              }
 
-                    if (snapshot.hasError) {
-                      return Center(
-                        child: Text(
-                          'Error: ${snapshot.error}',
-                          style: theme.textTheme.bodyLarge?.copyWith(
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text(
+                    'Error: ${snapshot.error}',
+                    style: theme.textTheme.bodyLarge?.copyWith(
+                      color: theme.colorScheme.error,
+                      letterSpacing: 1.2,
+                      fontSize: 14.sp,
+                    ),
+                  ),
+                );
+              }
+
+              final statuses = snapshot.data ?? [];
+              final sortedStatuses = sortStatuses(statuses);
+              final activeStatuses = sortedStatuses.where((s) => !isPastStatus(s)).toList();
+              final pastStatuses = sortedStatuses.where((s) => isPastStatus(s)).toList();
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Active Statuses Section
+                  Row(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(8.w),
+                        decoration: BoxDecoration(
+                          color: isDarkMode 
+                              ? Color.fromARGB(255, 45, 50, 65)
+                              : Colors.white,
+                          borderRadius: BorderRadius.circular(8.r),
+                          boxShadow: [
+                            BoxShadow(
+                              color: isDarkMode 
+                                  ? Colors.black.withOpacity(0.3)
+                                  : Colors.black.withOpacity(0.1),
+                              blurRadius: 4.r,
+                              offset: Offset(0, 2.h),
+                            ),
+                          ],
+                        ),
+                        child: Icon(
+                          Icons.warning_rounded,
+                          size: 20.sp,
+                          color: theme.colorScheme.tertiary,
+                        ),
+                      ),
+                      SizedBox(width: 8.w),
+                      Text(
+                        "Active Statuses",
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          color: theme.colorScheme.tertiary,
+                          letterSpacing: 1.2,
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 16.h),
+                  if (activeStatuses.isEmpty)
+                    Container(
+                      height: 160.h,
+                      alignment: Alignment.center,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.error_outline_rounded,
+                            size: 32.sp,
                             color: theme.colorScheme.error,
                           ),
-                        ),
-                      );
-                    }
-
-                    final statuses = snapshot.data ?? [];
-                    final sortedStatuses = sortStatuses(statuses);
-
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.medical_information_rounded,
-                              size: 30.sp,
+                          SizedBox(height: 8.h),
+                          Text(
+                            'No active statuses',
+                            style: theme.textTheme.titleMedium?.copyWith(
                               color: theme.colorScheme.tertiary,
+                              letterSpacing: 1.2,
+                              fontSize: 16.sp,
                             ),
-                            SizedBox(width: 20.w),
-                            Text(
-                              "Active Statuses",
-                              maxLines: 2,
-                              style: theme.textTheme.titleLarge?.copyWith(
-                                color: theme.colorScheme.tertiary,
-                                letterSpacing: 1.5,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 295.h,
-                          child: statuses.isEmpty
-                              ? Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.error_outline_rounded,
-                                        size: 50.sp,
-                                        color: theme.colorScheme.error,
-                                      ),
-                                      SizedBox(height: 10.h),
-                                      Text(
-                                        'No statuses found!',
-                                        style: theme.textTheme.titleLarge?.copyWith(
-                                          color: theme.colorScheme.tertiary,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              : ListView.builder(
-                                  shrinkWrap: true,
-                                  padding: EdgeInsets.all(12.sp),
-                                  itemCount: sortedStatuses.length,
-                                  scrollDirection: Axis.horizontal,
-                                  itemBuilder: (context, index) {
-                                    final status = sortedStatuses[index];
-                                    if (!isPastStatus(status)) {
-                                      return _buildStatusCard(context, status);
-                                    }
-                                    return const SizedBox.shrink();
-                                  },
-                                ),
-                        ),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.av_timer_rounded,
-                              size: 30.sp,
-                              color: theme.colorScheme.tertiary,
-                            ),
-                            SizedBox(width: 20.w),
-                            Text(
-                              "Past Statuses",
-                              maxLines: 2,
-                              style: theme.textTheme.titleLarge?.copyWith(
-                                color: theme.colorScheme.tertiary,
-                                letterSpacing: 1.5,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Expanded(
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            padding: EdgeInsets.all(12.sp),
-                            itemCount: sortedStatuses.length,
-                            scrollDirection: Axis.vertical,
-                            itemBuilder: (context, index) {
-                              final status = sortedStatuses[index];
-                              if (isPastStatus(status)) {
-                                return _buildPastStatusCard(context, status);
-                              }
-                              return const SizedBox.shrink();
-                            },
                           ),
+                        ],
+                      ),
+                    )
+                  else
+                    Container(
+                      height: 160.h,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: activeStatuses.length,
+                        padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 4.w),
+                        itemBuilder: (context, index) {
+                          return StatusTile(
+                            status: activeStatuses[index],
+                            userId: widget.userId,
+                          );
+                        },
+                      ),
+                    ),
+
+                  SizedBox(height: 32.h),
+                  
+                  // Past Statuses Section
+                  Row(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(8.w),
+                        decoration: BoxDecoration(
+                          color: isDarkMode 
+                              ? Color.fromARGB(255, 45, 50, 65)
+                              : Colors.white,
+                          borderRadius: BorderRadius.circular(8.r),
+                          boxShadow: [
+                            BoxShadow(
+                              color: isDarkMode 
+                                  ? Colors.black.withOpacity(0.3)
+                                  : Colors.black.withOpacity(0.1),
+                              blurRadius: 4.r,
+                              offset: Offset(0, 2.h),
+                            ),
+                          ],
                         ),
-                        Container(
-                          width: double.infinity,
-                          height: 50.h,
-                          margin: EdgeInsets.symmetric(horizontal: 20.w),
-                          child: ElevatedButton.icon(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => AddUpdateStatusPage(
-                                    userId: widget.userId,
-                                  ),
+                        child: Icon(
+                          Icons.history_rounded,
+                          size: 20.sp,
+                          color: theme.colorScheme.tertiary,
+                        ),
+                      ),
+                      SizedBox(width: 8.w),
+                      Text(
+                        "Past Statuses",
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          color: theme.colorScheme.tertiary,
+                          letterSpacing: 1.2,
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 16.h),
+                  
+                  // Fixed height container for past statuses
+                  Container(
+                    height: 180.h,
+                    child: pastStatuses.isEmpty
+                        ? Center(
+                            child: Text(
+                              'No past statuses',
+                              style: theme.textTheme.titleMedium?.copyWith(
+                                color: theme.colorScheme.tertiary.withOpacity(0.7),
+                                letterSpacing: 1.2,
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                          )
+                        : ListView.builder(
+                            padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 4.w),
+                            itemCount: pastStatuses.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.only(bottom: 12.h),
+                                child: PastStatusTile(
+                                  status: pastStatuses[index],
+                                  userId: widget.userId,
                                 ),
                               );
                             },
-                            icon: Icon(
-                              Icons.add,
-                              color: theme.colorScheme.tertiary,
-                            ),
-                            label: Text(
-                              'ADD STATUS',
-                              style: theme.textTheme.titleMedium?.copyWith(
-                                color: theme.colorScheme.tertiary,
-                                letterSpacing: 1.5,
-                              ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: theme.colorScheme.secondary,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12.r),
-                              ),
+                          ),
+                  ),
+
+                  SizedBox(height: 32.h),
+                  // Add Status Button
+                  SizedBox(
+                    width: double.infinity,
+                    height: 48.h,
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AddUpdateStatusPage(
+                              userId: widget.userId,
                             ),
                           ),
+                        );
+                      },
+                      icon: Icon(
+                        Icons.add_circle_outline_rounded,
+                        size: 20.sp,
+                        color: Colors.white,
+                      ),
+                      label: Text(
+                        'ADD NEW STATUS',
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.2,
+                          fontSize: 14.sp,
                         ),
-                      ],
-                    );
-                  },
-                ),
-              ),
-            ),
-          ],
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: theme.colorScheme.secondary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
         );
       },
-    );
-  }
-
-  Widget _buildStatusCard(BuildContext context, Status status) {
-    final theme = Theme.of(context);
-    return Container(
-      width: 250.w,
-      margin: EdgeInsets.only(right: 15.w),
-      padding: EdgeInsets.all(15.sp),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            status.statusType,
-            style: theme.textTheme.titleMedium?.copyWith(
-              color: theme.colorScheme.tertiary,
-              letterSpacing: 1.5,
-            ),
-          ),
-          SizedBox(height: 10.h),
-          Text(
-            status.statusName,
-            style: theme.textTheme.titleLarge?.copyWith(
-              color: theme.colorScheme.tertiary,
-              letterSpacing: 1.5,
-            ),
-          ),
-          const Spacer(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Start Date',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.tertiary.withOpacity(0.5),
-                    ),
-                  ),
-                  Text(
-                    status.startDate,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.tertiary,
-                    ),
-                  ),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    'End Date',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.tertiary.withOpacity(0.5),
-                    ),
-                  ),
-                  Text(
-                    status.endDate,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.tertiary,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPastStatusCard(BuildContext context, Status status) {
-    final theme = Theme.of(context);
-    return Container(
-      width: double.infinity,
-      margin: EdgeInsets.only(bottom: 15.h),
-      padding: EdgeInsets.all(15.sp),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface.withOpacity(0.5),
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  status.statusType,
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    color: theme.colorScheme.tertiary.withOpacity(0.7),
-                    letterSpacing: 1.5,
-                  ),
-                ),
-                SizedBox(height: 5.h),
-                Text(
-                  status.statusName,
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    color: theme.colorScheme.tertiary,
-                    letterSpacing: 1.5,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                'Start: ${status.startDate}',
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.tertiary.withOpacity(0.5),
-                ),
-              ),
-              Text(
-                'End: ${status.endDate}',
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.tertiary.withOpacity(0.5),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
     );
   }
 }
