@@ -26,6 +26,13 @@ import 'package:trooptrak_final_application/features/detailed_view/domain/usecas
 import 'package:trooptrak_final_application/features/nominal_roll/presentation/providers/user_provider.dart';
 import 'package:trooptrak_final_application/features/nominal_roll/presentation/providers/qr_scanner_provider.dart';
 import 'package:trooptrak_final_application/features/nominal_roll/presentation/providers/user_detail_provider.dart';
+import '../../features/conduct_tracker/presentation/providers/conduct_provider.dart';
+import '../../features/conduct_tracker/domain/usecases/get_conducts_usecase.dart';
+import '../../features/conduct_tracker/domain/usecases/add_conduct_usecase.dart';
+import '../../features/conduct_tracker/domain/usecases/update_conduct_usecase.dart';
+import '../../features/conduct_tracker/domain/usecases/delete_conduct_usecase.dart';
+import '../../features/conduct_tracker/data/repositories/conduct_repository_impl.dart';
+import '../../features/conduct_tracker/domain/usecases/get_conduct_by_id_usecase.dart';
 
 List<SingleChildWidget> getProviders() {
   return [
@@ -128,5 +135,24 @@ List<SingleChildWidget> getProviders() {
         deleteAttendance: DeleteAttendance(AttendanceRepositoryImpl(FirebaseFirestore.instance)),
       ),
     ),
+    ChangeNotifierProvider(
+    create: (context) => ConductProvider(
+      getConductsUseCase: GetConductsUseCase(
+        ConductRepositoryImpl(),
+      ),
+      addConductUseCase: AddConductUseCase(
+        ConductRepositoryImpl(),
+      ),
+      updateConductUseCase: UpdateConductUseCase(
+        ConductRepositoryImpl(),
+      ),
+      deleteConductUseCase: DeleteConductUseCase(
+        ConductRepositoryImpl(),
+      ),
+      getConductByIdUseCase: GetConductByIdUseCase(  // Add this
+      ConductRepositoryImpl(),
+    ),
+    ),
+  ),
   ];
 } 

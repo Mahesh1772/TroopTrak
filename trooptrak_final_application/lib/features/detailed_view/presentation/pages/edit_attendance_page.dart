@@ -22,13 +22,11 @@ class EditAttendancePage extends StatefulWidget {
 
 class _EditAttendancePageState extends State<EditAttendancePage> {
   late DateTime selectedDateTime;
-  late bool isInsideCamp;
 
   @override
   void initState() {
     super.initState();
     selectedDateTime = DateFormat("EEE d MMM yyyy HH:mm:ss").parse(widget.record.dateTime);
-    isInsideCamp = widget.record.isInsideCamp;
   }
 
   @override
@@ -295,7 +293,7 @@ class _EditAttendancePageState extends State<EditAttendancePage> {
     final updatedRecord = AttendanceRecord(
       id: widget.record.id,
       dateTime: DateFormat('EEE d MMM yyyy HH:mm:ss').format(selectedDateTime),
-      isInsideCamp: isInsideCamp,
+      isInsideCamp: widget.record.isInsideCamp, // Maintain original status
     );
     
     final attendanceProvider = Provider.of<AttendanceProvider>(context, listen: false);

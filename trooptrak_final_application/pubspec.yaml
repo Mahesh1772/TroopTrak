@@ -42,12 +42,15 @@ dependencies:
   google_fonts: ^6.2.1
   auto_size_text: ^3.0.0
   animated_toggle_switch: ^0.7.0
-  intl: ^0.19.0
+  intl: ^0.20.1
   dartz: ^0.10.1
   mobile_scanner: ^4.0.1
   image_picker: ^1.1.2
   flutter_slidable: ^3.1.1
   recase: ^4.1.0
+  google_nav_bar: ^5.0.7
+  fl_chart: ^0.69.2
+  horizontal_date_picker_flutter: ^0.0.1
 
 dev_dependencies:
   flutter_test:
