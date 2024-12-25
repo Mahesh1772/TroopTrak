@@ -20,6 +20,23 @@ class _UserTileState extends State<UserTile> {
   late bool isInsideCamp;
   bool loading = false;
 
+  @override
+  void initState() {
+    super.initState();
+    isInsideCamp = widget.user.currentAttendance == 'Inside Camp';
+  }
+
+  @override
+  void didUpdateWidget(UserTile oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Update the state when the user data changes
+    if (oldWidget.user.currentAttendance != widget.user.currentAttendance) {
+      setState(() {
+        isInsideCamp = widget.user.currentAttendance == 'Inside Camp';
+      });
+    }
+  }
+
   String inCampStatusTextChanger(bool value) {
     return value ? "IN CAMP" : "NOT IN CAMP";
   }
@@ -163,7 +180,7 @@ class _UserTileState extends State<UserTile> {
                       ),
                       SizedBox(height: 8.h),
                       Text(
-                        inCampStatusTextChanger(widget.user.currentAttendance == 'Inside Camp'),
+                        isInsideCamp ? 'Inside Camp' : 'Outside Camp',
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: isDarkMode ? Colors.white70 : Colors.black54,
                           fontSize: 12.sp,
@@ -176,11 +193,23 @@ class _UserTileState extends State<UserTile> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
                     child: AnimatedToggleSwitch<bool>.rolling(
-                      current: widget.user.currentAttendance == 'Inside Camp',
+                      current: isInsideCamp,
                       values: const [false, true],
                       onChanged: (value) async {
-                        final attendanceProvider = Provider.of<AttendanceProvider>(context, listen: false);
-                        await attendanceProvider.updateUserAttendanceRecord(widget.user.id, value).first;
+                        setState(() {
+                          loading = true;
+                        });
+                        try {
+                          final attendanceProvider = Provider.of<AttendanceProvider>(context, listen: false);
+                          await attendanceProvider.updateUserAttendanceRecord(widget.user.id, value).first;
+                          setState(() {
+                            isInsideCamp = value;
+                          });
+                        } finally {
+                          setState(() {
+                            loading = false;
+                          });
+                        }
                       },
                       iconBuilder: rollingIconBuilder,
                       borderWidth: 2.w,

@@ -22,11 +22,12 @@ class EditAttendancePage extends StatefulWidget {
 
 class _EditAttendancePageState extends State<EditAttendancePage> {
   late DateTime selectedDateTime;
+  final DateFormat standardFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
 
   @override
   void initState() {
     super.initState();
-    selectedDateTime = DateFormat("EEE d MMM yyyy HH:mm:ss").parse(widget.record.dateTime);
+    selectedDateTime = standardFormat.parse(widget.record.dateTime);
   }
 
   @override
@@ -106,7 +107,7 @@ class _EditAttendancePageState extends State<EditAttendancePage> {
                               ),
                               SizedBox(height: 4.h),
                               Text(
-                                DateFormat('EEE d MMM yyyy HH:mm:ss').format(selectedDateTime),
+                                standardFormat.format(selectedDateTime),
                                 style: GoogleFonts.poppins(
                                   color: theme.colorScheme.tertiary,
                                   fontSize: 16.sp,
@@ -126,63 +127,6 @@ class _EditAttendancePageState extends State<EditAttendancePage> {
                   ),
                 ),
                 SizedBox(height: 24.h),
-
-                // Status Switch
-                Container(
-                  height: 70.h,
-                  decoration: BoxDecoration(
-                    color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
-                    borderRadius: BorderRadius.circular(12.r),
-                    boxShadow: [
-                      BoxShadow(
-                        color: isDarkMode ? Colors.black.withOpacity(0.3) : Colors.black.withOpacity(0.1),
-                        blurRadius: 4.r,
-                        offset: Offset(0, 2.h),
-                      ),
-                    ],
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Status',
-                              style: GoogleFonts.poppins(
-                                color: theme.colorScheme.tertiary.withOpacity(0.7),
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            SizedBox(height: 4.h),
-                            Text(
-                              widget.record.isInsideCamp ? 'Inside Camp' : 'Outside Camp',
-                              style: GoogleFonts.poppins(
-                                color: theme.colorScheme.tertiary,
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Switch(
-                          value: widget.record.isInsideCamp,
-                          onChanged: (bool value) {
-                            setState(() {
-                              widget.record.isInsideCamp = value;
-                            });
-                          },
-                          activeColor: theme.colorScheme.secondary,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: 32.h),
 
                 // Save Button
                 SizedBox(
@@ -227,54 +171,14 @@ class _EditAttendancePageState extends State<EditAttendancePage> {
       initialDate: selectedDateTime,
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
-      builder: (context, child) {
-        final theme = Theme.of(context);
-        final isDarkMode = theme.brightness == Brightness.dark;
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: theme.colorScheme.copyWith(
-              primary: theme.colorScheme.secondary,
-              onPrimary: Colors.white,
-              surface: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : Colors.white,
-              onSurface: isDarkMode ? Colors.white : theme.colorScheme.onSurface,
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: theme.colorScheme.secondary,
-              ),
-            ),
-            dialogBackgroundColor: isDarkMode ? const Color.fromARGB(255, 35, 40, 55) : Colors.white,
-          ),
-          child: child!,
-        );
-      },
     );
+    
     if (date != null) {
       final time = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.fromDateTime(selectedDateTime),
-        builder: (context, child) {
-          final theme = Theme.of(context);
-          final isDarkMode = theme.brightness == Brightness.dark;
-          return Theme(
-            data: Theme.of(context).copyWith(
-              colorScheme: theme.colorScheme.copyWith(
-                primary: theme.colorScheme.secondary,
-                onPrimary: Colors.white,
-                surface: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : Colors.white,
-                onSurface: isDarkMode ? Colors.white : theme.colorScheme.onSurface,
-              ),
-              textButtonTheme: TextButtonThemeData(
-                style: TextButton.styleFrom(
-                  foregroundColor: theme.colorScheme.secondary,
-                ),
-              ),
-              dialogBackgroundColor: isDarkMode ? const Color.fromARGB(255, 35, 40, 55) : Colors.white,
-            ),
-            child: child!,
-          );
-        },
       );
+      
       if (time != null) {
         setState(() {
           selectedDateTime = DateTime(
@@ -290,10 +194,13 @@ class _EditAttendancePageState extends State<EditAttendancePage> {
   }
 
   void _saveChanges() {
+    print("Updating record with ID: ${widget.record.id}");
+    print("New datetime: ${standardFormat.format(selectedDateTime)}");
+    
     final updatedRecord = AttendanceRecord(
       id: widget.record.id,
-      dateTime: DateFormat('EEE d MMM yyyy HH:mm:ss').format(selectedDateTime),
-      isInsideCamp: widget.record.isInsideCamp, // Maintain original status
+      dateTime: standardFormat.format(selectedDateTime),
+      isInsideCamp: widget.record.isInsideCamp,
     );
     
     final attendanceProvider = Provider.of<AttendanceProvider>(context, listen: false);
@@ -314,6 +221,7 @@ class _EditAttendancePageState extends State<EditAttendancePage> {
         Navigator.of(context).pop();
       },
       onError: (error) {
+        print("Error details: $error");
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(

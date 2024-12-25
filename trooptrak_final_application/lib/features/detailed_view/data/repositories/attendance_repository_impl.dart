@@ -6,6 +6,7 @@ import '../models/attendance_model.dart';
 
 class AttendanceRepositoryImpl implements AttendanceRepository {
   final FirebaseFirestore _firestore;
+  final DateFormat standardFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
 
   AttendanceRepositoryImpl(this._firestore);
 
@@ -24,37 +25,54 @@ class AttendanceRepositoryImpl implements AttendanceRepository {
 
   @override
   Stream<void> updateAttendance(String userId, AttendanceRecord record) async* {
-    final batch = _firestore.batch();
+    try {
+      print("Attempting to update document with ID: ${record.id}");
+      final batch = _firestore.batch();
 
-    // Update the attendance record
-    final attendanceRef = _firestore
-        .collection('Users')
-        .doc(userId)
-        .collection('Attendance')
-        .doc(record.id);
-    batch.update(attendanceRef, {
-      'date&time': record.dateTime,
-      'isInsideCamp': record.isInsideCamp,
-    });
+      final attendanceRef = _firestore
+          .collection('Users')
+          .doc(userId)
+          .collection('Attendance')
+          .doc(record.id);
 
-    // Check if this is the latest attendance record
-    final latestAttendance = await _firestore
-        .collection('Users')
-        .doc(userId)
-        .collection('Attendance')
-        .orderBy('date&time', descending: true)
-        .limit(1)
-        .get();
+      // Let's first check if the document exists and print its data
+      final docSnapshot = await attendanceRef.get();
+      print("Document exists: ${docSnapshot.exists}");
+      if (docSnapshot.exists) {
+        print("Current document data: ${docSnapshot.data()}");
+      }
 
-    if (latestAttendance.docs.isNotEmpty && latestAttendance.docs.first.id == record.id) {
-      // If it's the latest record, update the user's currentAttendance
-      final userRef = _firestore.collection('Users').doc(userId);
-      batch.update(userRef, {
-        'currentAttendance': record.isInsideCamp ? 'Inside Camp' : 'Outside',
+      if (!docSnapshot.exists) {
+        throw Exception('Attendance record not found for ID: ${record.id}');
+      }
+
+      batch.update(attendanceRef, {
+        'date&time': record.dateTime,
+        'isInsideCamp': record.isInsideCamp,
       });
-    }
 
-    yield* Stream.fromFuture(batch.commit());
+      // Check if this is the latest attendance record
+      final latestAttendance = await _firestore
+          .collection('Users')
+          .doc(userId)
+          .collection('Attendance')
+          .orderBy('date&time', descending: true)
+          .limit(1)
+          .get();
+
+      if (latestAttendance.docs.isNotEmpty && 
+          latestAttendance.docs.first.id == record.id) {
+        final userRef = _firestore.collection('Users').doc(userId);
+        batch.update(userRef, {
+          'currentAttendance': record.isInsideCamp ? 'Inside Camp' : 'Outside',
+        });
+      }
+
+      yield* Stream.fromFuture(batch.commit());
+    } catch (e) {
+      print("Detailed error in updateAttendance: $e");
+      throw Exception('Failed to update attendance record: $e');
+    }
   }
 
   @override
@@ -73,20 +91,20 @@ class AttendanceRepositoryImpl implements AttendanceRepository {
   Stream<void> updateUserAttendance(String userId, bool isInsideCamp) async* {
     final batch = _firestore.batch();
 
-    // Create a new attendance record
-    String docId = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+    final now = DateTime.now();
+    final String standardizedDateTime = standardFormat.format(now);
+    
     final attendanceRef = _firestore
         .collection('Users')
         .doc(userId)
         .collection('Attendance')
-        .doc(docId);
+        .doc(standardizedDateTime);  // Using standardized format for document ID
     
     batch.set(attendanceRef, {
-      'date&time': DateFormat('E d MMM yyyy HH:mm:ss').format(DateTime.now()),
+      'date&time': standardizedDateTime,
       'isInsideCamp': isInsideCamp,
     });
 
-    // Update the user's currentAttendance
     final userRef = _firestore.collection('Users').doc(userId);
     batch.update(userRef, {
       'currentAttendance': isInsideCamp ? 'Inside Camp' : 'Outside',
