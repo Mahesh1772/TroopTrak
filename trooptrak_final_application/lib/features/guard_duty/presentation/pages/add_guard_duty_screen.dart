@@ -57,11 +57,31 @@ class _AddGuardDutyScreenState extends State<AddGuardDutyScreen> {
     return TimeOfDay.now(); // Placeholder
   }
 
-  double _calculatePoints() {
-    // Implement points calculation based on duty type and timing
-    if (_dutyType == 'Weekend') return 2.0;
-    if (_dutyType == 'Public Holiday') return 3.0;
-    return 1.0; // Weekday
+  int _calculatePoints() {
+    // Base points for duty type
+    int basePoints;
+    switch (_dutyType) {
+      case 'Weekday':
+        basePoints = 2;
+      case 'Weekend':
+        basePoints = 3;
+      case 'Public Holiday':
+        basePoints = 4;
+      default:
+        basePoints = 2;
+    }
+
+    // Additional points for night duty (if applicable)
+    final startHour = _startTime.hour;
+    final endHour = _endTime.hour;
+    
+    // Check if duty spans night hours (2200-0600)
+    if ((startHour >= 22 || startHour < 6) || 
+        (endHour >= 22 || endHour < 6)) {
+      basePoints += 1;
+    }
+
+    return basePoints;
   }
 
   Future<void> _saveDuty() async {
