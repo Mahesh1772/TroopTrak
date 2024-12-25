@@ -74,6 +74,7 @@ class _UserTileState extends State<UserTile> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
     Color tileColor = soldierColorGenerator(widget.user.rank);
 
     return GestureDetector(
@@ -85,100 +86,118 @@ class _UserTileState extends State<UserTile> {
           ),
         );
       },
-      child: Padding(
-        padding: EdgeInsets.all(1.0.sp),
-        child: Container(
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                blurRadius: 2.0.r,
-                spreadRadius: 2.0.r,
-                offset: Offset(10.w, 10.h),
-                color: Colors.black54,
-              )
-            ],
-            color: tileColor,
-            borderRadius: BorderRadius.circular(12.r),
-          ),
-          child: Column(
-            children: [
-              Row(
+      child: Container(
+        decoration: BoxDecoration(
+          color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : Colors.white,
+          borderRadius: BorderRadius.circular(16.r),
+          boxShadow: [
+            BoxShadow(
+              color: isDarkMode 
+                ? Colors.black.withOpacity(0.3) 
+                : Colors.black.withOpacity(0.15),
+              blurRadius: 16.r,
+              offset: Offset(0, 6.h),
+              spreadRadius: isDarkMode ? 1.r : 2.r,
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            Container(
+              height: 32.h,
+              decoration: BoxDecoration(
+                color: tileColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(16.r),
+                  topRight: Radius.circular(16.r),
+                ),
+              ),
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Container(
-                    width: 40.w,
-                    height: 40.h,
-                    padding: EdgeInsets.all(5.sp),
+                    width: 32.w,
+                    height: 32.h,
+                    padding: EdgeInsets.all(6.sp),
                     decoration: BoxDecoration(
-                      color: Colors.transparent.withOpacity(0.15),
+                      color: Colors.black26,
                       borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(12.r),
-                        bottomLeft: Radius.circular(12.r),
+                        topRight: Radius.circular(16.r),
                       ),
                     ),
                     child: Image.asset(
                       "lib/assets/army-ranks/${widget.user.rank.toLowerCase()}.png",
-                      color: rankColorPicker(widget.user.rank)
-                          ? Colors.white70
-                          : null,
+                      color: rankColorPicker(widget.user.rank) ? Colors.white : null,
                     ),
                   ),
                 ],
               ),
-              Padding(
-                padding:
-                    EdgeInsets.symmetric(horizontal: 24.0.w, vertical: 8.0.h),
-                child: Image.asset(
-                  soldierIconGenerator(widget.user.rank),
-                  width: 90.w,
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.0.h),
-                child: SizedBox(
-                  height: 40.h,
-                  width: double.maxFinite,
-                  child: Center(
-                    child: AutoSizeText(
-                      widget.user.name,
-                      maxLines: 2,
-                      textAlign: TextAlign.center,
-                      style: theme.textTheme.displayMedium?.copyWith(
-                        color: Colors.white,
-                      ),
+            ),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: Image.asset(
+                      soldierIconGenerator(widget.user.rank),
+                      height: 80.h,
+                      width: 80.w,
                     ),
                   ),
-                ),
+                  Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 12.w),
+                        child: AutoSizeText(
+                          widget.user.name,
+                          maxLines: 2,
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.titleLarge?.copyWith(
+                            color: isDarkMode ? Colors.white : Colors.black87,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16.sp,
+                            height: 1.2,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 8.h),
+                      Text(
+                        inCampStatusTextChanger(widget.user.currentAttendance == 'Inside Camp'),
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: isDarkMode ? Colors.white70 : Colors.black54,
+                          fontSize: 12.sp,
+                          letterSpacing: 0.5,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: AnimatedToggleSwitch<bool>.rolling(
+                      current: widget.user.currentAttendance == 'Inside Camp',
+                      values: const [false, true],
+                      onChanged: (value) async {
+                        final attendanceProvider = Provider.of<AttendanceProvider>(context, listen: false);
+                        await attendanceProvider.updateUserAttendanceRecord(widget.user.id, value).first;
+                      },
+                      iconBuilder: rollingIconBuilder,
+                      borderWidth: 2.w,
+                      indicatorColor: tileColor,
+                      innerColor: isDarkMode ? Colors.black26 : Colors.black.withOpacity(0.05),
+                      height: 32.h,
+                      dif: 10.w,
+                      iconRadius: 10.r,
+                      selectedIconRadius: 12.r,
+                      borderColor: Colors.transparent,
+                      loading: loading,
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(height: 10.h),
-              Text(
-                inCampStatusTextChanger(
-                    widget.user.currentAttendance == 'Inside Camp'),
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 15),
-              AnimatedToggleSwitch<bool>.rolling(
-                current: widget.user.currentAttendance == 'Inside Camp',
-                values: const [false, true],
-                onChanged: (value) async {
-                  final attendanceProvider = Provider.of<AttendanceProvider>(context, listen: false);
-                  await attendanceProvider.updateUserAttendanceRecord(widget.user.id, value).first;
-                },
-                iconBuilder: rollingIconBuilder,
-                borderWidth: 3.0.w,
-                indicatorColor: theme.colorScheme.primary,
-                innerColor: Colors.amber,
-                height: 40.h,
-                dif: 10,
-                iconRadius: 10.0.r,
-                selectedIconRadius: 13.0.r,
-                borderColor: Colors.transparent,
-                loading: loading,
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

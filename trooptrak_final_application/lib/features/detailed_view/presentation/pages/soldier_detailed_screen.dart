@@ -143,61 +143,78 @@ class _SoldierDetailedScreenState extends State<SoldierDetailedScreen> with Sing
                                             size: 25.sp,
                                           ),
                                         ),
-                                        Padding(
-                                          padding: EdgeInsets.all(12.0.sp),
-                                          child: Image.asset(
-                                            "lib/assets/army-ranks/${user.rank.toLowerCase()}.png",
-                                            width: 40.w,
-                                            height: 40.h,
-                                            color: Colors.white70,
-                                          ),
-                                        ),
                                       ],
                                     ),
                                     SizedBox(height: 20.h),
                                     Padding(
                                       padding: EdgeInsets.symmetric(horizontal: 20.w),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
-                                          Text(
-                                            user.name.toUpperCase(),
-                                            style: GoogleFonts.poppins(
-                                              color: Colors.white,
-                                              fontSize: 25.sp,
-                                              fontWeight: FontWeight.bold,
-                                              letterSpacing: 1.5,
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text(
+                                                  user.name.toUpperCase(),
+                                                  style: GoogleFonts.poppins(
+                                                    color: Colors.white,
+                                                    fontSize: 25.sp,
+                                                    fontWeight: FontWeight.bold,
+                                                    letterSpacing: 1.5,
+                                                  ),
+                                                ),
+                                                SizedBox(height: 4.h),
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      "${user.rank} ${user.apppointment}",
+                                                      style: GoogleFonts.poppins(
+                                                        color: Colors.white,
+                                                        fontSize: 16.sp,
+                                                        fontWeight: FontWeight.w500,
+                                                        letterSpacing: 1.5,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox(height: 16.h),
+                                                Text(
+                                                  "${user.company} COMPANY",
+                                                  style: GoogleFonts.poppins(
+                                                    color: Colors.white,
+                                                    fontSize: 18.sp,
+                                                    fontWeight: FontWeight.bold,
+                                                    letterSpacing: 1.5,
+                                                  ),
+                                                ),
+                                                SizedBox(height: 4.h),
+                                                Text(
+                                                  "Platoon ${user.platoon}, Section ${user.section}",
+                                                  style: GoogleFonts.poppins(
+                                                    color: Colors.white,
+                                                    fontSize: 16.sp,
+                                                    fontWeight: FontWeight.w500,
+                                                    letterSpacing: 1.5,
+                                                  ),
+                                                ),
+                                                SizedBox(height: 20.h),
+                                              ],
                                             ),
                                           ),
-                                          Text(
-                                            "${user.rank} ${user.apppointment}",
-                                            style: GoogleFonts.poppins(
-                                              color: Colors.white,
-                                              fontSize: 16.sp,
-                                              fontWeight: FontWeight.w500,
-                                              letterSpacing: 1.5,
+                                          SizedBox(width: 16.w),
+                                          Container(
+                                            padding: EdgeInsets.all(16.sp),
+                                            decoration: BoxDecoration(
+                                              color: Colors.white.withOpacity(0.15),
+                                              borderRadius: BorderRadius.circular(16.r),
                                             ),
-                                          ),
-                                          SizedBox(height: 20.h),
-                                          Text(
-                                            "${user.company} COMPANY",
-                                            style: GoogleFonts.poppins(
+                                            child: Image.asset(
+                                              "lib/assets/army-ranks/${user.rank.toLowerCase()}.png",
+                                              width: 70.w,
+                                              height: 70.h,
                                               color: Colors.white,
-                                              fontSize: 18.sp,
-                                              fontWeight: FontWeight.bold,
-                                              letterSpacing: 1.5,
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(bottom: 50.h),
-                                            child: Text(
-                                              "Platoon ${user.platoon}, Section ${user.section}",
-                                              style: GoogleFonts.poppins(
-                                                color: Colors.white,
-                                                fontSize: 16.sp,
-                                                fontWeight: FontWeight.w500,
-                                                letterSpacing: 1.5,
-                                              ),
                                             ),
                                           ),
                                         ],

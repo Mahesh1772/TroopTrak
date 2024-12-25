@@ -27,10 +27,13 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+
     return Scaffold(
       body: _screens[_selectedIndex],
       bottomNavigationBar: Container(
-        color: Theme.of(context).colorScheme.surface,
+        color: isDarkMode ? const Color.fromARGB(255, 35, 40, 55) : theme.colorScheme.surface,
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 8.0.w, vertical: 15.h),
           child: GNav(
@@ -40,13 +43,13 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
               });
             },
             gap: 7,
-            backgroundColor: Theme.of(context).colorScheme.surface,
-            color: Colors.deepPurple.shade300,
+            backgroundColor: isDarkMode ? const Color.fromARGB(255, 35, 40, 55) : theme.colorScheme.surface,
+            color: isDarkMode ? Colors.white.withOpacity(0.8) : theme.colorScheme.tertiary.withOpacity(0.7),
             activeColor: Colors.white,
-            tabBackgroundGradient: const LinearGradient(
+            tabBackgroundGradient: LinearGradient(
               colors: [
-                Color.fromARGB(255, 72, 30, 229),
-                Color.fromARGB(255, 130, 60, 229),
+                theme.colorScheme.secondary,
+                theme.colorScheme.secondary.withOpacity(0.8),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
