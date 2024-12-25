@@ -1,6 +1,9 @@
 import '../../domain/entities/attendance_record.dart';
+import 'package:intl/intl.dart';
 
 class AttendanceModel extends AttendanceRecord {
+  static final DateFormat standardFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
+
   AttendanceModel({
     required super.id,
     required super.dateTime,

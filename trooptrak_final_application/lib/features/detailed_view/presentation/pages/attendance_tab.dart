@@ -13,13 +13,15 @@ class AttendanceTab extends StatelessWidget {
   const AttendanceTab({super.key, required this.userId});
 
   void _navigateToEdit(BuildContext context, nominal_roll.AttendanceRecord record) {
+    print("Original record datetime: ${record.dateTime}");
+    
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => EditAttendancePage(
           userId: userId,
           record: detailed_view.AttendanceRecord(
-            id: DateTime.now().toString(), // Generate a temporary ID
+            id: record.dateTime,
             dateTime: record.dateTime,
             isInsideCamp: record.isInsideCamp,
           ),
