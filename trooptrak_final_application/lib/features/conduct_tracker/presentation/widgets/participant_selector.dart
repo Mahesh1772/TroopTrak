@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
+import '../../domain/usecases/filter_participants_usecase.dart';
+import '../providers/conduct_provider.dart';
 
 class ParticipantSelector extends StatefulWidget {
   final List<String> selectedParticipants;
@@ -8,18 +11,54 @@ class ParticipantSelector extends StatefulWidget {
   final Function(List<String>, Map<String, String>, List<String>) onParticipantsChanged;
 
   const ParticipantSelector({
-    super.key,
+    Key? key,
     required this.selectedParticipants,
     required this.soldierReason,
     required this.conductType,
     required this.onParticipantsChanged,
-  });
+  }) : super(key: key);
 
   @override
   State<ParticipantSelector> createState() => _ParticipantSelectorState();
 }
 
 class _ParticipantSelectorState extends State<ParticipantSelector> {
+  late List<String> _selectedParticipants;
+  late Map<String, String> _soldierReason;
+  bool _isInitialized = false;
+
+  @override
+  void didUpdateWidget(ParticipantSelector oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.conductType != oldWidget.conductType) {
+      _applyAutomaticFiltering();
+    }
+  }
+
+  Future<void> _applyAutomaticFiltering() async {
+    if (widget.conductType == null) return;
+
+    final provider = context.read<ConductProvider>();
+    final allSoldiers = await provider.getAllSoldierIds();
+    final statusList = await provider.getSoldiersStatus();
+    
+    final filterUseCase = FilterParticipantsUseCase();
+    final soldierReason = await filterUseCase.execute(widget.conductType!, statusList);
+
+    setState(() {
+      _selectedParticipants = allSoldiers
+          .where((id) => !soldierReason.containsKey(id))
+          .toList();
+      _soldierReason = soldierReason;
+    });
+
+    widget.onParticipantsChanged(
+      _selectedParticipants,
+      _soldierReason,
+      allSoldiers.where((id) => soldierReason.containsKey(id)).toList(),
+    );
+  }
+
   List<Map<String, dynamic>> _allSoldiers = [];
   String _searchQuery = '';
   List<String> _nonParticipants = [];

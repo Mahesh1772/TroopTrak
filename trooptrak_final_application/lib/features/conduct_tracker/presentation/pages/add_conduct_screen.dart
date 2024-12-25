@@ -98,8 +98,16 @@ class _AddConductScreenState extends State<AddConductScreen> {
     });
   }
 
-  void _saveConduct() {
+  void _saveConduct() async {
     if (!_formKey.currentState!.validate()) return;
+
+    final allSoldiers = await context.read<ConductProvider>().getAllSoldierIds();
+    for (var soldier in allSoldiers) {
+      if (!_selectedParticipants.contains(soldier) && 
+          !_soldierReason.containsKey(soldier)) {
+        _soldierReason[soldier] = "Removed from conduct";
+      }
+    }
 
     final conduct = Conduct(
       id: widget.conduct?.id ?? '',
@@ -109,7 +117,9 @@ class _AddConductScreenState extends State<AddConductScreen> {
       startTime: _startTime,
       endTime: _endTime,
       participants: _selectedParticipants,
-      nonParticipants: _nonParticipants,
+      nonParticipants: allSoldiers
+          .where((id) => !_selectedParticipants.contains(id))
+          .toList(),
       soldierReason: _soldierReason,
     );
 

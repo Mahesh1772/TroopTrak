@@ -89,7 +89,30 @@ class ConductDetailsScreen extends StatelessWidget {
         if (conductData.nonParticipants.isEmpty)
           const Text('No non-participants')
         else
-          ...conductData.nonParticipants.map((nonParticipant) => Text(nonParticipant)),
+          ...conductData.nonParticipants.map((nonParticipant) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        nonParticipant,
+                        style: const TextStyle(fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'Reason: ${conductData.soldierReason[nonParticipant] ?? 'No reason provided'}',
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )),
       ],
     );
   }

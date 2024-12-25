@@ -119,4 +119,57 @@ class ConductProvider extends ChangeNotifier {
     final snapshot = await FirebaseFirestore.instance.collection('Users').get();
     return snapshot.docs.map((doc) => doc.id).toList();
   }
+
+  Future<List<Map<String, dynamic>>> getSoldiersStatus() async {
+    List<Map<String, dynamic>> statusList = [];
+
+    try {
+      print('Fetching soldiers status...');
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection("Users")
+          .get();
+      
+      print('Found ${querySnapshot.docs.length} users');
+
+      for (var snapshot in querySnapshot.docs) {
+        final statusSnapshot = await FirebaseFirestore.instance
+            .collection("Users")
+            .doc(snapshot.id)
+            .collection("Statuses")
+            .get();
+
+        print('Found ${statusSnapshot.docs.length} statuses for user ${snapshot.id}');
+
+        for (var result in statusSnapshot.docs) {
+          Map<String, dynamic> data = result.data();
+          print('Status data for ${snapshot.id}: $data');
+          
+          if (data['end_id'] != null) {
+            try {
+              DateTime end = DateTime.parse(data['end_id'].toString());
+              if (end.isAfter(DateTime.now())) {
+                data['Name'] = snapshot.id;
+                statusList.add({
+                  'Name': snapshot.id,
+                  'statusType': data['statusType'],
+                  'statusName': data['statusName'],
+                  'endDate': end.toString(),
+                });
+                print('Added status for ${snapshot.id}: ${data['statusType']} - ${data['statusName']}');
+              }
+            } catch (e) {
+              print('Error parsing date for soldier ${snapshot.id}: ${e.toString()}');
+              continue;
+            }
+          }
+        }
+      }
+
+      print('Final status list: $statusList');
+      return statusList;
+    } catch (e) {
+      print('Error getting soldiers status: ${e.toString()}');
+      return [];
+    }
+  }
 }
