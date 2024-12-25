@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../domain/entities/conduct.dart';
 import '../../domain/usecases/add_conduct_usecase.dart';
 import '../../domain/usecases/delete_conduct_usecase.dart';
@@ -37,13 +38,59 @@ class ConductProvider extends ChangeNotifier {
   }
 
   Future<void> addConduct(Conduct conduct) async {
-    await _addConductUseCase(conduct);
-    notifyListeners();
+    try {
+      final allSoldiers = await getAllSoldierIds();
+      
+      final nonParticipants = allSoldiers
+          .where((id) => !conduct.participants.contains(id))
+          .toList();
+
+      final updatedConduct = Conduct(
+        id: conduct.id,
+        conductName: conduct.conductName,
+        conductType: conduct.conductType,
+        startDate: conduct.startDate,
+        startTime: conduct.startTime,
+        endTime: conduct.endTime,
+        participants: conduct.participants,
+        nonParticipants: nonParticipants,
+        soldierReason: conduct.soldierReason,
+      );
+
+      await _addConductUseCase(updatedConduct);
+      notifyListeners();
+    } catch (e) {
+      print('Error in addConduct: $e');
+      rethrow;
+    }
   }
 
   Future<void> updateConduct(Conduct conduct) async {
-    await _updateConductUseCase(conduct);
-    notifyListeners();
+    try {
+      final allSoldiers = await getAllSoldierIds();
+      
+      final nonParticipants = allSoldiers
+          .where((id) => !conduct.participants.contains(id))
+          .toList();
+
+      final updatedConduct = Conduct(
+        id: conduct.id,
+        conductName: conduct.conductName,
+        conductType: conduct.conductType,
+        startDate: conduct.startDate,
+        startTime: conduct.startTime,
+        endTime: conduct.endTime,
+        participants: conduct.participants,
+        nonParticipants: nonParticipants,
+        soldierReason: conduct.soldierReason,
+      );
+
+      await _updateConductUseCase(updatedConduct);
+      notifyListeners();
+    } catch (e) {
+      print('Error in updateConduct: $e');
+      rethrow;
+    }
   }
 
   Future<void> deleteConduct(String id) async {
@@ -66,5 +113,10 @@ class ConductProvider extends ChangeNotifier {
 
   List<double> getParticipationStrength(List<Conduct> conducts) {
     return conducts.map((conduct) => conduct.participants.length.toDouble()).toList();
+  }
+
+  Future<List<String>> getAllSoldierIds() async {
+    final snapshot = await FirebaseFirestore.instance.collection('Users').get();
+    return snapshot.docs.map((doc) => doc.id).toList();
   }
 }

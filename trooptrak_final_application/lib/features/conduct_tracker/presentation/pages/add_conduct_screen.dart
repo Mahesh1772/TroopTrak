@@ -23,6 +23,7 @@ class _AddConductScreenState extends State<AddConductScreen> {
   late String _endTime;
   List<String> _selectedParticipants = [];
   Map<String, String> _soldierReason = {};
+  List<String> _nonParticipants = [];
 
   final List<String> _conductTypes = [
     'Run',
@@ -85,6 +86,18 @@ class _AddConductScreenState extends State<AddConductScreen> {
     }
   }
 
+  void _onParticipantsChanged(List<String> participants, Map<String, String> reasons) async {
+    final allSoldiers = await context.read<ConductProvider>().getAllSoldierIds();
+    
+    setState(() {
+      _selectedParticipants = participants;
+      _soldierReason = reasons;
+      _nonParticipants = allSoldiers
+          .where((id) => !participants.contains(id))
+          .toList();
+    });
+  }
+
   void _saveConduct() {
     if (!_formKey.currentState!.validate()) return;
 
@@ -96,7 +109,8 @@ class _AddConductScreenState extends State<AddConductScreen> {
       startTime: _startTime,
       endTime: _endTime,
       participants: _selectedParticipants,
-      soldierReason: _soldierReason, nonParticipants: [],
+      nonParticipants: _nonParticipants,
+      soldierReason: _soldierReason,
     );
 
     if (widget.conduct != null) {
@@ -171,10 +185,11 @@ class _AddConductScreenState extends State<AddConductScreen> {
                 selectedParticipants: _selectedParticipants,
                 soldierReason: _soldierReason,
                 conductType: _selectedConductType,
-                onParticipantsChanged: (participants, reasons) {
+                onParticipantsChanged: (participants, reasons, nonParticipants) {
                   setState(() {
                     _selectedParticipants = participants;
                     _soldierReason = reasons;
+                    _nonParticipants = nonParticipants;
                   });
                 },
               ),

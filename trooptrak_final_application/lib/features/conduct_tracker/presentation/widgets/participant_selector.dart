@@ -5,7 +5,7 @@ class ParticipantSelector extends StatefulWidget {
   final List<String> selectedParticipants;
   final Map<String, String> soldierReason;
   final String? conductType;
-  final Function(List<String>, Map<String, String>) onParticipantsChanged;
+  final Function(List<String>, Map<String, String>, List<String>) onParticipantsChanged;
 
   const ParticipantSelector({
     super.key,
@@ -22,7 +22,7 @@ class ParticipantSelector extends StatefulWidget {
 class _ParticipantSelectorState extends State<ParticipantSelector> {
   List<Map<String, dynamic>> _allSoldiers = [];
   String _searchQuery = '';
-  bool _isInitialized = false;
+  List<String> _nonParticipants = [];
 
   @override
   void initState() {
@@ -38,22 +38,15 @@ class _ParticipantSelectorState extends State<ParticipantSelector> {
     
     setState(() {
       _allSoldiers = soldiers;
+      _updateNonParticipants();
     });
-
-    // Auto-select all participants only when the screen is first loaded
-    // and no participants are already selected
-    if (!_isInitialized && widget.selectedParticipants.isEmpty) {
-      final List<String> allSoldierIds = soldiers.map((s) => s['id'].toString()).toList();
-      widget.onParticipantsChanged(allSoldierIds, {});
-      _isInitialized = true;
-    }
   }
 
-  List<Map<String, dynamic>> get _filteredSoldiers {
-    return _allSoldiers.where((soldier) {
-      final name = soldier['name'].toString().toLowerCase();
-      return name.contains(_searchQuery.toLowerCase());
-    }).toList();
+  void _updateNonParticipants() {
+    _nonParticipants = _allSoldiers
+        .map((s) => s['id'].toString())
+        .where((id) => !widget.selectedParticipants.contains(id))
+        .toList();
   }
 
   void _toggleParticipant(String soldierId) {
@@ -68,7 +61,15 @@ class _ParticipantSelectorState extends State<ParticipantSelector> {
       updatedReasons.remove(soldierId);
     }
 
-    widget.onParticipantsChanged(updatedParticipants, updatedReasons);
+    _updateNonParticipants();
+    widget.onParticipantsChanged(updatedParticipants, updatedReasons, _nonParticipants);
+  }
+
+  List<Map<String, dynamic>> get _filteredSoldiers {
+    return _allSoldiers.where((soldier) {
+      final name = soldier['name'].toString().toLowerCase();
+      return name.contains(_searchQuery.toLowerCase());
+    }).toList();
   }
 
   @override
@@ -102,11 +103,11 @@ class _ParticipantSelectorState extends State<ParticipantSelector> {
               onPressed: () {
                 if (widget.selectedParticipants.length == _allSoldiers.length) {
                   // Deselect all
-                  widget.onParticipantsChanged([], {});
+                  widget.onParticipantsChanged([], {}, []);
                 } else {
                   // Select all
                   final allSoldierIds = _allSoldiers.map((s) => s['id'].toString()).toList();
-                  widget.onParticipantsChanged(allSoldierIds, {});
+                  widget.onParticipantsChanged(allSoldierIds, {}, []);
                 }
               },
               child: Text(
