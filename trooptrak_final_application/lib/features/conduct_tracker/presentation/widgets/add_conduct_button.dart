@@ -11,6 +11,8 @@ class AddConductButton extends StatelessWidget {
     final isDarkMode = theme.brightness == Brightness.dark;
 
     return Container(
+      height: 56.h,
+      width: 56.h,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
@@ -28,21 +30,24 @@ class AddConductButton extends StatelessWidget {
           ),
         ],
       ),
-      child: FloatingActionButton(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const AddConductScreen(),
-            ),
-          );
-        },
-        child: Icon(
-          Icons.add_rounded,
-          color: Colors.white,
-          size: 24.sp,
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(16.r),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(16.r),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const AddConductScreen(),
+              ),
+            );
+          },
+          child: Icon(
+            Icons.add_rounded,
+            color: Colors.white,
+            size: 28.sp,
+          ),
         ),
       ),
     );

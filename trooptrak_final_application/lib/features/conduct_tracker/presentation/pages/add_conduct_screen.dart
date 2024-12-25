@@ -273,7 +273,7 @@ class _AddConductScreenState extends State<AddConductScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Status Type',
+                                'Conduct Type',
                                 style: GoogleFonts.poppins(
                                   color: isDarkMode ? Colors.white70 : Colors.black54,
                                   fontSize: 12.sp,
@@ -297,7 +297,7 @@ class _AddConductScreenState extends State<AddConductScreen> {
                                   decoration: InputDecoration(
                                     contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
                                     border: InputBorder.none,
-                                    hintText: 'Select status type...',
+                                    hintText: 'Select conduct type...',
                                     hintStyle: GoogleFonts.poppins(
                                       color: isDarkMode ? Colors.white38 : Colors.black38,
                                       fontSize: 14.sp,
@@ -324,7 +324,7 @@ class _AddConductScreenState extends State<AddConductScreen> {
                               ),
                               SizedBox(height: 16.h),
                               Text(
-                                'Status Name',
+                                'Conduct Name',
                                 style: GoogleFonts.poppins(
                                   color: isDarkMode ? Colors.white70 : Colors.black54,
                                   fontSize: 12.sp,
@@ -348,7 +348,7 @@ class _AddConductScreenState extends State<AddConductScreen> {
                                   decoration: InputDecoration(
                                     contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
                                     border: InputBorder.none,
-                                    hintText: 'Enter status name...',
+                                    hintText: 'Enter conduct name...',
                                     hintStyle: GoogleFonts.poppins(
                                       color: isDarkMode ? Colors.white38 : Colors.black38,
                                       fontSize: 14.sp,
