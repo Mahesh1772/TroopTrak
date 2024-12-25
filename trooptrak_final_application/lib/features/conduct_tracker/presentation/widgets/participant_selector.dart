@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../domain/usecases/filter_participants_usecase.dart';
 import '../providers/conduct_provider.dart';
@@ -25,6 +27,15 @@ class ParticipantSelector extends StatefulWidget {
 class _ParticipantSelectorState extends State<ParticipantSelector> {
   late List<String> _selectedParticipants;
   late Map<String, String> _soldierReason;
+  List<Map<String, dynamic>> _allSoldiers = [];
+  String _searchQuery = '';
+  List<String> _nonParticipants = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSoldiers();
+  }
 
   @override
   void didUpdateWidget(ParticipantSelector oldWidget) {
@@ -56,16 +67,6 @@ class _ParticipantSelectorState extends State<ParticipantSelector> {
       _soldierReason,
       allSoldiers.where((id) => soldierReason.containsKey(id)).toList(),
     );
-  }
-
-  List<Map<String, dynamic>> _allSoldiers = [];
-  String _searchQuery = '';
-  List<String> _nonParticipants = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _loadSoldiers();
   }
 
   Future<void> _loadSoldiers() async {
@@ -119,51 +120,92 @@ class _ParticipantSelectorState extends State<ParticipantSelector> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TextField(
-          decoration: const InputDecoration(
-            labelText: 'Search Soldiers',
-            prefixIcon: Icon(Icons.search),
+        Container(
+          decoration: BoxDecoration(
+            color: isDarkMode 
+                ? Colors.black.withOpacity(0.2) 
+                : Colors.grey[100],
+            borderRadius: BorderRadius.circular(8.r),
           ),
-          onChanged: (value) {
-            setState(() {
-              _searchQuery = value;
-            });
-          },
+          child: TextField(
+            onChanged: (value) {
+              setState(() {
+                _searchQuery = value;
+              });
+            },
+            style: GoogleFonts.poppins(
+              color: isDarkMode ? Colors.white : Colors.black87,
+              fontSize: 14.sp,
+            ),
+            decoration: InputDecoration(
+              hintText: 'Search Soldiers',
+              hintStyle: GoogleFonts.poppins(
+                color: isDarkMode ? Colors.white38 : Colors.black38,
+                fontSize: 14.sp,
+              ),
+              prefixIcon: Icon(
+                Icons.search_rounded,
+                color: isDarkMode ? Colors.white38 : Colors.black38,
+                size: 20.sp,
+              ),
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+            ),
+          ),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 16.h),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
+            Text(
               'Select Participants',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+              style: GoogleFonts.poppins(
+                color: isDarkMode ? Colors.white : Colors.black87,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w600,
               ),
             ),
             TextButton(
               onPressed: () {
                 if (widget.selectedParticipants.length == _allSoldiers.length) {
-                  // Deselect all
                   widget.onParticipantsChanged([], {}, []);
                 } else {
-                  // Select all
                   final allSoldierIds = _allSoldiers.map((s) => s['id'].toString()).toList();
                   widget.onParticipantsChanged(allSoldierIds, {}, []);
                 }
               },
-              child: Text(
-                widget.selectedParticipants.length == _allSoldiers.length
-                    ? 'Deselect All'
-                    : 'Select All',
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                decoration: BoxDecoration(
+                  color: isDarkMode 
+                      ? theme.colorScheme.secondary.withOpacity(0.15)
+                      : theme.colorScheme.secondary.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(20.r),
+                ),
+                child: Text(
+                  widget.selectedParticipants.length == _allSoldiers.length
+                      ? 'DESELECT ALL'
+                      : 'SELECT ALL',
+                  style: GoogleFonts.poppins(
+                    color: isDarkMode
+                        ? Colors.white.withOpacity(0.9)
+                        : theme.colorScheme.secondary,
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0.5,
+                  ),
+                ),
               ),
             ),
           ],
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 12.h),
         ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -171,18 +213,122 @@ class _ParticipantSelectorState extends State<ParticipantSelector> {
           itemBuilder: (context, index) {
             final soldier = _filteredSoldiers[index];
             final isSelected = widget.selectedParticipants.contains(soldier['id']);
-
-            return ListTile(
-              title: Text(soldier['name']),
-              subtitle: Text(soldier['rank']),
-              trailing: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: isSelected ? Colors.red : Colors.green,
+            
+            return Padding(
+              padding: EdgeInsets.only(bottom: 8.h),
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      isSelected 
+                          ? theme.colorScheme.secondary.withOpacity(isDarkMode ? 0.3 : 0.1)
+                          : isDarkMode 
+                              ? Colors.black.withOpacity(0.2) 
+                              : Colors.grey[100]!,
+                      isSelected 
+                          ? theme.colorScheme.secondary.withOpacity(isDarkMode ? 0.1 : 0.05)
+                          : isDarkMode 
+                              ? Colors.black.withOpacity(0.1) 
+                              : Colors.grey[50]!,
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(12.r),
+                  border: Border.all(
+                    color: isSelected 
+                        ? theme.colorScheme.secondary.withOpacity(isDarkMode ? 0.5 : 0.3)
+                        : Colors.transparent,
+                    width: 1,
+                  ),
                 ),
-                onPressed: () => _toggleParticipant(soldier['id']),
-                child: Text(
-                  isSelected ? 'REMOVE' : 'ADD',
-                  style: const TextStyle(color: Colors.white),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () => _toggleParticipant(soldier['id']),
+                    borderRadius: BorderRadius.circular(12.r),
+                    child: Padding(
+                      padding: EdgeInsets.all(12.w),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 40.w,
+                            height: 40.w,
+                            decoration: BoxDecoration(
+                              color: isSelected 
+                                  ? theme.colorScheme.secondary.withOpacity(0.9)
+                                  : isDarkMode 
+                                      ? Colors.white.withOpacity(0.1)
+                                      : Colors.white,
+                              borderRadius: BorderRadius.circular(8.r),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 4,
+                                  offset: Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: Center(
+                              child: Image.asset(
+                                "lib/assets/army-ranks/${soldier['rank'].toString().toLowerCase()}.png",
+                                width: 24.w,
+                                height: 24.w,
+                                color: isSelected 
+                                    ? Colors.white
+                                    : isDarkMode 
+                                        ? Colors.white 
+                                        : Colors.black87,
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 12.w),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  soldier['name'],
+                                  style: GoogleFonts.poppins(
+                                    color: isDarkMode ? Colors.white : Colors.black87,
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                Text(
+                                  soldier['rank'],
+                                  style: GoogleFonts.poppins(
+                                    color: isDarkMode ? Colors.white70 : Colors.black54,
+                                    fontSize: 12.sp,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                            decoration: BoxDecoration(
+                              color: isSelected 
+                                  ? Colors.red.withOpacity(0.15)
+                                  : theme.colorScheme.secondary.withOpacity(0.15),
+                              borderRadius: BorderRadius.circular(20.r),
+                            ),
+                            child: Text(
+                              isSelected ? 'REMOVE' : 'ADD',
+                              style: GoogleFonts.poppins(
+                                color: isSelected 
+                                    ? Colors.red.shade400
+                                    : isDarkMode
+                                        ? theme.colorScheme.secondary.withOpacity(0.95)
+                                        : theme.colorScheme.secondary.withOpacity(0.9),
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               ),
             );
