@@ -16,22 +16,41 @@ class PastStatusTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    IconData tileIcon;
-    if (status.statusType == "Excuse") {
-      tileIcon = Icons.personal_injury_rounded;
-    } else if (status.statusType == "Leave") {
-      tileIcon = Icons.medical_services_rounded;
-    } else if (status.statusType == "Medical Appointment") {
-      tileIcon = Icons.date_range_rounded;
-    } else {
-      tileIcon = Icons.info_outline;
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+
+    IconData statusIcon;
+    Color statusColor;
+    String statusLabel;
+
+    switch (status.statusType.toLowerCase()) {
+      case 'excuse':
+        statusIcon = Icons.personal_injury_rounded;
+        statusColor = const Color.fromARGB(255, 255, 180, 50);
+        statusLabel = 'EXCUSE';
+        break;
+      case 'leave':
+        statusIcon = Icons.medical_services_rounded;
+        statusColor = const Color.fromARGB(255, 255, 100, 100);
+        statusLabel = 'LEAVE';
+        break;
+      case 'medical appointment':
+        statusIcon = Icons.date_range_rounded;
+        statusColor = const Color.fromARGB(255, 100, 150, 255);
+        statusLabel = 'MEDICAL';
+        break;
+      default:
+        statusIcon = Icons.help_outline;
+        statusColor = const Color.fromARGB(255, 130, 130, 130);
+        statusLabel = status.statusType.toUpperCase();
     }
 
     return Padding(
-      padding: EdgeInsets.only(bottom: 8.0.h),
+      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
       child: Slidable(
         endActionPane: ActionPane(
           motion: const StretchMotion(),
+          extentRatio: 0.45,
           children: [
             SlidableAction(
               onPressed: (context) {
@@ -45,64 +64,155 @@ class PastStatusTile extends StatelessWidget {
                   ),
                 );
               },
-              icon: Icons.info_rounded,
-              backgroundColor: Colors.blue,
+              backgroundColor: const Color.fromARGB(255, 89, 73, 255),
+              foregroundColor: Colors.white,
+              icon: Icons.edit_rounded,
+              spacing: 4.h,
+              label: 'EDIT',
+              borderRadius: BorderRadius.horizontal(left: Radius.circular(12.r)),
+              padding: EdgeInsets.symmetric(horizontal: 8.w),
+              flex: 1,
             ),
             SlidableAction(
               onPressed: (context) {
                 Provider.of<StatusProvider>(context, listen: false)
-                    .deleteStatus(userId, status.id);
+                    .deleteStatus(userId, status.id)
+                    .listen(
+                  (event) {},
+                  onDone: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'Status deleted',
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: 1.2,
+                            fontSize: 14.sp,
+                          ),
+                        ),
+                        backgroundColor: const Color.fromARGB(255, 255, 100, 100),
+                        behavior: SnackBarBehavior.floating,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        margin: const EdgeInsets.all(16),
+                      ),
+                    );
+                  },
+                  onError: (error) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'Error deleting status: $error',
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: 1.2,
+                            fontSize: 14.sp,
+                          ),
+                        ),
+                        backgroundColor: const Color.fromARGB(255, 255, 100, 100),
+                        behavior: SnackBarBehavior.floating,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        margin: const EdgeInsets.all(16),
+                      ),
+                    );
+                  },
+                );
               },
-              icon: Icons.delete_forever_rounded,
-              backgroundColor: Colors.red,
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(12.r),
-                bottomRight: Radius.circular(12.r),
-              ),
+              backgroundColor: const Color.fromARGB(255, 255, 100, 100),
+              foregroundColor: Colors.white,
+              icon: Icons.delete_rounded,
+              spacing: 4.h,
+              label: 'DELETE',
+              borderRadius: BorderRadius.horizontal(right: Radius.circular(12.r)),
+              padding: EdgeInsets.symmetric(horizontal: 8.w),
+              flex: 1,
             ),
           ],
         ),
         child: Container(
+          height: 72.h,
           decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 144, 143, 143),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(12.r),
-              bottomLeft: Radius.circular(12.r),
-            ),
+            color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+            borderRadius: BorderRadius.circular(12.r),
+            boxShadow: [
+              BoxShadow(
+                color: isDarkMode ? Colors.black.withOpacity(0.5) : Colors.black.withOpacity(0.1),
+                blurRadius: 8.r,
+                offset: Offset(0, 4.h),
+                spreadRadius: isDarkMode ? 1.r : 0.r,
+              ),
+            ],
           ),
-          child: Padding(
-            padding: EdgeInsets.all(16.0.sp),
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+            decoration: BoxDecoration(
+              color: statusColor.withOpacity(0.9),
+              borderRadius: BorderRadius.circular(12.r),
+            ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Icon(
-                  tileIcon,
+                  statusIcon,
                   color: Colors.white,
-                  size: 30.sp,
+                  size: 20.sp,
                 ),
-                SizedBox(
-                  width: 100.w,
-                  child: AutoSizeText(
-                    status.statusName,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.sp,
-                          color: Colors.white,
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        flex: 2,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            AutoSizeText(
+                              statusLabel,
+                              style: theme.textTheme.titleMedium?.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1.2,
+                                fontSize: 14.sp,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            SizedBox(height: 4.h),
+                            AutoSizeText(
+                              status.statusName,
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: Colors.white.withOpacity(0.9),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 12.sp,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
                         ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                SizedBox(
-                  width: 200.w,
-                  child: AutoSizeText(
-                    "${status.startDate} - ${status.endDate}",
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14.sp,
-                          color: Colors.white,
+                      ),
+                      SizedBox(width: 8.w),
+                      Flexible(
+                        flex: 1,
+                        child: AutoSizeText(
+                          "${status.startDate}\n${status.endDate}",
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: Colors.white.withOpacity(0.9),
+                            fontWeight: FontWeight.w500,
+                            fontSize: 11.sp,
+                          ),
+                          textAlign: TextAlign.end,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                    maxLines: 1,
+                      ),
+                    ],
                   ),
                 ),
               ],

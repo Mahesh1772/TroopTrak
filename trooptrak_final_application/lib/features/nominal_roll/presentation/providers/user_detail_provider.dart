@@ -25,47 +25,52 @@ class UserDetailProvider extends ChangeNotifier {
   User? get user => _user;
   bool _isLoading = false;
   bool get isLoading => _isLoading;
+  String? _currentUserId;
+  String? get currentUserId => _currentUserId;
 
   final _userController = StreamController<User?>.broadcast();
   Stream<User?> get userStream => _userController.stream;
 
-  Completer<void>? _loadingCompleter;
-  bool _initialDataLoaded = false;
   StreamSubscription? _userSubscription;
 
+  void clearCurrentUser() {
+    _user = null;
+    _currentUserId = null;
+    _userSubscription?.cancel();
+    _userSubscription = null;
+    _userController.add(null);
+    _isLoading = false;
+    notifyListeners();
+  }
+
   void loadUser(String id) {
+    // If we're already loading this user, don't reload
+    if (_currentUserId == id && _userSubscription != null && _user != null) {
+      return;
+    }
+
+    // Cancel existing subscription if any
+    _userSubscription?.cancel();
+    _userSubscription = null;
+    
+    // Reset state for new user
     _isLoading = true;
-    _initialDataLoaded = false;
-    _loadingCompleter = Completer<void>();
+    _currentUserId = id;
     notifyListeners();
 
-    _userSubscription?.cancel();
+    // Start new subscription
     _userSubscription = getUserByIdUseCase(id).listen(
       (user) {
         _user = user;
         _userController.add(user);
         _isLoading = false;
-        if (!_initialDataLoaded) {
-          _initialDataLoaded = true;
-          _loadingCompleter?.complete();
-        }
         notifyListeners();
       },
       onError: (error) {
         print('Error loading user: $error');
-        _isLoading = false;
-        if (!_initialDataLoaded) {
-          _initialDataLoaded = true;
-          _loadingCompleter?.completeError(error);
-        }
-        notifyListeners();
+        clearCurrentUser();
       },
     );
-  }
-
-  Future<void> waitForInitialLoad() async {
-    if (_initialDataLoaded) return;
-    await _loadingCompleter?.future;
   }
 
   Stream<List<AttendanceRecord>> getUserAttendance(String id) {
@@ -80,11 +85,8 @@ class UserDetailProvider extends ChangeNotifier {
     result.fold(
       (failure) {
         print('Error updating user: $failure');
-        _isLoading = false;
-        notifyListeners();
       },
       (_) {
-        // Update local state immediately
         _user = updatedUser;
         _userController.add(updatedUser);
       },
@@ -97,10 +99,14 @@ class UserDetailProvider extends ChangeNotifier {
   Future<Either<String, void>> deleteUser(String userId) async {
     final result = await deleteUserUseCase(userId);
     if (result.isRight()) {
-      // The user has been deleted, so we should clear the local data
-      _user = null;
-      _userSubscription?.cancel();
-      notifyListeners();
+      if (_currentUserId == userId) {
+        _user = null;
+        _currentUserId = null;
+        _userSubscription?.cancel();
+        _userSubscription = null;
+        _userController.add(null);
+        notifyListeners();
+      }
     }
     return result;
   }

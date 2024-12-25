@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:trooptrak_final_application/core/theme/theme.dart';
+import 'package:trooptrak_final_application/core/theme/dark_theme.dart';
+import 'package:trooptrak_final_application/core/theme/light_theme.dart';
+import 'package:trooptrak_final_application/core/theme/theme_manager.dart';
 import 'package:trooptrak_final_application/core/init/app_init.dart';
 import 'package:trooptrak_final_application/core/providers/provider_setup.dart';
 import 'package:trooptrak_final_application/features/navigation/presentation/pages/main_navigation_screen.dart';
+
+final ThemeManager _themeManager = ThemeManager();
 
 void main() async {
   await initializeApp();
@@ -19,12 +23,18 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(450, 1000),
       child: MultiProvider(
-        providers: getProviders(),
-        child: MaterialApp(
-          title: 'TroopTrak',
-          theme: lightTheme,
-          darkTheme: darkTheme,
-          home: const MainNavigationScreen(),
+         providers: [
+          ...getProviders(),
+          ChangeNotifierProvider(create: (_) => _themeManager),
+        ],
+        child: Consumer<ThemeManager>(
+          builder: (context, themeManager, child) => MaterialApp(
+            title: 'TroopTrak',
+            theme: lightTheme,
+            darkTheme: darkTheme,
+            themeMode: themeManager.themeMode,
+            home: const MainNavigationScreen(),
+          ),
         ),
       ),
     );

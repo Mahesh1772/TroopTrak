@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-// ignore: unused_import
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:trooptrak_final_application/features/nominal_roll/presentation/providers/user_detail_provider.dart';
 import 'package:trooptrak_final_application/features/nominal_roll/domain/entities/user.dart';
 
@@ -163,8 +160,14 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
         break;
       case 'enlistment':
         currentValue = _enlistment;
-        // Enlistment can't be after today and not before 1960
-        firstDate = DateTime(1960);
+        // Enlistment can't be before DOB and not after today
+        try {
+          firstDate = _dob.isNotEmpty 
+              ? DateFormat("d MMM yyyy").parse(_dob)
+              : DateTime(1960);
+        } catch (e) {
+          firstDate = DateTime(1960);
+        }
         lastDate = now;
         initialDate = currentValue.isNotEmpty 
             ? DateFormat("d MMM yyyy").parse(currentValue)
@@ -206,12 +209,13 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
       firstDate: firstDate,
       lastDate: lastDate,
       builder: (context, child) {
+        final theme = Theme.of(context);
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.light(
-              primary: Colors.deepPurple.shade400,
-              onPrimary: Colors.white,
-              onSurface: Colors.black,
+            colorScheme: theme.colorScheme.copyWith(
+              primary: theme.colorScheme.secondary,
+              onPrimary: theme.colorScheme.tertiary,
+              onSurface: theme.colorScheme.tertiary,
             ),
           ),
           child: child!,
@@ -224,6 +228,19 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
           switch (type) {
             case 'dob':
               _dob = formattedDate;
+              // Clear enlistment and ORD if DOB is after them
+              if (_enlistment.isNotEmpty) {
+                try {
+                  final enlistmentDate = DateFormat("d MMM yyyy").parse(_enlistment);
+                  if (value.isAfter(enlistmentDate)) {
+                    _enlistment = '';
+                    _ord = '';
+                  }
+                } catch (e) {
+                  _enlistment = '';
+                  _ord = '';
+                }
+              }
               break;
             case 'ord':
               _ord = formattedDate;
@@ -251,9 +268,10 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
-      resizeToAvoidBottomInset: false,
+      backgroundColor: isDarkMode ? const Color.fromARGB(255, 35, 40, 55) : theme.colorScheme.surface,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -269,496 +287,687 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
                       Navigator.pop(context);
                     },
                     child: Icon(
-                      Icons.arrow_back_sharp,
+                      Icons.arrow_back_rounded,
                       color: theme.colorScheme.tertiary,
-                      size: 25.sp,
+                      size: 24.sp,
                     ),
                   ),
                   SizedBox(height: 20.h),
                   Text(
                     "Change details  ✍️",
-                    style: theme.textTheme.displayMedium,
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      color: theme.colorScheme.tertiary,
+                      letterSpacing: 1.2,
+                      fontSize: 24.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   Text(
                     "Update the details of an existing soldier.",
-                    style: theme.textTheme.bodyMedium,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.tertiary.withOpacity(0.8),
+                      letterSpacing: 0.5,
+                      fontSize: 14.sp,
+                    ),
                   ),
                   SizedBox(height: 20.h),
-                  _buildTextField(context, _nameController, 'Enter Name (as in NRIC):'),
-                  SizedBox(height: 16.h),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _buildDatePicker(context, 'Date of Birth', _dob, () => _showDatePicker('dob')),
-                      ),
-                      SizedBox(width: 16.w),
-                      Expanded(
-                        child: _buildDropdown(
-                          context,
-                          value: _selectedRationType,
-                          items: _rationTypes,
-                          onChanged: (value) => setState(() => _selectedRationType = value),
-                          hint: 'Ration Type',
+                  Container(
+                    decoration: BoxDecoration(
+                      color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                      borderRadius: BorderRadius.circular(12.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: isDarkMode ? Colors.black.withOpacity(0.5) : Colors.black.withOpacity(0.1),
+                          blurRadius: 8.r,
+                          offset: Offset(0, 4.h),
+                          spreadRadius: isDarkMode ? 1.r : 0.r,
                         ),
+                      ],
+                    ),
+                    child: TextFormField(
+                      controller: _nameController,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: isDarkMode ? Colors.white : theme.colorScheme.onSurface,
+                        letterSpacing: 0.5,
+                        fontSize: 14.sp,
                       ),
-                    ],
-                  ),
-                  SizedBox(height: 16.h),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 3,
-                        child: _buildDropdown(
-                          context,
-                          value: _selectedRank,
-                          items: _ranks,
-                          onChanged: (value) => setState(() => _selectedRank = value),
-                          hint: 'Select Rank',
+                      decoration: InputDecoration(
+                        labelText: 'Name',
+                        labelStyle: theme.textTheme.bodySmall?.copyWith(
+                          color: isDarkMode ? Colors.grey[400] : theme.colorScheme.onSurface.withOpacity(0.7),
+                          letterSpacing: 1.2,
+                          fontSize: 12.sp,
                         ),
-                      ),
-                      SizedBox(width: 16.w),
-                      Expanded(
-                        flex: 4,
-                        child: _buildDropdown(
-                          context,
-                          value: _selectedBloodType,
-                          items: _bloodTypes,
-                          onChanged: (value) => setState(() => _selectedBloodType = value),
-                          hint: 'Blood Type',
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 16.h),
-                  _buildTextField(context, _companyController, 'Company:'),
-                  SizedBox(height: 16.h),
-                  _buildTextField(context, _platoonController, 'Platoon:'),
-                  SizedBox(height: 16.h),
-                  _buildTextField(context, _sectionController, 'Section:'),
-                  SizedBox(height: 16.h),
-                  _buildTextField(context, _appointmentController, 'Appointment (in unit):'),
-                  SizedBox(height: 16.h),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _buildDatePicker(context, 'Enlistment', _enlistment, () => _showDatePicker('enlistment')),
-                      ),
-                      SizedBox(width: 16.w),
-                      Expanded(
-                        child: _buildDatePicker(context, 'ORD', _ord, () => _showDatePicker('ord')),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 16.h),
-                  _buildTextField(context, _pointsController, 'Points', isNumeric: true),
-                  SizedBox(height: 24.h),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 56.h,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: theme.colorScheme.secondary,
-                        shape: RoundedRectangleBorder(
+                        border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12.r),
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: Colors.transparent,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a name';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                      borderRadius: BorderRadius.circular(12.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: isDarkMode ? Colors.black.withOpacity(0.5) : Colors.black.withOpacity(0.1),
+                          blurRadius: 8.r,
+                          offset: Offset(0, 4.h),
+                          spreadRadius: isDarkMode ? 1.r : 0.r,
+                        ),
+                      ],
+                    ),
+                    child: DropdownButtonFormField<String>(
+                      value: _selectedRank,
+                      items: _ranks.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: isDarkMode ? Colors.white : theme.colorScheme.onSurface,
+                              letterSpacing: 0.5,
+                              fontSize: 14.sp,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedRank = newValue;
+                        });
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'Rank',
+                        labelStyle: theme.textTheme.bodySmall?.copyWith(
+                          color: isDarkMode ? Colors.grey[400] : theme.colorScheme.onSurface.withOpacity(0.7),
+                          letterSpacing: 1.2,
+                          fontSize: 12.sp,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: Colors.transparent,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                      ),
+                      validator: (value) {
+                        if (value == _ranks[0]) {
+                          return 'Please select a rank';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                      borderRadius: BorderRadius.circular(12.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: isDarkMode ? Colors.black.withOpacity(0.5) : Colors.black.withOpacity(0.1),
+                          blurRadius: 8.r,
+                          offset: Offset(0, 4.h),
+                          spreadRadius: isDarkMode ? 1.r : 0.r,
+                        ),
+                      ],
+                    ),
+                    child: TextFormField(
+                      controller: _companyController,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: isDarkMode ? Colors.white : theme.colorScheme.onSurface,
+                        letterSpacing: 0.5,
+                        fontSize: 14.sp,
+                      ),
+                      decoration: InputDecoration(
+                        labelText: 'Company',
+                        labelStyle: theme.textTheme.bodySmall?.copyWith(
+                          color: isDarkMode ? Colors.grey[400] : theme.colorScheme.onSurface.withOpacity(0.7),
+                          letterSpacing: 1.2,
+                          fontSize: 12.sp,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: Colors.transparent,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a company';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                      borderRadius: BorderRadius.circular(12.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: isDarkMode ? Colors.black.withOpacity(0.5) : Colors.black.withOpacity(0.1),
+                          blurRadius: 8.r,
+                          offset: Offset(0, 4.h),
+                          spreadRadius: isDarkMode ? 1.r : 0.r,
+                        ),
+                      ],
+                    ),
+                    child: TextFormField(
+                      controller: _appointmentController,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: isDarkMode ? Colors.white : theme.colorScheme.onSurface,
+                        letterSpacing: 0.5,
+                        fontSize: 14.sp,
+                      ),
+                      decoration: InputDecoration(
+                        labelText: 'Appointment',
+                        labelStyle: theme.textTheme.bodySmall?.copyWith(
+                          color: isDarkMode ? Colors.grey[400] : theme.colorScheme.onSurface.withOpacity(0.7),
+                          letterSpacing: 1.2,
+                          fontSize: 12.sp,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: Colors.transparent,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter an appointment';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                      borderRadius: BorderRadius.circular(12.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: isDarkMode ? Colors.black.withOpacity(0.5) : Colors.black.withOpacity(0.1),
+                          blurRadius: 8.r,
+                          offset: Offset(0, 4.h),
+                          spreadRadius: isDarkMode ? 1.r : 0.r,
+                        ),
+                      ],
+                    ),
+                    child: TextFormField(
+                      controller: _platoonController,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: isDarkMode ? Colors.white : theme.colorScheme.onSurface,
+                        letterSpacing: 0.5,
+                        fontSize: 14.sp,
+                      ),
+                      decoration: InputDecoration(
+                        labelText: 'Platoon',
+                        labelStyle: theme.textTheme.bodySmall?.copyWith(
+                          color: isDarkMode ? Colors.grey[400] : theme.colorScheme.onSurface.withOpacity(0.7),
+                          letterSpacing: 1.2,
+                          fontSize: 12.sp,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: Colors.transparent,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a platoon';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                      borderRadius: BorderRadius.circular(12.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: isDarkMode ? Colors.black.withOpacity(0.5) : Colors.black.withOpacity(0.1),
+                          blurRadius: 8.r,
+                          offset: Offset(0, 4.h),
+                          spreadRadius: isDarkMode ? 1.r : 0.r,
+                        ),
+                      ],
+                    ),
+                    child: TextFormField(
+                      controller: _sectionController,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: isDarkMode ? Colors.white : theme.colorScheme.onSurface,
+                        letterSpacing: 0.5,
+                        fontSize: 14.sp,
+                      ),
+                      decoration: InputDecoration(
+                        labelText: 'Section',
+                        labelStyle: theme.textTheme.bodySmall?.copyWith(
+                          color: isDarkMode ? Colors.grey[400] : theme.colorScheme.onSurface.withOpacity(0.7),
+                          letterSpacing: 1.2,
+                          fontSize: 12.sp,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: Colors.transparent,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a section';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                      borderRadius: BorderRadius.circular(12.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: isDarkMode ? Colors.black.withOpacity(0.5) : Colors.black.withOpacity(0.1),
+                          blurRadius: 8.r,
+                          offset: Offset(0, 4.h),
+                          spreadRadius: isDarkMode ? 1.r : 0.r,
+                        ),
+                      ],
+                    ),
+                    child: TextFormField(
+                      controller: _pointsController,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: isDarkMode ? Colors.white : theme.colorScheme.onSurface,
+                        letterSpacing: 0.5,
+                        fontSize: 14.sp,
+                      ),
+                      decoration: InputDecoration(
+                        labelText: 'Points',
+                        labelStyle: theme.textTheme.bodySmall?.copyWith(
+                          color: isDarkMode ? Colors.grey[400] : theme.colorScheme.onSurface.withOpacity(0.7),
+                          letterSpacing: 1.2,
+                          fontSize: 12.sp,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: Colors.transparent,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter points';
+                        }
+                        if (int.tryParse(value) == null) {
+                          return 'Please enter a valid number';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                      borderRadius: BorderRadius.circular(12.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: isDarkMode ? Colors.black.withOpacity(0.5) : Colors.black.withOpacity(0.1),
+                          blurRadius: 8.r,
+                          offset: Offset(0, 4.h),
+                          spreadRadius: isDarkMode ? 1.r : 0.r,
+                        ),
+                      ],
+                    ),
+                    child: DropdownButtonFormField<String>(
+                      value: _selectedRationType,
+                      items: _rationTypes.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: isDarkMode ? Colors.white : theme.colorScheme.onSurface,
+                              letterSpacing: 0.5,
+                              fontSize: 14.sp,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedRationType = newValue;
+                        });
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'Ration Type',
+                        labelStyle: theme.textTheme.bodySmall?.copyWith(
+                          color: isDarkMode ? Colors.grey[400] : theme.colorScheme.onSurface.withOpacity(0.7),
+                          letterSpacing: 1.2,
+                          fontSize: 12.sp,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: Colors.transparent,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                      ),
+                      validator: (value) {
+                        if (value == _rationTypes[0]) {
+                          return 'Please select a ration type';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                      borderRadius: BorderRadius.circular(12.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: isDarkMode ? Colors.black.withOpacity(0.5) : Colors.black.withOpacity(0.1),
+                          blurRadius: 8.r,
+                          offset: Offset(0, 4.h),
+                          spreadRadius: isDarkMode ? 1.r : 0.r,
+                        ),
+                      ],
+                    ),
+                    child: DropdownButtonFormField<String>(
+                      value: _selectedBloodType,
+                      items: _bloodTypes.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: isDarkMode ? Colors.white : theme.colorScheme.onSurface,
+                              letterSpacing: 0.5,
+                              fontSize: 14.sp,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedBloodType = newValue;
+                        });
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'Blood Type',
+                        labelStyle: theme.textTheme.bodySmall?.copyWith(
+                          color: isDarkMode ? Colors.grey[400] : theme.colorScheme.onSurface.withOpacity(0.7),
+                          letterSpacing: 1.2,
+                          fontSize: 12.sp,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: Colors.transparent,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                      ),
+                      validator: (value) {
+                        if (value == _bloodTypes[0]) {
+                          return 'Please select a blood type';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: InkWell(
+                          onTap: () => _showDatePicker('dob'),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                            decoration: BoxDecoration(
+                              color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                              borderRadius: BorderRadius.circular(12.r),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: isDarkMode ? Colors.black.withOpacity(0.5) : Colors.black.withOpacity(0.1),
+                                  blurRadius: 8.r,
+                                  offset: Offset(0, 4.h),
+                                  spreadRadius: isDarkMode ? 1.r : 0.r,
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Date of Birth',
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    color: isDarkMode ? Colors.grey[400] : theme.colorScheme.onSurface.withOpacity(0.7),
+                                    letterSpacing: 1.2,
+                                    fontSize: 12.sp,
+                                  ),
+                                ),
+                                SizedBox(height: 4.h),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        _dob.isEmpty ? 'Select date' : _dob,
+                                        style: theme.textTheme.bodyMedium?.copyWith(
+                                          color: isDarkMode ? Colors.white : theme.colorScheme.onSurface,
+                                          letterSpacing: 0.5,
+                                          fontSize: 14.sp,
+                                        ),
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.calendar_today_rounded,
+                                      color: theme.colorScheme.tertiary,
+                                      size: 20.sp,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
-                      onPressed: _submitForm,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.edit_note_rounded,
-                            color: Colors.white,
-                            size: 24.sp,
-                          ),
-                          SizedBox(width: 8.w),
-                          Text(
-                            'UPDATE DETAILS',
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
+                      SizedBox(width: 16.w),
+                      Expanded(
+                        child: InkWell(
+                          onTap: () => _showDatePicker('enlistment'),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                            decoration: BoxDecoration(
+                              color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                              borderRadius: BorderRadius.circular(12.r),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: isDarkMode ? Colors.black.withOpacity(0.5) : Colors.black.withOpacity(0.1),
+                                  blurRadius: 8.r,
+                                  offset: Offset(0, 4.h),
+                                  spreadRadius: isDarkMode ? 1.r : 0.r,
+                                ),
+                              ],
                             ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Enlistment Date',
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    color: isDarkMode ? Colors.grey[400] : theme.colorScheme.onSurface.withOpacity(0.7),
+                                    letterSpacing: 1.2,
+                                    fontSize: 12.sp,
+                                  ),
+                                ),
+                                SizedBox(height: 4.h),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        _enlistment.isEmpty ? 'Select date' : _enlistment,
+                                        style: theme.textTheme.bodyMedium?.copyWith(
+                                          color: isDarkMode ? Colors.white : theme.colorScheme.onSurface,
+                                          letterSpacing: 0.5,
+                                          fontSize: 14.sp,
+                                        ),
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.calendar_today_rounded,
+                                      color: theme.colorScheme.tertiary,
+                                      size: 20.sp,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 16.h),
+                  InkWell(
+                    onTap: () => _showDatePicker('ord'),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                      decoration: BoxDecoration(
+                        color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                        borderRadius: BorderRadius.circular(12.r),
+                        boxShadow: [
+                          BoxShadow(
+                            color: isDarkMode ? Colors.black.withOpacity(0.5) : Colors.black.withOpacity(0.1),
+                            blurRadius: 8.r,
+                            offset: Offset(0, 4.h),
+                            spreadRadius: isDarkMode ? 1.r : 0.r,
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'ORD Date',
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: isDarkMode ? Colors.grey[400] : theme.colorScheme.onSurface.withOpacity(0.7),
+                              letterSpacing: 1.2,
+                              fontSize: 12.sp,
+                            ),
+                          ),
+                          SizedBox(height: 4.h),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  _ord.isEmpty ? 'Select date' : _ord,
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                    color: isDarkMode ? Colors.white : theme.colorScheme.onSurface,
+                                    letterSpacing: 0.5,
+                                    fontSize: 14.sp,
+                                  ),
+                                ),
+                              ),
+                              Icon(
+                                Icons.calendar_today_rounded,
+                                color: theme.colorScheme.tertiary,
+                                size: 20.sp,
+                              ),
+                            ],
                           ),
                         ],
                       ),
                     ),
                   ),
                   SizedBox(height: 24.h),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+                  SizedBox(
+                    width: double.infinity,
+                    height: 48.h,
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          final user = User(
+                            id: widget.userId,
+                            name: _nameController.text,
+                            rank: _selectedRank!,
+                            company: _companyController.text,
+                            apppointment: _appointmentController.text,
+                            bloodgroup: _selectedBloodType!,
+                            dob: _dob,
+                            enlistment: _enlistment,
+                            ord: _ord,
+                            platoon: _platoonController.text,
+                            section: _sectionController.text,
+                            rationType: _selectedRationType!,
+                            points: _pointsController.text,
+                            currentAttendance: context.read<UserDetailProvider>().user?.currentAttendance ?? 'Outside Camp',
+                          );
 
-  Widget _buildTextField(BuildContext context, TextEditingController controller, String label, {bool isNumeric = false}) {
-    final theme = Theme.of(context);
-    String hintText = '';
-    
-    // Set appropriate hint text based on label
-    switch (label.toLowerCase()) {
-      case 'enter name (as in nric):':
-        hintText = 'e.g., TAN XIAO MING';
-        break;
-      case 'company:':
-        hintText = 'e.g., ALPHA';
-        break;
-      case 'platoon:':
-        hintText = 'e.g., 1';
-        break;
-      case 'section:':
-        hintText = 'e.g., 1';
-        break;
-      case 'appointment (in unit):':
-        hintText = 'e.g., PC';
-        break;
-      case 'points':
-        hintText = 'e.g., 4';
-        break;
-      default:
-        hintText = 'Enter ${label.toLowerCase()}';
-    }
-
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 229, 229, 229),
-        borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(
-          color: Colors.deepPurple.withOpacity(0.3),
-          width: 1.5,
-        ),
-      ),
-      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
-      child: TextFormField(
-        controller: controller,
-        style: theme.textTheme.bodyMedium?.copyWith(
-          fontSize: 16.sp,
-          color: Colors.black87,
-        ),
-        decoration: InputDecoration(
-          isDense: true,
-          contentPadding: EdgeInsets.symmetric(vertical: 8.h),
-          border: InputBorder.none,
-          labelText: label,
-          hintText: hintText,
-          floatingLabelBehavior: FloatingLabelBehavior.auto,
-          labelStyle: theme.textTheme.bodyMedium?.copyWith(
-            color: Colors.deepPurple,
-            fontSize: 14.sp,
-            fontWeight: FontWeight.w500,
-          ),
-          hintStyle: theme.textTheme.bodyMedium?.copyWith(
-            color: Colors.black54,
-            fontSize: 16.sp,
-          ),
-        ),
-        keyboardType: isNumeric ? TextInputType.number : TextInputType.text,
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter ${label.toLowerCase()}';
-          }
-          
-          // Additional field-specific validations
-          switch (label.toLowerCase()) {
-            case 'enter name (as in nric):':
-              if (value.length < 3) {
-                return 'Name must be at least 3 characters long';
-              }
-              break;
-            case 'company:':
-              if (value.length < 2) {
-                return 'Please enter a valid company';
-              }
-              break;
-            case 'platoon:':
-              if (int.tryParse(value) == null || int.parse(value) < 1) {
-                return 'Please enter a valid platoon number';
-              }
-              break;
-            case 'section:':
-              if (int.tryParse(value) == null || int.parse(value) < 1) {
-                return 'Please enter a valid section number';
-              }
-              break;
-            case 'points':
-              if (int.tryParse(value) == null || int.parse(value) < 0) {
-                return 'Please enter a valid points value';
-              }
-              break;
-          }
-          return null;
-        },
-      ),
-    );
-  }
-
-  Widget _buildDropdown(
-    BuildContext context, {
-    required String? value,
-    required List<String> items,
-    required Function(String?) onChanged,
-    required String hint,
-  }) {
-    final theme = Theme.of(context);
-    String hintText = '';
-    
-    // Set appropriate hint text based on hint
-    switch (hint.toLowerCase()) {
-      case 'ration type':
-        hintText = 'e.g., NM';
-        break;
-      case 'select rank':
-        hintText = 'e.g., CPL';
-        break;
-      case 'blood type':
-        hintText = 'e.g., O+';
-        break;
-      default:
-        hintText = 'Select ${hint.toLowerCase()}';
-    }
-
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 229, 229, 229),
-        borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(
-          color: Colors.deepPurple.withOpacity(0.3),
-          width: 1.5,
-        ),
-      ),
-      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            hint,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: Colors.deepPurple,
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          SizedBox(height: 4.h),
-          SizedBox(
-            height: 24.h,
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<String>(
-                value: value,
-                isExpanded: true,
-                icon: Icon(
-                  Icons.keyboard_arrow_down_rounded,
-                  color: Colors.deepPurple,
-                  size: 24.sp,
-                ),
-                dropdownColor: const Color.fromARGB(255, 229, 229, 229),
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  fontSize: 16.sp,
-                  color: Colors.black87,
-                ),
-                items: items.map((String item) {
-                  return DropdownMenuItem(
-                    value: item,
-                    child: Text(
-                      item,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        fontSize: 16.sp,
-                        color: item.startsWith('Select') 
-                            ? Colors.black54
-                            : Colors.black87,
+                          context.read<UserDetailProvider>().updateUser(user);
+                          Navigator.pop(context);
+                        }
+                      },
+                      icon: Icon(
+                        Icons.save_rounded,
+                        size: 20.sp,
+                        color: Colors.white,
                       ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  );
-                }).toList(),
-                onChanged: onChanged,
-                hint: Text(
-                  hintText,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    fontSize: 16.sp,
-                    color: Colors.black54,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDatePicker(BuildContext context, String label, String value, VoidCallback onTap) {
-    final theme = Theme.of(context);
-    String hintText = 'e.g., 1 Jan 2024';
-    
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 229, 229, 229),
-          borderRadius: BorderRadius.circular(16.r),
-          border: Border.all(
-            color: Colors.deepPurple.withOpacity(0.3),
-            width: 1.5,
-          ),
-        ),
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              label,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: Colors.deepPurple,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            SizedBox(height: 4.h),
-            SizedBox(
-              height: 24.h,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    value.isEmpty ? hintText : value,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      fontSize: 16.sp,
-                      color: value.isEmpty ? Colors.black54 : Colors.black87,
+                      label: Text(
+                        'SAVE CHANGES',
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.2,
+                          fontSize: 14.sp,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: theme.colorScheme.secondary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                      ),
                     ),
                   ),
-                  Icon(
-                    Icons.calendar_today_outlined,
-                    color: Colors.deepPurple,
-                    size: 20.sp,
-                  ),
+                  SizedBox(height: 24.h),
                 ],
               ),
             ),
-          ],
+          ),
         ),
-      ),
-    );
-  }
-
-  Future<void> _submitForm() async {
-    bool isValid = _formKey.currentState!.validate();
-    
-    // Additional date validations
-    if (_dob.isEmpty) {
-      isValid = false;
-      _showError('Please select a date of birth');
-    }
-    
-    if (_enlistment.isEmpty) {
-      isValid = false;
-      _showError('Please select an enlistment date');
-    }
-    
-    if (_ord.isEmpty) {
-      isValid = false;
-      _showError('Please select an ORD date');
-    }
-
-    // Validate dropdown selections
-    if (_selectedRank == null || _selectedRank!.startsWith('Select')) {
-      isValid = false;
-      _showError('Please select a rank');
-    }
-
-    if (_selectedRationType == null || _selectedRationType!.startsWith('Select')) {
-      isValid = false;
-      _showError('Please select a ration type');
-    }
-
-    if (_selectedBloodType == null || _selectedBloodType!.startsWith('Select')) {
-      isValid = false;
-      _showError('Please select a blood type');
-    }
-
-    // Validate date relationships
-    try {
-      final dobDate = DateFormat("d MMM yyyy").parse(_dob);
-      final enlistmentDate = DateFormat("d MMM yyyy").parse(_enlistment);
-      final ordDate = DateFormat("d MMM yyyy").parse(_ord);
-      final now = DateTime.now();
-
-      if (dobDate.isAfter(now)) {
-        isValid = false;
-        _showError('Date of birth cannot be in the future');
-      }
-
-      if (enlistmentDate.isAfter(now)) {
-        isValid = false;
-        _showError('Enlistment date cannot be in the future');
-      }
-
-      if (enlistmentDate.isBefore(dobDate)) {
-        isValid = false;
-        _showError('Enlistment date cannot be before date of birth');
-      }
-
-      if (ordDate.isBefore(enlistmentDate)) {
-        isValid = false;
-        _showError('ORD date cannot be before enlistment date');
-      }
-    } catch (e) {
-      isValid = false;
-      _showError('Invalid date format');
-    }
-
-    if (isValid) {
-      try {
-        final provider = Provider.of<UserDetailProvider>(context, listen: false);
-        
-        final updatedUser = User(
-          id: widget.userId,
-          name: _nameController.text.trim(),
-          rank: _selectedRank!,
-          company: _companyController.text.trim(),
-          apppointment: _appointmentController.text.trim(),
-          bloodgroup: _selectedBloodType!,
-          currentAttendance: provider.user!.currentAttendance,
-          dob: _dob,
-          enlistment: _enlistment,
-          ord: _ord,
-          platoon: _platoonController.text.trim(),
-          points: _pointsController.text.trim(),
-          rationType: _selectedRationType!,
-          section: _sectionController.text.trim(),
-        );
-
-        await provider.updateUser(updatedUser);
-        
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                'User details updated successfully',
-                style: GoogleFonts.poppins(),
-              ),
-              backgroundColor: Colors.green,
-            ),
-          );
-          Navigator.pop(context);
-        }
-      } catch (e) {
-        _showError('Error updating user details: $e');
-      }
-    }
-  }
-
-  void _showError(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          message,
-          style: GoogleFonts.poppins(),
-        ),
-        backgroundColor: Colors.red,
       ),
     );
   }
