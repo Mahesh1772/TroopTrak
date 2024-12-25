@@ -97,7 +97,7 @@ class _StatusesTabState extends State<StatusesTab> {
                         padding: EdgeInsets.all(8.w),
                         decoration: BoxDecoration(
                           color: isDarkMode 
-                              ? Color.fromARGB(255, 45, 50, 65)
+                              ? const Color.fromARGB(255, 45, 50, 65)
                               : Colors.white,
                           borderRadius: BorderRadius.circular(8.r),
                           boxShadow: [
@@ -154,7 +154,7 @@ class _StatusesTabState extends State<StatusesTab> {
                       ),
                     )
                   else
-                    Container(
+                    SizedBox(
                       height: 160.h,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
@@ -178,7 +178,7 @@ class _StatusesTabState extends State<StatusesTab> {
                         padding: EdgeInsets.all(8.w),
                         decoration: BoxDecoration(
                           color: isDarkMode 
-                              ? Color.fromARGB(255, 45, 50, 65)
+                              ? const Color.fromARGB(255, 45, 50, 65)
                               : Colors.white,
                           borderRadius: BorderRadius.circular(8.r),
                           boxShadow: [
@@ -212,7 +212,7 @@ class _StatusesTabState extends State<StatusesTab> {
                   SizedBox(height: 16.h),
                   
                   // Fixed height container for past statuses
-                  Container(
+                  SizedBox(
                     height: 180.h,
                     child: pastStatuses.isEmpty
                         ? Center(

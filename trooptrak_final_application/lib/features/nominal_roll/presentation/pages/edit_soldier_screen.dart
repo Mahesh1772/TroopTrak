@@ -271,7 +271,7 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
     final isDarkMode = theme.brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDarkMode ? Color.fromARGB(255, 35, 40, 55) : theme.colorScheme.background,
+      backgroundColor: isDarkMode ? const Color.fromARGB(255, 35, 40, 55) : theme.colorScheme.surface,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -313,7 +313,7 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
                   SizedBox(height: 20.h),
                   Container(
                     decoration: BoxDecoration(
-                      color: isDarkMode ? Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                      color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
                       borderRadius: BorderRadius.circular(12.r),
                       boxShadow: [
                         BoxShadow(
@@ -357,7 +357,7 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
                   SizedBox(height: 16.h),
                   Container(
                     decoration: BoxDecoration(
-                      color: isDarkMode ? Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                      color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
                       borderRadius: BorderRadius.circular(12.r),
                       boxShadow: [
                         BoxShadow(
@@ -414,7 +414,7 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
                   SizedBox(height: 16.h),
                   Container(
                     decoration: BoxDecoration(
-                      color: isDarkMode ? Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                      color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
                       borderRadius: BorderRadius.circular(12.r),
                       boxShadow: [
                         BoxShadow(
@@ -458,7 +458,7 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
                   SizedBox(height: 16.h),
                   Container(
                     decoration: BoxDecoration(
-                      color: isDarkMode ? Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                      color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
                       borderRadius: BorderRadius.circular(12.r),
                       boxShadow: [
                         BoxShadow(
@@ -502,7 +502,7 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
                   SizedBox(height: 16.h),
                   Container(
                     decoration: BoxDecoration(
-                      color: isDarkMode ? Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                      color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
                       borderRadius: BorderRadius.circular(12.r),
                       boxShadow: [
                         BoxShadow(
@@ -546,7 +546,7 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
                   SizedBox(height: 16.h),
                   Container(
                     decoration: BoxDecoration(
-                      color: isDarkMode ? Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                      color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
                       borderRadius: BorderRadius.circular(12.r),
                       boxShadow: [
                         BoxShadow(
@@ -590,7 +590,7 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
                   SizedBox(height: 16.h),
                   Container(
                     decoration: BoxDecoration(
-                      color: isDarkMode ? Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                      color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
                       borderRadius: BorderRadius.circular(12.r),
                       boxShadow: [
                         BoxShadow(
@@ -637,7 +637,7 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
                   SizedBox(height: 16.h),
                   Container(
                     decoration: BoxDecoration(
-                      color: isDarkMode ? Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                      color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
                       borderRadius: BorderRadius.circular(12.r),
                       boxShadow: [
                         BoxShadow(
@@ -694,7 +694,7 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
                   SizedBox(height: 16.h),
                   Container(
                     decoration: BoxDecoration(
-                      color: isDarkMode ? Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                      color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
                       borderRadius: BorderRadius.circular(12.r),
                       boxShadow: [
                         BoxShadow(
@@ -757,7 +757,7 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
                           child: Container(
                             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                             decoration: BoxDecoration(
-                              color: isDarkMode ? Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                              color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
                               borderRadius: BorderRadius.circular(12.r),
                               boxShadow: [
                                 BoxShadow(
@@ -811,7 +811,7 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
                           child: Container(
                             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                             decoration: BoxDecoration(
-                              color: isDarkMode ? Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                              color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
                               borderRadius: BorderRadius.circular(12.r),
                               boxShadow: [
                                 BoxShadow(
@@ -866,7 +866,7 @@ class _EditSoldierScreenState extends State<EditSoldierScreen> {
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                       decoration: BoxDecoration(
-                        color: isDarkMode ? Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                        color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
                         borderRadius: BorderRadius.circular(12.r),
                         boxShadow: [
                           BoxShadow(

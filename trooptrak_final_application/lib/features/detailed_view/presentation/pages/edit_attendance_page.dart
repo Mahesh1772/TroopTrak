@@ -77,7 +77,7 @@ class _EditAttendancePageState extends State<EditAttendancePage> {
                   child: Container(
                     height: 70.h,
                     decoration: BoxDecoration(
-                      color: isDarkMode ? Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                      color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
                       borderRadius: BorderRadius.circular(12.r),
                       boxShadow: [
                         BoxShadow(
@@ -131,7 +131,7 @@ class _EditAttendancePageState extends State<EditAttendancePage> {
                 Container(
                   height: 70.h,
                   decoration: BoxDecoration(
-                    color: isDarkMode ? Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                    color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
                     borderRadius: BorderRadius.circular(12.r),
                     boxShadow: [
                       BoxShadow(
@@ -235,7 +235,7 @@ class _EditAttendancePageState extends State<EditAttendancePage> {
             colorScheme: theme.colorScheme.copyWith(
               primary: theme.colorScheme.secondary,
               onPrimary: Colors.white,
-              surface: isDarkMode ? Color.fromARGB(255, 45, 50, 65) : Colors.white,
+              surface: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : Colors.white,
               onSurface: isDarkMode ? Colors.white : theme.colorScheme.onSurface,
             ),
             textButtonTheme: TextButtonThemeData(
@@ -243,7 +243,7 @@ class _EditAttendancePageState extends State<EditAttendancePage> {
                 foregroundColor: theme.colorScheme.secondary,
               ),
             ),
-            dialogBackgroundColor: isDarkMode ? Color.fromARGB(255, 35, 40, 55) : Colors.white,
+            dialogBackgroundColor: isDarkMode ? const Color.fromARGB(255, 35, 40, 55) : Colors.white,
           ),
           child: child!,
         );
@@ -261,7 +261,7 @@ class _EditAttendancePageState extends State<EditAttendancePage> {
               colorScheme: theme.colorScheme.copyWith(
                 primary: theme.colorScheme.secondary,
                 onPrimary: Colors.white,
-                surface: isDarkMode ? Color.fromARGB(255, 45, 50, 65) : Colors.white,
+                surface: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : Colors.white,
                 onSurface: isDarkMode ? Colors.white : theme.colorScheme.onSurface,
               ),
               textButtonTheme: TextButtonThemeData(
@@ -269,7 +269,7 @@ class _EditAttendancePageState extends State<EditAttendancePage> {
                   foregroundColor: theme.colorScheme.secondary,
                 ),
               ),
-              dialogBackgroundColor: isDarkMode ? Color.fromARGB(255, 35, 40, 55) : Colors.white,
+              dialogBackgroundColor: isDarkMode ? const Color.fromARGB(255, 35, 40, 55) : Colors.white,
             ),
             child: child!,
           );

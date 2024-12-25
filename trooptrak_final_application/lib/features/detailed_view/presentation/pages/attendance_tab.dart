@@ -99,7 +99,7 @@ class AttendanceTab extends StatelessWidget {
                             padding: EdgeInsets.all(8.w),
                             decoration: BoxDecoration(
                               color: isDarkMode 
-                                  ? Color.fromARGB(255, 45, 50, 65)
+                                  ? const Color.fromARGB(255, 45, 50, 65)
                                   : Colors.white,
                               borderRadius: BorderRadius.circular(8.r),
                               boxShadow: [
@@ -133,7 +133,7 @@ class AttendanceTab extends StatelessWidget {
                       SizedBox(height: 12.h),
                       ListView.builder(
                         shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         itemCount: records.length,
                         padding: EdgeInsets.symmetric(vertical: 4.h),
                         itemBuilder: (context, index) {
@@ -161,7 +161,7 @@ class AttendanceTab extends StatelessWidget {
                                 padding: EdgeInsets.all(12.w),
                                 decoration: BoxDecoration(
                                   color: isDarkMode 
-                                      ? Color.fromARGB(255, 45, 50, 65)
+                                      ? const Color.fromARGB(255, 45, 50, 65)
                                       : theme.colorScheme.surface,
                                   borderRadius: BorderRadius.circular(12.r),
                                   boxShadow: [

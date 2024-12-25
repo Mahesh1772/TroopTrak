@@ -68,7 +68,7 @@ class _AddUpdateStatusPageState extends State<AddUpdateStatusPage> {
             colorScheme: theme.colorScheme.copyWith(
               primary: theme.colorScheme.secondary,
               onPrimary: Colors.white,
-              surface: isDarkMode ? Color.fromARGB(255, 45, 50, 65) : Colors.white,
+              surface: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : Colors.white,
               onSurface: isDarkMode ? Colors.white : theme.colorScheme.onSurface,
             ),
             textButtonTheme: TextButtonThemeData(
@@ -76,7 +76,7 @@ class _AddUpdateStatusPageState extends State<AddUpdateStatusPage> {
                 foregroundColor: theme.colorScheme.secondary,
               ),
             ),
-            dialogBackgroundColor: isDarkMode ? Color.fromARGB(255, 35, 40, 55) : Colors.white,
+            dialogBackgroundColor: isDarkMode ? const Color.fromARGB(255, 35, 40, 55) : Colors.white,
           ),
           child: child!,
         );
@@ -94,7 +94,7 @@ class _AddUpdateStatusPageState extends State<AddUpdateStatusPage> {
               colorScheme: theme.colorScheme.copyWith(
                 primary: theme.colorScheme.secondary,
                 onPrimary: Colors.white,
-                surface: isDarkMode ? Color.fromARGB(255, 45, 50, 65) : Colors.white,
+                surface: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : Colors.white,
                 onSurface: isDarkMode ? Colors.white : theme.colorScheme.onSurface,
               ),
               textButtonTheme: TextButtonThemeData(
@@ -102,7 +102,7 @@ class _AddUpdateStatusPageState extends State<AddUpdateStatusPage> {
                   foregroundColor: theme.colorScheme.secondary,
                 ),
               ),
-              dialogBackgroundColor: isDarkMode ? Color.fromARGB(255, 35, 40, 55) : Colors.white,
+              dialogBackgroundColor: isDarkMode ? const Color.fromARGB(255, 35, 40, 55) : Colors.white,
             ),
             child: child!,
           );
@@ -121,7 +121,7 @@ class _AddUpdateStatusPageState extends State<AddUpdateStatusPage> {
           final theme = Theme.of(context);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(
+              content: const Text(
                 'End date/time cannot be before start date/time',
                 style: TextStyle(
                   color: Colors.white,
@@ -134,7 +134,7 @@ class _AddUpdateStatusPageState extends State<AddUpdateStatusPage> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.r),
               ),
-              margin: EdgeInsets.all(16),
+              margin: const EdgeInsets.all(16),
             ),
           );
           return;
@@ -203,7 +203,7 @@ class _AddUpdateStatusPageState extends State<AddUpdateStatusPage> {
                   Container(
                     height: 70.h,
                     decoration: BoxDecoration(
-                      color: isDarkMode ? Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                      color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
                       borderRadius: BorderRadius.circular(12.r),
                       boxShadow: [
                         BoxShadow(
@@ -250,7 +250,7 @@ class _AddUpdateStatusPageState extends State<AddUpdateStatusPage> {
                           }
                           return null;
                         },
-                        dropdownColor: isDarkMode ? Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                        dropdownColor: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
                       ),
                     ),
                   ),
@@ -260,7 +260,7 @@ class _AddUpdateStatusPageState extends State<AddUpdateStatusPage> {
                   Container(
                     height: 70.h,
                     decoration: BoxDecoration(
-                      color: isDarkMode ? Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                      color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
                       borderRadius: BorderRadius.circular(12.r),
                       boxShadow: [
                         BoxShadow(
@@ -308,7 +308,7 @@ class _AddUpdateStatusPageState extends State<AddUpdateStatusPage> {
                           child: Container(
                             height: 70.h,
                             decoration: BoxDecoration(
-                              color: isDarkMode ? Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                              color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
                               borderRadius: BorderRadius.circular(12.r),
                               boxShadow: [
                                 BoxShadow(
@@ -364,7 +364,7 @@ class _AddUpdateStatusPageState extends State<AddUpdateStatusPage> {
                           child: Container(
                             height: 70.h,
                             decoration: BoxDecoration(
-                              color: isDarkMode ? Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+                              color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
                               borderRadius: BorderRadius.circular(12.r),
                               boxShadow: [
                                 BoxShadow(

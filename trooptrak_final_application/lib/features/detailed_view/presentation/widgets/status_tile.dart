@@ -49,7 +49,7 @@ class StatusTile extends StatelessWidget {
       height: 140.h,
       margin: EdgeInsets.only(right: 12.w),
       decoration: BoxDecoration(
-        color: isDarkMode ? Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+        color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(12.r),
         boxShadow: [
           BoxShadow(
@@ -130,7 +130,7 @@ class StatusTile extends StatelessWidget {
                           onDone: () {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text(
+                                content: const Text(
                                   'Status deleted',
                                   style: TextStyle(color: Colors.white),
                                 ),
@@ -143,7 +143,7 @@ class StatusTile extends StatelessWidget {
                               SnackBar(
                                 content: Text(
                                   'Error deleting status: $error',
-                                  style: TextStyle(color: Colors.white),
+                                  style: const TextStyle(color: Colors.white),
                                 ),
                                 backgroundColor: theme.colorScheme.error,
                               ),

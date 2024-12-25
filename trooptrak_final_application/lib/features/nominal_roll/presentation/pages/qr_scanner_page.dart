@@ -106,7 +106,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
             child: Column(
               children: [
                 // Header Section
-                Container(
+                SizedBox(
                   height: 160.h,
                   child: ListView(
                     controller: controller,
@@ -140,7 +140,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
                 SizedBox(height: 16.h),
                 
                 // Scanner Section
-                Container(
+                SizedBox(
                   height: 380.h,
                   child: Stack(
                     children: [

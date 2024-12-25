@@ -96,7 +96,7 @@ class PastStatusTile extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.r),
                         ),
-                        margin: EdgeInsets.all(16),
+                        margin: const EdgeInsets.all(16),
                       ),
                     );
                   },
@@ -117,7 +117,7 @@ class PastStatusTile extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.r),
                         ),
-                        margin: EdgeInsets.all(16),
+                        margin: const EdgeInsets.all(16),
                       ),
                     );
                   },
@@ -137,7 +137,7 @@ class PastStatusTile extends StatelessWidget {
         child: Container(
           height: 72.h,
           decoration: BoxDecoration(
-            color: isDarkMode ? Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
+            color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(12.r),
             boxShadow: [
               BoxShadow(
