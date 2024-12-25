@@ -38,7 +38,14 @@ class _ParticipantSelectorState extends State<ParticipantSelector> {
     
     setState(() {
       _allSoldiers = soldiers;
-      _updateNonParticipants();
+      
+      // Auto-select all soldiers if this is a new conduct (i.e., selectedParticipants is empty)
+      if (widget.selectedParticipants.isEmpty) {
+        final allSoldierIds = soldiers.map((s) => s['id'].toString()).toList();
+        widget.onParticipantsChanged(allSoldierIds, {}, []);
+      } else {
+        _updateNonParticipants();
+      }
     });
   }
 
