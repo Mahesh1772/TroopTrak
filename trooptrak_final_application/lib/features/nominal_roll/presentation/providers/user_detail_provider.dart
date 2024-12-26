@@ -2,11 +2,11 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:trooptrak_final_application/features/nominal_roll/domain/usecases/delete_user_usecase.dart';
 import '../../domain/entities/user.dart';
-import '../../domain/entities/attendance_record.dart';
 import '../../domain/usecases/get_user_by_id_usecase.dart';
 import '../../domain/usecases/get_user_attendance_usecase.dart';
-import 'dart:async';
 import '../../domain/usecases/update_user_usecase.dart';
+import '../../../detailed_view/domain/entities/attendance_record.dart' as detailed_view;
+import 'dart:async';
 
 class UserDetailProvider extends ChangeNotifier {
   final GetUserByIdUseCase getUserByIdUseCase;
@@ -73,8 +73,14 @@ class UserDetailProvider extends ChangeNotifier {
     );
   }
 
-  Stream<List<AttendanceRecord>> getUserAttendance(String id) {
-    return getUserAttendanceUseCase(id);
+  Stream<List<detailed_view.AttendanceRecord>> getUserAttendance(String userId) {
+    return getUserAttendanceUseCase(userId).map((records) {
+      return records.map((record) => detailed_view.AttendanceRecord(
+        id: record.dateTime,
+        dateTime: record.dateTime,
+        isInsideCamp: record.isInsideCamp,
+      )).toList();
+    });
   }
 
   Future<void> updateUser(User updatedUser) async {
