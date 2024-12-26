@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:trooptrak_final_application/features/guard_duty/domain/entities/guard_duty.dart';
+import '../pages/add_guard_duty_screen.dart';
 import '../providers/guard_duty_provider.dart';
+import 'package:trooptrak_final_application/features/guard_duty/domain/entities/guard_duty.dart';
 import 'guard_duty_tile.dart';
 
 class UpcomingDutiesTab extends StatelessWidget {
@@ -42,7 +43,15 @@ class UpcomingDutiesTab extends StatelessWidget {
   }
 
   void _editDuty(BuildContext context, GuardDuty duty) {
-    // Navigate to edit screen
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddGuardDutyScreen(
+          isEditing: true,
+          dutyToEdit: duty,
+        ),
+      ),
+    );
   }
 
   void _deleteDuty(BuildContext context, GuardDuty duty) {

@@ -39,6 +39,9 @@ import '../../features/conduct_tracker/data/repositories/conduct_repository_impl
 import '../../features/conduct_tracker/domain/usecases/get_conduct_by_id_usecase.dart';
 import 'package:trooptrak_final_application/features/guard_duty/data/repositories/guard_duty_repository_impl.dart';
 import 'package:trooptrak_final_application/features/guard_duty/presentation/providers/guard_duty_provider.dart';
+import 'package:trooptrak_final_application/features/guard_duty/data/repositories/soldier_repository_impl.dart';
+import 'package:trooptrak_final_application/features/guard_duty/domain/usecases/get_soldiers.dart';
+import 'package:trooptrak_final_application/features/guard_duty/presentation/providers/soldier_provider.dart';
 
 List<SingleChildWidget> getProviders() {
   return [
@@ -197,6 +200,23 @@ List<SingleChildWidget> getProviders() {
           updateGuardDuty: updateGuardDuty,
           deleteGuardDuty: deleteGuardDuty,
         ),
+  ),
+  // Soldier Providers
+  Provider<SoldierRepositoryImpl>(
+    create: (context) => SoldierRepositoryImpl(
+      context.read<FirebaseFirestore>(),
+    ),
+  ),
+  ProxyProvider<SoldierRepositoryImpl, GetSoldiersUseCase>(
+    update: (_, repo, __) => GetSoldiersUseCase(repo),
+  ),
+  ChangeNotifierProxyProvider<GetSoldiersUseCase, SoldierProvider>(
+    create: (context) => SoldierProvider(
+      getSoldiers: context.read<GetSoldiersUseCase>(),
+    ),
+    update: (_, getSoldiers, __) => SoldierProvider(
+      getSoldiers: getSoldiers,
+    ),
   ),
   ];
 } 
