@@ -34,12 +34,19 @@ class _AddGuardDutyScreenState extends State<AddGuardDutyScreen> {
     _dateController = TextEditingController(
       text: widget.isEditing ? widget.dutyToEdit!.dutyDate : '',
     );
+    
+    // Parse and format times properly
     _startTimeController = TextEditingController(
-      text: widget.isEditing ? widget.dutyToEdit!.startTime : '',
+      text: widget.isEditing 
+          ? _formatTimeString(widget.dutyToEdit!.startTime)
+          : '',
     );
     _endTimeController = TextEditingController(
-      text: widget.isEditing ? widget.dutyToEdit!.endTime : '',
+      text: widget.isEditing 
+          ? _formatTimeString(widget.dutyToEdit!.endTime)
+          : '',
     );
+    
     _dutyTypeController = TextEditingController(
       text: widget.isEditing ? widget.dutyToEdit!.dutyType : '',
     );
@@ -47,8 +54,33 @@ class _AddGuardDutyScreenState extends State<AddGuardDutyScreen> {
       text: widget.isEditing ? widget.dutyToEdit!.points.toString() : '',
     );
     _participants = widget.isEditing 
-      ? Map<String, String>.from(widget.dutyToEdit!.participants)
-      : {};
+        ? Map<String, String>.from(widget.dutyToEdit!.participants)
+        : {};
+  }
+
+  // Helper method to format time strings
+  String _formatTimeString(String time) {
+    try {
+      // Handle different time formats
+      if (time.contains('AM') || time.contains('PM')) {
+        return time; // Already in correct format
+      }
+      
+      // Parse 24-hour format
+      final parts = time.split(':');
+      if (parts.length == 2) {
+        final hour = int.parse(parts[0]);
+        final minute = int.parse(parts[1]);
+        
+        final period = hour >= 12 ? 'PM' : 'AM';
+        final displayHour = hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour);
+        
+        return '${displayHour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')} $period';
+      }
+      return time;
+    } catch (e) {
+      return time; // Return original if parsing fails
+    }
   }
 
   @override
@@ -75,15 +107,27 @@ class _AddGuardDutyScreenState extends State<AddGuardDutyScreen> {
     }
   }
 
-  Future<void> _selectTime(bool isStartTime) async {
-    final time = await showTimePicker(
+  Future<void> _selectTime(BuildContext context, bool isStartTime) async {
+    final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
     );
-    if (time != null) {
+    
+    if (picked != null) {
       setState(() {
-        final controller = isStartTime ? _startTimeController : _endTimeController;
-        controller.text = time.format(context);
+        final hour = picked.hour;
+        final minute = picked.minute;
+        final period = picked.period == DayPeriod.am ? 'AM' : 'PM';
+        final displayHour = picked.hourOfPeriod == 0 ? 12 : picked.hourOfPeriod;
+        
+        final timeString = 
+            '${displayHour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')} $period';
+            
+        if (isStartTime) {
+          _startTimeController.text = timeString;
+        } else {
+          _endTimeController.text = timeString;
+        }
       });
     }
   }
@@ -95,26 +139,28 @@ class _AddGuardDutyScreenState extends State<AddGuardDutyScreen> {
   }
 
   void _saveGuardDuty() {
-    if (!_validateForm()) return;
-
-    final provider = context.read<GuardDutyProvider>();
+    // Convert times to consistent format before saving
+    final startTime = _startTimeController.text;
+    final endTime = _endTimeController.text;
     
-    final guardDuty = GuardDuty(
-      id: widget.isEditing ? widget.dutyToEdit!.id : DateTime.now().toString(),
+    final newDuty = GuardDuty(
+      id: widget.isEditing ? widget.dutyToEdit!.id : '',
       dutyDate: _dateController.text,
-      startTime: _startTimeController.text,
-      endTime: _endTimeController.text,
+      startTime: startTime,
+      endTime: endTime,
       dutyType: _dutyTypeController.text,
-      points: int.parse(_pointsController.text),
+      points: int.tryParse(_pointsController.text) ?? 0,
       participants: _participants,
     );
 
     if (widget.isEditing) {
-      provider.updateDuty(widget.dutyToEdit!, guardDuty);
+      context.read<GuardDutyProvider>().updateDuty(
+        widget.dutyToEdit!,  // old duty
+        newDuty,            // new duty
+      );
     } else {
-      provider.addDuty(guardDuty);
+      context.read<GuardDutyProvider>().addDuty(newDuty);
     }
-
     Navigator.pop(context);
   }
 
@@ -166,7 +212,7 @@ class _AddGuardDutyScreenState extends State<AddGuardDutyScreen> {
               children: [
                 Expanded(
                   child: InkWell(
-                    onTap: () => _selectTime(true),
+                    onTap: () => _selectTime(context, true),
                     child: InputDecorator(
                       decoration: InputDecoration(
                         labelText: 'Start Time',
@@ -183,7 +229,7 @@ class _AddGuardDutyScreenState extends State<AddGuardDutyScreen> {
                 SizedBox(width: 16.w),
                 Expanded(
                   child: InkWell(
-                    onTap: () => _selectTime(false),
+                    onTap: () => _selectTime(context, false),
                     child: InputDecorator(
                       decoration: InputDecoration(
                         labelText: 'End Time',

@@ -79,6 +79,18 @@ class _AddDutySoldiersCardState extends State<AddDutySoldiersCard> {
                     SizedBox(height: 16.h),
                     Consumer<SoldierProvider>(
                       builder: (context, provider, child) {
+                        if (provider.isLoading) {
+                          return const CircularProgressIndicator();
+                        }
+
+                        if (provider.error != null) {
+                          return Text('Error: ${provider.error}');
+                        }
+
+                        if (provider.soldiers.isEmpty) {
+                          return const Text('No soldiers found');
+                        }
+
                         final soldiers = provider.soldiers
                             .where((soldier) => 
                                 soldier.name.toLowerCase().contains(searchText.toLowerCase()) ||

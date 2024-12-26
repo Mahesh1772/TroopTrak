@@ -10,7 +10,10 @@ class SoldierRepositoryImpl implements SoldierRepository {
   @override
   Future<List<Soldier>> getSoldiers() async {
     try {
-      final snapshot = await _firestore.collection('Users').get();
+      final snapshot = await _firestore.collection('Users')
+          .where('role', isEqualTo: 'soldier')
+          .orderBy('rank')
+          .get();
       
       return snapshot.docs.map((doc) {
         final data = doc.data();

@@ -8,7 +8,10 @@ class SoldierProvider with ChangeNotifier {
   bool _isLoading = false;
   String? _error;
 
-  SoldierProvider({required GetSoldiersUseCase getSoldiers}) : _getSoldiers = getSoldiers;
+  SoldierProvider({required GetSoldiersUseCase getSoldiers}) : _getSoldiers = getSoldiers {
+    // Load soldiers automatically when provider is created
+    loadSoldiers();
+  }
 
   List<Soldier> get soldiers => _soldiers;
   bool get isLoading => _isLoading;
