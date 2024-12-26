@@ -27,12 +27,31 @@ class _AddUpdateStatusPageState extends State<AddUpdateStatusPage> {
   late TextEditingController _statusNameController;
   late DateTime _startDateTime;
   late DateTime _endDateTime;
+  final FocusNode _statusNameFocusNode = FocusNode();
+  OverlayEntry? _overlayEntry;
+  final LayerLink _layerLink = LayerLink();
 
   final List<String> _statusTypes = [
     "Select status type...",
     "Excuse",
     "Leave",
     "Medical Appointment",
+  ];
+
+  final List<String> _excuseTypes = [
+    'Ex RMJ',
+    'Ex Lower Limb',
+    'Ex Heavy Loads',
+    'Ex Uniform',
+    'Ex Boots',
+    'Ex FLEGs',
+    'Ex Upper Limb',
+    'Ex Pushup',
+    'Ex Situp',
+    'Ex Sunlight',
+    'Ex Grass',
+    'Ex Outfield',
+    'LD',
   ];
 
   @override
@@ -46,12 +65,106 @@ class _AddUpdateStatusPageState extends State<AddUpdateStatusPage> {
     _endDateTime = widget.status != null
         ? DateTime.parse(widget.status!.endId)
         : DateTime.now().add(const Duration(hours: 1));
+
+    _statusNameController.addListener(() {
+      if (_statusType == 'Excuse') {
+        _updateOverlay();
+      }
+    });
+
+    _statusNameFocusNode.addListener(() {
+      if (!_statusNameFocusNode.hasFocus) {
+        _removeOverlay();
+      } else if (_statusType == 'Excuse') {
+        _updateOverlay();
+      }
+    });
   }
 
   @override
   void dispose() {
     _statusNameController.dispose();
+    _statusNameFocusNode.dispose();
+    _removeOverlay();
     super.dispose();
+  }
+
+  void _updateOverlay() {
+    _removeOverlay();
+    if (_statusNameFocusNode.hasFocus && _statusType == 'Excuse') {
+      _overlayEntry = _createOverlayEntry();
+      Overlay.of(context).insert(_overlayEntry!);
+    }
+  }
+
+  void _removeOverlay() {
+    _overlayEntry?.remove();
+    _overlayEntry = null;
+  }
+
+  OverlayEntry _createOverlayEntry() {
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+    final renderBox = context.findRenderObject() as RenderBox;
+    final size = renderBox.size;
+
+    final filteredExcuses = _excuseTypes
+        .where((excuse) => excuse
+            .toLowerCase()
+            .contains(_statusNameController.text.toLowerCase()))
+        .toList();
+
+    return OverlayEntry(
+      builder: (context) => Positioned(
+        width: size.width - 32.w,
+        child: CompositedTransformFollower(
+          link: _layerLink,
+          showWhenUnlinked: false,
+          offset: Offset(0, 70.h),
+          child: Material(
+            elevation: 8,
+            borderRadius: BorderRadius.circular(12.r),
+            color: isDarkMode 
+                ? const Color.fromARGB(255, 45, 50, 65) 
+                : Colors.white,
+            child: Container(
+              constraints: BoxConstraints(maxHeight: 200.h),
+              child: ListView.builder(
+                padding: EdgeInsets.symmetric(vertical: 8.h),
+                shrinkWrap: true,
+                itemCount: filteredExcuses.length,
+                itemBuilder: (context, index) {
+                  final excuse = filteredExcuses[index];
+                  return InkWell(
+                    onTap: () {
+                      _statusNameController.text = excuse;
+                      _statusNameController.selection = TextSelection.fromPosition(
+                        TextPosition(offset: excuse.length),
+                      );
+                      _removeOverlay();
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                        vertical: 12.h,
+                      ),
+                      child: Text(
+                        excuse,
+                        style: GoogleFonts.poppins(
+                          color: isDarkMode ? Colors.white : Colors.black87,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   Future<void> _selectDateTime(bool isStart) async {
@@ -270,30 +383,40 @@ class _AddUpdateStatusPageState extends State<AddUpdateStatusPage> {
                         ),
                       ],
                     ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      child: TextFormField(
-                        controller: _statusNameController,
-                        style: GoogleFonts.poppins(
-                          color: isDarkMode ? Colors.white : theme.colorScheme.onSurface,
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        decoration: InputDecoration(
-                          labelText: 'Status Name',
-                          labelStyle: GoogleFonts.poppins(
-                            color: theme.colorScheme.tertiary.withOpacity(0.7),
-                            fontSize: 14.sp,
+                    child: CompositedTransformTarget(
+                      link: _layerLink,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                        child: TextFormField(
+                          controller: _statusNameController,
+                          focusNode: _statusNameFocusNode,
+                          style: GoogleFonts.poppins(
+                            color: isDarkMode ? Colors.white : theme.colorScheme.onSurface,
+                            fontSize: 16.sp,
                             fontWeight: FontWeight.w500,
                           ),
-                          border: InputBorder.none,
+                          decoration: InputDecoration(
+                            labelText: 'Status Name',
+                            labelStyle: GoogleFonts.poppins(
+                              color: theme.colorScheme.tertiary.withOpacity(0.7),
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            border: InputBorder.none,
+                            suffixIcon: _statusType == 'Excuse'
+                                ? Icon(
+                                    Icons.arrow_drop_down,
+                                    color: isDarkMode ? Colors.white70 : Colors.black54,
+                                  )
+                                : null,
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter a status name';
+                            }
+                            return null;
+                          },
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter a status name';
-                          }
-                          return null;
-                        },
                       ),
                     ),
                   ),
