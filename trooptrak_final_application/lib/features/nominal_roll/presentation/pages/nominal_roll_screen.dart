@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';
+import 'package:google_fonts/google_fonts.dart';
 
 // Domain
 import '../../domain/entities/user.dart';
@@ -127,84 +128,102 @@ class _NominalRollPageState extends State<NominalRollPage> {
 
   Widget _buildHeader(BuildContext context, bool isDarkMode, ThemeData theme, ThemeManager themeManager) {
     return Padding(
-      padding: EdgeInsets.only(top: 8.h, left: 24.w, right: 24.w),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            'Nominal Roll',
-            style: theme.textTheme.displayLarge?.copyWith(
-              fontWeight: FontWeight.w600,
-              fontSize: 24.sp,
-              letterSpacing: 0.5,
-              color: isDarkMode ? Colors.white : Colors.black87,
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Nominal Roll',
+                style: GoogleFonts.poppins(
+                  color: isDarkMode ? Colors.white : Colors.black87,
+                  fontSize: 24.sp,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 0.5,
+                ),
+              ),
+              SizedBox(height: 4.h),
+              Text(
+                'Our Family of Soldiers',
+                style: GoogleFonts.poppins(
+                  color: isDarkMode ? Colors.white70 : Colors.black54,
+                  fontSize: 14.sp,
+                  letterSpacing: 0.5,
+                ),
+              ),
+            ],
           ),
           Row(
             children: [
-              _buildThemeToggle(isDarkMode, theme, themeManager),
-              SizedBox(width: 12.w),
-              _buildUserIcon(isDarkMode),
+              Container(
+                padding: EdgeInsets.all(8.sp),
+                decoration: BoxDecoration(
+                  color: isDarkMode 
+                      ? const Color.fromARGB(255, 45, 50, 65) 
+                      : Colors.white,
+                  borderRadius: BorderRadius.circular(12.r),
+                  boxShadow: [
+                    BoxShadow(
+                      color: isDarkMode 
+                          ? Colors.black.withOpacity(0.3) 
+                          : Colors.black.withOpacity(0.15),
+                      blurRadius: 16.r,
+                      offset: Offset(0, 6.h),
+                      spreadRadius: isDarkMode ? 1.r : 2.r,
+                    ),
+                  ],
+                ),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(12.r),
+                    onTap: () {
+                      themeManager.toggleTheme(themeManager.themeMode == ThemeMode.light);
+                    },
+                    child: Icon(
+                      themeManager.themeMode == ThemeMode.dark 
+                          ? Icons.light_mode_rounded
+                          : Icons.dark_mode_rounded,
+                      color: isDarkMode 
+                          ? Colors.white.withOpacity(0.9)
+                          : theme.colorScheme.secondary,
+                      size: 24.sp,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 8.w),
+              Container(
+                padding: EdgeInsets.all(8.sp),
+                decoration: BoxDecoration(
+                  color: isDarkMode 
+                      ? const Color.fromARGB(255, 45, 50, 65) 
+                      : Colors.white,
+                  borderRadius: BorderRadius.circular(12.r),
+                  boxShadow: [
+                    BoxShadow(
+                      color: isDarkMode 
+                          ? Colors.black.withOpacity(0.3) 
+                          : Colors.black.withOpacity(0.15),
+                      blurRadius: 16.r,
+                      offset: Offset(0, 6.h),
+                      spreadRadius: isDarkMode ? 1.r : 2.r,
+                    ),
+                  ],
+                ),
+                child: Icon(
+                  Icons.person_outline_rounded,
+                  color: isDarkMode 
+                      ? Colors.white.withOpacity(0.9)
+                      : theme.colorScheme.secondary,
+                  size: 24.sp,
+                ),
+              ),
             ],
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildThemeToggle(bool isDarkMode, ThemeData theme, ThemeManager themeManager) {
-    return Container(
-      padding: EdgeInsets.all(8.sp),
-      decoration: BoxDecoration(
-        color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : Colors.white,
-        borderRadius: BorderRadius.circular(12.r),
-        boxShadow: [
-          BoxShadow(
-            color: isDarkMode 
-              ? Colors.black.withOpacity(0.3) 
-              : Colors.black.withOpacity(0.15),
-            blurRadius: 16.r,
-            offset: Offset(0, 6.h),
-            spreadRadius: isDarkMode ? 1.r : 2.r,
-          ),
-        ],
-      ),
-      child: GestureDetector(
-        onTap: () {
-          themeManager.toggleTheme(themeManager.themeMode == ThemeMode.light);
-        },
-        child: Icon(
-          themeManager.themeMode == ThemeMode.dark 
-              ? Icons.light_mode_rounded
-              : Icons.dark_mode_rounded,
-          color: isDarkMode ? Colors.white70 : Colors.black54,
-          size: 20.sp,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildUserIcon(bool isDarkMode) {
-    return Container(
-      padding: EdgeInsets.all(8.sp),
-      decoration: BoxDecoration(
-        color: isDarkMode ? const Color.fromARGB(255, 45, 50, 65) : Colors.white,
-        borderRadius: BorderRadius.circular(12.r),
-        boxShadow: [
-          BoxShadow(
-            color: isDarkMode 
-              ? Colors.black.withOpacity(0.3) 
-              : Colors.black.withOpacity(0.15),
-            blurRadius: 16.r,
-            offset: Offset(0, 6.h),
-            spreadRadius: isDarkMode ? 1.r : 2.r,
-          ),
-        ],
-      ),
-      child: Image.asset(
-        'lib/assets/user.png',
-        width: 20.w,
-        height: 20.h,
       ),
     );
   }
@@ -320,8 +339,6 @@ class _NominalRollPageState extends State<NominalRollPage> {
             children: [
               _buildHeader(context, isDarkMode, theme, themeManager),
               SizedBox(height: 20.h),
-              _buildSubtitle(context, isDarkMode, theme),
-              SizedBox(height: 12.h),
               _buildSearchBar(context, isDarkMode, theme),
               SizedBox(height: 20.h),
               Expanded(
@@ -329,20 +346,6 @@ class _NominalRollPageState extends State<NominalRollPage> {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSubtitle(BuildContext context, bool isDarkMode, ThemeData theme) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 24.w),
-      child: Text(
-        'Our Family of Soldiers:',
-        style: theme.textTheme.displayMedium?.copyWith(
-          fontSize: 16.sp,
-          fontWeight: FontWeight.w500,
-          color: isDarkMode ? Colors.white70 : Colors.black54,
         ),
       ),
     );

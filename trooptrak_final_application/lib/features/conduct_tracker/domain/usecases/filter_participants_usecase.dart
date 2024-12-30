@@ -2,7 +2,7 @@ class FilterParticipantsUseCase {
   final Map<String, List<String>> conductTypeRestrictions = {
     'run': ['Ex RMJ', 'Ex Lower Limb', 'LD'],
     'route march': [
-      'Ex RMJ', 'Ex Heavy Loads', 'Ex Lower Limbs', 'LD',
+      'Ex RMJ', 'Ex Heavy Loads', 'Ex Lower Limb', 'LD',
       'Ex Uniform', 'Ex Boots', 'Ex FLEGs',
     ],
     'ippt': [
@@ -10,7 +10,7 @@ class FilterParticipantsUseCase {
       'Ex Pushup', 'Ex Situp'
     ],
     'outfield': [
-      'Ex Sunlight', 'Ex grass', 'Ex Outfield',
+      'Ex Sunlight', 'Ex Grass', 'Ex Outfield',
       'Ex Uniform', 'Ex Boots'
     ],
     'metabolic circuit': [

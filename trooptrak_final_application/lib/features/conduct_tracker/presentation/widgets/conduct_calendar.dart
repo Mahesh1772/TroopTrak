@@ -1,88 +1,182 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../providers/conduct_provider.dart';
 import 'package:intl/intl.dart';
 
-class ConductCalendar extends StatelessWidget {
+class ConductCalendar extends StatefulWidget {
   const ConductCalendar({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final selectedDate = context.watch<ConductProvider>().selectedDate;
-    final currentDate = DateTime.now();
+  State<ConductCalendar> createState() => _ConductCalendarState();
+}
+
+class _ConductCalendarState extends State<ConductCalendar> {
+  final ScrollController _scrollController = ScrollController();
+  final double dayWidth = 80.w;  // Fixed width for each day item
+  
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollToSelectedDate();
+    });
+  }
+
+  @override
+  void didUpdateWidget(ConductCalendar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final previousDate = context.read<ConductProvider>().selectedDate;
+    final currentDate = context.watch<ConductProvider>().selectedDate;
     
-    return SizedBox(
-      height: 110,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: 14, // Show 2 weeks of dates
-        itemBuilder: (context, index) {
-          final date = currentDate.subtract(Duration(days: 7 - index));
-          final isSelected = _isSameDay(date, selectedDate);
-          
-          return GestureDetector(
-            onTap: () {
-              context.read<ConductProvider>().updateSelectedDate(date);
-            },
-            child: Container(
-              width: 80,
-              margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
-              decoration: BoxDecoration(
-                color: isSelected 
-                    ? Theme.of(context).colorScheme.primary
-                    : Colors.transparent,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: isSelected 
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context).colorScheme.outline,
-                ),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    DateFormat('EEE').format(date),
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: isSelected 
-                          ? Colors.white
-                          : Theme.of(context).colorScheme.onSurface,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    DateFormat('d').format(date),
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: isSelected 
-                          ? Colors.white
-                          : Theme.of(context).colorScheme.onSurface,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    DateFormat('MMM').format(date),
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: isSelected 
-                          ? Colors.white
-                          : Theme.of(context).colorScheme.onSurface,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      ),
+    if (previousDate != currentDate) {
+      _scrollToSelectedDate();
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollToSelectedDate() {
+    if (!mounted) return;
+    
+    final selectedDate = context.read<ConductProvider>().selectedDate;
+    final today = DateTime.now();
+    final startOfWeek = today.subtract(Duration(days: today.weekday - 1));
+    
+    // Calculate the index of the selected date relative to the start of the week
+    final daysDifference = selectedDate.difference(startOfWeek).inDays;
+    
+    // Calculate scroll position
+    final scrollPosition = daysDifference * (dayWidth + 12.w); // dayWidth + spacing
+    
+    // Animate to the position
+    _scrollController.animateTo(
+      scrollPosition,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
     );
   }
 
-  bool _isSameDay(DateTime date1, DateTime date2) {
-    return date1.year == date2.year &&
-           date1.month == date2.month &&
-           date1.day == date2.day;
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+    final selectedDate = context.watch<ConductProvider>().selectedDate;
+
+    // Generate dates for the week
+    final today = DateTime.now();
+    final startOfWeek = today.subtract(Duration(days: today.weekday - 1));
+    final dates = List.generate(7, (index) => startOfWeek.add(Duration(days: index)));
+
+    // Add listener for date changes
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        _scrollToSelectedDate();
+      }
+    });
+
+    return SingleChildScrollView(
+      controller: _scrollController,
+      scrollDirection: Axis.horizontal,
+      physics: const BouncingScrollPhysics(),
+      child: Row(
+        children: [
+          SizedBox(width: 16.w),  // Initial padding
+          ...dates.map((date) {
+            final isSelected = DateFormat('d MMM yyyy').format(date) == 
+                             DateFormat('d MMM yyyy').format(selectedDate);
+            return Padding(
+              padding: EdgeInsets.only(right: 12.w),
+              child: GestureDetector(
+                onTap: () {
+                  context.read<ConductProvider>().updateSelectedDate(date);
+                },
+                child: Container(
+                  width: dayWidth,
+                  padding: EdgeInsets.symmetric(vertical: 12.h),
+                  decoration: BoxDecoration(
+                    gradient: isSelected
+                        ? LinearGradient(
+                            colors: [
+                              theme.colorScheme.secondary,
+                              theme.colorScheme.secondary.withOpacity(0.8),
+                            ],
+                          )
+                        : null,
+                    color: isSelected
+                        ? null
+                        : isDarkMode
+                            ? const Color.fromARGB(255, 45, 50, 65)
+                            : Colors.white,
+                    borderRadius: BorderRadius.circular(16.r),
+                    boxShadow: [
+                      BoxShadow(
+                        color: isSelected
+                            ? theme.colorScheme.secondary.withOpacity(0.3)
+                            : isDarkMode
+                                ? Colors.black.withOpacity(0.3)
+                                : Colors.black.withOpacity(0.1),
+                        blurRadius: 8.r,
+                        offset: Offset(0, 4.h),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        DateFormat('E').format(date),
+                        style: GoogleFonts.poppins(
+                          color: isSelected
+                              ? Colors.white
+                              : isDarkMode
+                                  ? Colors.white70
+                                  : Colors.black54,
+                          fontSize: 14.sp,
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+                      SizedBox(height: 4.h),
+                      Text(
+                        date.day.toString(),
+                        style: GoogleFonts.poppins(
+                          color: isSelected
+                              ? Colors.white
+                              : isDarkMode
+                                  ? Colors.white
+                                  : Colors.black87,
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+                      SizedBox(height: 4.h),
+                      Text(
+                        DateFormat('MMM').format(date),
+                        style: GoogleFonts.poppins(
+                          color: isSelected
+                              ? Colors.white
+                              : isDarkMode
+                                  ? Colors.white70
+                                  : Colors.black54,
+                          fontSize: 12.sp,
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
+          SizedBox(width: 4.w),  // Final padding
+        ],
+      ),
+    );
   }
 } 
