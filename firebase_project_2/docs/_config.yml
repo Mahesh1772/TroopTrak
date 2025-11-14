@@ -1,0 +1,103 @@
+# TroopTrak Documentation - GitHub Pages Configuration
+
+# Site settings
+title: TroopTrak Documentation
+description: Comprehensive documentation for the TroopTrak military troop management application
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "" # the base hostname & protocol for your site
+
+# Theme settings
+theme: jekyll-theme-cayman
+# Alternative themes:
+# - jekyll-theme-minimal
+# - jekyll-theme-architect
+# - jekyll-theme-slate
+# - jekyll-theme-modernist
+
+# Site metadata
+author: TroopTrak Development Team
+email: support@trooptrak.example.com
+github_username: yourusername
+repository: yourusername/TroopTrak
+
+# Navigation
+navigation:
+  - title: Home
+    url: /
+  - title: User Guide
+    url: /USER_GUIDE
+  - title: Developer Guide
+    url: /DEVELOPER_GUIDE
+  - title: Architecture
+    url: /ARCHITECTURE
+
+# Build settings
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    css_class: 'highlight'
+    span:
+      line_numbers: false
+    block:
+      line_numbers: false
+
+# Plugins
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-relative-links
+
+# Relative links settings
+relative_links:
+  enabled: true
+  collections: false
+
+# SEO settings
+logo: /assets/images/trooptrak-logo.png
+social:
+  name: TroopTrak
+  links: []
+
+# Google Analytics (optional)
+# google_analytics: UA-XXXXXXXX-X
+
+# Collections
+collections:
+  docs:
+    output: true
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "default"
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - README.md
+
+# Include files
+include:
+  - _pages
+
+# Sass settings
+sass:
+  style: compressed
+
+# Enable TOC for pages
+toc:
+  min_level: 2
+  max_level: 3
+  list_class: toc-list
+
