@@ -1,3 +1,9 @@
+---
+layout: default
+title: Architecture - TroopTrak Documentation
+permalink: /ARCHITECTURE/
+---
+
 # 🏛️ TroopTrak Architecture Documentation
 
 <div align="center">

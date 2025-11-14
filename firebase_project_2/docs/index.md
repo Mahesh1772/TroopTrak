@@ -1,3 +1,9 @@
+---
+layout: default
+title: TroopTrak Documentation
+description: Comprehensive documentation for the TroopTrak military troop management application
+---
+
 # 🎖️ TroopTrak Documentation
 
 <div align="center">
@@ -14,7 +20,7 @@
 
 ### 📚 Quick Links
 
-[User Guide](USER_GUIDE.md) • [Developer Guide](DEVELOPER_GUIDE.md) • [Architecture](ARCHITECTURE.md)
+[User Guide](/USER_GUIDE/) • [Developer Guide](/DEVELOPER_GUIDE/) • [Architecture](/ARCHITECTURE/)
 
 ---
 
@@ -37,7 +43,7 @@ TroopTrak is a modern, cross-platform mobile application designed to streamline 
 
 ## 📖 Documentation Overview
 
-### 1. [User Guide](USER_GUIDE.md)
+### 1. [User Guide](/USER_GUIDE/)
 
 **For End Users**
 
@@ -56,7 +62,7 @@ Learn how to use TroopTrak effectively as a soldier or commander.
 
 ---
 
-### 2. [Developer Guide](DEVELOPER_GUIDE.md)
+### 2. [Developer Guide](/DEVELOPER_GUIDE/)
 
 **For Developers & Technical Staff**
 
@@ -79,7 +85,7 @@ Complete technical documentation for developing, maintaining, and deploying Troo
 
 ---
 
-### 3. [Architecture Documentation](ARCHITECTURE.md)
+### 3. [Architecture Documentation](/ARCHITECTURE/)
 
 **For System Architects & Technical Leads**
 
@@ -111,7 +117,7 @@ Detailed system architecture, design patterns, and technical diagrams.
 5. **Complete** your profile setup
 6. **Start** managing your troop operations!
 
-👉 [Read the full User Guide](USER_GUIDE.md)
+👉 [Read the full User Guide](/USER_GUIDE/)
 
 ### For Developers
 
@@ -130,7 +136,7 @@ flutterfire configure
 flutter run
 ```
 
-👉 [Read the full Developer Guide](DEVELOPER_GUIDE.md)
+👉 [Read the full Developer Guide](/DEVELOPER_GUIDE/)
 
 ---
 
@@ -232,7 +238,7 @@ flutter run
 └─────────────────────────────────────────┘
 ```
 
-👉 [View detailed architecture](ARCHITECTURE.md)
+👉 [View detailed architecture](/ARCHITECTURE/)
 
 ---
 
@@ -332,7 +338,7 @@ firestore/
     └── {dutyId}/
 ```
 
-👉 [View complete database schema](DEVELOPER_GUIDE.md#-database-schema)
+👉 [View complete database schema](/DEVELOPER_GUIDE/#-database-schema)
 
 ---
 
@@ -448,17 +454,17 @@ Built with:
 <th>Target Audience</th>
 </tr>
 <tr>
-<td><a href="USER_GUIDE.md">User Guide</a></td>
+<td><a href="/USER_GUIDE/">User Guide</a></td>
 <td>Complete guide for using TroopTrak</td>
 <td>All Users</td>
 </tr>
 <tr>
-<td><a href="DEVELOPER_GUIDE.md">Developer Guide</a></td>
+<td><a href="/DEVELOPER_GUIDE/">Developer Guide</a></td>
 <td>Technical documentation for development</td>
 <td>Developers</td>
 </tr>
 <tr>
-<td><a href="ARCHITECTURE.md">Architecture</a></td>
+<td><a href="/ARCHITECTURE/">Architecture</a></td>
 <td>System design and architecture diagrams</td>
 <td>Architects</td>
 </tr>

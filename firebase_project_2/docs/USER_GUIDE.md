@@ -1,3 +1,9 @@
+---
+layout: default
+title: User Guide - TroopTrak Documentation
+permalink: /USER_GUIDE/
+---
+
 # 🎖️ TroopTrak User Guide
 
 <div align="center">

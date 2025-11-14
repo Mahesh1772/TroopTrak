@@ -4,7 +4,7 @@
 title: TroopTrak Documentation
 description: Comprehensive documentation for the TroopTrak military troop management application
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site
+url: "https://YOUR_USERNAME.github.io" # Update with your GitHub username/repo
 
 # Theme settings
 theme: jekyll-theme-cayman
@@ -89,7 +89,7 @@ exclude:
 
 # Include files
 include:
-  - _pages
+  - .htaccess
 
 # Sass settings
 sass:
