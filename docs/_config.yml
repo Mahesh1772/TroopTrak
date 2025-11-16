@@ -3,7 +3,7 @@
 # Site settings
 title: TroopTrak Documentation
 description: Comprehensive documentation for the TroopTrak military troop management application
-baseurl: "" # the subpath of your site, e.g. /blog
+baseurl: "/TroopTrak" # the subpath of your site (repository name)
 url: "https://mahesh1772.github.io" # Your GitHub Pages URL
 
 # Theme settings
@@ -25,11 +25,11 @@ navigation:
   - title: Home
     url: /
   - title: User Guide
-    url: /USER_GUIDE.html
+    url: /TroopTrak/USER_GUIDE/
   - title: Developer Guide
-    url: /DEVELOPER_GUIDE.html
+    url: /TroopTrak/DEVELOPER_GUIDE/
   - title: Architecture
-    url: /ARCHITECTURE.html
+    url: /TroopTrak/ARCHITECTURE/
 
 # Build settings
 markdown: kramdown

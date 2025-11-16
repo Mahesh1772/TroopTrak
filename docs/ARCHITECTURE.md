@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Architecture - TroopTrak Documentation
-permalink: /ARCHITECTURE.html
+permalink: /ARCHITECTURE/
 ---
 
 # 🏛️ TroopTrak Architecture Documentation
