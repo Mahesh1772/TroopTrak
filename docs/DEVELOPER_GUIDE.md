@@ -80,35 +80,35 @@ permalink: /DEVELOPER_GUIDE/
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                     PRESENTATION LAYER                       │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐   │
-│  │ Profile  │  │ Conduct  │  │  Guard   │  │  Auth    │   │
-│  │ Screens  │  │ Screens  │  │  Duty    │  │ Screens  │   │
-│  └──────────┘  └──────────┘  └──────────┘  └──────────┘   │
+│                     PRESENTATION LAYER                      │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐     │
+│  │ Profile  │  │ Conduct  │  │  Guard   │  │  Auth    │     │
+│  │ Screens  │  │ Screens  │  │  Duty    │  │ Screens  │     │
+│  └──────────┘  └──────────┘  └──────────┘  └──────────┘     │
 └─────────────────────────────────────────────────────────────┘
                             ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                    STATE MANAGEMENT LAYER                    │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐     │
-│  │ AuthProvider │  │ MenUserData  │  │ ThemeManager │     │
-│  │  (Provider)  │  │  (Provider)  │  │  (Provider)  │     │
-│  └──────────────┘  └──────────────┘  └──────────────┘     │
+│                    STATE MANAGEMENT LAYER                   │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐       │
+│  │ AuthProvider │  │ MenUserData  │  │ ThemeManager │       │
+│  │  (Provider)  │  │  (Provider)  │  │  (Provider)  │       │
+│  └──────────────┘  └──────────────┘  └──────────────┘       │
 └─────────────────────────────────────────────────────────────┘
                             ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                      BUSINESS LOGIC LAYER                    │
-│  ┌────────────────┐  ┌────────────────┐  ┌──────────────┐ │
-│  │ Authentication │  │  User Service  │  │   Firestore  │ │
-│  │    Service     │  │     Logic      │  │   Queries    │ │
-│  └────────────────┘  └────────────────┘  └──────────────┘ │
+│                      BUSINESS LOGIC LAYER                   │
+│  ┌────────────────┐  ┌────────────────┐  ┌──────────────┐   │
+│  │ Authentication │  │  User Service  │  │   Firestore  │   │
+│  │    Service     │  │     Logic      │  │   Queries    │   │
+│  └────────────────┘  └────────────────┘  └──────────────┘   │
 └─────────────────────────────────────────────────────────────┘
                             ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                        DATA LAYER                            │
-│  ┌────────────────┐  ┌────────────────┐  ┌──────────────┐ │
-│  │   Firebase     │  │   Firestore    │  │    Local     │ │
-│  │     Auth       │  │    Database    │  │  SharedPrefs │ │
-│  └────────────────┘  └────────────────┘  └──────────────┘ │
+│                        DATA LAYER                           │
+│  ┌────────────────┐  ┌────────────────┐  ┌──────────────┐   │
+│  │   Firebase     │  │   Firestore    │  │    Local     │   │
+│  │     Auth       │  │    Database    │  │  SharedPrefs │   │
+│  └────────────────┘  └────────────────┘  └──────────────┘   │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -163,23 +163,23 @@ graph TD
   Yes     No              │
    │       │              │
    │       ▼              │
-   │  ┌─────────────┐    │
-   │  │   Phone     │    │
-   │  │   Number    │    │
-   │  │   Entry     │    │
-   │  └──────┬──────┘    │
+   │  ┌─────────────┐     │
+   │  │   Phone     │     │
+   │  │   Number    │     │
+   │  │   Entry     │     │
+   │  └──────┬──────┘     │
    │         │            │
    │         ▼            │
-   │  ┌─────────────┐    │
-   │  │ Send OTP    │    │
-   │  │ Via SMS     │    │
-   │  └──────┬──────┘    │
+   │  ┌─────────────┐     │
+   │  │ Send OTP    │     │
+   │  │ Via SMS     │     │
+   │  └──────┬──────┘     │
    │         │            │
    │         ▼            │
-   │  ┌─────────────┐    │
-   │  │   Verify    │    │
-   │  │    OTP      │    │
-   │  └──────┬──────┘    │
+   │  ┌─────────────┐     │
+   │  │   Verify    │     │
+   │  │    OTP      │     │
+   │  └──────┬──────┘     │
    │         │            │
    │         ▼            │
    │    ┌────────┐        │
@@ -232,31 +232,31 @@ TroopTrak uses the **Provider** pattern for state management.
 
 ```
 ┌─────────────────────────────────────────────┐
-│             MultiProvider (Root)             │
+│             MultiProvider (Root)            │
 ├─────────────────────────────────────────────┤
 │                                             │
-│  ┌──────────────────────────────────┐      │
-│  │      AuthProvider                │      │
-│  │  • Phone Authentication          │      │
-│  │  • User Sign In/Out              │      │
-│  │  • Session Management            │      │
-│  │  • User Data Storage             │      │
-│  └──────────────────────────────────┘      │
+│  ┌──────────────────────────────────┐       │
+│  │      AuthProvider                │       │
+│  │  • Phone Authentication          │       │
+│  │  • User Sign In/Out              │       │
+│  │  • Session Management            │       │
+│  │  • User Data Storage             │       │
+│  └──────────────────────────────────┘       │
 │                                             │
-│  ┌──────────────────────────────────┐      │
-│  │      MenUserData                 │      │
-│  │  • User List Management          │      │
-│  │  • Conduct Queries               │      │
-│  │  • Guard Duty Data               │      │
-│  │  • Status Tracking               │      │
-│  │  • Attendance Streams            │      │
-│  └──────────────────────────────────┘      │
+│  ┌──────────────────────────────────┐       │
+│  │      MenUserData                 │       │
+│  │  • User List Management          │       │
+│  │  • Conduct Queries               │       │
+│  │  • Guard Duty Data               │       │
+│  │  • Status Tracking               │       │
+│  │  • Attendance Streams            │       │
+│  └──────────────────────────────────┘       │
 │                                             │
-│  ┌──────────────────────────────────┐      │
-│  │      ThemeManager                │      │
-│  │  • Light/Dark Theme              │      │
-│  │  • Theme Persistence             │      │
-│  └──────────────────────────────────┘      │
+│  ┌──────────────────────────────────┐       │
+│  │      ThemeManager                │       │
+│  │  • Light/Dark Theme              │       │
+│  │  • Theme Persistence             │       │
+│  └──────────────────────────────────┘       │
 │                                             │
 └─────────────────────────────────────────────┘
 ```
@@ -869,7 +869,7 @@ class DefaultFirebaseOptions {
 
 
 ┌─────────────────────────────────────────────────────────────┐
-│                        Conduct Model                         │
+│                        Conduct Model                        │
 ├─────────────────────────────────────────────────────────────┤
 │ - conductID: String                                         │
 │ - conductName: String                                       │
@@ -907,11 +907,11 @@ class DefaultFirebaseOptions {
 
 
 ┌─────────────────────────────────────────────────────────────┐
-│                        Status Model                          │
+│                        Status Model                         │
 ├─────────────────────────────────────────────────────────────┤
 │ - statusID: String                                          │
 │ - userName: String                                          │
-│ - statusType: String  (Excuse / Leave / Other)             │
+│ - statusType: String  (Excuse / Leave / Other)              │
 │ - statusName: String                                        │
 │ - startDate: String                                         │
 │ - endDate: String                                           │
@@ -925,13 +925,13 @@ class DefaultFirebaseOptions {
 
 
 ┌─────────────────────────────────────────────────────────────┐
-│                      Attendance Model                        │
+│                      Attendance Model                       │
 ├─────────────────────────────────────────────────────────────┤
 │ - attendanceID: String                                      │
 │ - userName: String                                          │
 │ - timestamp: DateTime                                       │
 │ - isInsideCamp: bool                                        │
-│ - action: String  (Book In / Book Out)                     │
+│ - action: String  (Book In / Book Out)                      │
 ├─────────────────────────────────────────────────────────────┤
 │ + toMap(): Map<String, dynamic>                             │
 │ + fromMap(Map<String, dynamic>): Attendance                 │
@@ -986,7 +986,7 @@ class DefaultFirebaseOptions {
 
 
 ┌─────────────────────────────────────────────────────────────┐
-│                  ThemeManager (Singleton)                    │
+│                  ThemeManager (Singleton)                   │
 ├─────────────────────────────────────────────────────────────┤
 │ - _themeMode: ThemeMode                                     │
 ├─────────────────────────────────────────────────────────────┤
@@ -1097,7 +1097,7 @@ class UserModel {
 
 ```
 ┌──────────────────────────────────────────────────────────┐
-│                  Authentication System                    │
+│                  Authentication System                   │
 └──────────────────────────────────────────────────────────┘
 
 1. Phone Number Entry
