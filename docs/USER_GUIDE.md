@@ -1,7 +1,7 @@
 ---
 layout: default
 title: User Guide - TroopTrak Documentation
-permalink: /USER_GUIDE/
+permalink: /USER_GUIDE.html
 ---
 
 # 🎖️ TroopTrak User Guide

@@ -4,7 +4,7 @@
 title: TroopTrak Documentation
 description: Comprehensive documentation for the TroopTrak military troop management application
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://YOUR_USERNAME.github.io" # Update with your GitHub username/repo
+url: "https://mahesh1772.github.io" # Your GitHub Pages URL
 
 # Theme settings
 theme: jekyll-theme-cayman
@@ -17,19 +17,19 @@ theme: jekyll-theme-cayman
 # Site metadata
 author: TroopTrak Development Team
 email: support@trooptrak.example.com
-github_username: yourusername
-repository: yourusername/TroopTrak
+github_username: Mahesh1772
+repository: Mahesh1772/TroopTrak
 
 # Navigation
 navigation:
   - title: Home
     url: /
   - title: User Guide
-    url: /USER_GUIDE
+    url: /USER_GUIDE.html
   - title: Developer Guide
-    url: /DEVELOPER_GUIDE
+    url: /DEVELOPER_GUIDE.html
   - title: Architecture
-    url: /ARCHITECTURE
+    url: /ARCHITECTURE.html
 
 # Build settings
 markdown: kramdown

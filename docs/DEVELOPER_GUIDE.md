@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Developer Guide - TroopTrak Documentation
-permalink: /DEVELOPER_GUIDE/
+permalink: /DEVELOPER_GUIDE.html
 ---
 
 # 🛠️ TroopTrak Developer Guide
