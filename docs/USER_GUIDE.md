@@ -84,36 +84,28 @@ TroopTrak supports two distinct user roles:
 
 ### 1. **Men** (Rank: CFC and Below)
 
-<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px; color: white;">
-
-**Access Level:** Standard User
-
-**Available Features:**
-- View own profile and details
-- Track personal attendance
-- View assigned conducts
-- Check guard duty schedule
-- Generate personal QR code
-- View guard duty points
-
-</div>
+> **Access Level:** Standard User
+> 
+> **Available Features:**
+> - View own profile and details
+> - Track personal attendance
+> - View assigned conducts
+> - Check guard duty schedule
+> - Generate personal QR code
+> - View guard duty points
 
 ### 2. **Commanders** (Rank: 3SG and Above)
 
-<div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding: 20px; border-radius: 10px; color: white;">
-
-**Access Level:** Administrative User
-
-**Available Features:**
-- All Men features plus:
-- Manage entire troop roster
-- Create and edit conducts
-- Assign guard duties
-- View all personnel statuses
-- Access analytics and reports
-- Scan QR codes for verification
-
-</div>
+> **Access Level:** Administrative User
+> 
+> **Available Features:**
+> - All Men features plus:
+> - Manage entire troop roster
+> - Create and edit conducts
+> - Assign guard duties
+> - View all personnel statuses
+> - Access analytics and reports
+> - Scan QR codes for verification
 
 ---
 
@@ -219,13 +211,13 @@ Displays your core personal information:
 
 ```
 ╔═══════════════════════════════════╗
-║         BASIC INFORMATION          ║
+║         BASIC INFORMATION         ║
 ╠═══════════════════════════════════╣
 ║ Date of Birth:    15 Mar 1999     ║
 ║ Enlistment Date:  10 Jan 2018     ║
 ║ ORD Date:         09 Jan 2020     ║
-║ Blood Group:      B+               ║
-║ Ration Type:      No Pork          ║
+║ Blood Group:      B+              ║
+║ Ration Type:      No Pork         ║
 ╚═══════════════════════════════════╝
 ```
 
@@ -326,13 +318,13 @@ The **Conduct Tracker** module helps you monitor military conducts (training act
 │  ┌───────────────────────────────┐     │
 │  │ 🎯 Field Training Exercise    │     │
 │  │    Type: Training             │     │
-│  │    ✅ You are participating    │     │
+│  │    ✓ You are participating    │     │
 │  └───────────────────────────────┘     │
 │                                         │
 │  ┌───────────────────────────────┐     │
 │  │ 🏃 Physical Training          │     │
 │  │    Type: PT                   │     │
-│  │    ✅ You are participating    │     │
+│  │    ✓ You are participating    │     │
 │  └───────────────────────────────┘     │
 └─────────────────────────────────────────┘
 ```
@@ -375,9 +367,9 @@ Tap any conduct card to view full details:
 ╟────────────────────────────────────╢
 ║ PARTICIPANTS (25/30)               ║
 ╟────────────────────────────────────╢
-║ ✅ CPL John Tan                    ║
-║ ✅ PTE Sarah Lee                   ║
-║ ✅ LCP Mike Wong                   ║
+║ ✓ CPL John Tan                    ║
+║ ✓ PTE Sarah Lee                   ║
+║ ✓ LCP Mike Wong                   ║
 ║ ...                                ║
 ╟────────────────────────────────────╢
 ║ NON-PARTICIPANTS (5)               ║
@@ -520,7 +512,7 @@ View scheduled guard duties:
 
 1. Go to **Conduct Tracker**
 2. Look for the indicator on conduct cards:
-   - ✅ **Green checkmark** = You are participating
+   - ✓ **Green checkmark** = You are participating
    - ❌ **No indicator** = You are not participating
 3. For detailed list, tap the conduct card
 
@@ -547,72 +539,72 @@ View scheduled guard duties:
 #### Problem: Not receiving OTP
 
 **Solutions:**
-- ✅ Check phone number is correct (including country code)
-- ✅ Ensure stable internet connection
-- ✅ Check SMS inbox and spam folder
-- ✅ Wait 60 seconds before requesting new OTP
-- ✅ Verify phone number can receive SMS
+-  Check phone number is correct (including country code)
+-  Ensure stable internet connection
+-  Check SMS inbox and spam folder
+-  Wait 60 seconds before requesting new OTP
+-  Verify phone number can receive SMS
 
 #### Problem: OTP verification fails
 
 **Solutions:**
-- ✅ Enter OTP exactly as received (6 digits)
-- ✅ OTP expires after 60 seconds - request new one
-- ✅ Check for typos in OTP entry
-- ✅ Restart app if persistent issue
+-  Enter OTP exactly as received (6 digits)
+-  OTP expires after 60 seconds - request new one
+-  Check for typos in OTP entry
+-  Restart app if persistent issue
 
 ### Loading Issues
 
 #### Problem: Data not loading / infinite loading
 
 **Solutions:**
-- ✅ Check internet connection (WiFi/Mobile data)
-- ✅ Pull down to refresh screen
-- ✅ Force close and restart app
-- ✅ Clear app cache (Settings → Apps → TroopTrak → Clear Cache)
-- ✅ Reinstall app if issue persists
+-  Check internet connection (WiFi/Mobile data)
+-  Pull down to refresh screen
+-  Force close and restart app
+-  Clear app cache (Settings → Apps → TroopTrak → Clear Cache)
+-  Reinstall app if issue persists
 
 #### Problem: Profile information not displaying
 
 **Solutions:**
-- ✅ Ensure profile setup was completed
-- ✅ Check Firebase connection
-- ✅ Sign out and sign in again
-- ✅ Contact commander/administrator
+-  Ensure profile setup was completed
+-  Check Firebase connection
+-  Sign out and sign in again
+-  Contact commander/administrator
 
 ### Display Issues
 
 #### Problem: QR code not generating
 
 **Solutions:**
-- ✅ Ensure profile information is complete
-- ✅ Check internet connection
-- ✅ Refresh profile page
-- ✅ Sign out and sign back in
+-  Ensure profile information is complete
+-  Check internet connection
+-  Refresh profile page
+-  Sign out and sign back in
 
 #### Problem: Charts/graphs not displaying
 
 **Solutions:**
-- ✅ Ensure conducts exist for selected date
-- ✅ Refresh page by pulling down
-- ✅ Check internet connection
-- ✅ Restart app
+-  Ensure conducts exist for selected date
+-  Refresh page by pulling down
+-  Check internet connection
+-  Restart app
 
 ### Navigation Issues
 
 #### Problem: Can't switch between tabs
 
 **Solutions:**
-- ✅ Tap directly on tab text/icon
-- ✅ Restart app if unresponsive
-- ✅ Check for app updates
+-  Tap directly on tab text/icon
+-  Restart app if unresponsive
+-  Check for app updates
 
 #### Problem: Back button not working
 
 **Solutions:**
-- ✅ Use device back button (Android)
-- ✅ Use in-app back arrow
-- ✅ Restart app if stuck
+-  Use device back button (Android)
+-  Use in-app back arrow
+-  Restart app if stuck
 
 ---
 
@@ -658,7 +650,7 @@ A: Men can only view their own profiles. Commanders have access to all troop pro
 A: All conducts including training exercises, physical training, administrative tasks, and special events.
 
 **Q: How do I know if I'm assigned to a conduct?**  
-A: Check the Conduct Tracker - assigned conducts will show "✅ You are participating".
+A: Check the Conduct Tracker - assigned conducts will show "✓ You are participating".
 
 **Q: What if I'm excused from guard duty?**  
 A: If you have valid medical excuses (Ex Boots/Ex Uniform), you'll be automatically excluded from guard duty assignments.
