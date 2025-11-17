@@ -20,6 +20,7 @@ description: Comprehensive documentation for the TroopTrak military troop manage
 
 ---
 
+
 ### 📚 Quick Links
 
 [User Guide](USER_GUIDE.md) • [Developer Guide](DEVELOPER_GUIDE.md) • [Architecture](ARCHITECTURE.md)
@@ -477,8 +478,6 @@ Built with:
 <p>
 <strong>TroopTrak Documentation</strong>
 </p>
-
-<img src="assets/BladesOfOlympusLogo.png" alt="Blades of Olympus" width="150" style="margin: 20px 0;">
 
 Made with ❤️ for military personnel
 
