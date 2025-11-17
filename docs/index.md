@@ -8,13 +8,13 @@ description: Comprehensive documentation for the TroopTrak military troop manage
 
 <div align="center">
 
-![TroopTrak Logo](https://img.shields.io/badge/TroopTrak-Documentation-8147e6?style=for-the-badge&logo=flutter)
+<img src="assets/TroopTrakAppIcon.png" alt="TroopTrak Logo" width="200" style="border-radius: 20px; margin-bottom: 20px;">
 
 **Comprehensive documentation for the TroopTrak military troop management application**
 
-[![Flutter](https://img.shields.io/badge/Flutter-02569B?style=flat-square&logo=flutter)](https://flutter.dev/)
-[![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=flat-square&logo=firebase&logoColor=black)](https://firebase.google.com/)
-[![Dart](https://img.shields.io/badge/Dart-0175C2?style=flat-square&logo=dart)](https://dart.dev/)
+<p>
+<strong>Built with Flutter • Powered by Firebase • Made for Military Personnel</strong>
+</p>
 
 ---
 
@@ -474,10 +474,11 @@ Built with:
 
 **TroopTrak Documentation**
 
+<img src="assets/BladesOfOlympusLogo.png" alt="Blades of Olympus" width="150" style="margin: 20px 0;">
+
 Made with ❤️ for military personnel
 
-[![Flutter](https://img.shields.io/badge/Made%20with-Flutter-02569B?style=flat&logo=flutter)](https://flutter.dev/)
-[![Firebase](https://img.shields.io/badge/Powered%20by-Firebase-FFCA28?style=flat&logo=firebase&logoColor=black)](https://firebase.google.com/)
+**Built with Flutter • Powered by Firebase**
 
 Version 1.0.0 | Last Updated: 2024
 
