@@ -25,6 +25,7 @@ description: Comprehensive documentation for the TroopTrak military troop manage
 
 [User Guide](USER_GUIDE.md) • [Developer Guide](DEVELOPER_GUIDE.md) • [Architecture](ARCHITECTURE.md)
 
+
 ---
 
 </div>
