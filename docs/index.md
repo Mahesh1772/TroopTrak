@@ -20,7 +20,7 @@ description: Comprehensive documentation for the TroopTrak military troop manage
 
 ### 📚 Quick Links
 
-[User Guide]({{ "/USER_GUIDE/" | relative_url }}) • [Developer Guide]({{ "/DEVELOPER_GUIDE/" | relative_url }}) • [Architecture]({{ "/ARCHITECTURE/" | relative_url }})
+[User Guide](USER_GUIDE.html) • [Developer Guide](DEVELOPER_GUIDE.html) • [Architecture](ARCHITECTURE.html)
 
 ---
 
