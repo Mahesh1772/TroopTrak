@@ -18,12 +18,12 @@ description: Comprehensive documentation for the TroopTrak military troop manage
 <strong>Built with Flutter • Powered by Firebase • Made for Military Personnel</strong>
 </p>
 
----
+---i
 
 
 ### 📚 Quick Links
 
-[User Guide](USER_GUIDE.md) • [Developer Guide](DEVELOPER_GUIDE.md) • [Architecture](ARCHITECTURE.md)
+[User Guide](USER_GUIDE.html) • [Developer Guide](DEVELOPER_GUIDE.html) • [Architecture](ARCHITECTURE.html)
 
 
 ---
