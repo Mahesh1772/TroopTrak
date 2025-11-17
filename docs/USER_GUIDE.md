@@ -8,13 +8,15 @@ permalink: /USER_GUIDE/
 
 <div align="center">
 
-![TroopTrak Banner](https://img.shields.io/badge/TroopTrak-Military_Management-8147e6?style=for-the-badge)
-![Version](https://img.shields.io/badge/version-1.0.0-blue?style=for-the-badge)
-![Platform](https://img.shields.io/badge/platform-Flutter-02569B?style=for-the-badge&logo=flutter)
+<img src="assets/TroopTrakAppIcon.png" alt="TroopTrak Logo" width="150" style="border-radius: 20px; margin-bottom: 20px;">
 
 **A comprehensive mobile application for military troop management and tracking**
 
-[Features](#-features) • [Getting Started](#-getting-started) • [User Roles](#-user-roles) • [Main Modules](#-main-modules) • [FAQ](#-faq)
+<p>
+<strong>Version 1.0.0 • Flutter Platform • Military Management</strong>
+</p>
+
+[🏠 Home](index.html) • [Features](#-features) • [Getting Started](#-getting-started) • [User Roles](#-user-roles) • [Main Modules](#-main-modules) • [FAQ](#-faq)
 
 </div>
 
@@ -705,7 +707,7 @@ A: Yes, this document serves as the complete user guide. Keep it handy for refer
 
 For additional support:
 
-- 📧 **Email**: support@trooptrak.military (example)
+- 📧 **Email**: trooptrak@gmail.com
 - 📱 **Contact**: Unit IT Support
 - 📖 **Documentation**: [Developer Guide](DEVELOPER_GUIDE.md)
 

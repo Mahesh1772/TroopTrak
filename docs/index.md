@@ -43,7 +43,7 @@ TroopTrak is a modern, cross-platform mobile application designed to streamline 
 
 ## 📖 Documentation Overview
 
-### 1. [User Guide]({{ "/USER_GUIDE/" | relative_url }})
+### 1. [User Guide](USER_GUIDE.html)
 
 **For End Users**
 
@@ -62,7 +62,7 @@ Learn how to use TroopTrak effectively as a soldier or commander.
 
 ---
 
-### 2. [Developer Guide]({{ "/DEVELOPER_GUIDE/" | relative_url }})
+### 2. [Developer Guide](DEVELOPER_GUIDE.html)
 
 **For Developers & Technical Staff**
 
@@ -85,7 +85,7 @@ Complete technical documentation for developing, maintaining, and deploying Troo
 
 ---
 
-### 3. [Architecture Documentation]({{ "/ARCHITECTURE/" | relative_url }})
+### 3. [Architecture Documentation](ARCHITECTURE.html)
 
 **For System Architects & Technical Leads**
 
@@ -117,7 +117,7 @@ Detailed system architecture, design patterns, and technical diagrams.
 5. **Complete** your profile setup
 6. **Start** managing your troop operations!
 
-👉 [Read the full User Guide]({{ "/USER_GUIDE/" | relative_url }})
+👉 [Read the full User Guide](USER_GUIDE.html)
 
 ### For Developers
 
@@ -136,7 +136,7 @@ flutterfire configure
 flutter run
 ```
 
-👉 [Read the full Developer Guide]({{ "/DEVELOPER_GUIDE/" | relative_url }})
+👉 [Read the full Developer Guide](DEVELOPER_GUIDE.html)
 
 ---
 
@@ -238,7 +238,7 @@ flutter run
 └─────────────────────────────────────────┘
 ```
 
-👉 [View detailed architecture]({{ "/ARCHITECTURE/" | relative_url }})
+👉 [View detailed architecture](ARCHITECTURE.html)
 
 ---
 
@@ -338,7 +338,7 @@ firestore/
     └── {dutyId}/
 ```
 
-👉 [View complete database schema]({{ "/DEVELOPER_GUIDE/#database-schema" | relative_url }})
+👉 [View complete database schema](DEVELOPER_GUIDE.html#database-schema)
 
 ---
 
@@ -454,17 +454,17 @@ Built with:
 <th>Target Audience</th>
 </tr>
 <tr>
-<td><a href="{{ '/USER_GUIDE/' | relative_url }}">User Guide</a></td>
+<td><a href="USER_GUIDE.html">User Guide</a></td>
 <td>Complete guide for using TroopTrak</td>
 <td>All Users</td>
 </tr>
 <tr>
-<td><a href="{{ '/DEVELOPER_GUIDE/' | relative_url }}">Developer Guide</a></td>
+<td><a href="DEVELOPER_GUIDE.html">Developer Guide</a></td>
 <td>Technical documentation for development</td>
 <td>Developers</td>
 </tr>
 <tr>
-<td><a href="{{ '/ARCHITECTURE/' | relative_url }}">Architecture</a></td>
+<td><a href="ARCHITECTURE.html">Architecture</a></td>
 <td>System design and architecture diagrams</td>
 <td>Architects</td>
 </tr>

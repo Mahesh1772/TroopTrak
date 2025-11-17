@@ -8,14 +8,15 @@ permalink: /DEVELOPER_GUIDE/
 
 <div align="center">
 
-![TroopTrak Dev](https://img.shields.io/badge/TroopTrak-Developer_Guide-8147e6?style=for-the-badge)
-![Flutter](https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter)
-![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
-![Dart](https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white)
+<img src="assets/TroopTrakAppIcon.png" alt="TroopTrak Logo" width="150" style="border-radius: 20px; margin-bottom: 20px;">
 
 **Technical documentation for TroopTrak development, architecture, and deployment**
 
-[Architecture](#-architecture) • [Setup](#️-development-setup) • [Firebase](#-firebase-configuration) • [API Reference](#-api-reference)
+<p>
+<strong>Built with Flutter • Powered by Firebase • Dart Language</strong>
+</p>
+
+[🏠 Home](index.html) • [Architecture](#-architecture) • [Setup](#️-development-setup) • [Firebase](#-firebase-configuration) • [API Reference](#-api-reference)
 
 </div>
 
