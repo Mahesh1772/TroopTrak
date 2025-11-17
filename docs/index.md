@@ -10,7 +10,9 @@ description: Comprehensive documentation for the TroopTrak military troop manage
 
 <img src="assets/TroopTrakAppIcon.png" alt="TroopTrak Logo" width="200" style="border-radius: 20px; margin-bottom: 20px;">
 
-**Comprehensive documentation for the TroopTrak military troop management application**
+<p>
+<strong>Comprehensive documentation for the TroopTrak military troop management application</strong>
+</p>
 
 <p>
 <strong>Built with Flutter • Powered by Firebase • Made for Military Personnel</strong>
@@ -20,7 +22,7 @@ description: Comprehensive documentation for the TroopTrak military troop manage
 
 ### 📚 Quick Links
 
-[User Guide](USER_GUIDE.html) • [Developer Guide](DEVELOPER_GUIDE.html) • [Architecture](ARCHITECTURE.html)
+[User Guide](USER_GUIDE.md) • [Developer Guide](DEVELOPER_GUIDE.md) • [Architecture](ARCHITECTURE.md)
 
 ---
 
@@ -472,15 +474,18 @@ Built with:
 
 ---
 
-**TroopTrak Documentation**
+<p>
+<strong>TroopTrak Documentation</strong>
+</p>
 
 <img src="assets/BladesOfOlympusLogo.png" alt="Blades of Olympus" width="150" style="margin: 20px 0;">
 
 Made with ❤️ for military personnel
 
-**Built with Flutter • Powered by Firebase**
-
-Version 1.0.0 | Last Updated: 2024
+<p>
+<strong>Built with Flutter • Powered by Firebase</strong>
+<strong>Version 1.0.0 | Last Updated: 2024</strong>
+</p>
 
 </div>
 
