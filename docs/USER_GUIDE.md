@@ -10,13 +10,17 @@ permalink: /USER_GUIDE/
 
 <img src="assets/TroopTrakAppIcon.png" alt="TroopTrak Logo" width="150" style="border-radius: 20px; margin-bottom: 20px;">
 
-**A comprehensive mobile application for military troop management and tracking**
+<p>
+<strong>A comprehensive mobile application for military troop management and tracking</strong>
+</p>
 
 <p>
 <strong>Version 1.0.0 • Flutter Platform • Military Management</strong>
 </p>
 
-[🏠 Home](index.html) • [Features](#-features) • [Getting Started](#-getting-started) • [User Roles](#-user-roles) • [Main Modules](#-main-modules) • [FAQ](#-faq)
+<p>
+<a href="{{ site.baseurl }}/">🏠 Home</a> • <a href="#-features">Features</a> • <a href="#-getting-started">Getting Started</a> • <a href="#-user-roles">User Roles</a> • <a href="#-main-modules">Main Modules</a> • <a href="#-faq">FAQ</a>
+</p>
 
 </div>
 
@@ -143,11 +147,11 @@ Upon first launch, you'll be presented with a role selection screen.
 │       Please pick your role         │
 ├─────────────────────────────────────┤
 │                                     │
-│  ┌──────────┐    ┌──────────┐     │
-│  │   Men    │    │Commanders│     │
-│  │ CFC and  │    │ 3SG or   │     │
-│  │  below   │    │  higher  │     │
-│  └──────────┘    └──────────┘     │
+│  ┌──────────┐    ┌──────────┐       │
+│  │   Men    │    │Commanders│       │
+│  │ CFC and  │    │ 3SG or   │       │
+│  │  below   │    │  higher  │       │
+│  └──────────┘    └──────────┘       │
 │                                     │
 └─────────────────────────────────────┘
 ```
@@ -265,19 +269,19 @@ View your book-in and book-out history:
 
 ```
 ╔═══════════════════════════════════╗
-║      ATTENDANCE HISTORY            ║
+║      ATTENDANCE HISTORY           ║
 ╠═══════════════════════════════════╣
 ║ 📍 BOOKED IN                      ║
 ║    10 Jan 2024, 08:30             ║
-║    Status: In Camp                 ║
+║    Status: In Camp                ║
 ╟───────────────────────────────────╢
 ║ 📍 BOOKED OUT                     ║
 ║    09 Jan 2024, 18:00             ║
-║    Status: Left Camp               ║
+║    Status: Left Camp              ║
 ╟───────────────────────────────────╢
 ║ 📍 BOOKED IN                      ║
 ║    08 Jan 2024, 08:15             ║
-║    Status: In Camp                 ║
+║    Status: In Camp                ║
 ╚═══════════════════════════════════╝
 ```
 
@@ -310,7 +314,7 @@ The **Conduct Tracker** module helps you monitor military conducts (training act
 │        Conduct Tracker                  │
 ├─────────────────────────────────────────┤
 │  📅  Date Selector                      │
-│  [< 09 Jan    10 Jan    11 Jan >]      │
+│  [< 09 Jan    10 Jan    11 Jan >]       │
 ├─────────────────────────────────────────┤
 │  📊 Participation Strength              │
 │  [Bar Chart showing participation]      │
@@ -326,8 +330,8 @@ The **Conduct Tracker** module helps you monitor military conducts (training act
 │  ┌───────────────────────────────┐     │
 │  │ 🏃 Physical Training          │     │
 │  │    Type: PT                   │     │
-│  │    ✓ You are participating    │     │
-│  └───────────────────────────────┘     │
+│  │    ✓ You are participating    │      │
+│  └───────────────────────────────┘      │
 └─────────────────────────────────────────┘
 ```
 
@@ -709,7 +713,7 @@ For additional support:
 
 - 📧 **Email**: trooptrak@gmail.com
 - 📱 **Contact**: Unit IT Support
-- 📖 **Documentation**: [Developer Guide](DEVELOPER_GUIDE.md)
+- 📖 **Documentation**: [Developer Guide]({{ site.baseurl }}/DEVELOPER_GUIDE/)
 
 ---
 
@@ -723,12 +727,18 @@ For additional support:
 
 <div align="center">
 
-**TroopTrak** - Streamlining Military Troop Management
+<p>
+<strong>TroopTrak</strong> - Streamlining Military Troop Management
+</p>
 
+<p>
 Made with ❤️ for military personnel
+</p>
 
-[![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=flat&logo=firebase&logoColor=black)](https://firebase.google.com/)
-[![Flutter](https://img.shields.io/badge/Flutter-02569B?style=flat&logo=flutter&logoColor=white)](https://flutter.dev/)
+<p>
+<a href="https://firebase.google.com/"><img src="https://img.shields.io/badge/Firebase-FFCA28?style=flat&logo=firebase&logoColor=black" alt="Firebase"></a>
+<a href="https://flutter.dev/"><img src="https://img.shields.io/badge/Flutter-02569B?style=flat&logo=flutter&logoColor=white" alt="Flutter"></a>
+</p>
 
 </div>
 

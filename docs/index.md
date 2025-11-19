@@ -18,8 +18,6 @@ description: Comprehensive documentation for the TroopTrak military troop manage
 <strong>Built with Flutter • Powered by Firebase • Made for Military Personnel</strong>
 </p>
 
----
-
 </div>
 
 ## 🌟 About TroopTrak
