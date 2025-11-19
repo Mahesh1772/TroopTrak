@@ -20,13 +20,6 @@ description: Comprehensive documentation for the TroopTrak military troop manage
 
 ---
 
-### 📚 Quick Links
-
-[User Guide](USER_GUIDE) • [Developer Guide](DEVELOPER_GUIDE) • [Architecture](ARCHITECTURE)
-
-
----
-
 </div>
 
 ## 🌟 About TroopTrak
