@@ -8,15 +8,19 @@ permalink: /DEVELOPER_GUIDE/
 
 <div align="center">
 
-<img src="assets/TroopTrakAppIcon.png" alt="TroopTrak Logo" width="150" style="border-radius: 20px; margin-bottom: 20px;">
+<img src="{{ '/assets/TroopTrakAppIcon.png' | relative_url }}" alt="TroopTrak Logo" width="150" style="border-radius: 20px; margin-bottom: 20px;">
 
-**Technical documentation for TroopTrak development, architecture, and deployment**
+<p>
+<strong>Technical documentation for TroopTrak development, architecture, and deployment</strong>
+</p>
 
 <p>
 <strong>Built with Flutter • Powered by Firebase • Dart Language</strong>
 </p>
 
-[🏠 Home](index.html) • [Architecture](#-architecture) • [Setup](#️-development-setup) • [Firebase](#-firebase-configuration) • [API Reference](#-api-reference)
+<p>
+<a href="{{ site.baseurl }}/">🏠 Home</a> • <a href="#-architecture">Architecture</a> • <a href="#️-development-setup">Setup</a> • <a href="#-firebase-configuration">Firebase</a> • <a href="#-api-reference">API Reference</a>
+</p>
 
 </div>
 
@@ -2728,12 +2732,18 @@ This project is proprietary software for military use.
 
 <div align="center">
 
-**TroopTrak Developer Guide**
+<p>
+<strong>TroopTrak Developer Guide</strong>
+</p>
 
+<p>
 Version 1.0.0 | Last Updated: 2024
+</p>
 
-[![Made with Flutter](https://img.shields.io/badge/Made%20with-Flutter-02569B?style=flat&logo=flutter)](https://flutter.dev/)
-[![Firebase](https://img.shields.io/badge/Powered%20by-Firebase-FFCA28?style=flat&logo=firebase&logoColor=black)](https://firebase.google.com/)
+<p>
+<a href="https://flutter.dev/"><img src="https://img.shields.io/badge/Made%20with-Flutter-02569B?style=flat&logo=flutter" alt="Made with Flutter"></a>
+<a href="https://firebase.google.com/"><img src="https://img.shields.io/badge/Powered%20by-Firebase-FFCA28?style=flat&logo=firebase&logoColor=black" alt="Firebase"></a>
+</p>
 
 </div>
 
