@@ -8,7 +8,7 @@ permalink: /USER_GUIDE/
 
 <div align="center">
 
-<img src="assets/TroopTrakAppIcon.png" alt="TroopTrak Logo" width="150" style="border-radius: 20px; margin-bottom: 20px;">
+<img src="{{ site.baseurl }}/assets/TroopTrakAppIcon.png" alt="TroopTrak Logo" width="150" style="border-radius: 20px; margin-bottom: 20px;">
 
 <p>
 <strong>A comprehensive mobile application for military troop management and tracking</strong>
