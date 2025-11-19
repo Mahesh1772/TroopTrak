@@ -18,8 +18,7 @@ description: Comprehensive documentation for the TroopTrak military troop manage
 <strong>Built with Flutter • Powered by Firebase • Made for Military Personnel</strong>
 </p>
 
----i
-
+---
 
 ### 📚 Quick Links
 
@@ -148,20 +147,12 @@ flutter run
 
 ### Main Modules
 
-<div style="display: flex; flex-wrap: wrap; gap: 20px;">
-
-<div style="flex: 1; min-width: 250px; border: 2px solid #8147e6; border-radius: 10px; padding: 20px;">
-
 #### 👤 My Profile
 - View personal information
 - Track attendance history
 - Manage medical statuses
 - Generate QR code
 - Update profile details
-
-</div>
-
-<div style="flex: 1; min-width: 250px; border: 2px solid #8147e6; border-radius: 10px; padding: 20px;">
 
 #### 📊 Conduct Tracker
 - View scheduled conducts
@@ -170,10 +161,6 @@ flutter run
 - Filter by date
 - Access conduct details
 
-</div>
-
-<div style="flex: 1; min-width: 250px; border: 2px solid #8147e6; border-radius: 10px; padding: 20px;">
-
 #### 🛡️ Guard Duty Tracker
 - View duty assignments
 - Check points leaderboard
@@ -181,15 +168,9 @@ flutter run
 - Track duty history
 - Manage duty roster (Commanders)
 
-</div>
-
-</div>
-
 ---
 
 ## 🏗️ Technology Stack
-
-<div align="center">
 
 | Category | Technologies |
 |----------|-------------|
@@ -202,8 +183,6 @@ flutter run
 | **UI/UX** | Material Design, Google Fonts |
 | **Charts & Graphs** | FL Chart |
 | **QR Code** | qr_flutter, mobile_scanner |
-
-</div>
 
 ---
 
@@ -447,9 +426,9 @@ Built with:
 
 ---
 
-<div align="center">
-
 ## 📚 Documentation Index
+
+<div align="center">
 
 <table>
 <tr>
