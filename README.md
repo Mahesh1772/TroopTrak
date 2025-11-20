@@ -1,4 +1,4 @@
-# TroopTrak 🚀
+# TroopTrak 
 
 <div align="center">
 
@@ -30,9 +30,9 @@ Comprehensive documentation is available for all aspects of TroopTrak:
 
 | Document | Description | Link |
 |----------|-------------|------|
-| 📖 **User Guide** | Complete guide for end users, features, and walkthroughs | [View User Guide](docs/USER_GUIDE.md) |
-| 🛠️ **Developer Guide** | Technical documentation, setup, and development | [View Developer Guide](docs/DEVELOPER_GUIDE.md) |
-| 🏛️ **Architecture** | System design, patterns, and technical diagrams | [View Architecture](docs/ARCHITECTURE.md) |
+| 📖 **User Guide** | Complete guide for end users, features, and walkthroughs | [View User Guide](https://mahesh1772.github.io/TroopTrak/USER_GUIDE/) |
+| 🛠️ **Developer Guide** | Technical documentation, setup, and development | [View Developer Guide](https://mahesh1772.github.io/TroopTrak/DEVELOPER_GUIDE/) |
+| 🏛️ **Architecture** | System design, patterns, and technical diagrams | [View Architecture](https://mahesh1772.github.io/TroopTrak/ARCHITECTURE/) |
 
 </div>
 
@@ -138,7 +138,7 @@ Access the application through an online Android emulator [here](https://appetiz
 | Offline mode | Planned | Limited functionality without internet |
 | Data validation | In Progress | Enhanced input validation needed |
 
-> 🔧 For troubleshooting and solutions, see [User Guide - Troubleshooting](docs/USER_GUIDE.md#-troubleshooting)
+> 🔧 For troubleshooting and solutions, see [User Guide - Troubleshooting](https://mahesh1772.github.io/TroopTrak/USER_GUIDE/#-troubleshooting)
 
 ---
 
@@ -146,8 +146,8 @@ Access the application through an online Android emulator [here](https://appetiz
 
 TroopTrak is actively maintained and welcomes contributions. For development guidelines:
 
-1. Read the [Developer Guide](docs/DEVELOPER_GUIDE.md)
-2. Review the [Architecture Documentation](docs/ARCHITECTURE.md)
+1. Read the [Developer Guide](https://mahesh1772.github.io/TroopTrak/DEVELOPER_GUIDE/)
+2. Review the [Architecture Documentation](https://mahesh1772.github.io/TroopTrak/ARCHITECTURE/)
 3. Follow code conventions and patterns
 4. Submit pull requests with detailed descriptions
 
@@ -188,9 +188,9 @@ Version 1.0.0 | Last Updated: 2024
 </p>
 
 <p>
-<a href="docs/USER_GUIDE.md">📖 User Guide</a> •
-<a href="docs/DEVELOPER_GUIDE.md">🛠️ Developer Guide</a> •
-<a href="docs/ARCHITECTURE.md">🏛️ Architecture</a>
+<a href="https://mahesh1772.github.io/TroopTrak/USER_GUIDE/">📖 User Guide</a> •
+<a href="https://mahesh1772.github.io/TroopTrak/DEVELOPER_GUIDE/">🛠️ Developer Guide</a> •
+<a href="https://mahesh1772.github.io/TroopTrak/ARCHITECTURE/">🏛️ Architecture</a>
 </p>
 
 </div>
