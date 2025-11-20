@@ -8,9 +8,15 @@ permalink: /ARCHITECTURE/
 
 <div align="center">
 
-![Architecture](https://img.shields.io/badge/Architecture-System_Design-8147e6?style=for-the-badge)
+<img src="{{ '/assets/TroopTrakAppIcon.png' | relative_url }}" alt="TroopTrak Logo" width="150" style="border-radius: 20px; margin-bottom: 20px;">
 
-**Detailed system architecture, design patterns, and technical diagrams**
+<p>
+<img src="https://img.shields.io/badge/Architecture-System_Design-8147e6?style=for-the-badge" alt="Architecture Badge">
+</p>
+
+<p>
+<strong>Detailed system architecture, design patterns, and technical diagrams</strong>
+</p>
 
 </div>
 
@@ -33,37 +39,37 @@ permalink: /ARCHITECTURE/
 ### High-Level System Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────────┐
+┌──────────────────────────────────────────────────────────────────────┐
 │                         CLIENT LAYER                                 │
 │                                                                      │
-│  ┌────────────┐  ┌────────────┐  ┌────────────┐  ┌────────────┐   │
-│  │  Android   │  │    iOS     │  │    Web     │  │  Desktop   │   │
-│  │   App      │  │    App     │  │    App     │  │    App     │   │
-│  └─────┬──────┘  └─────┬──────┘  └─────┬──────┘  └─────┬──────┘   │
-│        └─────────────────┴───────────────┴───────────────┘          │
+│  ┌────────────┐  ┌────────────┐  ┌────────────┐  ┌────────────┐      │
+│  │  Android   │  │    iOS     │  │    Web     │  │  Desktop   │      │
+│  │   App      │  │    App     │  │    App     │  │    App     │      │
+│  └─────┬──────┘  └─────┬──────┘  └─────┬──────┘  └─────┬──────┘      │
+│        └─────────────────┴───────────────┴─────────────┘             │
 │                              │                                       │
 └──────────────────────────────┼───────────────────────────────────────┘
                                │
                                ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│                    FLUTTER FRAMEWORK LAYER                          │
-│                                                                      │
+┌────────────────────────────────────────────────────────────────────┐
+│                    FLUTTER FRAMEWORK LAYER                         │
+│                                                                    │
 │  ┌──────────────────────────────────────────────────────────────┐  │
-│  │                    Material Design Widgets                    │  │
+│  │                    Material Design Widgets                   │  │
 │  └──────────────────────────────────────────────────────────────┘  │
 │  ┌──────────────────────────────────────────────────────────────┐  │
-│  │                    State Management (Provider)                │  │
+│  │                    State Management (Provider)               │  │
 │  └──────────────────────────────────────────────────────────────┘  │
 │  ┌──────────────────────────────────────────────────────────────┐  │
-│  │                    Navigation & Routing                       │  │
+│  │                    Navigation & Routing                      │  │
 │  └──────────────────────────────────────────────────────────────┘  │
-│                                                                      │
-└──────────────────────────────────┬───────────────────────────────────┘
+│                                                                    │
+└──────────────────────────────────┬─────────────────────────────────┘
                                    │
                                    ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│                    APPLICATION LAYER                                │
-│                                                                      │
+┌───────────────────────────────────────────────────────────────────┐
+│                    APPLICATION LAYER                              │
+│                                                                   │
 │  ┌────────────────┐  ┌────────────────┐  ┌────────────────┐       │
 │  │ Authentication │  │    Conduct     │  │   Guard Duty   │       │
 │  │     Module     │  │    Module      │  │     Module     │       │
@@ -72,13 +78,13 @@ permalink: /ARCHITECTURE/
 │  │  User Profile  │  │   Attendance   │  │     Status     │       │
 │  │     Module     │  │     Module     │  │     Module     │       │
 │  └────────────────┘  └────────────────┘  └────────────────┘       │
-│                                                                      │
-└──────────────────────────────┬───────────────────────────────────────┘
+│                                                                   │
+└──────────────────────────────┬────────────────────────────────────┘
                                │
                                ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│                     FIREBASE SERVICES LAYER                         │
-│                                                                      │
+┌───────────────────────────────────────────────────────────────────┐
+│                     FIREBASE SERVICES LAYER                       │
+│                                                                   │
 │  ┌────────────────┐  ┌────────────────┐  ┌────────────────┐       │
 │  │   Firebase     │  │   Cloud        │  │   Cloud        │       │
 │  │   Auth         │  │   Firestore    │  │   Storage      │       │
@@ -87,8 +93,8 @@ permalink: /ARCHITECTURE/
 │  │   Firebase     │  │   Cloud        │  │   Firebase     │       │
 │  │   Analytics    │  │   Messaging    │  │   Hosting      │       │
 │  └────────────────┘  └────────────────┘  └────────────────┘       │
-│                                                                      │
-└─────────────────────────────────────────────────────────────────────┘
+│                                                                   │
+└───────────────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -125,12 +131,12 @@ permalink: /ARCHITECTURE/
 ### 2. Provider Pattern (State Management)
 
 ```
-┌─────────────────────────────────────────────────┐
-│              MultiProvider (Root)               │
-│                                                 │
+┌────────────────────────────────────────────────┐
+│              MultiProvider (Root)              │
+│                                                │
 │  ┌───────────────────────────────────────┐     │
-│  │        ChangeNotifier Providers        │     │
-│  │                                        │     │
+│  │        ChangeNotifier Providers       │     │
+│  │                                       │     │
 │  │  ┌──────────────────────────────┐     │     │
 │  │  │      AuthProvider            │     │     │
 │  │  │  - Manages auth state        │     │     │
@@ -151,13 +157,13 @@ permalink: /ARCHITECTURE/
 │  │  │  - Preference persistence    │     │     │
 │  │  └──────────────────────────────┘     │     │
 │  └───────────────────────────────────────┘     │
-│                                                 │
+│                                                │
 │  ┌───────────────────────────────────────┐     │
-│  │       Consumer Widgets                 │     │
-│  │  - Listen to provider changes          │     │
-│  │  - Rebuild on state update             │     │
+│  │       Consumer Widgets                │     │
+│  │  - Listen to provider changes         │     │
+│  │  - Rebuild on state update            │     │
 │  └───────────────────────────────────────┘     │
-└─────────────────────────────────────────────────┘
+└────────────────────────────────────────────────┘
 ```
 
 ### 3. Repository Pattern
@@ -758,7 +764,7 @@ User        RegisterScreen   AuthProvider    FirebaseAuth    Firestore    OTPScr
  │                │                ├───────────────┤             │            │          │
  │                │                │ SharedPrefs   │             │            │          │
  │                │                │               │             │            │          │
- │                │                │ Navigate to Main           │            │          │
+ │                │                │ Navigate to Main            │            │          │
  │                │                ├───────────────┼─────────────┼────────────┼─────────>│
  │                │                │               │             │            │          │
 ```
@@ -990,11 +996,22 @@ Benefits:
 
 <div align="center">
 
-**TroopTrak Architecture Documentation**
+<p>
+<strong>TroopTrak Architecture Documentation</strong>
+</p>
 
-For more information, see [Developer Guide](DEVELOPER_GUIDE.md) and [User Guide](USER_GUIDE.md)
+<p>
+For more information, see <a href="DEVELOPER_GUIDE.md">Developer Guide</a> and <a href="USER_GUIDE.md">User Guide</a>
+</p>
 
-Version 1.0.0 | 2024
+<p>
+Version 1.0.0 | Last Updated: 2024
+</p>
+
+<p>
+<a href="https://flutter.dev/"><img src="https://img.shields.io/badge/Made%20with-Flutter-02569B?style=flat&logo=flutter" alt="Made with Flutter"></a>
+<a href="https://firebase.google.com/"><img src="https://img.shields.io/badge/Powered%20by-Firebase-FFCA28?style=flat&logo=firebase&logoColor=black" alt="Firebase"></a>
+</p>
 
 </div>
 
