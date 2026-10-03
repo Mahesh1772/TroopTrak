@@ -7,6 +7,7 @@ import 'package:trooptrak_final_application/features/conducts/domain/entities/co
 import 'package:trooptrak_final_application/features/conducts/domain/repositories/conduct_repository.dart';
 import 'package:trooptrak_final_application/features/conducts/domain/usecases/build_conduct_roster.dart';
 import 'package:trooptrak_final_application/features/conducts/domain/usecases/conduct_usecases.dart';
+import 'package:trooptrak_final_application/features/conducts/domain/usecases/watch_conduct_breakdown.dart';
 import 'package:trooptrak_final_application/features/soldiers/domain/repositories/soldier_repository.dart';
 import 'package:trooptrak_final_application/features/statuses/domain/repositories/status_repository.dart';
 
@@ -151,5 +152,26 @@ void main() {
               start: DateTime(2023, 7, 5, 9), end: DateTime(2023, 7, 5, 9))),
           const Right<Failure, Unit>(unit));
     });
+  });
+
+  test('WatchConductsOnDay asks the repository for that day (R13)', () async {
+    final repo = _MockConducts();
+    final day = DateTime(2023, 7, 5);
+    final list = [buildConduct()];
+    when(() => repo.watchOnDay(day))
+        .thenAnswer((_) => Stream.value(Right(list)));
+    expect(await WatchConductsOnDay(repo)(day).first,
+        Right<Failure, List<Conduct>>(list));
+  });
+
+  test('ConductBreakdown compares by value', () {
+    final run = buildConduct();
+    final soldier = buildSoldier();
+    ConductBreakdown of(List<String> names) => ConductBreakdown(
+        conduct: run,
+        participants: [for (final n in names) soldier.copyWith(name: n)],
+        nonParticipants: const []);
+    expect(of(['A']), of(['A']));
+    expect(of(['A']), isNot(of(['B'])));
   });
 }

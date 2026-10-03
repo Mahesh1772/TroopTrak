@@ -31,12 +31,6 @@ void main() {
         Right<Failure, Soldier>(list.first));
   });
 
-  test('GetSoldiers delegates to the repository', () async {
-    when(() => repo.getAll()).thenAnswer((_) async => const Right([]));
-    expect(await GetSoldiers(repo)(const NoParams()),
-        const Right<Failure, List<Soldier>>([]));
-  });
-
   group('AddSoldier', () {
     test('uses the trimmed name as id, starts in camp with zero points',
         () async {
@@ -107,23 +101,5 @@ void main() {
         .thenAnswer((_) async => const Right(unit));
     expect(await DeleteSoldier(repo)('Tan Ah Kow'),
         const Right<Failure, Unit>(unit));
-  });
-
-  test('SetSoldierPoints clamps negatives and AdjustSoldierPoints passes delta',
-      () async {
-    when(() => repo.setPoints(any(), any()))
-        .thenAnswer((_) async => const Right(unit));
-    when(() => repo.adjustPoints(any(), any()))
-        .thenAnswer((_) async => const Right(unit));
-
-    await SetSoldierPoints(repo)(const PointsParams('a', -3));
-    verify(() => repo.setPoints('a', 0)).called(1);
-
-    await AdjustSoldierPoints(repo)(const PointsParams('a', -1.5));
-    verify(() => repo.adjustPoints('a', -1.5)).called(1);
-  });
-
-  test('PointsParams equality', () {
-    expect(const PointsParams('a', 1), const PointsParams('a', 1));
   });
 }

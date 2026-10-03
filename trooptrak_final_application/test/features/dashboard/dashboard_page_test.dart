@@ -62,6 +62,17 @@ void main() {
           DateTime(2023, 7, 5, 22));
     });
 
+    test('events compare by value', () {
+      expect(
+          run,
+          CalendarEvent(
+              title: 'Run',
+              start: DateTime(2023, 7, 5, 7),
+              end: DateTime(2023, 7, 5, 8),
+              kind: CalendarEventKind.conduct));
+      expect(run, isNot(duty));
+    });
+
     test('eventsOn keeps one day, earliest first', () {
       final late = CalendarEvent(
           title: 'IPPT',

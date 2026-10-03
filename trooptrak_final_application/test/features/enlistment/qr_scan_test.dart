@@ -12,6 +12,7 @@ import 'package:trooptrak_final_application/features/enlistment/domain/repositor
 import 'package:trooptrak_final_application/features/enlistment/domain/usecases/men_usecases.dart';
 import 'package:trooptrak_final_application/features/enlistment/presentation/pages/qr_scanner_page.dart';
 import 'package:trooptrak_final_application/features/enlistment/presentation/providers/qr_scan_provider.dart';
+import 'package:trooptrak_final_application/features/soldiers/domain/entities/soldier.dart';
 
 import '../../helpers/builders.dart';
 import '../../helpers/pump_app.dart';
@@ -39,6 +40,20 @@ void main() {
       expect(await FindRegistrationByQr(men)('  '),
           const Right<Failure, SoldierRegistration?>(null));
       verifyZeroInteractions(men);
+    });
+
+    test('WatchOwnRegistration streams the profile of Men/{uid}', () async {
+      when(() => men.watch('uid-1'))
+          .thenAnswer((_) => Stream.value(Right(registration)));
+      expect(await WatchOwnRegistration(men)('uid-1').first,
+          Right<Failure, Soldier>(registration.profile));
+    });
+
+    test('registrations compare by value', () {
+      SoldierRegistration of(String? qr) => SoldierRegistration(
+          uid: 'uid-1', profile: buildSoldier(name: 'Lim Bah'), qrId: qr);
+      expect(of('qr-123'), registration);
+      expect(of(null), isNot(registration));
     });
   });
 

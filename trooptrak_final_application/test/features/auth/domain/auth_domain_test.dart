@@ -77,13 +77,6 @@ void main() {
               ValidationFailure('Invalid Email Address')));
     });
 
-    test('RegisterWithEmail validates the password', () async {
-      final bad = await RegisterWithEmail(repo)(
-          const EmailCredentials('cmd@unit.sg', 'short'));
-      expect(bad.isLeft(), isTrue);
-      verifyNever(() => repo.registerWithEmail(any(), any()));
-    });
-
     test('SendPasswordReset trims the email', () async {
       when(() => repo.sendPasswordReset(any()))
           .thenAnswer((_) async => const Right(unit));
@@ -116,19 +109,11 @@ void main() {
           const Right<Failure, AuthUser>(user));
     });
 
-    test('display name, signed-in flag and sign out delegate', () async {
-      when(() => repo.updateDisplayName(any()))
-          .thenAnswer((_) async => const Right(unit));
-      when(() => repo.markSoldierSignedIn())
-          .thenAnswer((_) async => const Right(unit));
+    test('sign out and auth state delegate', () async {
       when(() => repo.signOut()).thenAnswer((_) async => const Right(unit));
       when(() => repo.authStateChanges()).thenAnswer((_) => Stream.value(user));
       when(() => repo.currentUser).thenReturn(user);
 
-      await UpdateDisplayName(repo)(' Tan Ah Kow ');
-      verify(() => repo.updateDisplayName('Tan Ah Kow')).called(1);
-      await MarkSoldierSignedIn(repo)(const NoParams());
-      verify(() => repo.markSoldierSignedIn()).called(1);
       await SignOut(repo)(const NoParams());
       verify(() => repo.signOut()).called(1);
       expect(await WatchAuthState(repo)().first, user);

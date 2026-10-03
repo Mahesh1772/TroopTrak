@@ -7,15 +7,6 @@ import '../../../../core/usecase/usecase.dart';
 import '../entities/conduct.dart';
 import '../repositories/conduct_repository.dart';
 
-class WatchConducts implements StreamUseCase<List<Conduct>, NoParams> {
-  const WatchConducts(this._repository);
-
-  final ConductRepository _repository;
-
-  @override
-  ResultStream<List<Conduct>> call(NoParams params) => _repository.watchAll();
-}
-
 class WatchConductsOnDay implements StreamUseCase<List<Conduct>, DateTime> {
   const WatchConductsOnDay(this._repository);
 
@@ -23,15 +14,6 @@ class WatchConductsOnDay implements StreamUseCase<List<Conduct>, DateTime> {
 
   @override
   ResultStream<List<Conduct>> call(DateTime day) => _repository.watchOnDay(day);
-}
-
-class WatchConduct implements StreamUseCase<Conduct, String> {
-  const WatchConduct(this._repository);
-
-  final ConductRepository _repository;
-
-  @override
-  ResultStream<Conduct> call(String id) => _repository.watchById(id);
 }
 
 ValidationFailure? _validate(Conduct conduct) {

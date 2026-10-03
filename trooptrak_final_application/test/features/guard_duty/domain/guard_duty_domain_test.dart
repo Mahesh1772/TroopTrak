@@ -139,6 +139,38 @@ void main() {
               buildDuty(), {'Tan Ah Kow': const PointsChange(subtract: 1.5)}))
           .called(1);
     });
+
+    test('update refuses more than 10 participants too (R10a)', () async {
+      final crowded = buildDuty(participants: {
+        for (var i = 0; i < 11; i++) 'S$i': 'PTE',
+      });
+      expect(
+          await UpdateDuty(repo)(
+              UpdateDutyParams(previous: buildDuty(), updated: crowded)),
+          const Left<Failure, Unit>(ValidationFailure(tooManySlots)));
+      verifyNever(() => repo.update(any(), any()));
+    });
+
+    test('WatchDuties streams the repository duties', () async {
+      final list = [buildDuty()];
+      when(() => repo.watchAll()).thenAnswer((_) => Stream.value(Right(list)));
+      expect(await WatchDuties(repo)(const NoParams()).first,
+          Right<Failure, List<Duty>>(list));
+    });
+
+    test('UpdateDutyParams and DutyRoster compare by value', () {
+      expect(UpdateDutyParams(previous: buildDuty(), updated: buildDuty()),
+          UpdateDutyParams(previous: buildDuty(), updated: buildDuty()));
+      expect(DutyRoster(soldiers: [buildSoldier()], ineligible: const {'a'}),
+          DutyRoster(soldiers: [buildSoldier()], ineligible: const {'a'}));
+      expect(const DutyRoster(soldiers: [], ineligible: {'a'}),
+          isNot(const DutyRoster(soldiers: [], ineligible: {})));
+    });
+  });
+
+  test('PointsChange clamps the reversal at zero, then adds (R9)', () {
+    expect(const PointsChange(subtract: 3, add: 1).applyTo(2), 1);
+    expect(const PointsChange(subtract: 1, add: 2).applyTo(4), 5);
   });
 
   test('GetDutyRoster marks leave and Ex Uniform/Ex Boots ineligible (R6)',

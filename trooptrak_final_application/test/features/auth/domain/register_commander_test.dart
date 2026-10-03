@@ -107,6 +107,22 @@ void main() {
       verifyNever(() => auth.registerWithEmail(any(), any()));
     });
 
+    test('a failed name check is passed on before the account is created',
+        () async {
+      when(() => soldiers.exists(any()))
+          .thenAnswer((_) async => const Left(ServerFailure('down')));
+      expect(await RegisterCommander(auth, soldiers, clock)(registration),
+          const Left<Failure, Unit>(ServerFailure('down')));
+      verifyNever(() => auth.registerWithEmail(any(), any()));
+    });
+
+    test('registrations compare by value', () {
+      CommanderRegistration of(String email) => CommanderRegistration(
+          email: email, password: strong, profile: registration.profile);
+      expect(of(registration.email), registration);
+      expect(of('other@unit.sg'), isNot(registration));
+    });
+
     test('an auth failure stops before writing the soldier', () async {
       when(() => auth.registerWithEmail(any(), any())).thenAnswer((_) async =>
           const Left(AuthFailure('in use', code: 'email-already-in-use')));

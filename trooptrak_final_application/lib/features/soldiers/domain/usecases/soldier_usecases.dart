@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:dartz/dartz.dart';
-import 'package:equatable/equatable.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/error/result.dart';
@@ -26,15 +25,6 @@ class WatchSoldier implements StreamUseCase<Soldier, String> {
 
   @override
   ResultStream<Soldier> call(String id) => _repository.watchById(id);
-}
-
-class GetSoldiers implements UseCase<List<Soldier>, NoParams> {
-  const GetSoldiers(this._repository);
-
-  final SoldierRepository _repository;
-
-  @override
-  Result<List<Soldier>> call(NoParams params) => _repository.getAll();
 }
 
 /// R17: id is the trimmed name, starts in camp with zero points. K13: no overwrite.
@@ -84,36 +74,4 @@ class DeleteSoldier implements UseCase<Unit, String> {
 
   @override
   Result<Unit> call(String id) => _repository.delete(id);
-}
-
-class PointsParams extends Equatable {
-  const PointsParams(this.soldierId, this.value);
-
-  final String soldierId;
-  final double value;
-
-  @override
-  List<Object?> get props => [soldierId, value];
-}
-
-class SetSoldierPoints implements UseCase<Unit, PointsParams> {
-  const SetSoldierPoints(this._repository);
-
-  final SoldierRepository _repository;
-
-  @override
-  Result<Unit> call(PointsParams params) => _repository.setPoints(
-        params.soldierId,
-        Soldier.pointsAfter(params.value, 0),
-      );
-}
-
-class AdjustSoldierPoints implements UseCase<Unit, PointsParams> {
-  const AdjustSoldierPoints(this._repository);
-
-  final SoldierRepository _repository;
-
-  @override
-  Result<Unit> call(PointsParams params) =>
-      _repository.adjustPoints(params.soldierId, params.value);
 }

@@ -48,19 +48,6 @@ class SignInWithEmail implements UseCase<AuthUser, EmailCredentials> {
   }
 }
 
-class RegisterWithEmail implements UseCase<AuthUser, EmailCredentials> {
-  const RegisterWithEmail(this._repository);
-
-  final AuthRepository _repository;
-
-  @override
-  Result<AuthUser> call(EmailCredentials c) async {
-    final invalid = _invalid(c);
-    if (invalid != null) return Left(invalid);
-    return _repository.registerWithEmail(c.email.trim(), c.password.trim());
-  }
-}
-
 class SendPasswordReset implements UseCase<Unit, String> {
   const SendPasswordReset(this._repository);
 
@@ -115,24 +102,6 @@ class VerifyOtp implements UseCase<AuthUser, OtpParams> {
     if (error != null) return Left(ValidationFailure(error));
     return _repository.verifyOtp(params.verificationId, params.smsCode);
   }
-}
-
-class UpdateDisplayName implements UseCase<Unit, String> {
-  const UpdateDisplayName(this._repository);
-
-  final AuthRepository _repository;
-
-  @override
-  Result<Unit> call(String name) => _repository.updateDisplayName(name.trim());
-}
-
-class MarkSoldierSignedIn implements UseCase<Unit, NoParams> {
-  const MarkSoldierSignedIn(this._repository);
-
-  final AuthRepository _repository;
-
-  @override
-  Result<Unit> call(NoParams params) => _repository.markSoldierSignedIn();
 }
 
 class SignOut implements UseCase<Unit, NoParams> {

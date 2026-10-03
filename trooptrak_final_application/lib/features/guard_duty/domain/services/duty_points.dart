@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../soldiers/domain/entities/soldier.dart';
+
 typedef DayPoints = ({double points, String dayType});
 
 /// R7 points and day label by weekday. K4 fix: Sunday reads "Weekend".
@@ -25,10 +27,8 @@ class PointsChange extends Equatable {
   final double subtract;
   final double add;
 
-  double applyTo(double current) {
-    final reversed = current - subtract;
-    return (reversed < 0 ? 0 : reversed) + add;
-  }
+  double applyTo(double current) =>
+      Soldier.pointsAfter(current, -subtract) + add;
 
   @override
   List<Object?> get props => [subtract, add];

@@ -5,9 +5,6 @@ import 'auth_user.dart';
 
 sealed class PhoneAuthEvent extends Equatable {
   const PhoneAuthEvent();
-
-  @override
-  List<Object?> get props => [];
 }
 
 final class OtpSent extends PhoneAuthEvent {

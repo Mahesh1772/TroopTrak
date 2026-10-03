@@ -97,6 +97,12 @@ void main() {
       expect(result.isLeft(), isTrue);
       verifyNever(() => repo.update(any(), any()));
     });
+
+    test('params compare by value', () {
+      expect(
+          UpdateStatusParams(previous: buildStatus(), updated: buildStatus()),
+          UpdateStatusParams(previous: buildStatus(), updated: buildStatus()));
+    });
   });
 
   test('DeleteStatus delegates', () async {

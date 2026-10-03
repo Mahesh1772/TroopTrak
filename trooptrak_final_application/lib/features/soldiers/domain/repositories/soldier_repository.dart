@@ -20,9 +20,4 @@ abstract interface class SoldierRepository {
 
   /// Deletes statuses, attendance and the soldier document (R14).
   Result<Unit> delete(String id);
-
-  Result<Unit> setPoints(String id, double points);
-
-  /// Atomically adds [delta], clamping at zero (R9).
-  Result<Unit> adjustPoints(String id, double delta);
 }

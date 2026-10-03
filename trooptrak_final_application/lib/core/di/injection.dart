@@ -122,9 +122,7 @@ class AppDependencies {
       ];
 
   List<SingleChildWidget> _conductProviders() => [
-        Provider(create: (_) => WatchConducts(conducts)),
         Provider(create: (_) => WatchConductsOnDay(conducts)),
-        Provider(create: (_) => WatchConduct(conducts)),
         Provider(create: (_) => AddConduct(conducts)),
         Provider(create: (_) => UpdateConduct(conducts)),
         Provider(create: (_) => DeleteConduct(conducts)),
@@ -157,7 +155,6 @@ class AppDependencies {
   List<SingleChildWidget> _soldierProviders() => [
         Provider(create: (_) => WatchSoldiers(soldiers)),
         Provider(create: (_) => WatchSoldier(soldiers)),
-        Provider(create: (_) => GetSoldiers(soldiers)),
         Provider(create: (_) => AddSoldier(soldiers, clock)),
         Provider(create: (_) => UpdateSoldier(soldiers)),
         Provider(create: (_) => DeleteSoldier(soldiers)),
@@ -169,8 +166,6 @@ class AppDependencies {
         Provider(create: (_) => SendPasswordReset(authRepository)),
         Provider(create: (_) => VerifyPhone(authRepository)),
         Provider(create: (_) => VerifyOtp(authRepository)),
-        Provider(create: (_) => UpdateDisplayName(authRepository)),
-        Provider(create: (_) => MarkSoldierSignedIn(authRepository)),
         Provider(create: (_) => SignOut(authRepository)),
         Provider(
             create: (_) => RegisterCommander(authRepository, soldiers, clock)),

@@ -34,6 +34,8 @@ void main() {
     expect(s.officersInCamp, [lt]);
     expect(s.wosesInCamp, [cpl]);
     expect(s.total, 4);
+    expect(s, buildStrengthSummary(soldiers, const [], today));
+    expect(s, isNot(buildStrengthSummary([lt], const [], today)));
   });
 
   test('MA vs other statuses, once per soldier, started and active (R3, K3)',

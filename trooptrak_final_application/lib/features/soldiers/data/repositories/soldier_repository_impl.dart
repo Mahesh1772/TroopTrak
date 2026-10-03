@@ -42,16 +42,4 @@ class SoldierRepositoryImpl implements SoldierRepository {
         await _remote.delete(id);
         return unit;
       });
-
-  @override
-  Result<Unit> setPoints(String id, double points) => guard(() async {
-        await _remote.setPoints(id, points);
-        return unit;
-      });
-
-  @override
-  Result<Unit> adjustPoints(String id, double delta) => guard(() async {
-        await _remote.adjustPoints(id, delta);
-        return unit;
-      });
 }

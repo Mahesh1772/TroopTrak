@@ -125,28 +125,6 @@ void main() {
     expect((await db.collection('Users').doc('Lee Wei').get()).exists, isTrue);
   });
 
-  test('setPoints writes and adjustPoints adds with a zero floor (R9)',
-      () async {
-    await useDb(
-        await seedFirestore(soldiers: [SeededSoldier(soldierDoc(points: 2))]));
-    Future<num> points() async =>
-        (await db.collection('Users').doc('Tan Ah Kow').get()).data()!['points']
-            as num;
-
-    await repo.adjustPoints('Tan Ah Kow', 1.5);
-    expect(await points(), 3.5);
-    await repo.adjustPoints('Tan Ah Kow', -10);
-    expect(await points(), 0);
-    await repo.setPoints('Tan Ah Kow', 7);
-    expect(await points(), 7);
-  });
-
-  test('adjustPoints on a missing soldier is a NotFound Left', () async {
-    final result = await repo.adjustPoints('ghost', 1);
-    result.leftMap((f) => expect(f, isA<NotFoundFailure>()));
-    expect(result.isLeft(), isTrue);
-  });
-
   group('errors become Left', () {
     late _MockRemote remote;
 

@@ -61,17 +61,4 @@ class SoldierRemoteDataSource {
       ref,
     ]);
   }
-
-  Future<void> setPoints(String id, double points) =>
-      _users.doc(id).update({UserFields.points: points});
-
-  Future<void> adjustPoints(String id, double delta) =>
-      _db.runTransaction((tx) async {
-        final ref = _users.doc(id);
-        final snap = await tx.get(ref);
-        if (!snap.exists) throw NotFoundException('Soldier $id was not found.');
-        final current = readDouble(snap.data()?[UserFields.points]);
-        tx.update(
-            ref, {UserFields.points: Soldier.pointsAfter(current, delta)});
-      });
 }

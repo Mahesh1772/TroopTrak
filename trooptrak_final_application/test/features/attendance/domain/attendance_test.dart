@@ -107,9 +107,11 @@ void main() {
       verify(() => repo.delete(old)).called(1);
     });
 
-    test('BookInOutParams equality', () {
+    test('BookInOutParams and AttendanceRecord compare by value', () {
       expect(const BookInOutParams('a', isInsideCamp: true),
           const BookInOutParams('a', isInsideCamp: true));
+      expect(buildAttendance(id: 'r1'), buildAttendance(id: 'r1'));
+      expect(buildAttendance(id: 'r1'), isNot(buildAttendance(id: 'r2')));
     });
   });
 }
