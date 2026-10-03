@@ -9,6 +9,7 @@ import '../../features/onboarding/presentation/onboarding_routes.dart';
 import '../../features/soldier_profile/presentation/soldier_profile_routes.dart';
 import '../widgets/app_scaffold.dart';
 import '../widgets/feedback_views.dart';
+import '../widgets/hero_dialog_route.dart';
 import 'app_routes.dart';
 import 'commander_routes.dart';
 import 'route_builder.dart';
@@ -28,8 +29,17 @@ abstract final class AppRouter {
     ...soldierRoutes,
   };
 
+  /// Routes shown over the current page in a [HeroDialogRoute].
+  static const dialogs = {AppRoutes.generateQr};
+
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     final builder = routes[settings.name] ?? (_, __) => const _UnknownRoute();
+    if (dialogs.contains(settings.name)) {
+      return HeroDialogRoute<dynamic>(
+        settings: settings,
+        builder: (context) => builder(context, settings.arguments),
+      );
+    }
     return MaterialPageRoute<dynamic>(
       settings: settings,
       builder: (context) => builder(context, settings.arguments),

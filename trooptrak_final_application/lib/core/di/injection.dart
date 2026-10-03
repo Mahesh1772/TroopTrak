@@ -44,7 +44,9 @@ import '../../features/statuses/data/repositories/status_repository_impl.dart';
 import '../../features/statuses/domain/repositories/status_repository.dart';
 import '../../features/statuses/domain/usecases/status_usecases.dart';
 import '../services/clock.dart';
+import '../services/id_generator.dart';
 import '../services/preferences_service.dart';
+import '../services/tick_source.dart';
 import '../theme/theme_manager.dart';
 import 'calendar_event_adapter.dart';
 
@@ -53,6 +55,8 @@ class AppDependencies {
   AppDependencies({
     required this.preferences,
     this.clock = const SystemClock(),
+    this.ticks = const PeriodicTickSource(),
+    this.ids = const UuidGenerator(),
     FirebaseFirestore? firestore,
     FirebaseAuth? auth,
   })  : _firestore = firestore,
@@ -60,6 +64,8 @@ class AppDependencies {
 
   final PreferencesService preferences;
   final Clock clock;
+  final TickSource ticks;
+  final IdGenerator ids;
   final FirebaseFirestore? _firestore;
   final FirebaseAuth? _auth;
 
@@ -89,6 +95,7 @@ class AppDependencies {
     final roles = RoleRepositoryImpl(preferences);
     return [
       Provider<Clock>.value(value: clock),
+      Provider<TickSource>.value(value: ticks),
       Provider<PreferencesService>.value(value: preferences),
       ChangeNotifierProvider<ThemeManager>(create: (_) => ThemeManager()),
       Provider(create: (_) => GetRole(roles)),
@@ -170,6 +177,8 @@ class AppDependencies {
         Provider(create: (_) => SoldierProfileExists(men)),
         Provider(create: (_) => FindRegistrationByQr(men)),
         Provider(create: (_) => WatchOwnRegistration(men)),
+        Provider(create: (_) => PublishEnlistmentQr(men, ids)),
+        Provider(create: (_) => ClearEnlistmentQr(men)),
         Provider(
             create: (_) => UpdateSoldierProfile(authRepository, men, soldiers)),
         Provider(create: (_) => ResolveSoldierEntry(authRepository, men)),

@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import '../../features/auth/domain/usecases/auth_usecases.dart';
 import '../../features/auth/domain/usecases/update_soldier_profile.dart';
 import '../../features/enlistment/domain/usecases/men_usecases.dart';
+import '../../features/enlistment/presentation/pages/generate_qr_page.dart';
+import '../../features/enlistment/presentation/providers/enlistment_qr_provider.dart';
 import '../../features/nominal_roll/presentation/pages/soldier_form_page.dart';
 import '../../features/shell/presentation/pages/soldier_shell.dart';
 import '../../features/soldier_profile/presentation/pages/soldier_profile_page.dart';
@@ -13,8 +15,11 @@ import '../../features/soldier_profile/presentation/providers/soldier_profile_pr
 import '../../features/soldier_profile/presentation/widgets/profile_header_actions.dart';
 import '../../features/soldiers/domain/entities/soldier.dart';
 import '../constants/ranks.dart';
+import '../services/clock.dart';
+import '../services/tick_source.dart';
 import '../usecase/usecase.dart';
 import '../widgets/feedback_views.dart';
+import '../widgets/hero_dialog_route.dart';
 import 'app_routes.dart';
 import 'route_builder.dart';
 
@@ -53,12 +58,17 @@ Widget soldierProfileTab(BuildContext context) {
       headerActions: [
         if (capabilities.showQr)
           Builder(
-            builder: (context) => HeaderPillButton(
-              key: const Key('showQr'),
-              label: 'SHOW QR CODE',
-              icon: Icons.qr_code_2_rounded,
-              onPressed: () =>
-                  Navigator.of(context).pushNamed(AppRoutes.generateQr),
+            builder: (context) => Hero(
+              tag: GenerateQrPage.heroTag,
+              createRectTween: (begin, end) =>
+                  CustomRectTween(begin: begin!, end: end!),
+              child: HeaderPillButton(
+                key: const Key('showQr'),
+                label: 'SHOW QR CODE',
+                icon: Icons.qr_code_2_rounded,
+                onPressed: () =>
+                    Navigator.of(context).pushNamed(AppRoutes.generateQr),
+              ),
             ),
           ),
       ],
@@ -73,7 +83,14 @@ final Map<String, RouteWidgetBuilder> soldierRoutes = {
         ranks: Ranks.soldierRegistration,
         save: (soldier) => context.read<UpdateSoldierProfile>()(soldier),
       ),
-  AppRoutes.generateQr: (_, __) => const Scaffold(
-        body: EmptyState(message: 'QR code', image: null),
+  AppRoutes.generateQr: (context, _) => ChangeNotifierProvider(
+        create: (context) => EnlistmentQrProvider(
+          uid: context.read<WatchAuthState>().current?.uid ?? '',
+          publish: context.read<PublishEnlistmentQr>(),
+          clear: context.read<ClearEnlistmentQr>(),
+          clock: context.read<Clock>(),
+          ticks: context.read<TickSource>(),
+        )..start(),
+        child: const GenerateQrPage(),
       ),
 };

@@ -8,6 +8,7 @@ import 'package:trooptrak_final_application/app.dart';
 import 'package:trooptrak_final_application/core/di/injection.dart';
 import 'package:trooptrak_final_application/core/services/clock.dart';
 import 'package:trooptrak_final_application/core/services/preferences_service.dart';
+import 'package:trooptrak_final_application/core/services/tick_source.dart';
 import 'package:trooptrak_final_application/core/theme/theme_manager.dart';
 import 'package:trooptrak_final_application/features/attendance/domain/usecases/attendance_usecases.dart';
 import 'package:trooptrak_final_application/features/attendance/domain/usecases/watch_soldiers_in_camp.dart';
@@ -112,6 +113,9 @@ void main() {
       () => context.read<WatchSoldiersInCamp>(),
       () => context.read<FindRegistrationByQr>(),
       () => context.read<WatchOwnRegistration>(),
+      () => context.read<PublishEnlistmentQr>(),
+      () => context.read<ClearEnlistmentQr>(),
+      () => context.read<TickSource>(),
       () => context.read<UpdateSoldierProfile>(),
       () => context.read<CompleteSoldierProfile>(),
       () => context.read<DeleteCommanderAccount>(),
