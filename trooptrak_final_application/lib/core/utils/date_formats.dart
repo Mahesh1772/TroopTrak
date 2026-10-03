@@ -7,6 +7,10 @@ abstract final class DatePatterns {
   static const attendanceDisplay = 'E d MMM yyyy HH:mm:ss';
   static const attendanceDocId = 'yyyy-MM-dd HH:mm:ss';
   static const weekday = 'EEEE';
+  static const shortWeekday = 'E';
+  static const shortMonth = 'MMM';
+  static const month = 'MMMM';
+  static const monthYear = 'MMMM yyyy';
 }
 
 const _locale = 'en_US';
@@ -17,6 +21,10 @@ final _weekdayDay = DateFormat(DatePatterns.weekdayDay, _locale);
 final _attendanceDisplay = DateFormat(DatePatterns.attendanceDisplay, _locale);
 final _attendanceDocId = DateFormat(DatePatterns.attendanceDocId, _locale);
 final _weekday = DateFormat(DatePatterns.weekday, _locale);
+final _shortWeekday = DateFormat(DatePatterns.shortWeekday, _locale);
+final _shortMonth = DateFormat(DatePatterns.shortMonth, _locale);
+final _month = DateFormat(DatePatterns.month, _locale);
+final _monthYear = DateFormat(DatePatterns.monthYear, _locale);
 final _longDate = DateFormat.yMMMMd(_locale);
 final _dashboardStamp = DateFormat.yMMMMd(_locale).add_Hm();
 
@@ -52,6 +60,14 @@ String formatDashboardStamp(DateTime timestamp) =>
     _dashboardStamp.format(timestamp);
 
 String formatWeekday(DateTime date) => _weekday.format(date);
+
+String formatShortWeekday(DateTime date) => _shortWeekday.format(date);
+
+String formatShortMonth(DateTime date) => _shortMonth.format(date);
+
+String formatMonth(DateTime date) => _month.format(date);
+
+String formatMonthYear(DateTime date) => _monthYear.format(date);
 
 DateTime dateOnly(DateTime date) => DateTime(date.year, date.month, date.day);
 

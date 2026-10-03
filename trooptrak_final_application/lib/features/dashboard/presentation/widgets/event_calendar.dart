@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/theme/app_colors.dart';
@@ -17,12 +16,10 @@ import '../providers/dashboard_providers.dart';
 class EventCalendar extends StatelessWidget {
   const EventCalendar({super.key});
 
-  static final _monthTitle = DateFormat('MMMM yyyy', 'en_US');
-  static final _monthName = DateFormat('MMMM', 'en_US');
   static const _weekdays = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 
   static String bannerOf(DateTime month) =>
-      'lib/assets/calendar-images/${_monthName.format(month)}.png';
+      'lib/assets/calendar-images/${formatMonth(month)}.png';
 
   static Color colorOf(CalendarEventKind kind) => switch (kind) {
         CalendarEventKind.conduct => AppColors.warning,
@@ -59,7 +56,7 @@ class EventCalendar extends StatelessWidget {
                     icon: const Icon(Icons.chevron_left),
                   ),
                   Expanded(
-                    child: Text(_monthTitle.format(month),
+                    child: Text(formatMonthYear(month),
                         textAlign: TextAlign.center,
                         style: text.headlineLarge?.copyWith(
                             color: AppColors.black,

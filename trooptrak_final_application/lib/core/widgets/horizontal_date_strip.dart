@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 
 import '../theme/app_colors.dart';
 import '../theme/app_radii.dart';
@@ -27,9 +26,6 @@ class HorizontalDateStrip extends StatefulWidget {
 }
 
 class _HorizontalDateStripState extends State<HorizontalDateStrip> {
-  static final _month = DateFormat('MMM', 'en_US');
-  static final _weekday = DateFormat('E', 'en_US');
-
   final _controller = ScrollController();
 
   double get _itemExtent => 80.w + AppSpacing.sm.w;
@@ -97,12 +93,12 @@ class _HorizontalDateStripState extends State<HorizontalDateStrip> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(_month.format(day),
+                    Text(formatShortMonth(day),
                         style:
                             text.labelMedium?.copyWith(color: color ?? muted)),
                     Text('${day.day}',
                         style: text.displayMedium?.copyWith(color: color)),
-                    Text(_weekday.format(day),
+                    Text(formatShortWeekday(day),
                         style:
                             text.titleMedium?.copyWith(color: color ?? muted)),
                   ],

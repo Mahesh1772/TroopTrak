@@ -59,6 +59,10 @@ void main() {
     expect(formatLongDate(sample), 'July 5, 2023');
     expect(formatDashboardStamp(sample), 'July 5, 2023 17:30');
     expect(formatWeekday(sample), 'Wednesday');
+    expect(formatShortWeekday(sample), 'Wed');
+    expect(formatShortMonth(sample), 'Jul');
+    expect(formatMonth(sample), 'July');
+    expect(formatMonthYear(sample), 'July 2023');
   });
 
   group('dayDifference', () {
