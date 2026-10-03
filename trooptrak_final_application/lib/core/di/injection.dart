@@ -118,6 +118,7 @@ class AppDependencies {
         Provider(
             create: (_) => RegisterCommander(authRepository, soldiers, clock)),
         Provider(create: (_) => SoldierProfileExists(men)),
+        Provider(create: (_) => FindRegistrationByQr(men)),
         Provider(create: (_) => ResolveSoldierEntry(authRepository, men)),
         Provider(create: (_) => CompleteSoldierSignIn(authRepository, men)),
         Provider(create: (_) => CompleteSoldierProfile(authRepository, men)),

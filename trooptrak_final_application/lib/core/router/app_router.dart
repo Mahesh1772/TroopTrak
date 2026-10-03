@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../features/auth/domain/usecases/auth_usecases.dart';
 import '../../features/auth/presentation/auth_routes.dart';
+import '../../features/enlistment/presentation/enlistment_routes.dart';
 import '../../features/nominal_roll/presentation/nominal_roll_routes.dart';
 import '../../features/onboarding/presentation/onboarding_routes.dart';
 import '../../features/shell/presentation/pages/commander_shell.dart';
@@ -21,8 +22,9 @@ abstract final class AppRouter {
         const _Placeholder('My profile', title: 'Profile'),
     AppRoutes.editSoldier: (_, __) =>
         const _Placeholder('Edit soldier', title: 'Edit soldier'),
-    AppRoutes.qrScanner: (_, __) =>
-        const _Placeholder('QR scanner', title: 'Scan QR'),
+    ...enlistmentRoutes,
+    AppRoutes.addSoldier: (_, __) =>
+        const _Placeholder('Add soldier', title: 'Add soldier'),
     AppRoutes.soldierHome: (_, __) => const _Placeholder('Soldier app'),
   };
 
