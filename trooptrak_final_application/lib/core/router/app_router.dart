@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../features/auth/presentation/auth_routes.dart';
+import '../../features/conducts/presentation/conducts_routes.dart';
 import '../../features/enlistment/presentation/enlistment_routes.dart';
 import '../../features/nominal_roll/presentation/nominal_roll_routes.dart';
 import '../../features/onboarding/presentation/onboarding_routes.dart';
@@ -19,7 +20,7 @@ abstract final class AppRouter {
     AppRoutes.commanderProfile: commanderProfile,
     ...enlistmentRoutes,
     ...soldierFormRoutes,
-    AppRoutes.addConduct: (_, __) => const _Placeholder('Add conduct'),
+    ...conductRoutes,
     AppRoutes.conductDetails: (_, __) => const _Placeholder('Conduct details'),
     AppRoutes.soldierHome: (_, __) => const _Placeholder('Soldier app'),
   };

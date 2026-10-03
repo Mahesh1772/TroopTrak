@@ -140,5 +140,16 @@ void main() {
               ValidationFailure('Oi can add conduct please?')));
       verifyNever(() => repo.add(any()));
     });
+
+    test('refuse an end time before the start; equal times are fine', () async {
+      expect(
+          await AddConduct(repo)(buildConduct(
+              start: DateTime(2023, 7, 5, 9), end: DateTime(2023, 7, 5, 8))),
+          const Left<Failure, Unit>(ValidationFailure(endBeforeStartTime)));
+      expect(
+          await AddConduct(repo)(buildConduct(
+              start: DateTime(2023, 7, 5, 9), end: DateTime(2023, 7, 5, 9))),
+          const Right<Failure, Unit>(unit));
+    });
   });
 }

@@ -2,6 +2,25 @@ import 'package:flutter/material.dart';
 
 import '../utils/date_formats.dart';
 
+/// Wraps a picker shell in a [FormField] when a validator is given, so the
+/// pick takes part in `Form.validate()`.
+Widget _validated<T>({
+  required T? value,
+  required FormFieldValidator<T>? validator,
+  required String? errorText,
+  required Widget Function(String? errorText, ValueChanged<T> report) shell,
+  required ValueChanged<T> onChanged,
+}) {
+  if (validator == null) return shell(errorText, onChanged);
+  return FormField<T>(
+    validator: (picked) => validator(picked ?? value),
+    builder: (state) => shell(state.errorText ?? errorText, (v) {
+      state.didChange(v);
+      onChanged(v);
+    }),
+  );
+}
+
 class DatePickerField extends StatelessWidget {
   const DatePickerField({
     super.key,
@@ -13,6 +32,7 @@ class DatePickerField extends StatelessWidget {
     this.initialDate,
     this.icon = Icons.calendar_month_rounded,
     this.errorText,
+    this.validator,
   });
 
   final ValueChanged<DateTime> onChanged;
@@ -23,6 +43,7 @@ class DatePickerField extends StatelessWidget {
   final DateTime? initialDate;
   final IconData icon;
   final String? errorText;
+  final FormFieldValidator<DateTime>? validator;
 
   DateTime get _initial {
     final candidate = value ?? initialDate ?? lastDate;
@@ -31,26 +52,31 @@ class DatePickerField extends StatelessWidget {
     return candidate;
   }
 
-  Future<void> _pick(BuildContext context) async {
+  Future<void> _pick(
+      BuildContext context, ValueChanged<DateTime> report) async {
     final picked = await showDatePicker(
       context: context,
       initialDate: _initial,
       firstDate: firstDate,
       lastDate: lastDate,
     );
-    if (picked != null) onChanged(picked);
+    if (picked != null) report(picked);
   }
 
   @override
-  Widget build(BuildContext context) {
-    return _PickerShell(
-      icon: icon,
-      hintText: hintText,
-      label: value == null ? null : formatDay(value!),
-      errorText: errorText,
-      onTap: () => _pick(context),
-    );
-  }
+  Widget build(BuildContext context) => _validated<DateTime>(
+        value: value,
+        validator: validator,
+        errorText: errorText,
+        onChanged: onChanged,
+        shell: (error, report) => _PickerShell(
+          icon: icon,
+          hintText: hintText,
+          label: value == null ? null : formatDay(value!),
+          errorText: error,
+          onTap: () => _pick(context, report),
+        ),
+      );
 }
 
 class TimePickerField extends StatelessWidget {
@@ -62,6 +88,7 @@ class TimePickerField extends StatelessWidget {
     this.initialTime = const TimeOfDay(hour: 9, minute: 0),
     this.icon = Icons.access_time_rounded,
     this.errorText,
+    this.validator,
   });
 
   final ValueChanged<TimeOfDay> onChanged;
@@ -70,26 +97,34 @@ class TimePickerField extends StatelessWidget {
   final TimeOfDay initialTime;
   final IconData icon;
   final String? errorText;
+  final FormFieldValidator<TimeOfDay>? validator;
 
-  Future<void> _pick(BuildContext context) async {
+  Future<void> _pick(
+      BuildContext context, ValueChanged<TimeOfDay> report) async {
     final picked = await showTimePicker(
       context: context,
       initialTime: value ?? initialTime,
     );
-    if (picked != null) onChanged(picked);
+    if (picked != null) report(picked);
   }
 
   @override
   Widget build(BuildContext context) {
     final time = value;
-    return _PickerShell(
-      icon: icon,
-      hintText: hintText,
-      label: time == null
-          ? null
-          : formatTime(DateTime(2000, 1, 1, time.hour, time.minute)),
+    return _validated<TimeOfDay>(
+      value: value,
+      validator: validator,
       errorText: errorText,
-      onTap: () => _pick(context),
+      onChanged: onChanged,
+      shell: (error, report) => _PickerShell(
+        icon: icon,
+        hintText: hintText,
+        label: time == null
+            ? null
+            : formatTime(DateTime(2000, 1, 1, time.hour, time.minute)),
+        errorText: error,
+        onTap: () => _pick(context, report),
+      ),
     );
   }
 }

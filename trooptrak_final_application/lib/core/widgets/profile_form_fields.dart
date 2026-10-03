@@ -195,22 +195,16 @@ class ProfileFormFields extends StatelessWidget {
     required DateTime lastDate,
     required ValueSetter<DateTime> set,
   }) =>
-      FormField<DateTime>(
-        validator: (picked) => (picked ?? value) == null ? missing : null,
-        builder: (state) => DatePickerField(
-          key: Key(key),
-          hintText: hint,
-          value: value,
-          initialDate: today,
-          icon: icon,
-          firstDate: DateTime(1960),
-          lastDate: lastDate,
-          errorText: state.errorText,
-          onChanged: (d) {
-            controller.update(() => set(d));
-            state.didChange(d);
-          },
-        ),
+      DatePickerField(
+        key: Key(key),
+        hintText: hint,
+        value: value,
+        initialDate: today,
+        icon: icon,
+        firstDate: DateTime(1960),
+        lastDate: lastDate,
+        validator: (d) => d == null ? missing : null,
+        onChanged: (d) => controller.update(() => set(d)),
       );
 
   Widget _text(

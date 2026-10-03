@@ -41,8 +41,14 @@ ValidationFailure? _validate(Conduct conduct) {
   if (conduct.name.trim().isEmpty) {
     return const ValidationFailure('Oi can add conduct please?');
   }
+  if (conduct.end.isBefore(conduct.start)) {
+    return const ValidationFailure(endBeforeStartTime);
+  }
   return null;
 }
+
+/// Source forms accepted any pair of times (user: refuse end < start).
+const endBeforeStartTime = 'End time cannot be before the start time.';
 
 class AddConduct implements UseCase<Unit, Conduct> {
   const AddConduct(this._repository);
