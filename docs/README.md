@@ -2,6 +2,10 @@
 
 Welcome to the TroopTrak documentation repository. This directory contains comprehensive documentation for the TroopTrak military troop management application.
 
+[🏠 **View Main Documentation Page**](index.html)
+
+---
+
 ## 📚 Available Documentation
 
 ### [📖 User Guide](USER_GUIDE.md)

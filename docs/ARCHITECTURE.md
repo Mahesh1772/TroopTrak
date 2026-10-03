@@ -1,10 +1,22 @@
+---
+layout: default
+title: Architecture - TroopTrak Documentation
+permalink: /ARCHITECTURE/
+---
+
 # 🏛️ TroopTrak Architecture Documentation
 
 <div align="center">
 
-![Architecture](https://img.shields.io/badge/Architecture-System_Design-8147e6?style=for-the-badge)
+<img src="{{ '/assets/TroopTrakAppIcon.png' | relative_url }}" alt="TroopTrak Logo" width="150" style="border-radius: 20px; margin-bottom: 20px;">
 
-**Detailed system architecture, design patterns, and technical diagrams**
+<p>
+<img src="https://img.shields.io/badge/Architecture-System_Design-8147e6?style=for-the-badge" alt="Architecture Badge">
+</p>
+
+<p>
+<strong>Detailed system architecture, design patterns, and technical diagrams</strong>
+</p>
 
 </div>
 
@@ -27,37 +39,37 @@
 ### High-Level System Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────────┐
+┌──────────────────────────────────────────────────────────────────────┐
 │                         CLIENT LAYER                                 │
 │                                                                      │
-│  ┌────────────┐  ┌────────────┐  ┌────────────┐  ┌────────────┐   │
-│  │  Android   │  │    iOS     │  │    Web     │  │  Desktop   │   │
-│  │   App      │  │    App     │  │    App     │  │    App     │   │
-│  └─────┬──────┘  └─────┬──────┘  └─────┬──────┘  └─────┬──────┘   │
-│        └─────────────────┴───────────────┴───────────────┘          │
+│  ┌────────────┐  ┌────────────┐  ┌────────────┐  ┌────────────┐      │
+│  │  Android   │  │    iOS     │  │    Web     │  │  Desktop   │      │
+│  │   App      │  │    App     │  │    App     │  │    App     │      │
+│  └─────┬──────┘  └─────┬──────┘  └─────┬──────┘  └─────┬──────┘      │
+│        └─────────────────┴───────────────┴─────────────┘             │
 │                              │                                       │
 └──────────────────────────────┼───────────────────────────────────────┘
                                │
                                ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│                    FLUTTER FRAMEWORK LAYER                          │
-│                                                                      │
+┌────────────────────────────────────────────────────────────────────┐
+│                    FLUTTER FRAMEWORK LAYER                         │
+│                                                                    │
 │  ┌──────────────────────────────────────────────────────────────┐  │
-│  │                    Material Design Widgets                    │  │
+│  │                    Material Design Widgets                   │  │
 │  └──────────────────────────────────────────────────────────────┘  │
 │  ┌──────────────────────────────────────────────────────────────┐  │
-│  │                    State Management (Provider)                │  │
+│  │                    State Management (Provider)               │  │
 │  └──────────────────────────────────────────────────────────────┘  │
 │  ┌──────────────────────────────────────────────────────────────┐  │
-│  │                    Navigation & Routing                       │  │
+│  │                    Navigation & Routing                      │  │
 │  └──────────────────────────────────────────────────────────────┘  │
-│                                                                      │
-└──────────────────────────────────┬───────────────────────────────────┘
+│                                                                    │
+└──────────────────────────────────┬─────────────────────────────────┘
                                    │
                                    ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│                    APPLICATION LAYER                                │
-│                                                                      │
+┌───────────────────────────────────────────────────────────────────┐
+│                    APPLICATION LAYER                              │
+│                                                                   │
 │  ┌────────────────┐  ┌────────────────┐  ┌────────────────┐       │
 │  │ Authentication │  │    Conduct     │  │   Guard Duty   │       │
 │  │     Module     │  │    Module      │  │     Module     │       │
@@ -66,13 +78,13 @@
 │  │  User Profile  │  │   Attendance   │  │     Status     │       │
 │  │     Module     │  │     Module     │  │     Module     │       │
 │  └────────────────┘  └────────────────┘  └────────────────┘       │
-│                                                                      │
-└──────────────────────────────┬───────────────────────────────────────┘
+│                                                                   │
+└──────────────────────────────┬────────────────────────────────────┘
                                │
                                ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│                     FIREBASE SERVICES LAYER                         │
-│                                                                      │
+┌───────────────────────────────────────────────────────────────────┐
+│                     FIREBASE SERVICES LAYER                       │
+│                                                                   │
 │  ┌────────────────┐  ┌────────────────┐  ┌────────────────┐       │
 │  │   Firebase     │  │   Cloud        │  │   Cloud        │       │
 │  │   Auth         │  │   Firestore    │  │   Storage      │       │
@@ -81,8 +93,8 @@
 │  │   Firebase     │  │   Cloud        │  │   Firebase     │       │
 │  │   Analytics    │  │   Messaging    │  │   Hosting      │       │
 │  └────────────────┘  └────────────────┘  └────────────────┘       │
-│                                                                      │
-└─────────────────────────────────────────────────────────────────────┘
+│                                                                   │
+└───────────────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -119,12 +131,12 @@
 ### 2. Provider Pattern (State Management)
 
 ```
-┌─────────────────────────────────────────────────┐
-│              MultiProvider (Root)               │
-│                                                 │
+┌────────────────────────────────────────────────┐
+│              MultiProvider (Root)              │
+│                                                │
 │  ┌───────────────────────────────────────┐     │
-│  │        ChangeNotifier Providers        │     │
-│  │                                        │     │
+│  │        ChangeNotifier Providers       │     │
+│  │                                       │     │
 │  │  ┌──────────────────────────────┐     │     │
 │  │  │      AuthProvider            │     │     │
 │  │  │  - Manages auth state        │     │     │
@@ -145,13 +157,13 @@
 │  │  │  - Preference persistence    │     │     │
 │  │  └──────────────────────────────┘     │     │
 │  └───────────────────────────────────────┘     │
-│                                                 │
+│                                                │
 │  ┌───────────────────────────────────────┐     │
-│  │       Consumer Widgets                 │     │
-│  │  - Listen to provider changes          │     │
-│  │  - Rebuild on state update             │     │
+│  │       Consumer Widgets                │     │
+│  │  - Listen to provider changes         │     │
+│  │  - Rebuild on state update            │     │
 │  └───────────────────────────────────────┘     │
-└─────────────────────────────────────────────────┘
+└────────────────────────────────────────────────┘
 ```
 
 ### 3. Repository Pattern
@@ -187,151 +199,151 @@
 ### Authentication Module
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│               Authentication Module                      │
-├─────────────────────────────────────────────────────────┤
-│                                                          │
-│  ┌────────────────────────────────────────────┐         │
-│  │     CommanderOrManSelectScreen             │         │
-│  │  - Role selection (Men/Commander)          │         │
-│  └─────────────────┬──────────────────────────┘         │
-│                    │                                     │
-│                    ▼                                     │
-│  ┌────────────────────────────────────────────┐         │
-│  │           WrapperScreen                    │         │
-│  │  - Checks authentication status            │         │
-│  └─────────────────┬──────────────────────────┘         │
-│                    │                                     │
-│        ┌───────────┴─────────────┐                      │
-│        │                         │                      │
-│        ▼                         ▼                      │
+┌────────────────────────────────────────────────────────┐
+│               Authentication Module                    │
+├────────────────────────────────────────────────────────┤
+│                                                        │
+│  ┌────────────────────────────────────────────┐        │
+│  │     CommanderOrManSelectScreen             │        │
+│  │  - Role selection (Men/Commander)          │        │
+│  └─────────────────┬──────────────────────────┘        │
+│                    │                                   │
+│                    ▼                                   │
+│  ┌────────────────────────────────────────────┐        │
+│  │           WrapperScreen                    │        │
+│  │  - Checks authentication status            │        │
+│  └─────────────────┬──────────────────────────┘        │
+│                    │                                   │
+│        ┌───────────┴─────────────┐                     │
+│        │                         │                     │
+│        ▼                         ▼                     │
 │  ┌──────────┐           ┌────────────────┐             │
 │  │  Main    │           │   Register     │             │
 │  │  App     │           │   Screen       │             │
 │  └──────────┘           └────────┬───────┘             │
-│                                  │                      │
-│                                  ▼                      │
+│                                  │                     │
+│                                  ▼                     │
 │                         ┌────────────────┐             │
 │                         │  Phone Number  │             │
 │                         │  Entry Screen  │             │
 │                         └────────┬───────┘             │
-│                                  │                      │
-│                                  ▼                      │
+│                                  │                     │
+│                                  ▼                     │
 │                         ┌────────────────┐             │
 │                         │   OTP Screen   │             │
 │                         └────────┬───────┘             │
-│                                  │                      │
-│                                  ▼                      │
+│                                  │                     │
+│                                  ▼                     │
 │                         ┌────────────────┐             │
 │                         │   Get User     │             │
 │                         │   Info Screen  │             │
 │                         └────────┬───────┘             │
-│                                  │                      │
-│                                  ▼                      │
+│                                  │                     │
+│                                  ▼                     │
 │                            ┌──────────┐                │
 │                            │  Success │                │
 │                            └──────────┘                │
-│                                                          │
-│  ┌────────────────────────────────────────────┐         │
-│  │         AuthProvider (State)               │         │
-│  │  - isSignedIn                              │         │
-│  │  - userid                                  │         │
-│  │  - signInWithPhone()                       │         │
-│  │  - verifyOTP()                             │         │
-│  │  - saveUserData()                          │         │
-│  └────────────────────────────────────────────┘         │
-│                                                          │
-└─────────────────────────────────────────────────────────┘
+│                                                        │
+│  ┌────────────────────────────────────────────┐        │
+│  │         AuthProvider (State)               │        │
+│  │  - isSignedIn                              │        │
+│  │  - userid                                  │        │
+│  │  - signInWithPhone()                       │        │
+│  │  - verifyOTP()                             │        │
+│  │  - saveUserData()                          │        │
+│  └────────────────────────────────────────────┘        │
+│                                                        │
+└────────────────────────────────────────────────────────┘
 ```
 
 ### Main Application Module
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│               Main Application                           │
-├─────────────────────────────────────────────────────────┤
-│                                                          │
-│  ┌────────────────────────────────────────────┐         │
-│  │          GNavMainScreen                    │         │
-│  │       (Bottom Navigation Host)             │         │
-│  └─────────────────┬──────────────────────────┘         │
-│                    │                                     │
-│         ┌──────────┼──────────┐                         │
-│         │          │          │                         │
-│         ▼          ▼          ▼                         │
+┌────────────────────────────────────────────────────────┐
+│               Main Application                         │
+├────────────────────────────────────────────────────────┤
+│                                                        │
+│  ┌────────────────────────────────────────────┐        │
+│  │          GNavMainScreen                    │        │
+│  │       (Bottom Navigation Host)             │        │
+│  └─────────────────┬──────────────────────────┘        │
+│                    │                                   │
+│         ┌──────────┼──────────┐                        │
+│         │          │          │                        │
+│         ▼          ▼          ▼                        │
 │  ┌──────────┐ ┌────────┐ ┌─────────┐                   │
 │  │ Profile  │ │Conduct │ │  Guard  │                   │
 │  │  Screen  │ │Tracker │ │  Duty   │                   │
 │  └────┬─────┘ └───┬────┘ └────┬────┘                   │
-│       │           │           │                         │
-│       ▼           ▼           ▼                         │
-│  ┌─────────────────────────────────┐                    │
+│       │           │           │                        │
+│       ▼           ▼           ▼                        │
+│  ┌─────────────────────────────────┐                   │
 │  │  Tab 1  │  Tab 2  │  Tab 3     │                    │
 │  ├─────────┼─────────┼────────────┤                    │
 │  │ Basic   │ Status  │ Attendance │  (Profile)         │
 │  │ Info    │         │            │                    │
 │  └─────────┴─────────┴────────────┘                    │
-│  ┌─────────────────────────────────┐                    │
+│  ┌─────────────────────────────────┐                   │
 │  │ Participation  │  Conduct List  │  (Conduct)        │
-│  │    Chart       │                │                    │
-│  └────────────────┴────────────────┘                    │
-│  ┌─────────────────────────────────┐                    │
+│  │    Chart       │                │                   │
+│  └────────────────┴────────────────┘                   │
+│  ┌─────────────────────────────────┐                   │
 │  │  Leaderboard  │  Upcoming       │  (Guard Duty)     │
-│  │               │   Duties        │                    │
-│  └───────────────┴─────────────────┘                    │
-│                                                          │
-└─────────────────────────────────────────────────────────┘
+│  │               │   Duties        │                   │
+│  └───────────────┴─────────────────┘                   │
+│                                                        │
+└────────────────────────────────────────────────────────┘
 ```
 
 ### Conduct Tracker Module
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│            Conduct Tracker Module                        │
-├─────────────────────────────────────────────────────────┤
-│                                                          │
-│  ┌────────────────────────────────────────────┐         │
-│  │      ConductTrackerScreen                  │         │
-│  │                                            │         │
+┌────────────────────────────────────────────────────────┐
+│            Conduct Tracker Module                      │
+├────────────────────────────────────────────────────────┤
+│                                                        │
+│  ┌───────────────────────────────────────────┐         │
+│  │      ConductTrackerScreen                 │         │
+│  │                                           │         │
 │  │  ┌──────────────────────────────────┐     │         │
 │  │  │   Date Selector Widget           │     │         │
 │  │  │  - Horizontal date picker        │     │         │
 │  │  │  - Calendar popup                │     │         │
 │  │  └──────────────────────────────────┘     │         │
-│  │                                            │         │
+│  │                                           │         │
 │  │  ┌──────────────────────────────────┐     │         │
 │  │  │   Participation Chart            │     │         │
 │  │  │  - Bar graph (fl_chart)          │     │         │
 │  │  │  - Shows participation strength  │     │         │
 │  │  └──────────────────────────────────┘     │         │
-│  │                                            │         │
+│  │                                           │         │
 │  │  ┌──────────────────────────────────┐     │         │
 │  │  │   Conduct List                   │     │         │
 │  │  │  - ListView.builder              │     │         │
 │  │  │  - ConductTile widgets           │     │         │
 │  │  └──────────────────────────────────┘     │         │
-│  │                                            │         │
-│  └─────────────────┬──────────────────────────┘         │
-│                    │                                     │
-│                    │ Tap conduct                         │
-│                    ▼                                     │
-│  ┌────────────────────────────────────────────┐         │
-│  │      ConductDetailsScreen                  │         │
-│  │                                            │         │
-│  │  - Conduct information                     │         │
-│  │  - Participant list                        │         │
-│  │  - Non-participant list                    │         │
-│  │  - Edit/Delete (Commander only)            │         │
-│  └────────────────────────────────────────────┘         │
-│                                                          │
-│  ┌────────────────────────────────────────────┐         │
-│  │         Data Source                        │         │
-│  │  - MenUserData.conducts_data               │         │
-│  │  - Stream<QuerySnapshot>                   │         │
-│  │  - Real-time Firestore updates             │         │
-│  └────────────────────────────────────────────┘         │
-│                                                          │
-└─────────────────────────────────────────────────────────┘
+│  │                                           │         │
+│  └─────────────────┬─────────────────────────┘         │
+│                    │                                   │
+│                    │ Tap conduct                       │
+│                    ▼                                   │
+│  ┌────────────────────────────────────────────┐        │
+│  │      ConductDetailsScreen                  │        │
+│  │                                            │        │
+│  │  - Conduct information                     │        │
+│  │  - Participant list                        │        │
+│  │  - Non-participant list                    │        │
+│  │  - Edit/Delete (Commander only)            │        │
+│  └────────────────────────────────────────────┘        │
+│                                                        │
+│  ┌────────────────────────────────────────────┐        │
+│  │         Data Source                        │        │
+│  │  - MenUserData.conducts_data               │        │
+│  │  - Stream<QuerySnapshot>                   │        │
+│  │  - Real-time Firestore updates             │        │
+│  └────────────────────────────────────────────┘        │
+│                                                        │
+└────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -543,9 +555,9 @@ Commander Action: Assign Duty
 ### Core Classes UML
 
 ```
-┌──────────────────────────────────────┐
-│         ChangeNotifier               │
-│          (Flutter SDK)               │
+┌─────────────────────────────────────┐
+│         ChangeNotifier              │
+│          (Flutter SDK)              │
 └─────────────┬───────────────────────┘
               │
               │ extends
@@ -752,7 +764,7 @@ User        RegisterScreen   AuthProvider    FirebaseAuth    Firestore    OTPScr
  │                │                ├───────────────┤             │            │          │
  │                │                │ SharedPrefs   │             │            │          │
  │                │                │               │             │            │          │
- │                │                │ Navigate to Main           │            │          │
+ │                │                │ Navigate to Main            │            │          │
  │                │                ├───────────────┼─────────────┼────────────┼─────────>│
  │                │                │               │             │            │          │
 ```
@@ -796,16 +808,16 @@ Commander  ConductForm  MenUserData  Firestore  AllUsers
 
 ```
 ┌──────────────────────────────────────────────────────────┐
-│                   Firebase Project                        │
+│                   Firebase Project                       │
 ├──────────────────────────────────────────────────────────┤
-│                                                           │
+│                                                          │
 │  ┌────────────────────────────────────────────┐          │
 │  │         Firebase Authentication            │          │
 │  │  • Phone number authentication             │          │
 │  │  • User session management                 │          │
 │  │  • Token refresh automation                │          │
 │  └────────────────────────────────────────────┘          │
-│                                                           │
+│                                                          │
 │  ┌────────────────────────────────────────────┐          │
 │  │         Cloud Firestore                    │          │
 │  │  Collections:                              │          │
@@ -820,20 +832,20 @@ Commander  ConductForm  MenUserData  Firestore  AllUsers
 │  │  • Role-based access control               │          │
 │  │  • Field-level permissions                 │          │
 │  └────────────────────────────────────────────┘          │
-│                                                           │
+│                                                          │
 │  ┌────────────────────────────────────────────┐          │
 │  │         Cloud Storage                      │          │
 │  │  • User profile images                     │          │
 │  │  • Document attachments                    │          │
 │  │  • Asset caching                           │          │
 │  └────────────────────────────────────────────┘          │
-│                                                           │
+│                                                          │
 │  ┌────────────────────────────────────────────┐          │
 │  │         Firebase Hosting                   │          │
 │  │  • Documentation website                   │          │
 │  │  • Admin dashboard (future)                │          │
 │  └────────────────────────────────────────────┘          │
-│                                                           │
+│                                                          │
 └──────────────────────────────────────────────────────────┘
 
                          ▲
@@ -873,17 +885,17 @@ Commander  ConductForm  MenUserData  Firestore  AllUsers
 │            Firebase Backend Services                │
 ├─────────────────────────────────────────────────────┤
 │                                                     │
-│  ┌───────────────┐  ┌───────────────┐            │
-│  │ Load Balancer │  │ API Gateway   │            │
-│  └───────┬───────┘  └───────┬───────┘            │
-│          │                  │                     │
-│          ▼                  ▼                     │
-│  ┌──────────────────────────────────┐            │
-│  │    Firebase Services             │            │
-│  │  • Auth                           │            │
-│  │  • Firestore                      │            │
-│  │  • Storage                        │            │
-│  └──────────────────────────────────┘            │
+│  ┌───────────────┐  ┌───────────────┐               │
+│  │ Load Balancer │  │ API Gateway   │               │
+│  └───────┬───────┘  └───────┬───────┘               │
+│          │                  │                       │
+│          ▼                  ▼                       │
+│  ┌──────────────────────────────────┐               │
+│  │    Firebase Services             │               │
+│  │  • Auth                          │               │
+│  │  • Firestore                     │               │
+│  │  • Storage                       │               │
+│  └──────────────────────────────────┘               │
 │                                                     │
 └─────────────────────────────────────────────────────┘
 ```
@@ -957,7 +969,7 @@ Benefits:
 │      Multi-layer Security               │
 ├─────────────────────────────────────────┤
 │                                         │
-│  Layer 1: Firebase Phone Auth          │
+│  Layer 1: Firebase Phone Auth           │
 │  • OTP verification                     │
 │  • Rate limiting                        │
 │  • Fraud detection                      │
@@ -984,11 +996,22 @@ Benefits:
 
 <div align="center">
 
-**TroopTrak Architecture Documentation**
+<p>
+<strong>TroopTrak Architecture Documentation</strong>
+</p>
 
-For more information, see [Developer Guide](DEVELOPER_GUIDE.md) and [User Guide](USER_GUIDE.md)
+<p>
+For more information, see <a href="DEVELOPER_GUIDE.md">Developer Guide</a> and <a href="USER_GUIDE.md">User Guide</a>
+</p>
 
-Version 1.0.0 | 2024
+<p>
+Version 1.0.0 | Last Updated: 2024
+</p>
+
+<p>
+<a href="https://flutter.dev/"><img src="https://img.shields.io/badge/Made%20with-Flutter-02569B?style=flat&logo=flutter" alt="Made with Flutter"></a>
+<a href="https://firebase.google.com/"><img src="https://img.shields.io/badge/Powered%20by-Firebase-FFCA28?style=flat&logo=firebase&logoColor=black" alt="Firebase"></a>
+</p>
 
 </div>
 

@@ -1,15 +1,26 @@
+---
+layout: default
+title: Developer Guide - TroopTrak Documentation
+permalink: /DEVELOPER_GUIDE/
+---
+
 # 🛠️ TroopTrak Developer Guide
 
 <div align="center">
 
-![TroopTrak Dev](https://img.shields.io/badge/TroopTrak-Developer_Guide-8147e6?style=for-the-badge)
-![Flutter](https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter)
-![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
-![Dart](https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white)
+<img src="{{ '/assets/TroopTrakAppIcon.png' | relative_url }}" alt="TroopTrak Logo" width="150" style="border-radius: 20px; margin-bottom: 20px;">
 
-**Technical documentation for TroopTrak development, architecture, and deployment**
+<p>
+<strong>Technical documentation for TroopTrak development, architecture, and deployment</strong>
+</p>
 
-[Architecture](#-architecture) • [Setup](#️-development-setup) • [Firebase](#-firebase-configuration) • [API Reference](#-api-reference)
+<p>
+<strong>Built with Flutter • Powered by Firebase • Dart Language</strong>
+</p>
+
+<p>
+<a href="{{ site.baseurl }}/">🏠 Home</a> • <a href="#-architecture">Architecture</a> • <a href="#️-development-setup">Setup</a> • <a href="#-firebase-configuration">Firebase</a> • <a href="#-api-reference">API Reference</a>
+</p>
 
 </div>
 
@@ -74,35 +85,35 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                     PRESENTATION LAYER                       │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐   │
-│  │ Profile  │  │ Conduct  │  │  Guard   │  │  Auth    │   │
-│  │ Screens  │  │ Screens  │  │  Duty    │  │ Screens  │   │
-│  └──────────┘  └──────────┘  └──────────┘  └──────────┘   │
+│                     PRESENTATION LAYER                      │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐     │
+│  │ Profile  │  │ Conduct  │  │  Guard   │  │  Auth    │     │
+│  │ Screens  │  │ Screens  │  │  Duty    │  │ Screens  │     │
+│  └──────────┘  └──────────┘  └──────────┘  └──────────┘     │
 └─────────────────────────────────────────────────────────────┘
                             ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                    STATE MANAGEMENT LAYER                    │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐     │
-│  │ AuthProvider │  │ MenUserData  │  │ ThemeManager │     │
-│  │  (Provider)  │  │  (Provider)  │  │  (Provider)  │     │
-│  └──────────────┘  └──────────────┘  └──────────────┘     │
+│                    STATE MANAGEMENT LAYER                   │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐       │
+│  │ AuthProvider │  │ MenUserData  │  │ ThemeManager │       │
+│  │  (Provider)  │  │  (Provider)  │  │  (Provider)  │       │
+│  └──────────────┘  └──────────────┘  └──────────────┘       │
 └─────────────────────────────────────────────────────────────┘
                             ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                      BUSINESS LOGIC LAYER                    │
-│  ┌────────────────┐  ┌────────────────┐  ┌──────────────┐ │
-│  │ Authentication │  │  User Service  │  │   Firestore  │ │
-│  │    Service     │  │     Logic      │  │   Queries    │ │
-│  └────────────────┘  └────────────────┘  └──────────────┘ │
+│                      BUSINESS LOGIC LAYER                   │
+│  ┌────────────────┐  ┌────────────────┐  ┌──────────────┐   │
+│  │ Authentication │  │  User Service  │  │   Firestore  │   │
+│  │    Service     │  │     Logic      │  │   Queries    │   │
+│  └────────────────┘  └────────────────┘  └──────────────┘   │
 └─────────────────────────────────────────────────────────────┘
                             ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                        DATA LAYER                            │
-│  ┌────────────────┐  ┌────────────────┐  ┌──────────────┐ │
-│  │   Firebase     │  │   Firestore    │  │    Local     │ │
-│  │     Auth       │  │    Database    │  │  SharedPrefs │ │
-│  └────────────────┘  └────────────────┘  └──────────────┘ │
+│                        DATA LAYER                           │
+│  ┌────────────────┐  ┌────────────────┐  ┌──────────────┐   │
+│  │   Firebase     │  │   Firestore    │  │    Local     │   │
+│  │     Auth       │  │    Database    │  │  SharedPrefs │   │
+│  └────────────────┘  └────────────────┘  └──────────────┘   │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -157,23 +168,23 @@ graph TD
   Yes     No              │
    │       │              │
    │       ▼              │
-   │  ┌─────────────┐    │
-   │  │   Phone     │    │
-   │  │   Number    │    │
-   │  │   Entry     │    │
-   │  └──────┬──────┘    │
+   │  ┌─────────────┐     │
+   │  │   Phone     │     │
+   │  │   Number    │     │
+   │  │   Entry     │     │
+   │  └──────┬──────┘     │
    │         │            │
    │         ▼            │
-   │  ┌─────────────┐    │
-   │  │ Send OTP    │    │
-   │  │ Via SMS     │    │
-   │  └──────┬──────┘    │
+   │  ┌─────────────┐     │
+   │  │ Send OTP    │     │
+   │  │ Via SMS     │     │
+   │  └──────┬──────┘     │
    │         │            │
    │         ▼            │
-   │  ┌─────────────┐    │
-   │  │   Verify    │    │
-   │  │    OTP      │    │
-   │  └──────┬──────┘    │
+   │  ┌─────────────┐     │
+   │  │   Verify    │     │
+   │  │    OTP      │     │
+   │  └──────┬──────┘     │
    │         │            │
    │         ▼            │
    │    ┌────────┐        │
@@ -226,31 +237,31 @@ TroopTrak uses the **Provider** pattern for state management.
 
 ```
 ┌─────────────────────────────────────────────┐
-│             MultiProvider (Root)             │
+│             MultiProvider (Root)            │
 ├─────────────────────────────────────────────┤
 │                                             │
-│  ┌──────────────────────────────────┐      │
-│  │      AuthProvider                │      │
-│  │  • Phone Authentication          │      │
-│  │  • User Sign In/Out              │      │
-│  │  • Session Management            │      │
-│  │  • User Data Storage             │      │
-│  └──────────────────────────────────┘      │
+│  ┌──────────────────────────────────┐       │
+│  │      AuthProvider                │       │
+│  │  • Phone Authentication          │       │
+│  │  • User Sign In/Out              │       │
+│  │  • Session Management            │       │
+│  │  • User Data Storage             │       │
+│  └──────────────────────────────────┘       │
 │                                             │
-│  ┌──────────────────────────────────┐      │
-│  │      MenUserData                 │      │
-│  │  • User List Management          │      │
-│  │  • Conduct Queries               │      │
-│  │  • Guard Duty Data               │      │
-│  │  • Status Tracking               │      │
-│  │  • Attendance Streams            │      │
-│  └──────────────────────────────────┘      │
+│  ┌──────────────────────────────────┐       │
+│  │      MenUserData                 │       │
+│  │  • User List Management          │       │
+│  │  • Conduct Queries               │       │
+│  │  • Guard Duty Data               │       │
+│  │  • Status Tracking               │       │
+│  │  • Attendance Streams            │       │
+│  └──────────────────────────────────┘       │
 │                                             │
-│  ┌──────────────────────────────────┐      │
-│  │      ThemeManager                │      │
-│  │  • Light/Dark Theme              │      │
-│  │  • Theme Persistence             │      │
-│  └──────────────────────────────────┘      │
+│  ┌──────────────────────────────────┐       │
+│  │      ThemeManager                │       │
+│  │  • Light/Dark Theme              │       │
+│  │  • Theme Persistence             │       │
+│  └──────────────────────────────────┘       │
 │                                             │
 └─────────────────────────────────────────────┘
 ```
@@ -863,7 +874,7 @@ class DefaultFirebaseOptions {
 
 
 ┌─────────────────────────────────────────────────────────────┐
-│                        Conduct Model                         │
+│                        Conduct Model                        │
 ├─────────────────────────────────────────────────────────────┤
 │ - conductID: String                                         │
 │ - conductName: String                                       │
@@ -901,11 +912,11 @@ class DefaultFirebaseOptions {
 
 
 ┌─────────────────────────────────────────────────────────────┐
-│                        Status Model                          │
+│                        Status Model                         │
 ├─────────────────────────────────────────────────────────────┤
 │ - statusID: String                                          │
 │ - userName: String                                          │
-│ - statusType: String  (Excuse / Leave / Other)             │
+│ - statusType: String  (Excuse / Leave / Other)              │
 │ - statusName: String                                        │
 │ - startDate: String                                         │
 │ - endDate: String                                           │
@@ -919,13 +930,13 @@ class DefaultFirebaseOptions {
 
 
 ┌─────────────────────────────────────────────────────────────┐
-│                      Attendance Model                        │
+│                      Attendance Model                       │
 ├─────────────────────────────────────────────────────────────┤
 │ - attendanceID: String                                      │
 │ - userName: String                                          │
 │ - timestamp: DateTime                                       │
 │ - isInsideCamp: bool                                        │
-│ - action: String  (Book In / Book Out)                     │
+│ - action: String  (Book In / Book Out)                      │
 ├─────────────────────────────────────────────────────────────┤
 │ + toMap(): Map<String, dynamic>                             │
 │ + fromMap(Map<String, dynamic>): Attendance                 │
@@ -980,7 +991,7 @@ class DefaultFirebaseOptions {
 
 
 ┌─────────────────────────────────────────────────────────────┐
-│                  ThemeManager (Singleton)                    │
+│                  ThemeManager (Singleton)                   │
 ├─────────────────────────────────────────────────────────────┤
 │ - _themeMode: ThemeMode                                     │
 ├─────────────────────────────────────────────────────────────┤
@@ -1091,7 +1102,7 @@ class UserModel {
 
 ```
 ┌──────────────────────────────────────────────────────────┐
-│                  Authentication System                    │
+│                  Authentication System                   │
 └──────────────────────────────────────────────────────────┘
 
 1. Phone Number Entry
@@ -2721,12 +2732,18 @@ This project is proprietary software for military use.
 
 <div align="center">
 
-**TroopTrak Developer Guide**
+<p>
+<strong>TroopTrak Developer Guide</strong>
+</p>
 
+<p>
 Version 1.0.0 | Last Updated: 2024
+</p>
 
-[![Made with Flutter](https://img.shields.io/badge/Made%20with-Flutter-02569B?style=flat&logo=flutter)](https://flutter.dev/)
-[![Firebase](https://img.shields.io/badge/Powered%20by-Firebase-FFCA28?style=flat&logo=firebase&logoColor=black)](https://firebase.google.com/)
+<p>
+<a href="https://flutter.dev/"><img src="https://img.shields.io/badge/Made%20with-Flutter-02569B?style=flat&logo=flutter" alt="Made with Flutter"></a>
+<a href="https://firebase.google.com/"><img src="https://img.shields.io/badge/Powered%20by-Firebase-FFCA28?style=flat&logo=firebase&logoColor=black" alt="Firebase"></a>
+</p>
 
 </div>
 

@@ -1,22 +1,22 @@
+---
+layout: default
+title: TroopTrak Documentation
+description: Comprehensive documentation for the TroopTrak military troop management application
+---
+
 # 🎖️ TroopTrak Documentation
 
 <div align="center">
 
-![TroopTrak Logo](https://img.shields.io/badge/TroopTrak-Documentation-8147e6?style=for-the-badge&logo=flutter)
+<img src="assets/TroopTrakAppIcon.png" alt="TroopTrak Logo" width="200" style="border-radius: 20px; margin-bottom: 20px;">
 
-**Comprehensive documentation for the TroopTrak military troop management application**
+<p>
+<strong>Comprehensive documentation for the TroopTrak military troop management application</strong>
+</p>
 
-[![Flutter](https://img.shields.io/badge/Flutter-02569B?style=flat-square&logo=flutter)](https://flutter.dev/)
-[![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=flat-square&logo=firebase&logoColor=black)](https://firebase.google.com/)
-[![Dart](https://img.shields.io/badge/Dart-0175C2?style=flat-square&logo=dart)](https://dart.dev/)
-
----
-
-### 📚 Quick Links
-
-[User Guide](USER_GUIDE.md) • [Developer Guide](DEVELOPER_GUIDE.md) • [Architecture](ARCHITECTURE.md)
-
----
+<p>
+<strong>Built with Flutter • Powered by Firebase • Made for Military Personnel</strong>
+</p>
 
 </div>
 
@@ -37,7 +37,7 @@ TroopTrak is a modern, cross-platform mobile application designed to streamline 
 
 ## 📖 Documentation Overview
 
-### 1. [User Guide](USER_GUIDE.md)
+### 1. [User Guide]({{ site.baseurl }}/USER_GUIDE/)
 
 **For End Users**
 
@@ -56,7 +56,7 @@ Learn how to use TroopTrak effectively as a soldier or commander.
 
 ---
 
-### 2. [Developer Guide](DEVELOPER_GUIDE.md)
+### 2. [Developer Guide]({{ site.baseurl }}/DEVELOPER_GUIDE/)
 
 **For Developers & Technical Staff**
 
@@ -79,7 +79,7 @@ Complete technical documentation for developing, maintaining, and deploying Troo
 
 ---
 
-### 3. [Architecture Documentation](ARCHITECTURE.md)
+### 3. [Architecture Documentation]({{ site.baseurl }}/ARCHITECTURE/)
 
 **For System Architects & Technical Leads**
 
@@ -111,7 +111,7 @@ Detailed system architecture, design patterns, and technical diagrams.
 5. **Complete** your profile setup
 6. **Start** managing your troop operations!
 
-👉 [Read the full User Guide](USER_GUIDE.md)
+👉 [Read the full User Guide]({{ site.baseurl }}/USER_GUIDE/)
 
 ### For Developers
 
@@ -130,17 +130,13 @@ flutterfire configure
 flutter run
 ```
 
-👉 [Read the full Developer Guide](DEVELOPER_GUIDE.md)
+👉 [Read the full Developer Guide]({{ site.baseurl }}/DEVELOPER_GUIDE/)
 
 ---
 
 ## 📱 Application Overview
 
 ### Main Modules
-
-<div style="display: flex; flex-wrap: wrap; gap: 20px;">
-
-<div style="flex: 1; min-width: 250px; border: 2px solid #8147e6; border-radius: 10px; padding: 20px;">
 
 #### 👤 My Profile
 - View personal information
@@ -149,20 +145,12 @@ flutter run
 - Generate QR code
 - Update profile details
 
-</div>
-
-<div style="flex: 1; min-width: 250px; border: 2px solid #8147e6; border-radius: 10px; padding: 20px;">
-
 #### 📊 Conduct Tracker
 - View scheduled conducts
 - Check participation status
 - See participation statistics
 - Filter by date
 - Access conduct details
-
-</div>
-
-<div style="flex: 1; min-width: 250px; border: 2px solid #8147e6; border-radius: 10px; padding: 20px;">
 
 #### 🛡️ Guard Duty Tracker
 - View duty assignments
@@ -171,15 +159,9 @@ flutter run
 - Track duty history
 - Manage duty roster (Commanders)
 
-</div>
-
-</div>
-
 ---
 
 ## 🏗️ Technology Stack
-
-<div align="center">
 
 | Category | Technologies |
 |----------|-------------|
@@ -192,8 +174,6 @@ flutter run
 | **UI/UX** | Material Design, Google Fonts |
 | **Charts & Graphs** | FL Chart |
 | **QR Code** | qr_flutter, mobile_scanner |
-
-</div>
 
 ---
 
@@ -232,7 +212,7 @@ flutter run
 └─────────────────────────────────────────┘
 ```
 
-👉 [View detailed architecture](ARCHITECTURE.md)
+👉 [View detailed architecture]({{ site.baseurl }}/ARCHITECTURE/)
 
 ---
 
@@ -332,7 +312,7 @@ firestore/
     └── {dutyId}/
 ```
 
-👉 [View complete database schema](DEVELOPER_GUIDE.md#-database-schema)
+👉 [View complete database schema]({{ site.baseurl }}/DEVELOPER_GUIDE/#database-schema)
 
 ---
 
@@ -379,9 +359,9 @@ Versioning format: `MAJOR.MINOR.PATCH+BUILD_NUMBER`
 
 ### Documentation
 
-- 📖 [User Guide](USER_GUIDE.md) - For end users
-- 💻 [Developer Guide](DEVELOPER_GUIDE.md) - For developers
-- 🏛️ [Architecture](ARCHITECTURE.md) - For architects
+- 📖 [User Guide]({{ site.baseurl }}/USER_GUIDE/) - For end users
+- 💻 [Developer Guide]({{ site.baseurl }}/DEVELOPER_GUIDE/) - For developers
+- 🏛️ [Architecture]({{ site.baseurl }}/ARCHITECTURE/) - For architects
 
 ### External Resources
 
@@ -437,9 +417,9 @@ Built with:
 
 ---
 
-<div align="center">
-
 ## 📚 Documentation Index
+
+<div align="center">
 
 <table>
 <tr>
@@ -448,17 +428,17 @@ Built with:
 <th>Target Audience</th>
 </tr>
 <tr>
-<td><a href="USER_GUIDE.md">User Guide</a></td>
+<td><a href="{{ site.baseurl }}/USER_GUIDE/">User Guide</a></td>
 <td>Complete guide for using TroopTrak</td>
 <td>All Users</td>
 </tr>
 <tr>
-<td><a href="DEVELOPER_GUIDE.md">Developer Guide</a></td>
+<td><a href="{{ site.baseurl }}/DEVELOPER_GUIDE/">Developer Guide</a></td>
 <td>Technical documentation for development</td>
 <td>Developers</td>
 </tr>
 <tr>
-<td><a href="ARCHITECTURE.md">Architecture</a></td>
+<td><a href="{{ site.baseurl }}/ARCHITECTURE/">Architecture</a></td>
 <td>System design and architecture diagrams</td>
 <td>Architects</td>
 </tr>
@@ -466,14 +446,16 @@ Built with:
 
 ---
 
-**TroopTrak Documentation**
+<p>
+<strong>TroopTrak Documentation</strong>
+</p>
 
 Made with ❤️ for military personnel
 
-[![Flutter](https://img.shields.io/badge/Made%20with-Flutter-02569B?style=flat&logo=flutter)](https://flutter.dev/)
-[![Firebase](https://img.shields.io/badge/Powered%20by-Firebase-FFCA28?style=flat&logo=firebase&logoColor=black)](https://firebase.google.com/)
-
-Version 1.0.0 | Last Updated: 2024
+<p>
+<strong>Built with Flutter • Powered by Firebase</strong>
+<strong>Version 1.0.0 | Last Updated: 2024</strong>
+</p>
 
 </div>
 
