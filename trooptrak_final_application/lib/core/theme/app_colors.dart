@@ -35,6 +35,11 @@ abstract final class AppColors {
   static const personTileMuted = Color(0xFF1D202B);
   static const tileBorder = Color(0x402196F3);
   static const authField = Color(0xFF2D3C44);
+  static const roleCard = Color(0xFF212836);
+  static const roleShadowLight = Color(0xFF474B50);
+  static const roleShadowDark = Color(0xFF0B0F14);
+  static const white60 = Color(0x99FFFFFF);
+  static const deepPurple = Color(0xFF673AB7);
   static const authAccent = Color(0xFF64FFDA);
   static const authLink = Color(0xFFBA68C8);
 

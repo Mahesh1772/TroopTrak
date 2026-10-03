@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 
+import '../../features/onboarding/presentation/onboarding_routes.dart';
 import '../widgets/app_scaffold.dart';
 import '../widgets/feedback_views.dart';
 import 'app_routes.dart';
-
-typedef RouteWidgetBuilder = Widget Function(
-    BuildContext context, Object? arguments);
+import 'route_builder.dart';
 
 abstract final class AppRouter {
-  static final Map<String, RouteWidgetBuilder> _routes = {
-    AppRoutes.root: (_, __) => const _PlaceholderHome(),
+  static final Map<String, RouteWidgetBuilder> routes = {
+    ...onboardingRoutes,
+    AppRoutes.soldierGate: (_, __) => const _Placeholder('Soldier app'),
+    AppRoutes.commanderGate: (_, __) => const _Placeholder('Commander app'),
   };
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
-    final builder = _routes[settings.name] ?? (_, __) => const _UnknownRoute();
+    final builder = routes[settings.name] ?? (_, __) => const _UnknownRoute();
     return MaterialPageRoute<dynamic>(
       settings: settings,
       builder: (context) => builder(context, settings.arguments),
@@ -21,13 +22,14 @@ abstract final class AppRouter {
   }
 }
 
-class _PlaceholderHome extends StatelessWidget {
-  const _PlaceholderHome();
+class _Placeholder extends StatelessWidget {
+  const _Placeholder(this.label);
+
+  final String label;
 
   @override
-  Widget build(BuildContext context) => const AppScaffold(
-        body: EmptyState(message: 'TroopTrak', image: null),
-      );
+  Widget build(BuildContext context) =>
+      AppScaffold(body: EmptyState(message: label, image: null));
 }
 
 class _UnknownRoute extends StatelessWidget {

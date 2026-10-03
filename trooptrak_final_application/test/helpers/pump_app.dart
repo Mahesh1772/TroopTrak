@@ -27,9 +27,20 @@ class RouteRecorder extends NavigatorObserver {
 
   Object? get lastArguments => pushed.last.settings.arguments;
 
+  final popped = <Route<dynamic>>[];
+
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) =>
       pushed.add(route);
+
+  @override
+  void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
+    if (newRoute != null) pushed.add(newRoute);
+  }
+
+  @override
+  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) =>
+      popped.add(route);
 }
 
 Route<dynamic> stubRoute(RouteSettings settings) => MaterialPageRoute<dynamic>(

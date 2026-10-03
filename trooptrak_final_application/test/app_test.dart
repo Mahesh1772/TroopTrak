@@ -11,43 +11,53 @@ import 'package:trooptrak_final_application/core/theme/theme_manager.dart';
 import 'helpers/pump_app.dart';
 
 void main() {
-  late AppDependencies dependencies;
+  Future<AppDependencies> dependenciesWith(Map<String, Object> prefs) async {
+    SharedPreferences.setMockInitialValues(prefs);
+    return AppDependencies(preferences: await PreferencesService.create());
+  }
 
-  setUp(() async {
-    SharedPreferences.setMockInitialValues({});
-    dependencies =
-        AppDependencies(preferences: await PreferencesService.create());
-  });
-
-  testWidgets('App builds with test DI and shows the placeholder home',
-      (tester) async {
+  testWidgets('first launch shows role selection with test DI', (tester) async {
     useDesignSurface(tester);
+    final dependencies = await dependenciesWith({});
     await tester.pumpWidget(App(providers: dependencies.providers));
     await tester.pumpAndSettle();
 
-    expect(find.text('TroopTrak'), findsOneWidget);
-    final context = tester.element(find.text('TroopTrak'));
+    expect(find.text('Please pick your role.'), findsOneWidget);
+    final context = tester.element(find.text('Please pick your role.'));
     expect(context.read<Clock>(), isA<SystemClock>());
     expect(context.read<PreferencesService>(), same(dependencies.preferences));
   });
 
+  testWidgets('stored roles open their gates (R18)', (tester) async {
+    useDesignSurface(tester);
+    await tester.pumpWidget(
+        App(providers: (await dependenciesWith({'onBoard': 2})).providers));
+    await tester.pumpAndSettle();
+    expect(find.text('Commander app'), findsOneWidget);
+  });
+
   testWidgets('App starts dark and follows ThemeManager', (tester) async {
     useDesignSurface(tester);
-    await tester.pumpWidget(App(providers: dependencies.providers));
+    await tester
+        .pumpWidget(App(providers: (await dependenciesWith({})).providers));
     await tester.pumpAndSettle();
 
     MaterialApp app() => tester.widget<MaterialApp>(find.byType(MaterialApp));
     expect(app().themeMode, ThemeMode.dark);
 
-    tester.element(find.text('TroopTrak')).read<ThemeManager>().toggle();
+    tester
+        .element(find.text('Please pick your role.'))
+        .read<ThemeManager>()
+        .toggle();
     await tester.pumpAndSettle();
     expect(app().themeMode, ThemeMode.light);
   });
 
   testWidgets('unknown routes show a not-found page', (tester) async {
     useDesignSurface(tester);
-    await tester.pumpWidget(
-        App(providers: dependencies.providers, initialRoute: '/nope'));
+    await tester.pumpWidget(App(
+        providers: (await dependenciesWith({})).providers,
+        initialRoute: '/nope'));
     await tester.pumpAndSettle();
     expect(find.text('Page not found.'), findsOneWidget);
   });

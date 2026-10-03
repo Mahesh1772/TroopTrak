@@ -1,0 +1,15 @@
+# Carried over from firebase_project_2/flutter_native_splash-production.yaml.
+# Regenerate with: dart run flutter_native_splash:create
+# iOS is off until it can be generated on a machine that may overwrite
+# ios/Runner/Assets.xcassets (blocked here by antivirus file protection).
+flutter_native_splash:
+  android: true
+  ios: false
+  web: false
+  color: "#f7f6f1"
+  color_dark: "#272727"
+  background_image: lib/assets/TroopTrakSplashscreen.png
+  android_12:
+    image: lib/assets/phone_auth/troopTrak_logo.png
+    color: "#f7f6f1"
+    color_dark: "#272727"
