@@ -33,9 +33,14 @@ void main() {
     duties = _MockDuties();
     when(() => soldiers(any())).thenAnswer((_) =>
         Stream.value(Right<Failure, List<Soldier>>([buildSoldier(points: 3)])));
-    when(() => duties(any())).thenAnswer((_) => Stream.value(
-        Right<Failure, List<Duty>>(
-            [buildDuty(start: DateTime(2023, 7, 5, 8))])));
+    when(() => duties(any()))
+        .thenAnswer((_) => Stream.value(Right<Failure, List<Duty>>([
+              buildDuty(start: DateTime(2023, 7, 5, 8)),
+              buildDuty(
+                  id: 'd2',
+                  start: DateTime(2023, 7, 8, 8),
+                  participants: {'Lim Bah': 'PTE'}),
+            ])));
   });
 
   Future<RouteRecorder> pumpPage(WidgetTester tester,
@@ -44,7 +49,9 @@ void main() {
     await tester.pumpApp(
       Scaffold(
         body: Builder(
-            builder: (context) => guardDutyTab(context, canManage: canManage)),
+            builder: (context) => canManage
+                ? guardDutyTab(context)
+                : soldierGuardDutyTab(context, 'Tan Ah Kow')),
       ),
       mode: mode,
       clock: FixedClock(DateTime(2023, 7, 5, 9)),
@@ -78,8 +85,41 @@ void main() {
     expect(recorder.names.last, AppRoutes.addDuty);
   });
 
-  testWidgets('read-only page has no add-duty button', (tester) async {
-    await pumpPage(tester, canManage: false);
-    expect(find.byKey(const Key('addDuty')), findsNothing);
+  testWidgets('commanders get edit and delete but no participation marks',
+      (tester) async {
+    await pumpPage(tester);
+    expect(find.text('Guard Duty'), findsNothing);
+    await tester.tap(find.text('UPCOMING DUTIES'));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('onDuty-d1')), findsNothing);
+    await tester.tap(find.byKey(const Key('duty-d1')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('editDuty-d1')), findsOneWidget);
+    expect(find.byKey(const Key('deleteDuty-d1')), findsOneWidget);
+  });
+
+  group('soldier guard duty tab', () {
+    testWidgets('has a title, both tabs and no add-duty button',
+        (tester) async {
+      await pumpPage(tester, canManage: false, mode: themeModes.currentValue!);
+      expect(find.text('Guard Duty'), findsOneWidget);
+      expect(find.byKey(const Key('addDuty')), findsNothing);
+      expect(find.text('Points Leaderboard'), findsOneWidget);
+    }, variant: themeModes);
+
+    testWidgets('duties are read-only and mark the soldier\'s own',
+        (tester) async {
+      await pumpPage(tester, canManage: false);
+      await tester.tap(find.text('UPCOMING DUTIES'));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('onDuty-d1')), findsOneWidget);
+      expect(find.byKey(const Key('offDuty-d2')), findsOneWidget);
+
+      await tester.tap(find.byKey(const Key('duty-d1')));
+      await tester.pumpAndSettle();
+      expect(find.text('Participants'), findsOneWidget);
+      expect(find.byKey(const Key('editDuty-d1')), findsNothing);
+      expect(find.byKey(const Key('deleteDuty-d1')), findsNothing);
+    });
   });
 }

@@ -28,6 +28,8 @@ class Duty extends Equatable {
 
   DateTime get day => DateTime(start.year, start.month, start.day);
 
+  bool includes(String soldierName) => participants.containsKey(soldierName);
+
   Duty copyWith({
     String? id,
     DateTime? start,

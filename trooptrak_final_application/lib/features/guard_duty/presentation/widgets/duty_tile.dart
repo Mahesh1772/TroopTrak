@@ -13,17 +13,20 @@ import '../../domain/entities/duty.dart';
 
 /// Rebuild of `guard_duty_main_page_tiles.dart`: points badge, time range and
 /// date; expands to the participants and (for commanders) edit / delete.
+/// With [participating] set (the soldier side) a tick or a cross follows.
 class DutyTile extends StatelessWidget {
   const DutyTile({
     super.key,
     required this.duty,
     this.onEdit,
     this.onDelete,
+    this.participating,
   });
 
   final Duty duty;
   final VoidCallback? onEdit;
   final VoidCallback? onDelete;
+  final bool? participating;
 
   @override
   Widget build(BuildContext context) {
@@ -85,6 +88,13 @@ class DutyTile extends StatelessWidget {
                   ],
                 ),
               ),
+              if (participating case final on?)
+                Icon(
+                  on ? Icons.check_rounded : Icons.close_rounded,
+                  key: Key('${on ? 'onDuty' : 'offDuty'}-${duty.id}'),
+                  color: on ? context.colors.tertiary : context.palette.muted,
+                  size: 35.sp,
+                ),
             ],
           ),
           children: [

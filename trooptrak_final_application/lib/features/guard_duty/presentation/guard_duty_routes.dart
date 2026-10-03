@@ -13,9 +13,14 @@ import 'providers/duty_form_provider.dart';
 import 'providers/leaderboard_provider.dart';
 import 'providers/upcoming_duties_provider.dart';
 
-/// Shell tab for both roles; only commanders add, edit or delete duties.
-Widget guardDutyTab(BuildContext context, {bool canManage = true}) =>
-    MultiProvider(
+/// Shell tab for commanders, who add, edit and delete duties.
+Widget guardDutyTab(BuildContext context) => _guardDuty(context);
+
+/// Soldier shell tab: read-only, marks the duties [participant] is on.
+Widget soldierGuardDutyTab(BuildContext context, String participant) =>
+    _guardDuty(context, participant: participant);
+
+Widget _guardDuty(BuildContext context, {String? participant}) => MultiProvider(
       providers: [
         ChangeNotifierProvider(
           create: (context) =>
@@ -26,10 +31,14 @@ Widget guardDutyTab(BuildContext context, {bool canManage = true}) =>
             watch: context.read<WatchDuties>(),
             delete: context.read<DeleteDuty>(),
             clock: context.read<Clock>(),
+            participant: participant,
           ),
         ),
       ],
-      child: GuardDutyPage(canManage: canManage),
+      child: GuardDutyPage(
+        canManage: participant == null,
+        showTitle: participant != null,
+      ),
     );
 
 Widget _form(BuildContext context, Duty? initial) => ChangeNotifierProvider(

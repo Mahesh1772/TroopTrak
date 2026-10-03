@@ -2,17 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/router/app_routes.dart';
+import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/theme_context.dart';
 import '../widgets/leaderboard_tab.dart';
 import '../widgets/upcoming_duties_tab.dart';
 
-/// Rebuild of `guard_duty_tracker_screen.dart`: leaderboard and upcoming
-/// duties tabs; commanders get the add-duty button. Streams keep both tabs
-/// current, so the source's refresh callback is not needed.
+/// Rebuild of `guard_duty_tracker_screen.dart` (both roles): leaderboard and
+/// upcoming duties tabs; commanders get the add-duty button. Streams keep both
+/// tabs current, so the source's refresh callback is not needed. [showTitle]
+/// heads the page where the shell has no app bar (soldier side).
 class GuardDutyPage extends StatelessWidget {
-  const GuardDutyPage({super.key, this.canManage = true});
+  const GuardDutyPage({
+    super.key,
+    this.canManage = true,
+    this.showTitle = false,
+  });
 
   final bool canManage;
+  final bool showTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +39,13 @@ class GuardDutyPage extends StatelessWidget {
         body: SafeArea(
           child: Column(
             children: [
+              if (showTitle)
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: AppSpacing.xl.h),
+                  child: Text('Guard Duty',
+                      style: context.textStyles.displayLarge?.copyWith(
+                          fontSize: 32.sp, fontWeight: FontWeight.w500)),
+                ),
               TabBar(
                 labelStyle: style,
                 unselectedLabelStyle: style,

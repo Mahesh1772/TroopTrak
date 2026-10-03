@@ -6,18 +6,22 @@ import '../../domain/entities/duty.dart';
 import '../../domain/usecases/duty_usecases.dart';
 
 /// R14a: duties on the selected day, and those from the next day on.
+/// [participant] is the signed-in soldier's name on the soldier side.
 class UpcomingDutiesProvider extends StreamStateNotifier<List<Duty>> {
   UpcomingDutiesProvider({
     required WatchDuties watch,
     required DeleteDuty delete,
     required Clock clock,
+    String? participant,
   })  : _delete = delete,
+        _participant = participant,
         today = dateOnly(clock.now()),
         super(watch(const NoParams())) {
     _selected = today;
   }
 
   final DeleteDuty _delete;
+  final String? _participant;
   final DateTime today;
   late DateTime _selected;
 
@@ -36,6 +40,12 @@ class UpcomingDutiesProvider extends StreamStateNotifier<List<Duty>> {
   List<Duty> get onSelectedDay => _where((diff) => diff == 0);
 
   List<Duty> get upcoming => _where((diff) => diff >= 1);
+
+  /// Soldier-side marker; null when nobody is tracked (commander side).
+  bool? isParticipating(Duty duty) {
+    final name = _participant;
+    return name == null ? null : duty.includes(name);
+  }
 
   /// R9; returns null on success, otherwise the message to show.
   Future<String?> delete(Duty duty) async =>

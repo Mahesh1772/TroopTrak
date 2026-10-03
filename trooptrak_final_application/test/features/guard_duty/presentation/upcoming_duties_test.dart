@@ -63,6 +63,18 @@ void main() {
       p.dispose();
     });
 
+    test('participation is tracked only for a named soldier', () {
+      final commander = provider();
+      expect(commander.isParticipating(today), isNull);
+      commander.dispose();
+
+      final soldier = UpcomingDutiesProvider(
+          watch: watch, delete: delete, clock: clock, participant: 'Lee Wei');
+      expect(soldier.isParticipating(today), isTrue);
+      expect(soldier.isParticipating(later), isFalse);
+      soldier.dispose();
+    });
+
     test('delete reports failures', () async {
       final p = provider();
       expect(await p.delete(today), isNull);

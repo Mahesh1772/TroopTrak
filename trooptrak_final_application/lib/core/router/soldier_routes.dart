@@ -7,6 +7,7 @@ import '../../features/conducts/presentation/conducts_routes.dart';
 import '../../features/enlistment/domain/usecases/men_usecases.dart';
 import '../../features/enlistment/presentation/pages/generate_qr_page.dart';
 import '../../features/enlistment/presentation/providers/enlistment_qr_provider.dart';
+import '../../features/guard_duty/presentation/guard_duty_routes.dart';
 import '../../features/nominal_roll/presentation/pages/soldier_form_page.dart';
 import '../../features/shell/presentation/pages/soldier_shell.dart';
 import '../../features/soldier_profile/presentation/pages/soldier_profile_page.dart';
@@ -19,21 +20,24 @@ import '../constants/ranks.dart';
 import '../services/clock.dart';
 import '../services/tick_source.dart';
 import '../usecase/usecase.dart';
-import '../widgets/feedback_views.dart';
 import '../widgets/hero_dialog_route.dart';
 import 'app_routes.dart';
 import 'route_builder.dart';
 
-/// Soldier shell; tabs not rebuilt yet show placeholders.
+/// Soldier shell. Conducts and duties link soldiers by name, so both tabs
+/// match on the Auth display name, as the source.
 class SoldierHome extends StatelessWidget {
   const SoldierHome({super.key});
+
+  String _name(BuildContext context) =>
+      context.read<WatchAuthState>().current?.displayName ?? '';
 
   @override
   Widget build(BuildContext context) => SoldierShell(
         profile: soldierProfileTab,
-        conductTracker: (context) => soldierConductTrackerTab(
-            context, context.read<WatchAuthState>().current?.displayName ?? ''),
-        guardDuty: (_) => const EmptyState(message: 'Guard Duty', image: null),
+        conductTracker: (context) =>
+            soldierConductTrackerTab(context, _name(context)),
+        guardDuty: (context) => soldierGuardDutyTab(context, _name(context)),
       );
 }
 

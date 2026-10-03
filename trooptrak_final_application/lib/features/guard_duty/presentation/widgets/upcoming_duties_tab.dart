@@ -47,13 +47,14 @@ class UpcomingDutiesTab extends StatelessWidget {
     if (error != null && context.mounted) AppSnackbar.error(context, error);
   }
 
-  List<Widget> _tiles(
-      BuildContext context, List<Duty> duties, String emptyMessage) {
+  List<Widget> _tiles(BuildContext context, UpcomingDutiesProvider provider,
+      List<Duty> duties, String emptyMessage) {
     if (duties.isEmpty) return [EmptyState(message: emptyMessage)];
     return [
       for (final duty in duties)
         DutyTile(
           duty: duty,
+          participating: provider.isParticipating(duty),
           onEdit: canManage
               ? () => Navigator.of(context)
                   .pushNamed(AppRoutes.editDuty, arguments: duty)
@@ -112,10 +113,12 @@ class UpcomingDutiesTab extends StatelessWidget {
               ],
             ),
           ),
-          ..._tiles(context, provider.onSelectedDay, 'NO DUTIES FOR TODAY!'),
+          ..._tiles(context, provider, provider.onSelectedDay,
+              'NO DUTIES FOR TODAY!'),
           SizedBox(height: 50.h),
           const SectionHeader('Upcoming Duties'),
-          ..._tiles(context, provider.upcoming, 'NO UPCOMING DUTIES!'),
+          ..._tiles(
+              context, provider, provider.upcoming, 'NO UPCOMING DUTIES!'),
         ],
       ),
     );
