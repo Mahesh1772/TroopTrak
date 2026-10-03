@@ -17,6 +17,7 @@ import 'package:trooptrak_final_application/features/auth/domain/usecases/delete
 import 'package:trooptrak_final_application/features/conducts/domain/usecases/build_conduct_roster.dart';
 import 'package:trooptrak_final_application/features/conducts/domain/usecases/conduct_usecases.dart';
 import 'package:trooptrak_final_application/features/conducts/domain/usecases/watch_conduct_breakdown.dart';
+import 'package:trooptrak_final_application/features/dashboard/domain/usecases/watch_calendar_events.dart';
 import 'package:trooptrak_final_application/features/dashboard/domain/usecases/watch_strength_summary.dart';
 import 'package:trooptrak_final_application/features/enlistment/domain/usecases/men_usecases.dart';
 import 'package:trooptrak_final_application/features/guard_duty/domain/usecases/duty_usecases.dart';
@@ -124,6 +125,7 @@ void main() {
       () => context.read<DeleteDuty>(),
       () => context.read<GetDutyRoster>(),
       () => context.read<WatchStrengthSummary>(),
+      () => context.read<WatchCalendarEvents>(),
     ]) {
       expect(read, returnsNormally);
     }

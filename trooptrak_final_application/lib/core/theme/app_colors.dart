@@ -56,6 +56,7 @@ abstract final class AppColors {
   static const info = Color(0xFF2196F3);
   static const bookIn = Color(0xFF43A047);
   static const lightModeIcon = Color(0xFFFFA000);
+  static const calendarDuty = Color(0xFFE91E63);
 
   static const chartOfficers = Color(0xFFF44336);
   static const chartWoses = Color(0xFF2196F3);

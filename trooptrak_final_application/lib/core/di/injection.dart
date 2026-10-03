@@ -22,6 +22,7 @@ import '../../features/conducts/domain/repositories/conduct_repository.dart';
 import '../../features/conducts/domain/usecases/build_conduct_roster.dart';
 import '../../features/conducts/domain/usecases/conduct_usecases.dart';
 import '../../features/conducts/domain/usecases/watch_conduct_breakdown.dart';
+import '../../features/dashboard/domain/usecases/watch_calendar_events.dart';
 import '../../features/dashboard/domain/usecases/watch_strength_summary.dart';
 import '../../features/enlistment/data/datasources/men_remote_data_source.dart';
 import '../../features/enlistment/data/repositories/men_repository_impl.dart';
@@ -44,6 +45,7 @@ import '../../features/statuses/domain/usecases/status_usecases.dart';
 import '../services/clock.dart';
 import '../services/preferences_service.dart';
 import '../theme/theme_manager.dart';
+import 'calendar_event_adapter.dart';
 
 /// Composition root. Firebase instances are resolved lazily, on first use.
 class AppDependencies {
@@ -95,6 +97,10 @@ class AppDependencies {
       ..._attendanceProviders(),
       ..._conductProviders(),
       ..._dutyProviders(),
+      Provider(
+        create: (_) =>
+            WatchCalendarEvents(CalendarEventAdapter(conducts, duties)),
+      ),
       ..._authProviders(),
     ];
   }

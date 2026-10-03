@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../features/auth/domain/usecases/auth_usecases.dart';
 import '../../features/auth/domain/usecases/delete_commander_account.dart';
 import '../../features/conducts/presentation/conducts_routes.dart';
+import '../../features/dashboard/presentation/dashboard_routes.dart';
 import '../../features/guard_duty/presentation/guard_duty_routes.dart';
 import '../../features/nominal_roll/presentation/nominal_roll_routes.dart';
 import '../../features/shell/presentation/pages/commander_shell.dart';
@@ -13,10 +14,9 @@ import '../../features/soldier_profile/presentation/profile_capabilities.dart';
 import '../../features/soldier_profile/presentation/providers/soldier_profile_provider.dart';
 import '../../features/soldiers/domain/usecases/soldier_usecases.dart';
 import '../usecase/usecase.dart';
-import '../widgets/feedback_views.dart';
 import 'app_routes.dart';
 
-/// Commander shell; tabs not rebuilt yet show placeholders.
+/// Commander shell with its four tabs.
 class CommanderHome extends StatelessWidget {
   const CommanderHome({super.key});
 
@@ -24,7 +24,7 @@ class CommanderHome extends StatelessWidget {
   Widget build(BuildContext context) {
     final me = context.read<WatchAuthState>().current?.displayName;
     return CommanderShell(
-      home: (_) => const EmptyState(message: 'Dashboard', image: null),
+      home: (context) => dashboardTab(context, name: me ?? ''),
       nominalRoll: (context) => nominalRollTab(context, currentUserId: me),
       conductTracker: conductTrackerTab,
       guardDuty: guardDutyTab,
