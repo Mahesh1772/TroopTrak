@@ -26,10 +26,18 @@ class ShellTab {
 /// Bottom-nav shell shared by both roles. Tabs are built on first visit and
 /// then kept alive in an [IndexedStack]; back is disabled as in the source.
 class ShellScaffold extends StatefulWidget {
-  const ShellScaffold({super.key, required this.tabs, this.actions});
+  const ShellScaffold({
+    super.key,
+    required this.tabs,
+    this.actions,
+    this.showAppBar = true,
+  });
 
   final List<ShellTab> tabs;
   final List<Widget>? actions;
+
+  /// The soldier shell has no app bar, as in the source.
+  final bool showAppBar;
 
   @override
   State<ShellScaffold> createState() => _ShellScaffoldState();
@@ -52,15 +60,17 @@ class _ShellScaffoldState extends State<ShellScaffold> {
     return PopScope(
       canPop: false,
       child: Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 60.h,
-          title: AutoSizeText(
-            tabs[_index].title,
-            maxLines: 1,
-            style: text.titleLarge?.copyWith(fontSize: 26.sp),
-          ),
-          actions: widget.actions,
-        ),
+        appBar: widget.showAppBar
+            ? AppBar(
+                toolbarHeight: 60.h,
+                title: AutoSizeText(
+                  tabs[_index].title,
+                  maxLines: 1,
+                  style: text.titleLarge?.copyWith(fontSize: 26.sp),
+                ),
+                actions: widget.actions,
+              )
+            : null,
         body: IndexedStack(
           index: _index,
           children: [

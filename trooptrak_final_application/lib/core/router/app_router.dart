@@ -12,6 +12,7 @@ import '../widgets/feedback_views.dart';
 import 'app_routes.dart';
 import 'commander_routes.dart';
 import 'route_builder.dart';
+import 'soldier_routes.dart';
 
 abstract final class AppRouter {
   static final Map<String, RouteWidgetBuilder> routes = {
@@ -23,7 +24,7 @@ abstract final class AppRouter {
     ...soldierFormRoutes,
     ...conductRoutes,
     ...dutyRoutes,
-    AppRoutes.soldierHome: (_, __) => const _Placeholder('Soldier app'),
+    AppRoutes.soldierHome: (_, __) => const SoldierHome(),
   };
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
@@ -33,16 +34,6 @@ abstract final class AppRouter {
       builder: (context) => builder(context, settings.arguments),
     );
   }
-}
-
-class _Placeholder extends StatelessWidget {
-  const _Placeholder(this.label);
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) =>
-      AppScaffold(body: EmptyState(message: label, image: null));
 }
 
 class _UnknownRoute extends StatelessWidget {
