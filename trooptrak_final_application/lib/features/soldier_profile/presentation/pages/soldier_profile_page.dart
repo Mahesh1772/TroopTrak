@@ -2,17 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../core/services/clock.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/theme_context.dart';
 import '../../../../core/widgets/feedback_views.dart';
 import '../../../../core/widgets/state_view.dart';
 import '../../../soldiers/domain/entities/soldier.dart';
+import '../../../statuses/domain/usecases/status_usecases.dart';
 import '../profile_actions.dart';
 import '../profile_capabilities.dart';
 import '../providers/soldier_profile_provider.dart';
+import '../providers/statuses_provider.dart';
 import '../widgets/basic_info_tab.dart';
 import '../widgets/profile_header.dart';
+import '../widgets/statuses_tab.dart';
 
 /// Rebuild of `CMD/screens/detailed_screen/soldier_detailed_screen.dart`
 /// and the own-profile screens of both roles.
@@ -34,30 +38,38 @@ class SoldierProfilePage extends StatelessWidget {
     return Scaffold(
       body: StateView<Soldier>(
         state: state,
-        builder: (context, soldier) => DefaultTabController(
-          length: 3,
-          child: NestedScrollView(
-            headerSliverBuilder: (context, _) => [
-              SliverToBoxAdapter(
-                child: Column(
-                  children: [
-                    ProfileHeader(soldier: soldier, actions: headerActions),
-                    SizedBox(height: AppSpacing.sm.h),
-                    const _ProfileTabBar(),
-                  ],
+        builder: (context, soldier) => ChangeNotifierProvider(
+          create: (context) => StatusesProvider(
+            watch: context.read<WatchSoldierStatuses>(),
+            delete: context.read<DeleteStatus>(),
+            clock: context.read<Clock>(),
+            soldierId: soldier.id,
+          ),
+          child: DefaultTabController(
+            length: 3,
+            child: NestedScrollView(
+              headerSliverBuilder: (context, _) => [
+                SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      ProfileHeader(soldier: soldier, actions: headerActions),
+                      SizedBox(height: AppSpacing.sm.h),
+                      const _ProfileTabBar(),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-            body: TabBarView(
-              children: [
-                BasicInfoTab(
-                  soldier: soldier,
-                  capabilities: capabilities,
-                  actions: actions,
-                ),
-                const _TabPlaceholder('Statuses'),
-                const _TabPlaceholder('Attendance'),
               ],
+              body: TabBarView(
+                children: [
+                  BasicInfoTab(
+                    soldier: soldier,
+                    capabilities: capabilities,
+                    actions: actions,
+                  ),
+                  StatusesTab(canManage: capabilities.canManageStatuses),
+                  const _TabPlaceholder('Attendance'),
+                ],
+              ),
             ),
           ),
         ),

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
 import 'package:trooptrak_final_application/core/error/failures.dart';
 import 'package:trooptrak_final_application/core/widgets/feedback_views.dart';
@@ -11,12 +12,25 @@ import 'package:trooptrak_final_application/features/soldier_profile/presentatio
 import 'package:trooptrak_final_application/features/soldier_profile/presentation/profile_capabilities.dart';
 import 'package:trooptrak_final_application/features/soldier_profile/presentation/providers/soldier_profile_provider.dart';
 import 'package:trooptrak_final_application/features/soldiers/domain/entities/soldier.dart';
+import 'package:trooptrak_final_application/features/statuses/domain/entities/status.dart';
+import 'package:trooptrak_final_application/features/statuses/domain/usecases/status_usecases.dart';
 
 import '../../helpers/builders.dart';
 import '../../helpers/pump_app.dart';
 
+class _MockWatchStatuses extends Mock implements WatchSoldierStatuses {}
+
+class _MockDeleteStatus extends Mock implements DeleteStatus {}
+
 void main() {
   late StreamController<Either<Failure, Soldier>> soldier;
+  final watchStatuses = _MockWatchStatuses();
+  setUpAll(() => when(() => watchStatuses(any()))
+      .thenAnswer((_) => Stream.value(const Right<Failure, List<Status>>([]))));
+  final tabProviders = [
+    Provider<WatchSoldierStatuses>.value(value: watchStatuses),
+    Provider<DeleteStatus>.value(value: _MockDeleteStatus()),
+  ];
 
   late List<String> calls;
   late Either<Failure, Unit> deleteResult;
@@ -52,6 +66,7 @@ void main() {
           ),
         ),
         mode: mode,
+        providers: tabProviders,
       );
 
   testWidgets('shows loading until the soldier arrives', (tester) async {
@@ -98,7 +113,7 @@ void main() {
     expect(find.text('Date Of Birth'), findsOneWidget);
     await tester.tap(find.text('STATUSES'));
     await tester.pumpAndSettle();
-    expect(find.text('Statuses'), findsOneWidget);
+    expect(find.text('Active Statuses'), findsOneWidget);
     await tester.tap(find.text('ATTENDANCE'));
     await tester.pumpAndSettle();
     expect(find.text('Attendance'), findsOneWidget);
@@ -119,19 +134,21 @@ void main() {
   });
 
   testWidgets('back pops the page', (tester) async {
-    await tester.pumpApp(Builder(
-      builder: (context) => TextButton(
-        onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(
-          builder: (_) => ChangeNotifierProvider(
-            create: (_) => SoldierProfileProvider(soldier.stream),
-            child: SoldierProfilePage(
-                capabilities: ProfileCapabilities.commanderViewingSoldier,
-                actions: profileActions),
+    await tester.pumpApp(
+        Builder(
+          builder: (context) => TextButton(
+            onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(
+              builder: (_) => ChangeNotifierProvider(
+                create: (_) => SoldierProfileProvider(soldier.stream),
+                child: SoldierProfilePage(
+                    capabilities: ProfileCapabilities.commanderViewingSoldier,
+                    actions: profileActions),
+              ),
+            )),
+            child: const Text('open'),
           ),
-        )),
-        child: const Text('open'),
-      ),
-    ));
+        ),
+        providers: tabProviders);
     await tester.tap(find.text('open'));
     await tester.pump();
     soldier.add(Right(buildSoldier()));

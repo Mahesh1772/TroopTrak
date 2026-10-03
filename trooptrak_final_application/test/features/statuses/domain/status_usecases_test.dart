@@ -64,6 +64,18 @@ void main() {
       expect((await AddStatus(repo)(buildStatus(name: ' '))).isLeft(), isTrue);
       verifyNever(() => repo.add(any()));
     });
+
+    test('K18: rejects an end before the start; same day is fine', () async {
+      when(() => repo.add(any())).thenAnswer((_) async => const Right(unit));
+      expect(
+          await AddStatus(repo)(buildStatus(
+              start: DateTime(2023, 7, 5), end: DateTime(2023, 7, 4, 23))),
+          const Left<Failure, Unit>(ValidationFailure(endBeforeStart)));
+      expect(
+          await AddStatus(repo)(buildStatus(
+              start: DateTime(2023, 7, 5, 9), end: DateTime(2023, 7, 5))),
+          const Right<Failure, Unit>(unit));
+    });
   });
 
   group('UpdateStatus', () {

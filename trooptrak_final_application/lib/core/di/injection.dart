@@ -20,6 +20,10 @@ import '../../features/soldiers/data/datasources/soldier_remote_data_source.dart
 import '../../features/soldiers/data/repositories/soldier_repository_impl.dart';
 import '../../features/soldiers/domain/repositories/soldier_repository.dart';
 import '../../features/soldiers/domain/usecases/soldier_usecases.dart';
+import '../../features/statuses/data/datasources/status_remote_data_source.dart';
+import '../../features/statuses/data/repositories/status_repository_impl.dart';
+import '../../features/statuses/domain/repositories/status_repository.dart';
+import '../../features/statuses/domain/usecases/status_usecases.dart';
 import '../services/clock.dart';
 import '../services/preferences_service.dart';
 import '../theme/theme_manager.dart';
@@ -52,6 +56,8 @@ class AppDependencies {
       AuthRepositoryImpl(FirebaseAuthDataSource(auth), preferences);
   late final MenRepository men =
       MenRepositoryImpl(MenRemoteDataSource(firestore));
+  late final StatusRepository statuses =
+      StatusRepositoryImpl(StatusRemoteDataSource(firestore));
 
   List<SingleChildWidget> get providers {
     final roles = RoleRepositoryImpl(preferences);
@@ -62,9 +68,17 @@ class AppDependencies {
       Provider(create: (_) => GetRole(roles)),
       Provider(create: (_) => SetRole(roles)),
       ..._soldierProviders(),
+      ..._statusProviders(),
       ..._authProviders(),
     ];
   }
+
+  List<SingleChildWidget> _statusProviders() => [
+        Provider(create: (_) => WatchSoldierStatuses(statuses)),
+        Provider(create: (_) => AddStatus(statuses)),
+        Provider(create: (_) => UpdateStatus(statuses)),
+        Provider(create: (_) => DeleteStatus(statuses)),
+      ];
 
   List<SingleChildWidget> _soldierProviders() => [
         Provider(create: (_) => WatchSoldiers(soldiers)),

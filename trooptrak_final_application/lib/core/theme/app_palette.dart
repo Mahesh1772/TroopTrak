@@ -22,6 +22,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
     required this.statusExcuse,
     required this.statusLeave,
     required this.statusMedical,
+    required this.pastTile,
   });
 
   final Color card;
@@ -41,6 +42,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
   final Color statusExcuse;
   final Color statusLeave;
   final Color statusMedical;
+  final Color pastTile;
 
   static const dark = AppPalette(
     card: AppColors.darkCard,
@@ -63,6 +65,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
     statusExcuse: AppColors.statusExcuse,
     statusLeave: AppColors.statusLeave,
     statusMedical: AppColors.statusMedical,
+    pastTile: AppColors.pastTileDark,
   );
 
   static const light = AppPalette(
@@ -86,6 +89,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
     statusExcuse: AppColors.statusExcuse,
     statusLeave: AppColors.statusLeave,
     statusMedical: AppColors.statusMedical,
+    pastTile: AppColors.darkPrimary,
   );
 
   @override
@@ -107,6 +111,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
         statusExcuse: statusExcuse,
         statusLeave: statusLeave,
         statusMedical: statusMedical,
+        pastTile: pastTile,
       );
 
   @override
