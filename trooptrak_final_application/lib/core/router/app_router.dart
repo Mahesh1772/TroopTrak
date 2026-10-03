@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../features/auth/presentation/auth_routes.dart';
 import '../../features/onboarding/presentation/onboarding_routes.dart';
 import '../../features/shell/presentation/pages/commander_shell.dart';
+import '../../features/soldier_profile/presentation/soldier_profile_routes.dart';
 import '../widgets/app_scaffold.dart';
 import '../widgets/feedback_views.dart';
 import 'app_routes.dart';
@@ -12,6 +13,7 @@ abstract final class AppRouter {
   static final Map<String, RouteWidgetBuilder> routes = {
     ...onboardingRoutes,
     ...authRoutes(commanderHome: (_) => const _CommanderHome()),
+    ...soldierProfileRoutes,
     AppRoutes.commanderProfile: (_, __) =>
         const _Placeholder('My profile', title: 'Profile'),
     AppRoutes.soldierHome: (_, __) => const _Placeholder('Soldier app'),
