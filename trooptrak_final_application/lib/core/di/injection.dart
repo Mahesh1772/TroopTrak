@@ -22,6 +22,7 @@ import '../../features/conducts/domain/repositories/conduct_repository.dart';
 import '../../features/conducts/domain/usecases/build_conduct_roster.dart';
 import '../../features/conducts/domain/usecases/conduct_usecases.dart';
 import '../../features/conducts/domain/usecases/watch_conduct_breakdown.dart';
+import '../../features/dashboard/domain/usecases/watch_strength_summary.dart';
 import '../../features/enlistment/data/datasources/men_remote_data_source.dart';
 import '../../features/enlistment/data/repositories/men_repository_impl.dart';
 import '../../features/enlistment/domain/repositories/men_repository.dart';
@@ -124,6 +125,12 @@ class AppDependencies {
         Provider(create: (_) => BookInOut(attendance, clock)),
         Provider(
             create: (_) => WatchSoldiersInCamp(soldiers, attendance, clock)),
+        Provider(
+          create: (_) => WatchStrengthSummary(
+              WatchSoldiersInCamp(soldiers, attendance, clock),
+              statuses,
+              clock),
+        ),
       ];
 
   List<SingleChildWidget> _statusProviders() => [
