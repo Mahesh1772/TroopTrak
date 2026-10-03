@@ -1,4 +1,26 @@
 import 'package:trooptrak_final_application/features/soldiers/domain/entities/soldier.dart';
+import 'package:trooptrak_final_application/features/statuses/domain/entities/status.dart';
+
+Status buildStatus({
+  String id = 's1',
+  String soldierId = 'Tan Ah Kow',
+  String type = 'Excuse',
+  String name = 'Ex RMJ',
+  DateTime? start,
+  DateTime? end,
+  String? startAttendanceId,
+  String? endAttendanceId,
+}) =>
+    Status(
+      id: id,
+      soldierId: soldierId,
+      type: type,
+      name: name,
+      start: start ?? DateTime(2023, 7, 1),
+      end: end ?? DateTime(2023, 7, 7),
+      startAttendanceId: startAttendanceId,
+      endAttendanceId: endAttendanceId,
+    );
 
 Soldier buildSoldier({
   String name = 'Tan Ah Kow',
