@@ -8,8 +8,11 @@ import '../../soldiers/domain/usecases/soldier_usecases.dart';
 import '../domain/entities/conduct.dart';
 import '../domain/usecases/build_conduct_roster.dart';
 import '../domain/usecases/conduct_usecases.dart';
+import '../domain/usecases/watch_conduct_breakdown.dart';
+import 'pages/conduct_details_page.dart';
 import 'pages/conduct_form_page.dart';
 import 'pages/conduct_tracker_page.dart';
+import 'providers/conduct_details_provider.dart';
 import 'providers/conduct_form_provider.dart';
 import 'providers/conduct_tracker_provider.dart';
 
@@ -35,9 +38,17 @@ Widget _form(BuildContext context, Conduct? initial) => ChangeNotifierProvider(
       child: const ConductFormPage(),
     );
 
-/// Edit takes the conduct being changed.
+/// Edit takes the conduct being changed; details take the conduct id.
 final Map<String, RouteWidgetBuilder> conductRoutes = {
   AppRoutes.addConduct: (context, _) => _form(context, null),
   AppRoutes.editConduct: (context, arguments) =>
       _form(context, arguments! as Conduct),
+  AppRoutes.conductDetails: (context, arguments) => ChangeNotifierProvider(
+        create: (context) => ConductDetailsProvider(
+          watch: context.read<WatchConductBreakdown>(),
+          delete: context.read<DeleteConduct>(),
+          conductId: arguments! as String,
+        ),
+        child: const ConductDetailsPage(),
+      ),
 };

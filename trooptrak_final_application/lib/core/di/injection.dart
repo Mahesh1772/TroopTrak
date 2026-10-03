@@ -21,6 +21,7 @@ import '../../features/conducts/data/repositories/conduct_repository_impl.dart';
 import '../../features/conducts/domain/repositories/conduct_repository.dart';
 import '../../features/conducts/domain/usecases/build_conduct_roster.dart';
 import '../../features/conducts/domain/usecases/conduct_usecases.dart';
+import '../../features/conducts/domain/usecases/watch_conduct_breakdown.dart';
 import '../../features/enlistment/data/datasources/men_remote_data_source.dart';
 import '../../features/enlistment/data/repositories/men_repository_impl.dart';
 import '../../features/enlistment/domain/repositories/men_repository.dart';

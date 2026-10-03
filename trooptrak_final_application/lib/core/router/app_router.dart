@@ -21,7 +21,6 @@ abstract final class AppRouter {
     ...enlistmentRoutes,
     ...soldierFormRoutes,
     ...conductRoutes,
-    AppRoutes.conductDetails: (_, __) => const _Placeholder('Conduct details'),
     AppRoutes.soldierHome: (_, __) => const _Placeholder('Soldier app'),
   };
 
