@@ -45,6 +45,8 @@ abstract final class AppColors {
   static const authSubtitle = Color(0xFFAB47BC);
   static const authHint = Color(0xFFE1BEE7);
   static const authIcon = Color(0xFF7C4DFF);
+  static const navInactive = Color(0xFF9575CD);
+  static const navActiveEnd = Color(0xFF5E35B1);
 
   static const statusExcuse = Color(0xFFFF6F00);
   static const statusLeave = Color(0xFFF44336);

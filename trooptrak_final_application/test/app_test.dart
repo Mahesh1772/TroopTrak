@@ -53,7 +53,8 @@ void main() {
         auth: MockFirebaseAuth(signedIn: true, mockUser: MockUser(uid: 'c1')));
     await tester.pumpWidget(App(providers: deps.providers));
     await tester.pumpAndSettle();
-    expect(find.text('Commander app'), findsOneWidget);
+    expect(find.text('Dashboard'), findsWidgets);
+    expect(find.byKey(const Key('userProfileIcon')), findsOneWidget);
   });
 
   testWidgets('App starts dark and follows ThemeManager', (tester) async {

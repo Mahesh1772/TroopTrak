@@ -2,6 +2,7 @@ abstract final class AppRoutes {
   static const root = '/';
   static const roleSelection = '/role';
   static const commanderGate = '/commander';
+  static const commanderProfile = '/commander/me';
   static const forgotPassword = '/forgot-password';
   static const soldierGate = '/soldier';
   static const phoneEntry = '/soldier/phone';
