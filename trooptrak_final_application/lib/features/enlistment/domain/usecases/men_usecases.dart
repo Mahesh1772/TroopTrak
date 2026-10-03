@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 
 import '../../../../core/error/result.dart';
 import '../../../../core/usecase/usecase.dart';
+import '../../../soldiers/domain/entities/soldier.dart';
 import '../entities/soldier_registration.dart';
 import '../repositories/men_repository.dart';
 
@@ -26,4 +27,15 @@ class FindRegistrationByQr implements UseCase<SoldierRegistration?, String> {
     if (trimmed.isEmpty) return const Right(null);
     return _repository.findByQrId(trimmed);
   }
+}
+
+/// The soldier's own profile from `Men/{uid}`; its id is the linked Users id.
+class WatchOwnRegistration implements StreamUseCase<Soldier, String> {
+  const WatchOwnRegistration(this._repository);
+
+  final MenRepository _repository;
+
+  @override
+  ResultStream<Soldier> call(String uid) =>
+      _repository.watch(uid).map((r) => r.map((reg) => reg.profile));
 }

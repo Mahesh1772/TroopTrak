@@ -30,6 +30,7 @@ class SoldierProfilePage extends StatelessWidget {
     required this.capabilities,
     required this.actions,
     this.headerActions = const [],
+    this.inShell = false,
   });
 
   final ProfileCapabilities capabilities;
@@ -37,6 +38,10 @@ class SoldierProfilePage extends StatelessWidget {
 
   /// Extra header buttons (the soldier's SHOW QR CODE).
   final List<Widget> headerActions;
+
+  /// Shown as a shell tab: no back button and sign out as a top-right icon,
+  /// as the source soldier profile.
+  final bool inShell;
 
   Future<void> _signOut(BuildContext context) async {
     final navigator = Navigator.of(context);
@@ -52,8 +57,9 @@ class SoldierProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.watch<SoldierProfileProvider>().state;
+    final canSignOut = capabilities.showSignOut && actions.signOut != null;
     final header = [
-      if (capabilities.showSignOut && actions.signOut != null)
+      if (canSignOut && !inShell)
         HeaderPillButton(
           key: const Key('signOutButton'),
           label: 'SIGN OUT',
@@ -91,7 +97,19 @@ class SoldierProfilePage extends StatelessWidget {
                 SliverToBoxAdapter(
                   child: Column(
                     children: [
-                      ProfileHeader(soldier: soldier, actions: header),
+                      ProfileHeader(
+                        soldier: soldier,
+                        actions: header,
+                        showBack: !inShell,
+                        topTrailing: canSignOut && inShell
+                            ? IconButton(
+                                key: const Key('signOutIcon'),
+                                onPressed: () => _signOut(context),
+                                icon: Icon(Icons.exit_to_app_rounded,
+                                    color: AppColors.white, size: 35.sp),
+                              )
+                            : null,
+                      ),
                       SizedBox(height: AppSpacing.sm.h),
                       const _ProfileTabBar(),
                     ],

@@ -14,6 +14,7 @@ import 'package:trooptrak_final_application/features/attendance/domain/usecases/
 import 'package:trooptrak_final_application/features/auth/domain/usecases/auth_usecases.dart';
 import 'package:trooptrak_final_application/features/auth/domain/usecases/complete_soldier_profile.dart';
 import 'package:trooptrak_final_application/features/auth/domain/usecases/delete_commander_account.dart';
+import 'package:trooptrak_final_application/features/auth/domain/usecases/update_soldier_profile.dart';
 import 'package:trooptrak_final_application/features/conducts/domain/usecases/build_conduct_roster.dart';
 import 'package:trooptrak_final_application/features/conducts/domain/usecases/conduct_usecases.dart';
 import 'package:trooptrak_final_application/features/conducts/domain/usecases/watch_conduct_breakdown.dart';
@@ -110,6 +111,8 @@ void main() {
       () => context.read<BookInOut>(),
       () => context.read<WatchSoldiersInCamp>(),
       () => context.read<FindRegistrationByQr>(),
+      () => context.read<WatchOwnRegistration>(),
+      () => context.read<UpdateSoldierProfile>(),
       () => context.read<CompleteSoldierProfile>(),
       () => context.read<DeleteCommanderAccount>(),
       () => context.read<SignOut>(),

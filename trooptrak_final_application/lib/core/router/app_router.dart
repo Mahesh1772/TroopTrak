@@ -25,6 +25,7 @@ abstract final class AppRouter {
     ...conductRoutes,
     ...dutyRoutes,
     AppRoutes.soldierHome: (_, __) => const SoldierHome(),
+    ...soldierRoutes,
   };
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {

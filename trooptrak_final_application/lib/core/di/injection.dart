@@ -16,6 +16,7 @@ import '../../features/auth/domain/usecases/complete_soldier_profile.dart';
 import '../../features/auth/domain/usecases/delete_commander_account.dart';
 import '../../features/auth/domain/usecases/register_commander.dart';
 import '../../features/auth/domain/usecases/soldier_entry.dart';
+import '../../features/auth/domain/usecases/update_soldier_profile.dart';
 import '../../features/conducts/data/datasources/conduct_remote_data_source.dart';
 import '../../features/conducts/data/repositories/conduct_repository_impl.dart';
 import '../../features/conducts/domain/repositories/conduct_repository.dart';
@@ -168,6 +169,9 @@ class AppDependencies {
             create: (_) => RegisterCommander(authRepository, soldiers, clock)),
         Provider(create: (_) => SoldierProfileExists(men)),
         Provider(create: (_) => FindRegistrationByQr(men)),
+        Provider(create: (_) => WatchOwnRegistration(men)),
+        Provider(
+            create: (_) => UpdateSoldierProfile(authRepository, men, soldiers)),
         Provider(create: (_) => ResolveSoldierEntry(authRepository, men)),
         Provider(create: (_) => CompleteSoldierSignIn(authRepository, men)),
         Provider(create: (_) => CompleteSoldierProfile(authRepository, men)),

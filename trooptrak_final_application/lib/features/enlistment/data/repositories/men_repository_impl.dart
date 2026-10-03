@@ -19,6 +19,16 @@ class MenRepositoryImpl implements MenRepository {
   Result<SoldierRegistration> get(String uid) => guard(() => _remote.get(uid));
 
   @override
+  ResultStream<SoldierRegistration> watch(String uid) =>
+      guardStream(_remote.watch(uid));
+
+  @override
+  Result<Unit> updateProfile(String uid, Soldier profile) => guard(() async {
+        await _remote.updateProfile(uid, profile);
+        return unit;
+      });
+
+  @override
   Result<Unit> save(String uid, Soldier profile) => guard(() async {
         await _remote.save(uid, profile);
         return unit;

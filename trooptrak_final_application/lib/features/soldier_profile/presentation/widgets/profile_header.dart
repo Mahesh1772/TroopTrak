@@ -15,9 +15,17 @@ class ProfileHeader extends StatelessWidget {
     super.key,
     required this.soldier,
     this.actions = const [],
+    this.showBack = true,
+    this.topTrailing,
   });
 
   final Soldier soldier;
+
+  /// False when the page is a shell tab (the soldier's My Profile).
+  final bool showBack;
+
+  /// Top-right button (the soldier's sign-out icon).
+  final Widget? topTrailing;
 
   /// Sign out, theme toggle or QR buttons for the viewer's own profile.
   final List<Widget> actions;
@@ -43,11 +51,18 @@ class ProfileHeader extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              IconButton(
-                key: const Key('profileBack'),
-                onPressed: () => Navigator.of(context).maybePop(),
-                icon: Icon(Icons.arrow_back_sharp,
-                    color: AppColors.white, size: 25.sp),
+              Row(
+                children: [
+                  if (showBack)
+                    IconButton(
+                      key: const Key('profileBack'),
+                      onPressed: () => Navigator.of(context).maybePop(),
+                      icon: Icon(Icons.arrow_back_sharp,
+                          color: AppColors.white, size: 25.sp),
+                    ),
+                  const Spacer(),
+                  if (topTrailing != null) topTrailing!,
+                ],
               ),
               SizedBox(height: AppSpacing.xl.h),
               Padding(

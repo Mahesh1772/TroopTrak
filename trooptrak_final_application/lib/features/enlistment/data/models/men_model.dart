@@ -30,6 +30,12 @@ abstract final class MenModel {
 
   /// R16 registration document, in the source's field order.
   static Map<String, dynamic> toCreateMap(Soldier profile) => {
+        ...toProfileMap(profile),
+        UserFields.points: 0,
+        MenFields.qrId: null,
+      };
+
+  static Map<String, dynamic> toProfileMap(Soldier profile) => {
         UserFields.rank: profile.rank,
         UserFields.name: profile.name,
         UserFields.company: profile.company,
@@ -41,8 +47,6 @@ abstract final class MenModel {
         UserFields.dob: _day(profile.dob),
         UserFields.ord: _day(profile.ord),
         UserFields.enlistment: _day(profile.enlistment),
-        UserFields.points: 0,
-        MenFields.qrId: null,
       };
 
   static String _day(DateTime? date) => date == null ? '' : formatDay(date);

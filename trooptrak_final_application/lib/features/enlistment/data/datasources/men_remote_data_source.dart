@@ -25,6 +25,18 @@ class MenRemoteDataSource {
     return MenModel.fromMap(doc.id, data);
   }
 
+  Stream<SoldierRegistration> watch(String uid) =>
+      _men.doc(uid).snapshots().map((doc) {
+        final data = doc.data();
+        if (!doc.exists || data == null) {
+          throw NotFoundException('No registration found for $uid.');
+        }
+        return MenModel.fromMap(doc.id, data);
+      });
+
+  Future<void> updateProfile(String uid, Soldier profile) =>
+      _men.doc(uid).update(MenModel.toProfileMap(profile));
+
   Future<void> save(String uid, Soldier profile) =>
       _men.doc(uid).set(MenModel.toCreateMap(profile));
 

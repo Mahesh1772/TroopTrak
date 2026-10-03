@@ -11,6 +11,12 @@ abstract interface class MenRepository {
   /// `NotFoundFailure` when the soldier has not registered.
   Result<SoldierRegistration> get(String uid);
 
+  /// The soldier's own record, kept live (their My Profile tab).
+  ResultStream<SoldierRegistration> watch(String uid);
+
+  /// Changes the profile fields only; points and QR code stay.
+  Result<Unit> updateProfile(String uid, Soldier profile);
+
   /// Writes the whole registration with `points: 0` and no QR code (R16).
   Result<Unit> save(String uid, Soldier profile);
 

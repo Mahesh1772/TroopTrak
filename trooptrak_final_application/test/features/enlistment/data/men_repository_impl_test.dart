@@ -113,6 +113,41 @@ void main() {
         const Right<Failure, SoldierRegistration?>(null));
   });
 
+  test('watch emits the registration and its later edits', () async {
+    final names = repo
+        .watch('uid-1')
+        .map((r) => r.getOrElse(() => throw 'missing').profile.name);
+    final expectation = expectLater(names, emitsInOrder(['Lim Bah', 'Lim Ah']));
+    await Future<void>.delayed(Duration.zero);
+    await db.collection('Men').doc('uid-1').update({'name': 'Lim Ah'});
+    await expectation;
+  });
+
+  test('watch of a missing registration is a NotFound Left', () async {
+    final first = await repo.watch('ghost').first;
+    first.leftMap((f) => expect(f, isA<NotFoundFailure>()));
+    expect(first.isLeft(), isTrue);
+  });
+
+  test('updateProfile rewrites the R16 fields and keeps points and QRid',
+      () async {
+    await db.collection('Men').doc('uid-1').update({'points': 4});
+    final result = await repo.updateProfile(
+        'uid-1', buildSoldier(name: 'Lim Ah', rank: 'LCP', points: 99));
+    expect(result, const Right<Failure, Unit>(unit));
+    final doc = await menDocOf('uid-1');
+    expect(doc!['name'], 'Lim Ah');
+    expect(doc['rank'], 'LCP');
+    expect(doc['points'], 4);
+    expect(doc['QRid'], 'qr-123');
+  });
+
+  test('updateProfile of a missing registration is a Left', () async {
+    expect(
+        (await repo.updateProfile('ghost', buildSoldier())).isLeft(), isTrue);
+    expect(await menDocOf('ghost'), isNull);
+  });
+
   test('errors become Left', () async {
     registerFallbackValue(buildSoldier());
     final remote = _MockRemote();

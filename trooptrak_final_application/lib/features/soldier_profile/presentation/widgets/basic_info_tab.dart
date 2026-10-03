@@ -45,14 +45,14 @@ class _BasicInfoTabState extends State<BasicInfoTab> {
     if (!confirmed || !mounted) return;
     final navigator = Navigator.of(context);
     setState(() => _deleting = true);
-    final result = await actions.delete(widget.soldier);
+    final result = await actions.delete!(widget.soldier);
     result.fold(
       (f) {
         if (!mounted) return;
         setState(() => _deleting = false);
         AppSnackbar.error(context, f.message);
       },
-      (_) => actions.afterDelete(navigator),
+      (_) => actions.afterDelete?.call(navigator),
     );
   }
 
@@ -100,7 +100,7 @@ class _BasicInfoTabState extends State<BasicInfoTab> {
           ),
           gap,
         ],
-        if (caps.canDelete)
+        if (caps.canDelete && actions.delete != null)
           Center(
             child: PrimaryButton(
               key: const Key('deleteSoldier'),

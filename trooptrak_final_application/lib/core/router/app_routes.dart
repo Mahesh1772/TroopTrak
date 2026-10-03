@@ -17,4 +17,6 @@ abstract final class AppRoutes {
   static const phoneEntry = '/soldier/phone';
   static const profileCapture = '/soldier/profile-capture';
   static const soldierHome = '/soldier/home';
+  static const editOwnProfile = '/soldier/me/edit';
+  static const generateQr = '/soldier/qr';
 }

@@ -1,8 +1,10 @@
+import 'package:dartz/dartz.dart' show Unit;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/ranks.dart';
+import '../../../../core/error/result.dart';
 import '../../../../core/services/clock.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/theme_context.dart';
@@ -20,12 +22,24 @@ enum SoldierFormMode { add, edit }
 /// edit-self. The source update screens skipped validation; both modes
 /// validate here.
 class SoldierFormPage extends StatefulWidget {
-  const SoldierFormPage({super.key, required this.mode, this.initial});
+  const SoldierFormPage({
+    super.key,
+    required this.mode,
+    this.initial,
+    this.ranks = Ranks.all,
+    this.save,
+  });
 
   final SoldierFormMode mode;
 
   /// Prefill: the scanned registration (add) or the soldier being edited.
   final Soldier? initial;
+
+  /// Commander list by default; the soldier's own edit uses the self list.
+  final List<String> ranks;
+
+  /// Replaces AddSoldier / UpdateSoldier (the soldier's own edit).
+  final Result<Unit> Function(Soldier soldier)? save;
 
   @override
   State<SoldierFormPage> createState() => _SoldierFormPageState();
@@ -94,9 +108,10 @@ class _SoldierFormPageState extends State<SoldierFormPage> {
     }
     setState(() => _saving = true);
     final draft = _draft();
-    final result = await (_isAdd
-        ? context.read<AddSoldier>()(draft)
-        : context.read<UpdateSoldier>()(draft));
+    final result = await (widget.save?.call(draft) ??
+        (_isAdd
+            ? context.read<AddSoldier>()(draft)
+            : context.read<UpdateSoldier>()(draft)));
     if (!mounted) return;
     setState(() => _saving = false);
     result.fold(
@@ -141,7 +156,7 @@ class _SoldierFormPageState extends State<SoldierFormPage> {
                 SizedBox(height: AppSpacing.lg.h),
                 ProfileFormFields(
                   controller: _profile,
-                  ranks: Ranks.all,
+                  ranks: widget.ranks,
                   nameValidator: (v) => SoldierValidators.name(v?.trim()),
                   today: _today,
                 ),

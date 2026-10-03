@@ -9,8 +9,8 @@ import '../../soldiers/domain/entities/soldier.dart';
 class ProfileActions {
   const ProfileActions({
     required this.edit,
-    required this.delete,
-    required this.afterDelete,
+    this.delete,
+    this.afterDelete,
     this.deleteMessage = 'This removes the soldier with all statuses and '
         'attendance records.',
     this.signOut,
@@ -18,11 +18,11 @@ class ProfileActions {
   });
 
   final void Function(BuildContext context, Soldier soldier) edit;
-  final Result<Unit> Function(Soldier soldier) delete;
+  final Result<Unit> Function(Soldier soldier)? delete;
 
   /// Gets the navigator captured before the delete, as the page may already
   /// show the "not found" state once the record is gone.
-  final void Function(NavigatorState navigator) afterDelete;
+  final void Function(NavigatorState navigator)? afterDelete;
   final String deleteMessage;
 
   final Result<Unit> Function()? signOut;
