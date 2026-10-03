@@ -7,7 +7,6 @@ import 'package:trooptrak_final_application/features/guard_duty/domain/entities/
 import 'package:trooptrak_final_application/features/guard_duty/domain/repositories/duty_repository.dart';
 import 'package:trooptrak_final_application/features/guard_duty/domain/services/duty_points.dart';
 import 'package:trooptrak_final_application/features/guard_duty/domain/usecases/duty_usecases.dart';
-import 'package:trooptrak_final_application/features/soldiers/domain/entities/soldier.dart';
 import 'package:trooptrak_final_application/features/soldiers/domain/repositories/soldier_repository.dart';
 import 'package:trooptrak_final_application/features/statuses/domain/repositories/status_repository.dart';
 
@@ -142,31 +141,35 @@ void main() {
     });
   });
 
-  test('GetDutyEligibleSoldiers drops leave and Ex Uniform/Ex Boots (R6)',
+  test('GetDutyRoster marks leave and Ex Uniform/Ex Boots ineligible (R6)',
       () async {
     final soldiers = _MockSoldiers();
     final statuses = _MockStatuses();
-    final tan = buildSoldier(name: 'Tan Ah Kow');
-    final lee = buildSoldier(name: 'Lee Wei');
-    final lim = buildSoldier(name: 'Lim Bah');
-    final ong = buildSoldier(name: 'Ong Kai');
-    when(() => soldiers.getAll())
-        .thenAnswer((_) async => Right([tan, lee, lim, ong]));
+    final all = [
+      buildSoldier(name: 'Tan Ah Kow'),
+      buildSoldier(name: 'Lee Wei'),
+      buildSoldier(name: 'Lim Bah'),
+      buildSoldier(name: 'Ong Kai'),
+    ];
+    when(() => soldiers.getAll()).thenAnswer((_) async => Right(all));
     when(() => statuses.getAll()).thenAnswer((_) async => Right([
           buildStatus(soldierId: 'Tan Ah Kow', name: 'Ex Boots'),
           buildStatus(soldierId: 'Lee Wei', type: 'Leave', name: 'OL'),
           buildStatus(soldierId: 'Lim Bah', name: 'Ex RMJ'),
         ]));
-    final result = await GetDutyEligibleSoldiers(
-        soldiers, statuses, FixedClock(DateTime(2023, 7, 5)))(const NoParams());
-    expect(
-        result.getOrElse(() => []).map((s) => s.name), ['Lim Bah', 'Ong Kai']);
+    final roster = (await GetDutyRoster(soldiers, statuses,
+            FixedClock(DateTime(2023, 7, 5)))(const NoParams()))
+        .getOrElse(() => throw 'x');
+    expect(roster.soldiers, all);
+    expect(roster.ineligible, {'Tan Ah Kow', 'Lee Wei'});
+    expect(roster.canServe(all[2]), isTrue);
 
     when(() => soldiers.getAll())
         .thenAnswer((_) async => const Left(ServerFailure('down')));
     expect(
-        await GetDutyEligibleSoldiers(soldiers, statuses,
-            FixedClock(DateTime(2023, 7, 5)))(const NoParams()),
-        const Left<Failure, List<Soldier>>(ServerFailure('down')));
+        (await GetDutyRoster(soldiers, statuses,
+                FixedClock(DateTime(2023, 7, 5)))(const NoParams()))
+            .isLeft(),
+        isTrue);
   });
 }

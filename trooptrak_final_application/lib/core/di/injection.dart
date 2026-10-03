@@ -103,8 +103,7 @@ class AppDependencies {
         Provider(create: (_) => AddDuty(duties)),
         Provider(create: (_) => UpdateDuty(duties)),
         Provider(create: (_) => DeleteDuty(duties)),
-        Provider(
-            create: (_) => GetDutyEligibleSoldiers(soldiers, statuses, clock)),
+        Provider(create: (_) => GetDutyRoster(soldiers, statuses, clock)),
       ];
 
   List<SingleChildWidget> _conductProviders() => [

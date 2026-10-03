@@ -92,26 +92,39 @@ class DeleteDuty implements UseCase<Unit, Duty> {
       duty, DutyLedger.delete(duty.participants, duty.points));
 }
 
-/// R6: soldiers who may be rostered, judged on statuses active today (K2).
-class GetDutyEligibleSoldiers implements UseCase<List<Soldier>, NoParams> {
-  const GetDutyEligibleSoldiers(this._soldiers, this._statuses, this._clock);
+class DutyRoster extends Equatable {
+  const DutyRoster({required this.soldiers, required this.ineligible});
+
+  final List<Soldier> soldiers;
+
+  /// Ids of soldiers who cannot be rostered (R6).
+  final Set<String> ineligible;
+
+  bool canServe(Soldier s) => !ineligible.contains(s.id);
+
+  @override
+  List<Object?> get props => [soldiers, ineligible];
+}
+
+/// R6: every soldier, with those excluded by statuses active today (K2).
+class GetDutyRoster implements UseCase<DutyRoster, NoParams> {
+  const GetDutyRoster(this._soldiers, this._statuses, this._clock);
 
   final SoldierRepository _soldiers;
   final StatusRepository _statuses;
   final Clock _clock;
 
   @override
-  Result<List<Soldier>> call(NoParams params) async {
+  Result<DutyRoster> call(NoParams params) async {
     final soldiers = await _soldiers.getAll();
-    if (soldiers.isLeft()) return soldiers;
+    if (soldiers.isLeft()) {
+      return soldiers
+          .map((_) => const DutyRoster(soldiers: [], ineligible: {}));
+    }
     final statuses = await _statuses.getAll();
-    return statuses.map((all) {
-      final excluded =
-          EligibilityService.guardDutyExclusions(all, _clock.now());
-      return [
-        for (final s in soldiers.getOrElse(() => const []))
-          if (!excluded.contains(s.id)) s,
-      ];
-    });
+    return statuses.map((all) => DutyRoster(
+          soldiers: soldiers.getOrElse(() => const []),
+          ineligible: EligibilityService.guardDutyExclusions(all, _clock.now()),
+        ));
   }
 }

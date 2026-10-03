@@ -121,7 +121,7 @@ void main() {
       () => context.read<AddDuty>(),
       () => context.read<UpdateDuty>(),
       () => context.read<DeleteDuty>(),
-      () => context.read<GetDutyEligibleSoldiers>(),
+      () => context.read<GetDutyRoster>(),
     ]) {
       expect(read, returnsNormally);
     }
