@@ -8,6 +8,11 @@ import '../../features/auth/data/repositories/auth_repository_impl.dart';
 import '../../features/auth/domain/repositories/auth_repository.dart';
 import '../../features/auth/domain/usecases/auth_usecases.dart';
 import '../../features/auth/domain/usecases/register_commander.dart';
+import '../../features/auth/domain/usecases/soldier_entry.dart';
+import '../../features/enlistment/data/datasources/men_remote_data_source.dart';
+import '../../features/enlistment/data/repositories/men_repository_impl.dart';
+import '../../features/enlistment/domain/repositories/men_repository.dart';
+import '../../features/enlistment/domain/usecases/men_usecases.dart';
 import '../../features/onboarding/data/repositories/role_repository_impl.dart';
 import '../../features/onboarding/domain/usecases/role_usecases.dart';
 import '../../features/soldiers/data/datasources/soldier_remote_data_source.dart';
@@ -44,6 +49,8 @@ class AppDependencies {
       SoldierRepositoryImpl(SoldierRemoteDataSource(firestore));
   late final AuthRepository authRepository =
       AuthRepositoryImpl(FirebaseAuthDataSource(auth), preferences);
+  late final MenRepository men =
+      MenRepositoryImpl(MenRemoteDataSource(firestore));
 
   List<SingleChildWidget> get providers {
     final roles = RoleRepositoryImpl(preferences);
@@ -78,5 +85,8 @@ class AppDependencies {
         Provider(create: (_) => SignOut(authRepository)),
         Provider(
             create: (_) => RegisterCommander(authRepository, soldiers, clock)),
+        Provider(create: (_) => SoldierProfileExists(men)),
+        Provider(create: (_) => ResolveSoldierEntry(authRepository, men)),
+        Provider(create: (_) => CompleteSoldierSignIn(authRepository, men)),
       ];
 }

@@ -11,7 +11,8 @@ abstract final class AppRouter {
   static final Map<String, RouteWidgetBuilder> routes = {
     ...onboardingRoutes,
     ...authRoutes(commanderHome: (_) => const _Placeholder('Commander app')),
-    AppRoutes.soldierGate: (_, __) => const _Placeholder('Soldier app'),
+    AppRoutes.soldierHome: (_, __) => const _Placeholder('Soldier app'),
+    AppRoutes.profileCapture: (_, __) => const _Placeholder('Profile capture'),
   };
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
