@@ -5,6 +5,7 @@ abstract final class AppRoutes {
   static const commanderProfile = '/commander/me';
   static const soldierProfile = '/commander/soldier';
   static const editSoldier = '/commander/soldier/edit';
+  static const qrScanner = '/commander/scan';
   static const forgotPassword = '/forgot-password';
   static const soldierGate = '/soldier';
   static const phoneEntry = '/soldier/phone';

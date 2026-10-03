@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../features/auth/domain/usecases/auth_usecases.dart';
 import '../../features/auth/presentation/auth_routes.dart';
+import '../../features/nominal_roll/presentation/nominal_roll_routes.dart';
 import '../../features/onboarding/presentation/onboarding_routes.dart';
 import '../../features/shell/presentation/pages/commander_shell.dart';
 import '../../features/soldier_profile/presentation/soldier_profile_routes.dart';
@@ -18,6 +21,8 @@ abstract final class AppRouter {
         const _Placeholder('My profile', title: 'Profile'),
     AppRoutes.editSoldier: (_, __) =>
         const _Placeholder('Edit soldier', title: 'Edit soldier'),
+    AppRoutes.qrScanner: (_, __) =>
+        const _Placeholder('QR scanner', title: 'Scan QR'),
     AppRoutes.soldierHome: (_, __) => const _Placeholder('Soldier app'),
   };
 
@@ -34,14 +39,16 @@ class _CommanderHome extends StatelessWidget {
   const _CommanderHome();
 
   @override
-  Widget build(BuildContext context) => CommanderShell(
-        home: (_) => const EmptyState(message: 'Dashboard', image: null),
-        nominalRoll: (_) =>
-            const EmptyState(message: 'Nominal Roll', image: null),
-        conductTracker: (_) =>
-            const EmptyState(message: 'Conduct Tracker', image: null),
-        guardDuty: (_) => const EmptyState(message: 'Guard Duty', image: null),
-      );
+  Widget build(BuildContext context) {
+    final me = context.read<WatchAuthState>().current?.displayName;
+    return CommanderShell(
+      home: (_) => const EmptyState(message: 'Dashboard', image: null),
+      nominalRoll: (context) => nominalRollTab(context, currentUserId: me),
+      conductTracker: (_) =>
+          const EmptyState(message: 'Conduct Tracker', image: null),
+      guardDuty: (_) => const EmptyState(message: 'Guard Duty', image: null),
+    );
+  }
 }
 
 class _Placeholder extends StatelessWidget {

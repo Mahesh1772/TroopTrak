@@ -7,6 +7,7 @@ import '../../features/attendance/data/datasources/attendance_remote_data_source
 import '../../features/attendance/data/repositories/attendance_repository_impl.dart';
 import '../../features/attendance/domain/repositories/attendance_repository.dart';
 import '../../features/attendance/domain/usecases/attendance_usecases.dart';
+import '../../features/attendance/domain/usecases/watch_soldiers_in_camp.dart';
 import '../../features/auth/data/datasources/firebase_auth_data_source.dart';
 import '../../features/auth/data/repositories/auth_repository_impl.dart';
 import '../../features/auth/domain/repositories/auth_repository.dart';
@@ -84,6 +85,9 @@ class AppDependencies {
         Provider(create: (_) => WatchAttendance(attendance, clock)),
         Provider(create: (_) => UpdateAttendance(attendance)),
         Provider(create: (_) => DeleteAttendance(attendance)),
+        Provider(create: (_) => BookInOut(attendance, clock)),
+        Provider(
+            create: (_) => WatchSoldiersInCamp(soldiers, attendance, clock)),
       ];
 
   List<SingleChildWidget> _statusProviders() => [
