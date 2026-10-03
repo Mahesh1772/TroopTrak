@@ -1,5 +1,6 @@
 import 'package:trooptrak_final_application/core/utils/date_formats.dart';
 import 'package:trooptrak_final_application/features/attendance/domain/entities/attendance_record.dart';
+import 'package:trooptrak_final_application/features/conducts/domain/entities/conduct.dart';
 import 'package:trooptrak_final_application/features/soldiers/domain/entities/soldier.dart';
 import 'package:trooptrak_final_application/features/statuses/domain/entities/status.dart';
 
@@ -70,6 +71,25 @@ Soldier buildSoldier({
       ord: ord ?? DateTime(2025, 1, 1),
       isInCamp: isInCamp,
       points: points,
+    );
+
+Conduct buildConduct({
+  String id = 'c1',
+  String name = 'Morning Run',
+  String type = 'Run',
+  DateTime? start,
+  DateTime? end,
+  List<String> participants = const ['Tan Ah Kow'],
+  Map<String, String> soldierReason = const {},
+}) =>
+    Conduct(
+      id: id,
+      name: name,
+      type: type,
+      start: start ?? DateTime(2023, 7, 5, 7),
+      end: end ?? DateTime(2023, 7, 5, 8),
+      participants: participants,
+      soldierReason: soldierReason,
     );
 
 Map<String, dynamic> soldierDoc({

@@ -16,6 +16,11 @@ import '../../features/auth/domain/usecases/complete_soldier_profile.dart';
 import '../../features/auth/domain/usecases/delete_commander_account.dart';
 import '../../features/auth/domain/usecases/register_commander.dart';
 import '../../features/auth/domain/usecases/soldier_entry.dart';
+import '../../features/conducts/data/datasources/conduct_remote_data_source.dart';
+import '../../features/conducts/data/repositories/conduct_repository_impl.dart';
+import '../../features/conducts/domain/repositories/conduct_repository.dart';
+import '../../features/conducts/domain/usecases/build_conduct_roster.dart';
+import '../../features/conducts/domain/usecases/conduct_usecases.dart';
 import '../../features/enlistment/data/datasources/men_remote_data_source.dart';
 import '../../features/enlistment/data/repositories/men_repository_impl.dart';
 import '../../features/enlistment/domain/repositories/men_repository.dart';
@@ -66,6 +71,8 @@ class AppDependencies {
       StatusRepositoryImpl(StatusRemoteDataSource(firestore));
   late final AttendanceRepository attendance =
       AttendanceRepositoryImpl(AttendanceRemoteDataSource(firestore));
+  late final ConductRepository conducts =
+      ConductRepositoryImpl(ConductRemoteDataSource(firestore));
 
   List<SingleChildWidget> get providers {
     final roles = RoleRepositoryImpl(preferences);
@@ -78,9 +85,20 @@ class AppDependencies {
       ..._soldierProviders(),
       ..._statusProviders(),
       ..._attendanceProviders(),
+      ..._conductProviders(),
       ..._authProviders(),
     ];
   }
+
+  List<SingleChildWidget> _conductProviders() => [
+        Provider(create: (_) => WatchConducts(conducts)),
+        Provider(create: (_) => WatchConductsOnDay(conducts)),
+        Provider(create: (_) => WatchConduct(conducts)),
+        Provider(create: (_) => AddConduct(conducts)),
+        Provider(create: (_) => UpdateConduct(conducts)),
+        Provider(create: (_) => DeleteConduct(conducts)),
+        Provider(create: (_) => BuildConductRoster(soldiers, statuses, clock)),
+      ];
 
   List<SingleChildWidget> _attendanceProviders() => [
         Provider(create: (_) => WatchAttendance(attendance, clock)),
