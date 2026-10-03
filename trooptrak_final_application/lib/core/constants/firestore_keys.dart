@@ -33,6 +33,8 @@ abstract final class StatusFields {
   static const statusName = 'statusName';
   static const startDate = 'startDate';
   static const endDate = 'endDate';
+  static const startAttendanceId = 'start_id';
+  static const endAttendanceId = 'end_id';
 }
 
 abstract final class AttendanceFields {
