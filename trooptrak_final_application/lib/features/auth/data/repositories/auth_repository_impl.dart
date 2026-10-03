@@ -58,9 +58,9 @@ class AuthRepositoryImpl implements AuthRepository {
       });
 
   @override
-  Result<Unit> signOut() => guard(() async {
+  Result<Unit> signOut({bool clearPreferences = true}) => guard(() async {
         await _remote.signOut();
-        await _preferences.clearAll();
+        if (clearPreferences) await _preferences.clearAll();
         return unit;
       });
 }

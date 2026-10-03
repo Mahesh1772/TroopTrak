@@ -3,4 +3,5 @@ abstract final class AppRoutes {
   static const roleSelection = '/role';
   static const soldierGate = '/soldier';
   static const commanderGate = '/commander';
+  static const forgotPassword = '/forgot-password';
 }

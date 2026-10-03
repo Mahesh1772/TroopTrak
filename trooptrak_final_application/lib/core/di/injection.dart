@@ -1,23 +1,49 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
+import '../../features/auth/data/datasources/firebase_auth_data_source.dart';
+import '../../features/auth/data/repositories/auth_repository_impl.dart';
+import '../../features/auth/domain/repositories/auth_repository.dart';
+import '../../features/auth/domain/usecases/auth_usecases.dart';
+import '../../features/auth/domain/usecases/register_commander.dart';
 import '../../features/onboarding/data/repositories/role_repository_impl.dart';
 import '../../features/onboarding/domain/usecases/role_usecases.dart';
+import '../../features/soldiers/data/datasources/soldier_remote_data_source.dart';
+import '../../features/soldiers/data/repositories/soldier_repository_impl.dart';
+import '../../features/soldiers/domain/repositories/soldier_repository.dart';
+import '../../features/soldiers/domain/usecases/soldier_usecases.dart';
 import '../services/clock.dart';
 import '../services/preferences_service.dart';
 import '../theme/theme_manager.dart';
 
+/// Composition root. Firebase instances are resolved lazily, on first use.
 class AppDependencies {
   AppDependencies({
     required this.preferences,
     this.clock = const SystemClock(),
-  });
+    FirebaseFirestore? firestore,
+    FirebaseAuth? auth,
+  })  : _firestore = firestore,
+        _auth = auth;
 
   final PreferencesService preferences;
   final Clock clock;
+  final FirebaseFirestore? _firestore;
+  final FirebaseAuth? _auth;
 
   static Future<AppDependencies> create() async =>
       AppDependencies(preferences: await PreferencesService.create());
+
+  late final FirebaseFirestore firestore =
+      _firestore ?? FirebaseFirestore.instance;
+  late final FirebaseAuth auth = _auth ?? FirebaseAuth.instance;
+
+  late final SoldierRepository soldiers =
+      SoldierRepositoryImpl(SoldierRemoteDataSource(firestore));
+  late final AuthRepository authRepository =
+      AuthRepositoryImpl(FirebaseAuthDataSource(auth), preferences);
 
   List<SingleChildWidget> get providers {
     final roles = RoleRepositoryImpl(preferences);
@@ -27,6 +53,30 @@ class AppDependencies {
       ChangeNotifierProvider<ThemeManager>(create: (_) => ThemeManager()),
       Provider(create: (_) => GetRole(roles)),
       Provider(create: (_) => SetRole(roles)),
+      ..._soldierProviders(),
+      ..._authProviders(),
     ];
   }
+
+  List<SingleChildWidget> _soldierProviders() => [
+        Provider(create: (_) => WatchSoldiers(soldiers)),
+        Provider(create: (_) => WatchSoldier(soldiers)),
+        Provider(create: (_) => GetSoldiers(soldiers)),
+        Provider(create: (_) => AddSoldier(soldiers, clock)),
+        Provider(create: (_) => UpdateSoldier(soldiers)),
+        Provider(create: (_) => DeleteSoldier(soldiers)),
+      ];
+
+  List<SingleChildWidget> _authProviders() => [
+        Provider(create: (_) => WatchAuthState(authRepository)),
+        Provider(create: (_) => SignInWithEmail(authRepository)),
+        Provider(create: (_) => SendPasswordReset(authRepository)),
+        Provider(create: (_) => VerifyPhone(authRepository)),
+        Provider(create: (_) => VerifyOtp(authRepository)),
+        Provider(create: (_) => UpdateDisplayName(authRepository)),
+        Provider(create: (_) => MarkSoldierSignedIn(authRepository)),
+        Provider(create: (_) => SignOut(authRepository)),
+        Provider(
+            create: (_) => RegisterCommander(authRepository, soldiers, clock)),
+      ];
 }

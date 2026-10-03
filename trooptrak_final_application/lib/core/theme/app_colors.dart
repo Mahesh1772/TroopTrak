@@ -42,6 +42,9 @@ abstract final class AppColors {
   static const deepPurple = Color(0xFF673AB7);
   static const authAccent = Color(0xFF64FFDA);
   static const authLink = Color(0xFFBA68C8);
+  static const authSubtitle = Color(0xFFAB47BC);
+  static const authHint = Color(0xFFE1BEE7);
+  static const authIcon = Color(0xFF7C4DFF);
 
   static const statusExcuse = Color(0xFFFF6F00);
   static const statusLeave = Color(0xFFF44336);

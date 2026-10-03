@@ -1,3 +1,5 @@
+import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
+import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
@@ -11,9 +13,16 @@ import 'package:trooptrak_final_application/core/theme/theme_manager.dart';
 import 'helpers/pump_app.dart';
 
 void main() {
-  Future<AppDependencies> dependenciesWith(Map<String, Object> prefs) async {
+  Future<AppDependencies> dependenciesWith(
+    Map<String, Object> prefs, {
+    MockFirebaseAuth? auth,
+  }) async {
     SharedPreferences.setMockInitialValues(prefs);
-    return AppDependencies(preferences: await PreferencesService.create());
+    return AppDependencies(
+      preferences: await PreferencesService.create(),
+      firestore: FakeFirebaseFirestore(),
+      auth: auth ?? MockFirebaseAuth(),
+    );
   }
 
   testWidgets('first launch shows role selection with test DI', (tester) async {
@@ -28,10 +37,21 @@ void main() {
     expect(context.read<PreferencesService>(), same(dependencies.preferences));
   });
 
-  testWidgets('stored roles open their gates (R18)', (tester) async {
+  testWidgets('commander role opens the sign-in gate (R18, R19)',
+      (tester) async {
     useDesignSurface(tester);
     await tester.pumpWidget(
         App(providers: (await dependenciesWith({'onBoard': 2})).providers));
+    await tester.pumpAndSettle();
+    expect(find.text('Welcome to camp!'), findsOneWidget);
+  });
+
+  testWidgets('signed-in commander goes straight to the commander app',
+      (tester) async {
+    useDesignSurface(tester);
+    final deps = await dependenciesWith({'onBoard': 2},
+        auth: MockFirebaseAuth(signedIn: true, mockUser: MockUser(uid: 'c1')));
+    await tester.pumpWidget(App(providers: deps.providers));
     await tester.pumpAndSettle();
     expect(find.text('Commander app'), findsOneWidget);
   });

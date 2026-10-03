@@ -27,5 +27,6 @@ abstract interface class AuthRepository {
   Result<Unit> markSoldierSignedIn();
 
   /// Signs out and clears every preference, including the role (R19, D4).
-  Result<Unit> signOut();
+  /// Registration signs out with [clearPreferences] false, as the source did.
+  Result<Unit> signOut({bool clearPreferences = true});
 }

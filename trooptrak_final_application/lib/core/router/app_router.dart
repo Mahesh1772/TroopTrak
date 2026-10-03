@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../features/auth/presentation/auth_routes.dart';
 import '../../features/onboarding/presentation/onboarding_routes.dart';
 import '../widgets/app_scaffold.dart';
 import '../widgets/feedback_views.dart';
@@ -9,8 +10,8 @@ import 'route_builder.dart';
 abstract final class AppRouter {
   static final Map<String, RouteWidgetBuilder> routes = {
     ...onboardingRoutes,
+    ...authRoutes(commanderHome: (_) => const _Placeholder('Commander app')),
     AppRoutes.soldierGate: (_, __) => const _Placeholder('Soldier app'),
-    AppRoutes.commanderGate: (_, __) => const _Placeholder('Commander app'),
   };
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
