@@ -26,6 +26,10 @@ import '../../features/enlistment/data/datasources/men_remote_data_source.dart';
 import '../../features/enlistment/data/repositories/men_repository_impl.dart';
 import '../../features/enlistment/domain/repositories/men_repository.dart';
 import '../../features/enlistment/domain/usecases/men_usecases.dart';
+import '../../features/guard_duty/data/datasources/duty_remote_data_source.dart';
+import '../../features/guard_duty/data/repositories/duty_repository_impl.dart';
+import '../../features/guard_duty/domain/repositories/duty_repository.dart';
+import '../../features/guard_duty/domain/usecases/duty_usecases.dart';
 import '../../features/onboarding/data/repositories/role_repository_impl.dart';
 import '../../features/onboarding/domain/usecases/role_usecases.dart';
 import '../../features/soldiers/data/datasources/soldier_remote_data_source.dart';
@@ -74,6 +78,8 @@ class AppDependencies {
       AttendanceRepositoryImpl(AttendanceRemoteDataSource(firestore));
   late final ConductRepository conducts =
       ConductRepositoryImpl(ConductRemoteDataSource(firestore));
+  late final DutyRepository duties =
+      DutyRepositoryImpl(DutyRemoteDataSource(firestore));
 
   List<SingleChildWidget> get providers {
     final roles = RoleRepositoryImpl(preferences);
@@ -87,9 +93,19 @@ class AppDependencies {
       ..._statusProviders(),
       ..._attendanceProviders(),
       ..._conductProviders(),
+      ..._dutyProviders(),
       ..._authProviders(),
     ];
   }
+
+  List<SingleChildWidget> _dutyProviders() => [
+        Provider(create: (_) => WatchDuties(duties)),
+        Provider(create: (_) => AddDuty(duties)),
+        Provider(create: (_) => UpdateDuty(duties)),
+        Provider(create: (_) => DeleteDuty(duties)),
+        Provider(
+            create: (_) => GetDutyEligibleSoldiers(soldiers, statuses, clock)),
+      ];
 
   List<SingleChildWidget> _conductProviders() => [
         Provider(create: (_) => WatchConducts(conducts)),
@@ -99,6 +115,7 @@ class AppDependencies {
         Provider(create: (_) => UpdateConduct(conducts)),
         Provider(create: (_) => DeleteConduct(conducts)),
         Provider(create: (_) => BuildConductRoster(soldiers, statuses, clock)),
+        Provider(create: (_) => WatchConductBreakdown(conducts, soldiers)),
       ];
 
   List<SingleChildWidget> _attendanceProviders() => [

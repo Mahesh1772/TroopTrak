@@ -1,6 +1,7 @@
 import 'package:trooptrak_final_application/core/utils/date_formats.dart';
 import 'package:trooptrak_final_application/features/attendance/domain/entities/attendance_record.dart';
 import 'package:trooptrak_final_application/features/conducts/domain/entities/conduct.dart';
+import 'package:trooptrak_final_application/features/guard_duty/domain/entities/duty.dart';
 import 'package:trooptrak_final_application/features/soldiers/domain/entities/soldier.dart';
 import 'package:trooptrak_final_application/features/statuses/domain/entities/status.dart';
 
@@ -90,6 +91,23 @@ Conduct buildConduct({
       end: end ?? DateTime(2023, 7, 5, 8),
       participants: participants,
       soldierReason: soldierReason,
+    );
+
+Duty buildDuty({
+  String id = 'd1',
+  DateTime? start,
+  DateTime? end,
+  String dayType = 'Weekday (Friday) Duty 😖',
+  double points = 1.5,
+  Map<String, String> participants = const {'Tan Ah Kow': 'CPL'},
+}) =>
+    Duty(
+      id: id,
+      start: start ?? DateTime(2023, 7, 7, 8),
+      end: end ?? DateTime(2023, 7, 7, 8),
+      dayType: dayType,
+      points: points,
+      participants: participants,
     );
 
 Map<String, dynamic> soldierDoc({

@@ -9,6 +9,18 @@ import 'package:trooptrak_final_application/core/di/injection.dart';
 import 'package:trooptrak_final_application/core/services/clock.dart';
 import 'package:trooptrak_final_application/core/services/preferences_service.dart';
 import 'package:trooptrak_final_application/core/theme/theme_manager.dart';
+import 'package:trooptrak_final_application/features/attendance/domain/usecases/attendance_usecases.dart';
+import 'package:trooptrak_final_application/features/attendance/domain/usecases/watch_soldiers_in_camp.dart';
+import 'package:trooptrak_final_application/features/auth/domain/usecases/auth_usecases.dart';
+import 'package:trooptrak_final_application/features/auth/domain/usecases/complete_soldier_profile.dart';
+import 'package:trooptrak_final_application/features/auth/domain/usecases/delete_commander_account.dart';
+import 'package:trooptrak_final_application/features/conducts/domain/usecases/build_conduct_roster.dart';
+import 'package:trooptrak_final_application/features/conducts/domain/usecases/conduct_usecases.dart';
+import 'package:trooptrak_final_application/features/conducts/domain/usecases/watch_conduct_breakdown.dart';
+import 'package:trooptrak_final_application/features/enlistment/domain/usecases/men_usecases.dart';
+import 'package:trooptrak_final_application/features/guard_duty/domain/usecases/duty_usecases.dart';
+import 'package:trooptrak_final_application/features/soldiers/domain/usecases/soldier_usecases.dart';
+import 'package:trooptrak_final_application/features/statuses/domain/usecases/status_usecases.dart';
 
 import 'helpers/pump_app.dart';
 
@@ -72,6 +84,47 @@ void main() {
         .toggle();
     await tester.pumpAndSettle();
     expect(app().themeMode, ThemeMode.light);
+  });
+
+  testWidgets('every use case a route reads is registered', (tester) async {
+    useDesignSurface(tester);
+    await tester
+        .pumpWidget(App(providers: (await dependenciesWith({})).providers));
+    await tester.pumpAndSettle();
+    final context = tester.element(find.text('Please pick your role.'));
+    for (final read in <Object Function()>[
+      () => context.read<WatchSoldier>(),
+      () => context.read<WatchSoldiers>(),
+      () => context.read<AddSoldier>(),
+      () => context.read<UpdateSoldier>(),
+      () => context.read<DeleteSoldier>(),
+      () => context.read<WatchSoldierStatuses>(),
+      () => context.read<AddStatus>(),
+      () => context.read<UpdateStatus>(),
+      () => context.read<DeleteStatus>(),
+      () => context.read<WatchAttendance>(),
+      () => context.read<UpdateAttendance>(),
+      () => context.read<DeleteAttendance>(),
+      () => context.read<BookInOut>(),
+      () => context.read<WatchSoldiersInCamp>(),
+      () => context.read<FindRegistrationByQr>(),
+      () => context.read<CompleteSoldierProfile>(),
+      () => context.read<DeleteCommanderAccount>(),
+      () => context.read<SignOut>(),
+      () => context.read<WatchConductsOnDay>(),
+      () => context.read<AddConduct>(),
+      () => context.read<UpdateConduct>(),
+      () => context.read<DeleteConduct>(),
+      () => context.read<BuildConductRoster>(),
+      () => context.read<WatchConductBreakdown>(),
+      () => context.read<WatchDuties>(),
+      () => context.read<AddDuty>(),
+      () => context.read<UpdateDuty>(),
+      () => context.read<DeleteDuty>(),
+      () => context.read<GetDutyEligibleSoldiers>(),
+    ]) {
+      expect(read, returnsNormally);
+    }
   });
 
   testWidgets('unknown routes show a not-found page', (tester) async {
