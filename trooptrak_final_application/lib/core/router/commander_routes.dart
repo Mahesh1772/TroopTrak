@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../features/auth/domain/usecases/auth_usecases.dart';
 import '../../features/auth/domain/usecases/delete_commander_account.dart';
+import '../../features/conducts/presentation/conducts_routes.dart';
 import '../../features/nominal_roll/presentation/nominal_roll_routes.dart';
 import '../../features/shell/presentation/pages/commander_shell.dart';
 import '../../features/soldier_profile/presentation/pages/soldier_profile_page.dart';
@@ -24,8 +25,7 @@ class CommanderHome extends StatelessWidget {
     return CommanderShell(
       home: (_) => const EmptyState(message: 'Dashboard', image: null),
       nominalRoll: (context) => nominalRollTab(context, currentUserId: me),
-      conductTracker: (_) =>
-          const EmptyState(message: 'Conduct Tracker', image: null),
+      conductTracker: conductTrackerTab,
       guardDuty: (_) => const EmptyState(message: 'Guard Duty', image: null),
     );
   }
