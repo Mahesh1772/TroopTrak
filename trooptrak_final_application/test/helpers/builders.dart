@@ -1,3 +1,38 @@
+import 'package:trooptrak_final_application/features/soldiers/domain/entities/soldier.dart';
+
+Soldier buildSoldier({
+  String name = 'Tan Ah Kow',
+  String? id,
+  String rank = 'CPL',
+  String company = 'Alpha',
+  String platoon = '1',
+  String section = '2',
+  String appointment = 'Section IC',
+  String rationType = 'NM',
+  String bloodGroup = 'O+',
+  DateTime? dob,
+  DateTime? enlistment,
+  DateTime? ord,
+  bool isInCamp = true,
+  double points = 0,
+}) =>
+    Soldier(
+      id: id ?? name,
+      name: name,
+      rank: rank,
+      company: company,
+      platoon: platoon,
+      section: section,
+      appointment: appointment,
+      rationType: rationType,
+      bloodGroup: bloodGroup,
+      dob: dob ?? DateTime(2000, 7, 5),
+      enlistment: enlistment ?? DateTime(2023, 1, 1),
+      ord: ord ?? DateTime(2025, 1, 1),
+      isInCamp: isInCamp,
+      points: points,
+    );
+
 Map<String, dynamic> soldierDoc({
   String name = 'Tan Ah Kow',
   String rank = 'CPL',
