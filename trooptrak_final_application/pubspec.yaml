@@ -53,3 +53,4 @@ flutter:
     - lib/assets/army-ranks/
     - lib/assets/calendar-images/
     - lib/assets/phone_auth/
+    - lib/assets/google_fonts/

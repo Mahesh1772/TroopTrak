@@ -9,4 +9,4 @@ class ThemeManager with ChangeNotifier {
     _themeMode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
     notifyListeners();
   }
-} 
+}
