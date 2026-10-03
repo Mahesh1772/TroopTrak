@@ -13,11 +13,16 @@ import '../providers/dashboard_providers.dart';
 
 /// Month grid replacing the source's Syncfusion calendar (D8): dots mark
 /// conducts (amber) and guard duties (pink); the picked day is listed below.
+/// The month banner is the source schedule view's month header image.
 class EventCalendar extends StatelessWidget {
   const EventCalendar({super.key});
 
   static final _monthTitle = DateFormat('MMMM yyyy', 'en_US');
+  static final _monthName = DateFormat('MMMM', 'en_US');
   static const _weekdays = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+
+  static String bannerOf(DateTime month) =>
+      'lib/assets/calendar-images/${_monthName.format(month)}.png';
 
   static Color colorOf(CalendarEventKind kind) => switch (kind) {
         CalendarEventKind.conduct => AppColors.warning,
@@ -33,23 +38,43 @@ class EventCalendar extends StatelessWidget {
     final days = DateTime(month.year, month.month + 1, 0).day;
     return Column(
       children: [
-        Row(
-          children: [
-            IconButton(
-              key: const Key('prevMonth'),
-              onPressed: () => calendar.shiftMonth(-1),
-              icon: const Icon(Icons.chevron_left),
-            ),
-            Expanded(
-              child: Text(_monthTitle.format(month),
-                  textAlign: TextAlign.center, style: text.headlineLarge),
-            ),
-            IconButton(
-              key: const Key('nextMonth'),
-              onPressed: () => calendar.shiftMonth(1),
-              icon: const Icon(Icons.chevron_right),
-            ),
-          ],
+        SizedBox(
+          height: 100.h,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(AppRadii.md.r),
+                child: Image.asset(bannerOf(month),
+                    key: const Key('monthBanner'),
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => const SizedBox.shrink()),
+              ),
+              Row(
+                children: [
+                  IconButton(
+                    key: const Key('prevMonth'),
+                    color: AppColors.black,
+                    onPressed: () => calendar.shiftMonth(-1),
+                    icon: const Icon(Icons.chevron_left),
+                  ),
+                  Expanded(
+                    child: Text(_monthTitle.format(month),
+                        textAlign: TextAlign.center,
+                        style: text.headlineLarge?.copyWith(
+                            color: AppColors.black,
+                            fontWeight: FontWeight.w500)),
+                  ),
+                  IconButton(
+                    key: const Key('nextMonth'),
+                    color: AppColors.black,
+                    onPressed: () => calendar.shiftMonth(1),
+                    icon: const Icon(Icons.chevron_right),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
         Row(
           children: [

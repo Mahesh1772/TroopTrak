@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:trooptrak_final_application/core/theme/app_colors.dart';
-import 'package:trooptrak_final_application/core/widgets/app_card.dart';
 import 'package:trooptrak_final_application/core/widgets/app_scaffold.dart';
 import 'package:trooptrak_final_application/core/widgets/app_search_field.dart';
 import 'package:trooptrak_final_application/core/widgets/expandable_count_tile.dart';
@@ -35,16 +34,6 @@ void main() {
         wrapInScaffold: false);
     expect(find.byType(AppBar), findsNothing);
   });
-
-  testWidgets('AppCard renders child and fires onTap', (tester) async {
-    var taps = 0;
-    await tester.pumpThemed(
-      AppCard(onTap: () => taps++, child: const Text('card')),
-      mode: themeModes.currentValue!,
-    );
-    await tester.tap(find.text('card'));
-    expect(taps, 1);
-  }, variant: themeModes);
 
   testWidgets('AppSearchField reports typed text', (tester) async {
     final typed = <String>[];

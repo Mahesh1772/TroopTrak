@@ -174,4 +174,21 @@ void main() {
     expect(find.text('8:00 AM - 8:00 AM'), findsOneWidget);
     expect(find.text('Guard Duty'), findsOneWidget);
   });
+
+  testWidgets('the month header carries the source month banner',
+      (tester) async {
+    await pumpDashboard(tester);
+    await tester.tap(find.byKey(const Key('showCalendar')));
+    await tester.pumpAndSettle();
+    Image banner() =>
+        tester.widget<Image>(find.byKey(const Key('monthBanner')));
+    expect((banner().image as AssetImage).assetName,
+        'lib/assets/calendar-images/July.png');
+    expect(find.text('July 2023'), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('nextMonth')));
+    await tester.pumpAndSettle();
+    expect((banner().image as AssetImage).assetName,
+        'lib/assets/calendar-images/August.png');
+  });
 }

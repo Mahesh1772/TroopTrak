@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../error/result.dart';
 import '../state/view_state.dart';
 import 'feedback_views.dart';
 
@@ -31,39 +30,5 @@ class StateView<T> extends StatelessWidget {
               const EmptyState(message: 'Nothing here yet', image: null))
           : builder(context, data),
     };
-  }
-}
-
-class StreamView<T> extends StatelessWidget {
-  const StreamView({
-    super.key,
-    required this.stream,
-    required this.builder,
-    this.isEmpty,
-    this.empty,
-  });
-
-  final ResultStream<T> stream;
-  final Widget Function(BuildContext context, T data) builder;
-  final bool Function(T data)? isEmpty;
-  final Widget? empty;
-
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: stream,
-      builder: (context, snapshot) {
-        final ViewState<T> state = switch (snapshot.data) {
-          null => const ViewLoading(),
-          final result => result.fold(ViewError.new, ViewData.new),
-        };
-        return StateView<T>(
-          state: state,
-          builder: builder,
-          isEmpty: isEmpty,
-          empty: empty,
-        );
-      },
-    );
   }
 }

@@ -1,6 +1,3 @@
-import 'dart:async';
-
-import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:trooptrak_final_application/core/error/failures.dart';
@@ -129,24 +126,6 @@ void main() {
           mode: themeModes.currentValue!);
       expect(find.text('items 2'), findsOneWidget);
     }, variant: themeModes);
-  });
-
-  testWidgets('StreamView follows Either events from a stream', (tester) async {
-    final controller = StreamController<Either<Failure, int>>();
-    addTearDown(controller.close);
-    await tester.pumpThemed(StreamView<int>(
-      stream: controller.stream,
-      builder: (_, v) => Text('value $v'),
-    ));
-    expect(find.byType(LoadingView), findsOneWidget);
-
-    controller.add(const Right(3));
-    await tester.pump();
-    expect(find.text('value 3'), findsOneWidget);
-
-    controller.add(const Left(NotFoundFailure('missing')));
-    await tester.pump();
-    expect(find.text('missing'), findsOneWidget);
   });
 
   testWidgets('HeroDialogRoute opens a non-opaque dismissible popup',
