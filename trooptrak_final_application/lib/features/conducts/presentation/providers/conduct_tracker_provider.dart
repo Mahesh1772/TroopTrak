@@ -13,12 +13,15 @@ import '../../domain/usecases/conduct_usecases.dart';
 typedef ParticipationBar = ({String label, int participants});
 
 /// Conducts on the selected day (R13) and the unit strength for the chart.
+/// [participant] is the signed-in soldier's name on the soldier side.
 class ConductTrackerProvider extends ChangeNotifier {
   ConductTrackerProvider({
     required WatchConductsOnDay watchOnDay,
     required WatchSoldiers watchSoldiers,
     required Clock clock,
+    String? participant,
   })  : _watchOnDay = watchOnDay,
+        _participant = participant,
         today = dateOnly(clock.now()) {
     _day = today;
     _listen();
@@ -29,6 +32,7 @@ class ConductTrackerProvider extends ChangeNotifier {
   }
 
   final WatchConductsOnDay _watchOnDay;
+  final String? _participant;
   final DateTime today;
   late DateTime _day;
   ViewState<List<Conduct>> _conducts = const ViewLoading();
@@ -54,6 +58,12 @@ class ConductTrackerProvider extends ChangeNotifier {
         for (final c in _conducts.dataOrNull ?? const <Conduct>[])
           (label: c.name, participants: c.participants.length),
       ];
+
+  /// R13 soldier marker; null when nobody is tracked (commander side).
+  bool? isParticipating(Conduct conduct) {
+    final name = _participant;
+    return name == null ? null : conduct.includes(name);
+  }
 
   void selectDay(DateTime day) {
     if (isSameDay(day, _day)) return;

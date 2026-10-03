@@ -10,6 +10,7 @@ abstract final class AppRoutes {
   static const addConduct = '/commander/conduct/add';
   static const editConduct = '/commander/conduct/edit';
   static const conductDetails = '/conduct';
+  static const conductDetailsReadOnly = '/soldier/conduct';
   static const addDuty = '/commander/duty/add';
   static const editDuty = '/commander/duty/edit';
   static const forgotPassword = '/forgot-password';

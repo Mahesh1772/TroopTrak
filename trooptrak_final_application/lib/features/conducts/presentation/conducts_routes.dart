@@ -16,15 +16,25 @@ import 'providers/conduct_details_provider.dart';
 import 'providers/conduct_form_provider.dart';
 import 'providers/conduct_tracker_provider.dart';
 
-/// Shell tab for both roles; only commanders can add conducts.
-Widget conductTrackerTab(BuildContext context, {bool canManage = true}) =>
+/// Shell tab for commanders.
+Widget conductTrackerTab(BuildContext context) => _tracker(context);
+
+/// Soldier shell tab (R13): read-only, marks the conducts [participant] is in.
+Widget soldierConductTrackerTab(BuildContext context, String participant) =>
+    _tracker(context, participant: participant);
+
+Widget _tracker(BuildContext context, {String? participant}) =>
     ChangeNotifierProvider(
       create: (context) => ConductTrackerProvider(
         watchOnDay: context.read<WatchConductsOnDay>(),
         watchSoldiers: context.read<WatchSoldiers>(),
         clock: context.read<Clock>(),
+        participant: participant,
       ),
-      child: ConductTrackerPage(canManage: canManage),
+      child: ConductTrackerPage(
+        canManage: participant == null,
+        showTitle: participant != null,
+      ),
     );
 
 Widget _form(BuildContext context, Conduct? initial) => ChangeNotifierProvider(
@@ -38,17 +48,24 @@ Widget _form(BuildContext context, Conduct? initial) => ChangeNotifierProvider(
       child: const ConductFormPage(),
     );
 
+Widget _details(BuildContext context, String conductId,
+        {required bool canManage}) =>
+    ChangeNotifierProvider(
+      create: (context) => ConductDetailsProvider(
+        watch: context.read<WatchConductBreakdown>(),
+        delete: context.read<DeleteConduct>(),
+        conductId: conductId,
+      ),
+      child: ConductDetailsPage(canManage: canManage),
+    );
+
 /// Edit takes the conduct being changed; details take the conduct id.
 final Map<String, RouteWidgetBuilder> conductRoutes = {
   AppRoutes.addConduct: (context, _) => _form(context, null),
   AppRoutes.editConduct: (context, arguments) =>
       _form(context, arguments! as Conduct),
-  AppRoutes.conductDetails: (context, arguments) => ChangeNotifierProvider(
-        create: (context) => ConductDetailsProvider(
-          watch: context.read<WatchConductBreakdown>(),
-          delete: context.read<DeleteConduct>(),
-          conductId: arguments! as String,
-        ),
-        child: const ConductDetailsPage(),
-      ),
+  AppRoutes.conductDetails: (context, arguments) =>
+      _details(context, arguments! as String, canManage: true),
+  AppRoutes.conductDetailsReadOnly: (context, arguments) =>
+      _details(context, arguments! as String, canManage: false),
 };

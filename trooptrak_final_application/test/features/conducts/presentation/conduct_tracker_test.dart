@@ -11,6 +11,7 @@ import 'package:trooptrak_final_application/core/router/app_routes.dart';
 import 'package:trooptrak_final_application/core/usecase/usecase.dart';
 import 'package:trooptrak_final_application/features/conducts/domain/entities/conduct.dart';
 import 'package:trooptrak_final_application/features/conducts/domain/usecases/conduct_usecases.dart';
+import 'package:trooptrak_final_application/features/conducts/presentation/conducts_routes.dart';
 import 'package:trooptrak_final_application/features/conducts/presentation/pages/conduct_tracker_page.dart';
 import 'package:trooptrak_final_application/features/conducts/presentation/providers/conduct_tracker_provider.dart';
 import 'package:trooptrak_final_application/features/soldiers/domain/entities/soldier.dart';
@@ -65,8 +66,12 @@ void main() {
             [for (var i = 0; i < 10; i++) buildSoldier(name: 'S$i')])));
   });
 
-  ConductTrackerProvider provider() => ConductTrackerProvider(
-      watchOnDay: onDay, watchSoldiers: soldiers, clock: clock);
+  ConductTrackerProvider provider({String? participant}) =>
+      ConductTrackerProvider(
+          watchOnDay: onDay,
+          watchSoldiers: soldiers,
+          clock: clock,
+          participant: participant);
 
   group('ConductTrackerProvider', () {
     test('starts on today, filters by day and resubscribes on change (R13)',
@@ -106,6 +111,17 @@ void main() {
       p.dispose();
     });
 
+    test('participation is tracked only for a named soldier (R13)', () {
+      final commander = provider();
+      expect(commander.isParticipating(run), isNull);
+      commander.dispose();
+
+      final soldier = provider(participant: 'B');
+      expect(soldier.isParticipating(run), isTrue);
+      expect(soldier.isParticipating(ippt), isFalse);
+      soldier.dispose();
+    });
+
     test('range runs from 2022 to a year after today', () {
       final p = provider();
       expect(p.firstDay, DateTime(2022));
@@ -115,15 +131,23 @@ void main() {
   });
 
   Future<RouteRecorder> pumpTracker(WidgetTester tester,
-      {bool canManage = true, ThemeMode mode = ThemeMode.dark}) async {
+      {bool canManage = true,
+      ThemeMode mode = ThemeMode.dark,
+      Widget Function(BuildContext context)? tab}) async {
     final recorder = RouteRecorder();
     await tester.pumpApp(
       Scaffold(
-        body: ChangeNotifierProvider(
-          create: (_) => provider(),
-          child: ConductTrackerPage(canManage: canManage),
-        ),
+        body: tab != null
+            ? Builder(builder: tab)
+            : ChangeNotifierProvider(
+                create: (_) => provider(),
+                child: ConductTrackerPage(canManage: canManage),
+              ),
       ),
+      providers: [
+        Provider<WatchConductsOnDay>.value(value: onDay),
+        Provider<WatchSoldiers>.value(value: soldiers),
+      ],
       mode: mode,
       clock: clock,
       observers: [recorder],
@@ -185,6 +209,42 @@ void main() {
     testWidgets('read-only tracker has no Add Conduct', (tester) async {
       await pumpTracker(tester, canManage: false);
       expect(find.byKey(const Key('addConduct')), findsNothing);
+    });
+  });
+
+  group('soldier conduct tracker tab', () {
+    Future<RouteRecorder> pumpSoldier(WidgetTester tester,
+            {ThemeMode mode = ThemeMode.dark}) =>
+        pumpTracker(tester,
+            mode: mode,
+            tab: (context) => soldierConductTrackerTab(context, 'B'));
+
+    testWidgets('has a title and no Add Conduct; badges show participation',
+        (tester) async {
+      await pumpSoldier(tester, mode: themeModes.currentValue!);
+      expect(find.text('Conduct Tracker'), findsOneWidget);
+      expect(find.byKey(const Key('addConduct')), findsNothing);
+      expect(find.byKey(const Key('participating-run')), findsOneWidget);
+      expect(find.byKey(const Key('notParticipating-run')), findsNothing);
+      expect(find.byKey(const Key('notParticipating-ippt')), findsOneWidget);
+      expect(find.text('1'), findsNothing);
+    }, variant: themeModes);
+
+    testWidgets('tiles open the read-only details', (tester) async {
+      final recorder = await pumpSoldier(tester);
+      await tester.tap(find.byKey(const Key('conduct-run')));
+      await tester.pumpAndSettle();
+      expect(recorder.names.last, AppRoutes.conductDetailsReadOnly);
+      expect(recorder.lastArguments, 'run');
+    });
+
+    testWidgets('the commander tab keeps numbers and Add Conduct',
+        (tester) async {
+      await pumpTracker(tester, tab: conductTrackerTab);
+      expect(find.text('Conduct Tracker'), findsNothing);
+      expect(find.byKey(const Key('addConduct')), findsOneWidget);
+      expect(find.byKey(const Key('participating-run')), findsNothing);
+      expect(find.text('1'), findsOneWidget);
     });
   });
 }

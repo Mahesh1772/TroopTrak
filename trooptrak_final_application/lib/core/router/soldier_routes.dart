@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../features/auth/domain/usecases/auth_usecases.dart';
 import '../../features/auth/domain/usecases/update_soldier_profile.dart';
+import '../../features/conducts/presentation/conducts_routes.dart';
 import '../../features/enlistment/domain/usecases/men_usecases.dart';
 import '../../features/enlistment/presentation/pages/generate_qr_page.dart';
 import '../../features/enlistment/presentation/providers/enlistment_qr_provider.dart';
@@ -30,8 +31,8 @@ class SoldierHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SoldierShell(
         profile: soldierProfileTab,
-        conductTracker: (_) =>
-            const EmptyState(message: 'Conduct Tracker', image: null),
+        conductTracker: (context) => soldierConductTrackerTab(
+            context, context.read<WatchAuthState>().current?.displayName ?? ''),
         guardDuty: (_) => const EmptyState(message: 'Guard Duty', image: null),
       );
 }

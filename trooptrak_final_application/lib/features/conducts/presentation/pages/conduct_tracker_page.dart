@@ -16,12 +16,19 @@ import '../providers/conduct_tracker_provider.dart';
 import '../widgets/conduct_tile.dart';
 import '../widgets/participation_chart.dart';
 
-/// Rebuild of `CMD/.../conduct_tracker_screen.dart`; [canManage] shows Add
-/// Conduct (commander only).
+/// Rebuild of `CMD/.../conduct_tracker_screen.dart` and, read-only, of
+/// `P2/screens/conduct_tracker_screen/conduct_tracker_screen.dart`.
+/// [canManage] shows Add Conduct and opens editable details; [showTitle]
+/// heads the page where the shell has no app bar (soldier side).
 class ConductTrackerPage extends StatelessWidget {
-  const ConductTrackerPage({super.key, this.canManage = true});
+  const ConductTrackerPage({
+    super.key,
+    this.canManage = true,
+    this.showTitle = false,
+  });
 
   final bool canManage;
+  final bool showTitle;
 
   Future<void> _pickDay(BuildContext context) async {
     final provider = context.read<ConductTrackerProvider>();
@@ -44,6 +51,14 @@ class ConductTrackerPage extends StatelessWidget {
       padding: EdgeInsets.only(bottom: 30.h),
       children: [
         SizedBox(height: AppSpacing.xl.h),
+        if (showTitle)
+          Padding(
+            padding: EdgeInsets.only(bottom: AppSpacing.lg.h),
+            child: Text('Conduct Tracker',
+                textAlign: TextAlign.center,
+                style: text.displayLarge
+                    ?.copyWith(fontSize: 32.sp, fontWeight: FontWeight.w500)),
+          ),
         Padding(
           padding: horizontal,
           child: Row(
@@ -113,8 +128,11 @@ class ConductTrackerPage extends StatelessWidget {
                 ConductTile(
                   conduct: conducts[i],
                   number: i + 1,
+                  participating: provider.isParticipating(conducts[i]),
                   onTap: () => Navigator.of(context).pushNamed(
-                      AppRoutes.conductDetails,
+                      canManage
+                          ? AppRoutes.conductDetails
+                          : AppRoutes.conductDetailsReadOnly,
                       arguments: conducts[i].id),
                 ),
             ],

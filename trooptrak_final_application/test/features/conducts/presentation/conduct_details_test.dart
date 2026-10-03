@@ -11,6 +11,7 @@ import 'package:trooptrak_final_application/features/conducts/domain/entities/co
 import 'package:trooptrak_final_application/features/conducts/domain/repositories/conduct_repository.dart';
 import 'package:trooptrak_final_application/features/conducts/domain/usecases/conduct_usecases.dart';
 import 'package:trooptrak_final_application/features/conducts/domain/usecases/watch_conduct_breakdown.dart';
+import 'package:trooptrak_final_application/features/conducts/presentation/conducts_routes.dart';
 import 'package:trooptrak_final_application/features/conducts/presentation/pages/conduct_details_page.dart';
 import 'package:trooptrak_final_application/features/conducts/presentation/providers/conduct_details_provider.dart';
 import 'package:trooptrak_final_application/features/soldiers/domain/entities/soldier.dart';
@@ -158,6 +159,28 @@ void main() {
     expect(find.byKey(const Key('editConduct')), findsNothing);
     expect(find.byKey(const Key('deleteConduct')), findsNothing);
   });
+
+  for (final (route, canManage) in [
+    (AppRoutes.conductDetails, true),
+    (AppRoutes.conductDetailsReadOnly, false),
+  ]) {
+    testWidgets('$route opens the details with canManage $canManage',
+        (tester) async {
+      await tester.pumpApp(
+        Builder(builder: (context) => conductRoutes[route]!(context, 'c1')),
+        providers: [
+          Provider<WatchConductBreakdown>.value(
+              value: _FakeWatch(stream.stream)),
+          Provider<DeleteConduct>.value(value: delete),
+        ],
+      );
+      expect(
+          tester
+              .widget<ConductDetailsPage>(find.byType(ConductDetailsPage))
+              .canManage,
+          canManage);
+    });
+  }
 }
 
 class _FakeWatch implements WatchConductBreakdown {

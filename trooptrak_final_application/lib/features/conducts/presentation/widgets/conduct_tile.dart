@@ -8,22 +8,37 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/theme_context.dart';
 import '../../domain/entities/conduct.dart';
 
-/// Rebuild of `conduct_main_page_tiles.dart`.
+/// Rebuild of `conduct_main_page_tiles.dart`. With [participating] set (the
+/// soldier side) the badge shows a tick or a cross instead of the number.
 class ConductTile extends StatelessWidget {
   const ConductTile({
     super.key,
     required this.conduct,
     required this.number,
     required this.onTap,
+    this.participating,
   });
 
   final Conduct conduct;
   final int number;
   final VoidCallback onTap;
+  final bool? participating;
 
   @override
   Widget build(BuildContext context) {
     final text = context.textStyles;
+    final badge = switch (participating) {
+      null => Text('$number',
+          style: text.displayMedium?.copyWith(color: AppColors.white)),
+      true => Icon(Icons.check_rounded,
+          key: Key('participating-${conduct.id}'),
+          color: AppColors.white,
+          size: 35.sp),
+      false => Icon(Icons.close_rounded,
+          key: Key('notParticipating-${conduct.id}'),
+          color: AppColors.white60,
+          size: 35.sp),
+    };
     return InkWell(
       key: Key('conduct-${conduct.id}'),
       onTap: onTap,
@@ -40,8 +55,7 @@ class ConductTile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(AppRadii.md.r),
               ),
               alignment: Alignment.center,
-              child: Text('$number',
-                  style: text.displayMedium?.copyWith(color: AppColors.white)),
+              child: badge,
             ),
             Expanded(
               child: Column(
