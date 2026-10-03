@@ -1,10 +1,11 @@
+import '../../../soldiers/domain/validators/soldier_validators.dart';
+
 /// R20 validators. Messages are the source's own texts.
 abstract final class AuthValidators {
   static final _email = RegExp(
     r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}"
     r'[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$',
   );
-  static final _numeric = RegExp(r'^-?(([0-9]*)|(([0-9]*)\.([0-9]*)))$');
 
   static String? email(String? value) {
     final v = value?.trim() ?? '';
@@ -25,14 +26,7 @@ abstract final class AuthValidators {
           ? null
           : 'Passwords do not match';
 
-  /// Source rule: rejects an all-numeric name, not a name containing a digit.
-  static String? soldierName(String? value) {
-    final v = value ?? '';
-    if (v.isEmpty) return 'Must have a name right';
-    if (_numeric.hasMatch(v)) return 'Name got number meh';
-    if (v.length < 5) return 'Brother, enter full name leh';
-    return null;
-  }
+  static String? soldierName(String? value) => SoldierValidators.name(value);
 
   static String? phoneNumber(String? value) {
     final digits = value?.replaceAll(RegExp(r'\s'), '') ?? '';
