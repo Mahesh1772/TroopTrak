@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:trooptrak_final_application/core/theme/app_colors.dart';
 import 'package:trooptrak_final_application/core/widgets/app_dropdown_field.dart';
 import 'package:trooptrak_final_application/core/widgets/horizontal_date_strip.dart';
 import 'package:trooptrak_final_application/core/widgets/picker_fields.dart';
@@ -129,6 +130,25 @@ void main() {
   });
 
   group('PrimaryButton', () {
+    testWidgets('danger pill uses the red gradient and pill radius',
+        (tester) async {
+      await tester.pumpThemed(PrimaryButton(
+          label: 'Delete',
+          style: PrimaryButtonStyle.danger,
+          pill: true,
+          onPressed: () {}));
+      final box = tester
+          .widget<DecoratedBox>(find
+              .descendant(
+                  of: find.byType(PrimaryButton),
+                  matching: find.byType(DecoratedBox))
+              .first)
+          .decoration as BoxDecoration;
+      expect((box.gradient! as LinearGradient).colors,
+          [AppColors.danger, AppColors.dangerGradientEnd]);
+      expect(box.borderRadius, isNot(BorderRadius.circular(12)));
+    });
+
     testWidgets('fires onPressed', (tester) async {
       var taps = 0;
       await tester.pumpThemed(

@@ -16,6 +16,8 @@ abstract final class AppRouter {
     ...soldierProfileRoutes,
     AppRoutes.commanderProfile: (_, __) =>
         const _Placeholder('My profile', title: 'Profile'),
+    AppRoutes.editSoldier: (_, __) =>
+        const _Placeholder('Edit soldier', title: 'Edit soldier'),
     AppRoutes.soldierHome: (_, __) => const _Placeholder('Soldier app'),
   };
 

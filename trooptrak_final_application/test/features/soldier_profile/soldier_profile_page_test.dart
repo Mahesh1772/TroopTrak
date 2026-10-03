@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:trooptrak_final_application/core/error/failures.dart';
 import 'package:trooptrak_final_application/core/widgets/feedback_views.dart';
 import 'package:trooptrak_final_application/features/soldier_profile/presentation/pages/soldier_profile_page.dart';
+import 'package:trooptrak_final_application/features/soldier_profile/presentation/profile_actions.dart';
 import 'package:trooptrak_final_application/features/soldier_profile/presentation/profile_capabilities.dart';
 import 'package:trooptrak_final_application/features/soldier_profile/presentation/providers/soldier_profile_provider.dart';
 import 'package:trooptrak_final_application/features/soldiers/domain/entities/soldier.dart';
@@ -17,16 +18,36 @@ import '../../helpers/pump_app.dart';
 void main() {
   late StreamController<Either<Failure, Soldier>> soldier;
 
-  setUp(() => soldier = StreamController<Either<Failure, Soldier>>());
+  late List<String> calls;
+  late Either<Failure, Unit> deleteResult;
+  late ProfileActions profileActions;
+
+  setUp(() {
+    soldier = StreamController<Either<Failure, Soldier>>();
+    calls = [];
+    deleteResult = const Right(unit);
+    profileActions = ProfileActions(
+      edit: (_, s) => calls.add('edit ${s.id}'),
+      delete: (s) async {
+        calls.add('delete ${s.id}');
+        return deleteResult;
+      },
+      afterDelete: (_) => calls.add('afterDelete'),
+    );
+  });
   tearDown(() => soldier.close());
 
   Future<void> pumpProfile(WidgetTester tester,
-          {ThemeMode mode = ThemeMode.dark, List<Widget> actions = const []}) =>
+          {ThemeMode mode = ThemeMode.dark,
+          List<Widget> actions = const [],
+          ProfileCapabilities capabilities =
+              ProfileCapabilities.commanderViewingSoldier}) =>
       tester.pumpApp(
         ChangeNotifierProvider(
           create: (_) => SoldierProfileProvider(soldier.stream),
           child: SoldierProfilePage(
-            capabilities: ProfileCapabilities.commanderViewingSoldier,
+            capabilities: capabilities,
+            actions: profileActions,
             headerActions: actions,
           ),
         ),
@@ -74,7 +95,7 @@ void main() {
     for (final label in ['BASIC INFO', 'STATUSES', 'ATTENDANCE']) {
       expect(find.text(label), findsOneWidget);
     }
-    expect(find.text('Basic info'), findsOneWidget);
+    expect(find.text('Date Of Birth'), findsOneWidget);
     await tester.tap(find.text('STATUSES'));
     await tester.pumpAndSettle();
     expect(find.text('Statuses'), findsOneWidget);
@@ -103,8 +124,9 @@ void main() {
         onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(
           builder: (_) => ChangeNotifierProvider(
             create: (_) => SoldierProfileProvider(soldier.stream),
-            child: const SoldierProfilePage(
-                capabilities: ProfileCapabilities.commanderViewingSoldier),
+            child: SoldierProfilePage(
+                capabilities: ProfileCapabilities.commanderViewingSoldier,
+                actions: profileActions),
           ),
         )),
         child: const Text('open'),
@@ -117,5 +139,90 @@ void main() {
     await tester.tap(find.byKey(const Key('profileBack')));
     await tester.pumpAndSettle();
     expect(find.text('open'), findsOneWidget);
+  });
+
+  group('basic info tab', () {
+    Future<void> openWith(WidgetTester tester, Soldier s,
+        {ProfileCapabilities capabilities =
+            ProfileCapabilities.commanderViewingSoldier}) async {
+      await pumpProfile(tester, capabilities: capabilities);
+      soldier.add(Right(s));
+      await tester.pumpAndSettle();
+    }
+
+    Future<void> tapDelete(WidgetTester tester) async {
+      final button = find.byKey(const Key('deleteSoldier'));
+      await tester.ensureVisible(button);
+      await tester.pumpAndSettle();
+      await tester.tap(button);
+      await tester.pumpAndSettle();
+    }
+
+    testWidgets('shows the five source rows', (tester) async {
+      await openWith(
+          tester,
+          buildSoldier(
+            dob: DateTime(2000, 7, 5),
+            rationType: 'sd nm',
+            bloodGroup: 'AB+',
+            enlistment: DateTime(2023, 1, 1),
+            ord: DateTime(2025, 1, 1),
+          ));
+      for (final (title, content) in [
+        ('Date Of Birth', '5 JUL 2000'),
+        ('Ration Type:', 'SD NM'),
+        ('Blood Type:', 'AB+'),
+        ('Enlistment Date:', '1 JAN 2023'),
+        ('ORD:', '1 JAN 2025'),
+      ]) {
+        expect(find.text(title), findsOneWidget);
+        expect(find.text(content), findsOneWidget);
+      }
+    });
+
+    testWidgets('edit hands the soldier to the edit action', (tester) async {
+      await openWith(tester, buildSoldier());
+      final button = find.byKey(const Key('editSoldier'));
+      await tester.ensureVisible(button);
+      await tester.pumpAndSettle();
+      await tester.tap(button);
+      expect(calls, ['edit Tan Ah Kow']);
+    });
+
+    testWidgets('confirmed delete runs the cascade once, then leaves',
+        (tester) async {
+      await openWith(tester, buildSoldier());
+      await tapDelete(tester);
+      expect(find.text('Delete Tan Ah Kow?'), findsOneWidget);
+      await tester.tap(find.text('Delete'));
+      await tester.pump();
+      expect(calls, ['delete Tan Ah Kow', 'afterDelete']);
+    });
+
+    testWidgets('cancelling the dialog does nothing', (tester) async {
+      await openWith(tester, buildSoldier());
+      await tapDelete(tester);
+      await tester.tap(find.text('Cancel'));
+      await tester.pumpAndSettle();
+      expect(calls, isEmpty);
+    });
+
+    testWidgets('a failed delete shows the error and stays', (tester) async {
+      deleteResult = const Left(ServerFailure('Could not delete.'));
+      await openWith(tester, buildSoldier());
+      await tapDelete(tester);
+      await tester.tap(find.text('Delete'));
+      await tester.pumpAndSettle();
+      expect(calls, ['delete Tan Ah Kow']);
+      expect(find.text('Could not delete.'), findsOneWidget);
+    });
+
+    testWidgets('without edit or delete rights the buttons are hidden',
+        (tester) async {
+      await openWith(tester, buildSoldier(),
+          capabilities: const ProfileCapabilities());
+      expect(find.byKey(const Key('editSoldier')), findsNothing);
+      expect(find.byKey(const Key('deleteSoldier')), findsNothing);
+    });
   });
 }

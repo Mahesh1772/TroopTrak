@@ -8,8 +8,10 @@ import '../../../../core/theme/theme_context.dart';
 import '../../../../core/widgets/feedback_views.dart';
 import '../../../../core/widgets/state_view.dart';
 import '../../../soldiers/domain/entities/soldier.dart';
+import '../profile_actions.dart';
 import '../profile_capabilities.dart';
 import '../providers/soldier_profile_provider.dart';
+import '../widgets/basic_info_tab.dart';
 import '../widgets/profile_header.dart';
 
 /// Rebuild of `CMD/screens/detailed_screen/soldier_detailed_screen.dart`
@@ -18,10 +20,12 @@ class SoldierProfilePage extends StatelessWidget {
   const SoldierProfilePage({
     super.key,
     required this.capabilities,
+    required this.actions,
     this.headerActions = const [],
   });
 
   final ProfileCapabilities capabilities;
+  final ProfileActions actions;
   final List<Widget> headerActions;
 
   @override
@@ -44,11 +48,15 @@ class SoldierProfilePage extends StatelessWidget {
                 ),
               ),
             ],
-            body: const TabBarView(
+            body: TabBarView(
               children: [
-                _TabPlaceholder('Basic info'),
-                _TabPlaceholder('Statuses'),
-                _TabPlaceholder('Attendance'),
+                BasicInfoTab(
+                  soldier: soldier,
+                  capabilities: capabilities,
+                  actions: actions,
+                ),
+                const _TabPlaceholder('Statuses'),
+                const _TabPlaceholder('Attendance'),
               ],
             ),
           ),

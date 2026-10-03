@@ -25,6 +25,7 @@ abstract final class AppColors {
 
   static const success = Color(0xFF4CAF50);
   static const danger = Color(0xFFF44336);
+  static const dangerGradientEnd = Color(0xFFED837C);
   static const warning = Color(0xFFFFC107);
 
   static const buttonGradientStart = Color(0xFF7E57C2);

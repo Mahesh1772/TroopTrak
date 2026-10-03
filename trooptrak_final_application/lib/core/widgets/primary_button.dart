@@ -6,7 +6,7 @@ import '../theme/app_radii.dart';
 import '../theme/app_spacing.dart';
 import '../theme/theme_context.dart';
 
-enum PrimaryButtonStyle { form, brand }
+enum PrimaryButtonStyle { form, brand, danger }
 
 class PrimaryButton extends StatelessWidget {
   const PrimaryButton({
@@ -17,6 +17,7 @@ class PrimaryButton extends StatelessWidget {
     this.loading = false,
     this.style = PrimaryButtonStyle.form,
     this.expand = true,
+    this.pill = false,
   });
 
   final String label;
@@ -25,15 +26,22 @@ class PrimaryButton extends StatelessWidget {
   final bool loading;
   final PrimaryButtonStyle style;
   final bool expand;
+  final bool pill;
 
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
-    final colors = style == PrimaryButtonStyle.form
-        ? palette.buttonGradient
-        : palette.headerGradient;
+    final colors = switch (style) {
+      PrimaryButtonStyle.form => palette.buttonGradient,
+      PrimaryButtonStyle.brand => palette.headerGradient,
+      PrimaryButtonStyle.danger => const [
+          AppColors.danger,
+          AppColors.dangerGradientEnd
+        ],
+    };
     final enabled = onPressed != null && !loading;
-    final radius = BorderRadius.circular(AppRadii.lg.r);
+    final radius =
+        BorderRadius.circular((pill ? AppRadii.pill : AppRadii.lg).r);
     final labelStyle =
         context.textStyles.titleLarge?.copyWith(color: AppColors.white);
 
