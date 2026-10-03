@@ -35,6 +35,7 @@ String authMessageFor(String code) => switch (code) {
       'invalid-phone-number' => 'The phone number is invalid.',
       'too-many-requests' => 'Too many attempts. Please try again later.',
       'network-request-failed' => 'Network error. Check your connection.',
+      'requires-recent-login' => reSignInMessage,
       _ => 'Authentication failed. Please try again.',
     };
 

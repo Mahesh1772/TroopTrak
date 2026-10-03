@@ -18,6 +18,7 @@ class FirebaseAuthDataSource {
           displayName: user.displayName,
           phoneNumber: user.phoneNumber,
           email: user.email,
+          lastSignInAt: user.metadata.lastSignInTime,
         );
 
   Stream<AuthUser?> authStateChanges() =>
@@ -83,14 +84,15 @@ class FirebaseAuthDataSource {
     return _required((await _auth.signInWithCredential(credential)).user);
   }
 
-  Future<void> updateDisplayName(String name) async {
-    final user = _auth.currentUser;
-    if (user == null) {
-      throw FirebaseAuthException(
-          code: 'no-current-user', message: 'No signed-in user.');
-    }
-    await user.updateDisplayName(name);
-  }
+  Future<void> updateDisplayName(String name) =>
+      _signedIn.updateDisplayName(name);
+
+  Future<void> deleteAccount() => _signedIn.delete();
+
+  User get _signedIn =>
+      _auth.currentUser ??
+      (throw FirebaseAuthException(
+          code: 'no-current-user', message: 'No signed-in user.'));
 
   Future<void> signOut() => _auth.signOut();
 

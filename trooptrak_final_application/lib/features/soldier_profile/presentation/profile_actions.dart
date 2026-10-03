@@ -4,8 +4,8 @@ import 'package:flutter/widgets.dart';
 import '../../../core/error/result.dart';
 import '../../soldiers/domain/entities/soldier.dart';
 
-/// Edit and delete differ per viewer (other soldier, own commander account,
-/// own soldier account), so the route that opens the page supplies them.
+/// Edit, delete and sign out differ per viewer (other soldier, own commander
+/// account, own soldier account), so the route that opens the page supplies them.
 class ProfileActions {
   const ProfileActions({
     required this.edit,
@@ -13,6 +13,8 @@ class ProfileActions {
     required this.afterDelete,
     this.deleteMessage = 'This removes the soldier with all statuses and '
         'attendance records.',
+    this.signOut,
+    this.afterSignOut,
   });
 
   final void Function(BuildContext context, Soldier soldier) edit;
@@ -22,4 +24,7 @@ class ProfileActions {
   /// show the "not found" state once the record is gone.
   final void Function(NavigatorState navigator) afterDelete;
   final String deleteMessage;
+
+  final Result<Unit> Function()? signOut;
+  final void Function(NavigatorState navigator)? afterSignOut;
 }

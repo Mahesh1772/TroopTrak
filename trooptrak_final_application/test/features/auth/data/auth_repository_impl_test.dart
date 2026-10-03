@@ -65,6 +65,21 @@ void main() {
               AuthFailure('The password is invalid.', code: 'wrong-password')));
     });
 
+    test('deleteAccount removes the signed-in user; lastSignInAt is mapped',
+        () async {
+      final signedInAt = DateTime(2023, 7, 5, 9);
+      final signedIn = MockFirebaseAuth(
+          signedIn: true,
+          mockUser: MockUser(
+              uid: 'c1',
+              metadata: UserMetadata(0, signedInAt.millisecondsSinceEpoch)));
+      final repo = repoWith(signedIn);
+      expect(
+          repo.currentUser?.lastSignInAt?.isAtSameMomentAs(signedInAt), isTrue);
+      expect(await repo.deleteAccount(), const Right<Failure, Unit>(unit));
+      expect((await repoWith(auth).deleteAccount()).isLeft(), isTrue);
+    });
+
     test('update display name needs a signed-in user', () async {
       final repo = repoWith(auth);
       expect((await repo.updateDisplayName('Tan')).isLeft(), isTrue);

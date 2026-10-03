@@ -26,6 +26,9 @@ abstract interface class AuthRepository {
 
   Result<Unit> markSoldierSignedIn();
 
+  /// Deletes the signed-in Firebase account (which also signs it out).
+  Result<Unit> deleteAccount();
+
   /// Signs out and clears every preference, including the role (R19, D4).
   /// Registration signs out with [clearPreferences] false, as the source did.
   Result<Unit> signOut({bool clearPreferences = true});

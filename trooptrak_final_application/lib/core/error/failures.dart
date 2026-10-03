@@ -19,6 +19,10 @@ final class NotFoundFailure extends Failure {
       [super.message = 'The requested record was not found.']);
 }
 
+/// Firebase refuses sensitive account changes without a recent sign-in.
+const reSignInMessage =
+    'For security, sign out and sign in again, then delete your account.';
+
 final class AuthFailure extends Failure {
   const AuthFailure(super.message, {this.code});
 

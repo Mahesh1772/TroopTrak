@@ -49,6 +49,12 @@ class AuthRepositoryImpl implements AuthRepository {
       });
 
   @override
+  Result<Unit> deleteAccount() => guard(() async {
+        await _remote.deleteAccount();
+        return unit;
+      });
+
+  @override
   bool get isSoldierSignedIn => _preferences.isSignedIn;
 
   @override

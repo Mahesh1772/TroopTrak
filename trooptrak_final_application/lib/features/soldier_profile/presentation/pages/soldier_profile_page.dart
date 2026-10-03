@@ -6,6 +6,7 @@ import '../../../../core/services/clock.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/theme_context.dart';
+import '../../../../core/widgets/app_snackbar.dart';
 import '../../../../core/widgets/state_view.dart';
 import '../../../attendance/domain/usecases/attendance_usecases.dart';
 import '../../../soldiers/domain/entities/soldier.dart';
@@ -18,6 +19,7 @@ import '../providers/statuses_provider.dart';
 import '../widgets/attendance_tab.dart';
 import '../widgets/basic_info_tab.dart';
 import '../widgets/profile_header.dart';
+import '../widgets/profile_header_actions.dart';
 import '../widgets/statuses_tab.dart';
 
 /// Rebuild of `CMD/screens/detailed_screen/soldier_detailed_screen.dart`
@@ -32,11 +34,35 @@ class SoldierProfilePage extends StatelessWidget {
 
   final ProfileCapabilities capabilities;
   final ProfileActions actions;
+
+  /// Extra header buttons (the soldier's SHOW QR CODE).
   final List<Widget> headerActions;
+
+  Future<void> _signOut(BuildContext context) async {
+    final navigator = Navigator.of(context);
+    final result = await actions.signOut!();
+    result.fold(
+      (f) {
+        if (context.mounted) AppSnackbar.error(context, f.message);
+      },
+      (_) => actions.afterSignOut?.call(navigator),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final state = context.watch<SoldierProfileProvider>().state;
+    final header = [
+      if (capabilities.showSignOut && actions.signOut != null)
+        HeaderPillButton(
+          key: const Key('signOutButton'),
+          label: 'SIGN OUT',
+          icon: Icons.exit_to_app_rounded,
+          onPressed: () => _signOut(context),
+        ),
+      if (capabilities.showThemeToggle) const ThemeToggle(),
+      ...headerActions,
+    ];
     return Scaffold(
       body: StateView<Soldier>(
         state: state,
@@ -65,7 +91,7 @@ class SoldierProfilePage extends StatelessWidget {
                 SliverToBoxAdapter(
                   child: Column(
                     children: [
-                      ProfileHeader(soldier: soldier, actions: headerActions),
+                      ProfileHeader(soldier: soldier, actions: header),
                       SizedBox(height: AppSpacing.sm.h),
                       const _ProfileTabBar(),
                     ],

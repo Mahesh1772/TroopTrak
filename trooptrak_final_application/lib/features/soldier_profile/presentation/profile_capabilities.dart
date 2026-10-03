@@ -24,4 +24,14 @@ class ProfileCapabilities {
     canManageStatuses: true,
     canManageAttendance: true,
   );
+
+  /// Source own-profile tabs kept full status and attendance management.
+  static const commanderSelf = ProfileCapabilities(
+    canEdit: true,
+    canDelete: true,
+    canManageStatuses: true,
+    canManageAttendance: true,
+    showSignOut: true,
+    showThemeToggle: true,
+  );
 }
