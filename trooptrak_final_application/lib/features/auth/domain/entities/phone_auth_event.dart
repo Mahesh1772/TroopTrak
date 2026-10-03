@@ -10,8 +10,8 @@ sealed class PhoneAuthEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-final class PhoneCodeSent extends PhoneAuthEvent {
-  const PhoneCodeSent(this.verificationId, {this.resendToken});
+final class OtpSent extends PhoneAuthEvent {
+  const OtpSent(this.verificationId, {this.resendToken});
 
   final String verificationId;
   final int? resendToken;
@@ -29,8 +29,8 @@ final class PhoneAutoVerified extends PhoneAuthEvent {
   List<Object?> get props => [user];
 }
 
-final class PhoneVerificationFailed extends PhoneAuthEvent {
-  const PhoneVerificationFailed(this.failure);
+final class PhoneVerificationError extends PhoneAuthEvent {
+  const PhoneVerificationError(this.failure);
 
   final Failure failure;
 
@@ -38,8 +38,8 @@ final class PhoneVerificationFailed extends PhoneAuthEvent {
   List<Object?> get props => [failure];
 }
 
-final class PhoneCodeTimeout extends PhoneAuthEvent {
-  const PhoneCodeTimeout(this.verificationId);
+final class OtpTimeout extends PhoneAuthEvent {
+  const OtpTimeout(this.verificationId);
 
   final String verificationId;
 

@@ -96,17 +96,14 @@ void main() {
       when(() =>
               repo.verifyPhone(any(), resendToken: any(named: 'resendToken')))
           .thenAnswer((_) => Stream.fromIterable(const [
-                PhoneCodeSent('vid', resendToken: 7),
-                PhoneCodeTimeout('vid'),
+                OtpSent('vid', resendToken: 7),
+                OtpTimeout('vid'),
               ]));
       expect(
           await VerifyPhone(repo)(
                   const PhoneParams('+6591234567', resendToken: 7))
               .toList(),
-          const [
-            PhoneCodeSent('vid', resendToken: 7),
-            PhoneCodeTimeout('vid')
-          ]);
+          const [OtpSent('vid', resendToken: 7), OtpTimeout('vid')]);
       verify(() => repo.verifyPhone('+6591234567', resendToken: 7)).called(1);
     });
 
