@@ -1,5 +1,22 @@
+import 'package:trooptrak_final_application/core/utils/date_formats.dart';
+import 'package:trooptrak_final_application/features/attendance/domain/entities/attendance_record.dart';
 import 'package:trooptrak_final_application/features/soldiers/domain/entities/soldier.dart';
 import 'package:trooptrak_final_application/features/statuses/domain/entities/status.dart';
+
+AttendanceRecord buildAttendance({
+  String? id,
+  String soldierId = 'Tan Ah Kow',
+  bool isInsideCamp = true,
+  DateTime? timestamp,
+}) {
+  final at = timestamp ?? DateTime(2023, 7, 5, 8);
+  return AttendanceRecord(
+    id: id ?? attendanceDocId(at),
+    soldierId: soldierId,
+    isInsideCamp: isInsideCamp,
+    timestamp: at,
+  );
+}
 
 Status buildStatus({
   String id = 's1',
