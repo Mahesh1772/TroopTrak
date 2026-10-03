@@ -7,6 +7,8 @@ import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
 import 'package:trooptrak_final_application/core/error/failures.dart';
 import 'package:trooptrak_final_application/core/widgets/feedback_views.dart';
+import 'package:trooptrak_final_application/features/attendance/domain/entities/attendance_record.dart';
+import 'package:trooptrak_final_application/features/attendance/domain/usecases/attendance_usecases.dart';
 import 'package:trooptrak_final_application/features/soldier_profile/presentation/pages/soldier_profile_page.dart';
 import 'package:trooptrak_final_application/features/soldier_profile/presentation/profile_actions.dart';
 import 'package:trooptrak_final_application/features/soldier_profile/presentation/profile_capabilities.dart';
@@ -22,14 +24,25 @@ class _MockWatchStatuses extends Mock implements WatchSoldierStatuses {}
 
 class _MockDeleteStatus extends Mock implements DeleteStatus {}
 
+class _MockWatchAttendance extends Mock implements WatchAttendance {}
+
+class _MockDeleteAttendance extends Mock implements DeleteAttendance {}
+
 void main() {
   late StreamController<Either<Failure, Soldier>> soldier;
   final watchStatuses = _MockWatchStatuses();
-  setUpAll(() => when(() => watchStatuses(any()))
-      .thenAnswer((_) => Stream.value(const Right<Failure, List<Status>>([]))));
+  final watchAttendance = _MockWatchAttendance();
+  setUpAll(() {
+    when(() => watchStatuses(any())).thenAnswer(
+        (_) => Stream.value(const Right<Failure, List<Status>>([])));
+    when(() => watchAttendance(any())).thenAnswer((_) => Stream.value(
+        Right<Failure, List<AttendanceRecord>>([buildAttendance()])));
+  });
   final tabProviders = [
     Provider<WatchSoldierStatuses>.value(value: watchStatuses),
     Provider<DeleteStatus>.value(value: _MockDeleteStatus()),
+    Provider<WatchAttendance>.value(value: watchAttendance),
+    Provider<DeleteAttendance>.value(value: _MockDeleteAttendance()),
   ];
 
   late List<String> calls;
@@ -116,7 +129,8 @@ void main() {
     expect(find.text('Active Statuses'), findsOneWidget);
     await tester.tap(find.text('ATTENDANCE'));
     await tester.pumpAndSettle();
-    expect(find.text('Attendance'), findsOneWidget);
+    expect(find.text('Book In / Book Out'), findsOneWidget);
+    expect(find.text('Wed 5 Jul 2023 08:00:00'), findsOneWidget);
   });
 
   testWidgets('header actions render under the unit lines', (tester) async {

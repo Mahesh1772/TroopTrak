@@ -6,14 +6,16 @@ import '../../../../core/services/clock.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/theme_context.dart';
-import '../../../../core/widgets/feedback_views.dart';
 import '../../../../core/widgets/state_view.dart';
+import '../../../attendance/domain/usecases/attendance_usecases.dart';
 import '../../../soldiers/domain/entities/soldier.dart';
 import '../../../statuses/domain/usecases/status_usecases.dart';
 import '../profile_actions.dart';
 import '../profile_capabilities.dart';
+import '../providers/attendance_provider.dart';
 import '../providers/soldier_profile_provider.dart';
 import '../providers/statuses_provider.dart';
+import '../widgets/attendance_tab.dart';
 import '../widgets/basic_info_tab.dart';
 import '../widgets/profile_header.dart';
 import '../widgets/statuses_tab.dart';
@@ -38,13 +40,24 @@ class SoldierProfilePage extends StatelessWidget {
     return Scaffold(
       body: StateView<Soldier>(
         state: state,
-        builder: (context, soldier) => ChangeNotifierProvider(
-          create: (context) => StatusesProvider(
-            watch: context.read<WatchSoldierStatuses>(),
-            delete: context.read<DeleteStatus>(),
-            clock: context.read<Clock>(),
-            soldierId: soldier.id,
-          ),
+        builder: (context, soldier) => MultiProvider(
+          providers: [
+            ChangeNotifierProvider(
+              create: (context) => StatusesProvider(
+                watch: context.read<WatchSoldierStatuses>(),
+                delete: context.read<DeleteStatus>(),
+                clock: context.read<Clock>(),
+                soldierId: soldier.id,
+              ),
+            ),
+            ChangeNotifierProvider(
+              create: (context) => AttendanceProvider(
+                watch: context.read<WatchAttendance>(),
+                delete: context.read<DeleteAttendance>(),
+                soldierId: soldier.id,
+              ),
+            ),
+          ],
           child: DefaultTabController(
             length: 3,
             child: NestedScrollView(
@@ -67,7 +80,7 @@ class SoldierProfilePage extends StatelessWidget {
                     actions: actions,
                   ),
                   StatusesTab(canManage: capabilities.canManageStatuses),
-                  const _TabPlaceholder('Attendance'),
+                  AttendanceTab(canManage: capabilities.canManageAttendance),
                 ],
               ),
             ),
@@ -97,13 +110,4 @@ class _ProfileTabBar extends StatelessWidget {
       ],
     );
   }
-}
-
-class _TabPlaceholder extends StatelessWidget {
-  const _TabPlaceholder(this.label);
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) => EmptyState(message: label, image: null);
 }

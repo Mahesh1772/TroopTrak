@@ -3,6 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
+import '../../features/attendance/data/datasources/attendance_remote_data_source.dart';
+import '../../features/attendance/data/repositories/attendance_repository_impl.dart';
+import '../../features/attendance/domain/repositories/attendance_repository.dart';
+import '../../features/attendance/domain/usecases/attendance_usecases.dart';
 import '../../features/auth/data/datasources/firebase_auth_data_source.dart';
 import '../../features/auth/data/repositories/auth_repository_impl.dart';
 import '../../features/auth/domain/repositories/auth_repository.dart';
@@ -58,6 +62,8 @@ class AppDependencies {
       MenRepositoryImpl(MenRemoteDataSource(firestore));
   late final StatusRepository statuses =
       StatusRepositoryImpl(StatusRemoteDataSource(firestore));
+  late final AttendanceRepository attendance =
+      AttendanceRepositoryImpl(AttendanceRemoteDataSource(firestore));
 
   List<SingleChildWidget> get providers {
     final roles = RoleRepositoryImpl(preferences);
@@ -69,9 +75,16 @@ class AppDependencies {
       Provider(create: (_) => SetRole(roles)),
       ..._soldierProviders(),
       ..._statusProviders(),
+      ..._attendanceProviders(),
       ..._authProviders(),
     ];
   }
+
+  List<SingleChildWidget> _attendanceProviders() => [
+        Provider(create: (_) => WatchAttendance(attendance, clock)),
+        Provider(create: (_) => UpdateAttendance(attendance)),
+        Provider(create: (_) => DeleteAttendance(attendance)),
+      ];
 
   List<SingleChildWidget> _statusProviders() => [
         Provider(create: (_) => WatchSoldierStatuses(statuses)),

@@ -54,6 +54,7 @@ abstract final class AppColors {
   static const statusMedical = Color(0xFF1E88E5);
   static const pastTileDark = Color(0xFF908F8F);
   static const info = Color(0xFF2196F3);
+  static const bookIn = Color(0xFF43A047);
 
   static const chartOfficers = Color(0xFFF44336);
   static const chartWoses = Color(0xFF2196F3);
