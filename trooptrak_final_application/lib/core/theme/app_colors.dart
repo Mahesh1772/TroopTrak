@@ -32,6 +32,8 @@ abstract final class AppColors {
 
   static const conductTile = Color(0xFF350E91);
   static const personTile = Color(0xFF353B4F);
+  static const personTileMuted = Color(0xFF1D202B);
+  static const tileBorder = Color(0x402196F3);
   static const authField = Color(0xFF2D3C44);
   static const authAccent = Color(0xFF64FFDA);
   static const authLink = Color(0xFFBA68C8);
