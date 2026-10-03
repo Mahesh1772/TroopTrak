@@ -13,6 +13,7 @@ class ProfileActions {
     this.afterDelete,
     this.deleteMessage = 'This removes the soldier with all statuses and '
         'attendance records.',
+    this.deletedMessage,
     this.signOut,
     this.afterSignOut,
   });
@@ -24,6 +25,9 @@ class ProfileActions {
   /// show the "not found" state once the record is gone.
   final void Function(NavigatorState navigator)? afterDelete;
   final String deleteMessage;
+
+  /// Success text after the delete; defaults to "`name` deleted".
+  final String? deletedMessage;
 
   final Result<Unit> Function()? signOut;
   final void Function(NavigatorState navigator)? afterSignOut;

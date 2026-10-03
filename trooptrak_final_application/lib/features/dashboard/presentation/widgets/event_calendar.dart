@@ -7,6 +7,7 @@ import '../../../../core/theme/app_radii.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/theme_context.dart';
 import '../../../../core/utils/date_formats.dart';
+import '../../../../core/widgets/state_view.dart';
 import '../../domain/entities/calendar_event.dart';
 import '../providers/dashboard_providers.dart';
 
@@ -98,19 +99,28 @@ class EventCalendar extends StatelessWidget {
           child: Text(formatLongDate(calendar.selected),
               style: text.headlineLarge),
         ),
-        for (final e in calendar.on(calendar.selected))
-          ListTile(
-            key: Key('event-${e.title}-${e.start.toIso8601String()}'),
-            leading: Icon(Icons.circle, color: colorOf(e.kind), size: 14.sp),
-            title: Text(e.title, style: text.titleMedium),
-            subtitle: Text('${formatTime(e.start)} - ${formatTime(e.end)}',
-                style: text.bodySmall),
-          ),
-        if (calendar.on(calendar.selected).isEmpty)
-          Padding(
+        StateView<List<CalendarEvent>>(
+          state: calendar.state,
+          isEmpty: (_) => calendar.on(calendar.selected).isEmpty,
+          empty: Padding(
             padding: EdgeInsets.all(AppSpacing.lg.sp),
             child: Text('No events', style: text.bodySmall),
           ),
+          builder: (context, _) => Column(
+            children: [
+              for (final e in calendar.on(calendar.selected))
+                ListTile(
+                  key: Key('event-${e.title}-${e.start.toIso8601String()}'),
+                  leading:
+                      Icon(Icons.circle, color: colorOf(e.kind), size: 14.sp),
+                  title: Text(e.title, style: text.titleMedium),
+                  subtitle: Text(
+                      '${formatTime(e.start)} - ${formatTime(e.end)}',
+                      style: text.bodySmall),
+                ),
+            ],
+          ),
+        ),
       ],
     );
   }

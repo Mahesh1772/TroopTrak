@@ -26,7 +26,8 @@ class StatusesTab extends StatelessWidget {
 
   Future<void> _delete(BuildContext context, Status status) async {
     final error = await context.read<StatusesProvider>().delete(status);
-    if (error != null && context.mounted) AppSnackbar.error(context, error);
+    if (!context.mounted) return;
+    AppSnackbar.outcome(context, error, success: 'Status deleted');
   }
 
   @override

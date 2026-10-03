@@ -7,6 +7,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
 import 'package:trooptrak_final_application/core/error/failures.dart';
 import 'package:trooptrak_final_application/core/usecase/usecase.dart';
+import 'package:trooptrak_final_application/core/widgets/feedback_views.dart';
 import 'package:trooptrak_final_application/features/conducts/domain/entities/conduct.dart';
 import 'package:trooptrak_final_application/features/conducts/domain/usecases/build_conduct_roster.dart';
 import 'package:trooptrak_final_application/features/conducts/domain/usecases/conduct_usecases.dart';
@@ -190,6 +191,16 @@ void main() {
       await tester.tap(field);
       await tester.pumpAndSettle();
     }
+
+    testWidgets('a failed soldier stream shows the error in the roster',
+        (tester) async {
+      when(() => watch(any())).thenAnswer((_) => Stream.value(
+          const Left<Failure, List<Soldier>>(ServerFailure('Roll offline'))));
+      await pumpForm(tester);
+      final error = find.widgetWithText(ErrorView, 'Roll offline');
+      await tester.ensureVisible(error);
+      expect(error, findsOneWidget);
+    });
 
     testWidgets('empty submit lists every missing field (K21)', (tester) async {
       await pumpForm(tester, mode: themeModes.currentValue!);

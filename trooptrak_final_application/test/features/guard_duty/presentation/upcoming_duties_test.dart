@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:trooptrak_final_application/core/error/failures.dart';
 import 'package:trooptrak_final_application/core/router/app_routes.dart';
 import 'package:trooptrak_final_application/core/usecase/usecase.dart';
+import 'package:trooptrak_final_application/core/widgets/feedback_views.dart';
 import 'package:trooptrak_final_application/core/widgets/soldier_card.dart';
 import 'package:trooptrak_final_application/features/guard_duty/domain/entities/duty.dart';
 import 'package:trooptrak_final_application/features/guard_duty/domain/usecases/duty_usecases.dart';
@@ -145,6 +146,31 @@ void main() {
       await tester.tap(find.text('Delete'));
       await tester.pumpAndSettle();
       verify(() => delete(today)).called(1);
+      expect(find.text('Duty deleted'), findsOneWidget);
+    });
+
+    testWidgets('a failed delete shows the error snackbar', (tester) async {
+      when(() => delete(any()))
+          .thenAnswer((_) async => const Left(ServerFailure('No network')));
+      await pumpTab(tester);
+      await expand(tester, 't');
+      final button = find.byKey(const Key('deleteDuty-t'));
+      await tester.ensureVisible(button);
+      await tester.pumpAndSettle();
+      await tester.tap(button);
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Delete'));
+      await tester.pumpAndSettle();
+      expect(find.text('No network'), findsOneWidget);
+      expect(find.text('Duty deleted'), findsNothing);
+    });
+
+    testWidgets('a failed duty stream shows the error', (tester) async {
+      when(() => watch(any())).thenAnswer((_) => Stream.value(
+          const Left<Failure, List<Duty>>(ServerFailure('Duties down'))));
+      await pumpTab(tester);
+      expect(find.widgetWithText(ErrorView, 'Duties down'), findsOneWidget);
+      expect(find.text("Today's Duties"), findsNothing);
     });
 
     testWidgets('edit opens the duty form with the duty', (tester) async {

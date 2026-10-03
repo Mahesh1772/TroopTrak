@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:trooptrak_final_application/core/error/failures.dart';
 import 'package:trooptrak_final_application/core/router/app_routes.dart';
 import 'package:trooptrak_final_application/core/usecase/usecase.dart';
+import 'package:trooptrak_final_application/core/widgets/feedback_views.dart';
 import 'package:trooptrak_final_application/features/conducts/domain/entities/conduct.dart';
 import 'package:trooptrak_final_application/features/conducts/domain/usecases/conduct_usecases.dart';
 import 'package:trooptrak_final_application/features/conducts/presentation/conducts_routes.dart';
@@ -189,6 +190,14 @@ void main() {
               (w.image as AssetImage).assetName ==
                   'lib/assets/noConductspng.png'),
           findsOneWidget);
+    });
+
+    testWidgets('a failed conduct stream shows the error', (tester) async {
+      when(() => onDay(any())).thenAnswer((_) => Stream.value(
+          const Left<Failure, List<Conduct>>(ServerFailure('Conducts down'))));
+      await pumpTracker(tester);
+      expect(find.widgetWithText(ErrorView, 'Conducts down'), findsOneWidget);
+      expect(find.byType(BarChart), findsNothing);
     });
 
     testWidgets('tiles open the conduct details by id', (tester) async {

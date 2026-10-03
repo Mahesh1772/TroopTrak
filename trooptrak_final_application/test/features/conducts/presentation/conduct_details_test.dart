@@ -7,6 +7,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
 import 'package:trooptrak_final_application/core/error/failures.dart';
 import 'package:trooptrak_final_application/core/router/app_routes.dart';
+import 'package:trooptrak_final_application/core/widgets/feedback_views.dart';
 import 'package:trooptrak_final_application/features/conducts/domain/entities/conduct.dart';
 import 'package:trooptrak_final_application/features/conducts/domain/repositories/conduct_repository.dart';
 import 'package:trooptrak_final_application/features/conducts/domain/usecases/conduct_usecases.dart';
@@ -152,6 +153,29 @@ void main() {
     await tester.pumpAndSettle();
     verify(() => delete('c1')).called(1);
     expect(find.byType(ConductDetailsPage), findsNothing);
+    expect(find.text('Morning Run deleted'), findsOneWidget);
+  });
+
+  testWidgets('a failed delete shows the error and stays', (tester) async {
+    when(() => delete(any()))
+        .thenAnswer((_) async => const Left(ServerFailure('No network')));
+    await pumpDetails(tester);
+    await tester.tap(find.byKey(const Key('deleteConduct')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Delete'));
+    await tester.pumpAndSettle();
+    expect(find.text('No network'), findsOneWidget);
+    expect(find.byType(ConductDetailsPage), findsOneWidget);
+  });
+
+  testWidgets('a failed breakdown stream shows the error', (tester) async {
+    await tester.pumpApp(ChangeNotifierProvider(
+      create: (_) => provider(),
+      child: const ConductDetailsPage(),
+    ));
+    stream.add(const Left(NotFoundFailure('Conduct not found')));
+    await tester.pumpAndSettle();
+    expect(find.widgetWithText(ErrorView, 'Conduct not found'), findsOneWidget);
   });
 
   testWidgets('read-only details hide edit and delete', (tester) async {

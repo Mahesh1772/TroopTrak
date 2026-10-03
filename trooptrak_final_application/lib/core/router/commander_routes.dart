@@ -47,6 +47,7 @@ Widget commanderProfile(BuildContext context, Object? _) {
         delete: (soldier) => context.read<DeleteCommanderAccount>()(soldier.id),
         deleteMessage: 'This deletes your account with all your statuses '
             'and attendance records.',
+        deletedMessage: 'Your account has been deleted',
         afterDelete: (navigator) => navigator.pushNamedAndRemoveUntil(
             AppRoutes.commanderGate, (_) => false),
         signOut: () => context.read<SignOut>()(const NoParams()),

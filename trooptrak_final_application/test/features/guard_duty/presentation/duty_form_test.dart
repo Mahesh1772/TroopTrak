@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
+import 'package:trooptrak_final_application/core/error/failures.dart';
 import 'package:trooptrak_final_application/core/usecase/usecase.dart';
+import 'package:trooptrak_final_application/core/widgets/feedback_views.dart';
 import 'package:trooptrak_final_application/features/guard_duty/data/datasources/duty_remote_data_source.dart';
 import 'package:trooptrak_final_application/features/guard_duty/data/repositories/duty_repository_impl.dart';
 import 'package:trooptrak_final_application/features/guard_duty/domain/entities/duty.dart';
@@ -183,6 +185,15 @@ void main() {
       expect(find.text('Details missing'), findsOneWidget);
       verifyNever(() => add(any()));
     }, variant: themeModes);
+
+    testWidgets('a failed roster load shows the error in the picker',
+        (tester) async {
+      when(() => roster(any()))
+          .thenAnswer((_) async => const Left(ServerFailure('Roster down')));
+      await pumpForm(tester);
+      await tapKey(tester, 'slot-0');
+      expect(find.widgetWithText(ErrorView, 'Roster down'), findsOneWidget);
+    });
 
     testWidgets('picker greys out ineligible soldiers and fills slots',
         (tester) async {

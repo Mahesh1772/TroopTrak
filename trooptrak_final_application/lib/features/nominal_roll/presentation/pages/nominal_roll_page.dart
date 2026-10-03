@@ -96,9 +96,10 @@ class NominalRollPage extends StatelessWidget {
                         onToggle: (inCamp) async {
                           final error =
                               await provider.setInCamp(soldier, inCamp);
-                          if (error != null && context.mounted) {
-                            AppSnackbar.error(context, error);
-                          }
+                          if (!context.mounted) return;
+                          AppSnackbar.outcome(context, error,
+                              success: '${soldier.name} booked '
+                                  '${inCamp ? 'in' : 'out'}');
                         },
                       );
                     },

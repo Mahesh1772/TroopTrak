@@ -228,6 +228,8 @@ void main() {
       await tester.tap(find.text('Delete'));
       await tester.pump();
       expect(calls, ['delete Tan Ah Kow', 'afterDelete']);
+      await tester.pump();
+      expect(find.text('Tan Ah Kow deleted'), findsOneWidget);
     });
 
     testWidgets('cancelling the dialog does nothing', (tester) async {

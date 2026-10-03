@@ -8,6 +8,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:trooptrak_final_application/core/error/failures.dart';
+import 'package:trooptrak_final_application/core/widgets/feedback_views.dart';
 import 'package:trooptrak_final_application/features/soldier_profile/presentation/pages/status_form_page.dart';
 import 'package:trooptrak_final_application/features/soldier_profile/presentation/providers/statuses_provider.dart';
 import 'package:trooptrak_final_application/features/soldier_profile/presentation/widgets/statuses_tab.dart';
@@ -133,6 +134,33 @@ void main() {
       await tester.tap(find.byKey(const Key('deleteStatus-a')));
       await tester.pumpAndSettle();
       verify(() => delete(active)).called(1);
+      expect(find.text('Status deleted'), findsOneWidget);
+    });
+
+    testWidgets('a failed delete shows the error snackbar', (tester) async {
+      when(() => delete(any()))
+          .thenAnswer((_) async => const Left(ServerFailure('No network')));
+      await pumpTab(tester);
+      await tester.tap(find.byKey(const Key('deleteStatus-a')));
+      await tester.pumpAndSettle();
+      expect(find.text('No network'), findsOneWidget);
+      expect(find.text('Status deleted'), findsNothing);
+    });
+
+    testWidgets('a failed status stream shows the error', (tester) async {
+      await tester.pumpApp(
+        Scaffold(
+          body: ChangeNotifierProvider(
+            create: (_) => provider(),
+            child: const StatusesTab(canManage: true),
+          ),
+        ),
+        clock: clock,
+        providers: useCases(),
+      );
+      statuses.add(const Left(ServerFailure('Statuses down')));
+      await tester.pumpAndSettle();
+      expect(find.widgetWithText(ErrorView, 'Statuses down'), findsOneWidget);
     });
 
     testWidgets('past tile slides to delete', (tester) async {

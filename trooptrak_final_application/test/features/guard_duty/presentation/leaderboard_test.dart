@@ -7,6 +7,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
 import 'package:trooptrak_final_application/core/error/failures.dart';
 import 'package:trooptrak_final_application/core/usecase/usecase.dart';
+import 'package:trooptrak_final_application/core/widgets/feedback_views.dart';
 import 'package:trooptrak_final_application/features/guard_duty/presentation/providers/leaderboard_provider.dart';
 import 'package:trooptrak_final_application/features/guard_duty/presentation/widgets/leaderboard_tab.dart';
 import 'package:trooptrak_final_application/features/soldiers/domain/entities/soldier.dart';
@@ -110,6 +111,15 @@ void main() {
       await tester.enterText(find.byType(TextField), 'lee');
       await tester.pumpAndSettle();
       expect(names(tester), ['Lee Wei']);
+    });
+
+    testWidgets('a failed soldier stream shows the error', (tester) async {
+      when(() => watch(any())).thenAnswer((_) => Stream.value(
+          const Left<Failure, List<Soldier>>(ServerFailure('Points down'))));
+      await pumpTab(tester);
+      await tester.pumpAndSettle();
+      expect(find.widgetWithText(ErrorView, 'Points down'), findsOneWidget);
+      expect(find.byKey(const Key('leaderboard')), findsNothing);
     });
   });
 }

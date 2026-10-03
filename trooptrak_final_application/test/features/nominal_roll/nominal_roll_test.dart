@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:trooptrak_final_application/core/error/failures.dart';
 import 'package:trooptrak_final_application/core/router/app_routes.dart';
 import 'package:trooptrak_final_application/core/usecase/usecase.dart';
+import 'package:trooptrak_final_application/core/widgets/feedback_views.dart';
 import 'package:trooptrak_final_application/features/attendance/domain/usecases/attendance_usecases.dart';
 import 'package:trooptrak_final_application/features/attendance/domain/usecases/watch_soldiers_in_camp.dart';
 import 'package:trooptrak_final_application/features/nominal_roll/domain/services/roster_filter.dart';
@@ -132,7 +133,8 @@ void main() {
   });
 
   Future<RouteRecorder> pumpPage(WidgetTester tester,
-      {ThemeMode mode = ThemeMode.dark}) async {
+      {ThemeMode mode = ThemeMode.dark,
+      Either<Failure, List<Soldier>>? first}) async {
     final recorder = RouteRecorder();
     await tester.pumpApp(
       ChangeNotifierProvider(
@@ -142,7 +144,7 @@ void main() {
       mode: mode,
       observers: [recorder],
     );
-    roster.add(Right([tan, lee, me]));
+    roster.add(first ?? Right([tan, lee, me]));
     await tester.pumpAndSettle();
     return recorder;
   }
@@ -197,6 +199,26 @@ void main() {
       await tester.pumpAndSettle();
       verify(() => book(const BookInOutParams('Lee Wei', isInsideCamp: true)))
           .called(1);
+      expect(find.text('Lee Wei booked in'), findsOneWidget);
+    });
+
+    testWidgets('a failed booking shows the error snackbar', (tester) async {
+      when(() => book(any()))
+          .thenAnswer((_) async => const Left(ServerFailure('No network')));
+      await pumpPage(tester);
+      final toggle = find.byKey(const Key('inCampToggle-Lee Wei'));
+      await tester.tapAt(tester.getTopRight(toggle) + const Offset(-15, 15));
+      await tester.pumpAndSettle();
+      expect(find.text('No network'), findsOneWidget);
+      expect(find.text('Lee Wei booked in'), findsNothing);
+    });
+
+    testWidgets('a failed roster stream shows the error', (tester) async {
+      await pumpPage(tester,
+          first: const Left(ServerFailure('Nominal roll down')));
+      expect(
+          find.widgetWithText(ErrorView, 'Nominal roll down'), findsOneWidget);
+      expect(find.text('Tan Ah Kow'), findsNothing);
     });
 
     testWidgets('the add button opens the QR scanner', (tester) async {

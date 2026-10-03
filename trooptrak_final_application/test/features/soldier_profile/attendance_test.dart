@@ -8,6 +8,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
 import 'package:trooptrak_final_application/core/error/failures.dart';
 import 'package:trooptrak_final_application/core/theme/app_colors.dart';
+import 'package:trooptrak_final_application/core/widgets/feedback_views.dart';
 import 'package:trooptrak_final_application/features/attendance/domain/entities/attendance_record.dart';
 import 'package:trooptrak_final_application/features/attendance/domain/usecases/attendance_usecases.dart';
 import 'package:trooptrak_final_application/features/soldier_profile/presentation/pages/edit_attendance_page.dart';
@@ -118,6 +119,31 @@ void main() {
     await tester.tap(find.byKey(Key('deleteAttendance-${older.id}')));
     await tester.pumpAndSettle();
     verify(() => delete(older)).called(1);
+    expect(find.text('Attendance record deleted'), findsOneWidget);
+  });
+
+  testWidgets('a failed delete shows the error snackbar', (tester) async {
+    when(() => delete(any()))
+        .thenAnswer((_) async => const Left(ServerFailure('No network')));
+    await pumpTab(tester);
+    await tester.drag(
+        find.byKey(Key('attendance-${older.id}')), const Offset(-300, 0));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('deleteAttendance-${older.id}')));
+    await tester.pumpAndSettle();
+    expect(find.text('No network'), findsOneWidget);
+  });
+
+  testWidgets('a failed attendance stream shows the error', (tester) async {
+    await tester.pumpApp(Scaffold(
+      body: ChangeNotifierProvider(
+        create: (_) => provider(),
+        child: const AttendanceTab(canManage: true),
+      ),
+    ));
+    records.add(const Left(ServerFailure('Attendance down')));
+    await tester.pumpAndSettle();
+    expect(find.widgetWithText(ErrorView, 'Attendance down'), findsOneWidget);
   });
 
   testWidgets('slide to edit saves the new date and time, keeping the id',

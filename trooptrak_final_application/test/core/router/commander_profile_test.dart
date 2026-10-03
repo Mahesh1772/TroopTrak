@@ -139,6 +139,7 @@ void main() {
     await tester.pumpAndSettle();
     verify(() => deleteAccount('Cmd Lim')).called(1);
     expect(recorder.names.last, AppRoutes.commanderGate);
+    expect(find.text('Your account has been deleted'), findsOneWidget);
   });
 
   testWidgets('a stale sign-in shows the re-sign-in message', (tester) async {

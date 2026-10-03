@@ -44,7 +44,8 @@ class UpcomingDutiesTab extends StatelessWidget {
     );
     if (!confirmed || !context.mounted) return;
     final error = await context.read<UpcomingDutiesProvider>().delete(duty);
-    if (error != null && context.mounted) AppSnackbar.error(context, error);
+    if (!context.mounted) return;
+    AppSnackbar.outcome(context, error, success: 'Duty deleted');
   }
 
   List<Widget> _tiles(BuildContext context, UpcomingDutiesProvider provider,

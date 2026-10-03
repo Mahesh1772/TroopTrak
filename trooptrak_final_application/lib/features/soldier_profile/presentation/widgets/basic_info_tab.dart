@@ -44,6 +44,7 @@ class _BasicInfoTabState extends State<BasicInfoTab> {
     );
     if (!confirmed || !mounted) return;
     final navigator = Navigator.of(context);
+    final messenger = ScaffoldMessenger.of(context);
     setState(() => _deleting = true);
     final result = await actions.delete!(widget.soldier);
     result.fold(
@@ -52,7 +53,13 @@ class _BasicInfoTabState extends State<BasicInfoTab> {
         setState(() => _deleting = false);
         AppSnackbar.error(context, f.message);
       },
-      (_) => actions.afterDelete?.call(navigator),
+      (_) {
+        AppSnackbar.showOn(
+            messenger,
+            actions.deletedMessage ?? '${widget.soldier.name} deleted',
+            SnackKind.success);
+        actions.afterDelete?.call(navigator);
+      },
     );
   }
 

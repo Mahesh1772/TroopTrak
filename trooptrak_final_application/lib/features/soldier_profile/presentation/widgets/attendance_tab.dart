@@ -25,7 +25,8 @@ class AttendanceTab extends StatelessWidget {
 
   Future<void> _delete(BuildContext context, AttendanceRecord record) async {
     final error = await context.read<AttendanceProvider>().delete(record);
-    if (error != null && context.mounted) AppSnackbar.error(context, error);
+    if (!context.mounted) return;
+    AppSnackbar.outcome(context, error, success: 'Attendance record deleted');
   }
 
   @override

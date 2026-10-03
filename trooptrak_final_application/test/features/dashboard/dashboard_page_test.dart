@@ -9,6 +9,7 @@ import 'package:trooptrak_final_application/core/di/calendar_event_adapter.dart'
 import 'package:trooptrak_final_application/core/error/failures.dart';
 import 'package:trooptrak_final_application/core/router/app_routes.dart';
 import 'package:trooptrak_final_application/core/usecase/usecase.dart';
+import 'package:trooptrak_final_application/core/widgets/feedback_views.dart';
 import 'package:trooptrak_final_application/core/widgets/soldier_card.dart';
 import 'package:trooptrak_final_application/features/conducts/domain/entities/conduct.dart';
 import 'package:trooptrak_final_application/features/conducts/domain/repositories/conduct_repository.dart';
@@ -173,6 +174,27 @@ void main() {
     expect(find.text('July 7, 2023'), findsOneWidget);
     expect(find.text('8:00 AM - 8:00 AM'), findsOneWidget);
     expect(find.text('Guard Duty'), findsOneWidget);
+  });
+
+  testWidgets('a failed strength stream shows the error', (tester) async {
+    when(() => watchSummary(any())).thenAnswer((_) => Stream.value(
+        const Left<Failure, StrengthSummary>(ServerFailure('Strength down'))));
+    await pumpDashboard(tester);
+    expect(find.widgetWithText(ErrorView, 'Strength down'), findsOneWidget);
+  });
+
+  testWidgets('a failed events stream shows the error under the calendar',
+      (tester) async {
+    when(() => watchEvents(any())).thenAnswer((_) => Stream.value(
+        const Left<Failure, List<CalendarEvent>>(
+            ServerFailure('Events down'))));
+    await pumpDashboard(tester);
+    await tester.tap(find.byKey(const Key('showCalendar')));
+    await tester.pumpAndSettle();
+    final error = find.widgetWithText(ErrorView, 'Events down');
+    await tester.ensureVisible(error);
+    expect(error, findsOneWidget);
+    expect(find.text('No events'), findsNothing);
   });
 
   testWidgets('the month header carries the source month banner',

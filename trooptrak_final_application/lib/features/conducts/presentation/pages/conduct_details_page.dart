@@ -38,11 +38,10 @@ class ConductDetailsPage extends StatelessWidget {
     if (!confirmed || !context.mounted) return;
     final navigator = Navigator.of(context);
     final error = await context.read<ConductDetailsProvider>().delete();
-    if (error == null) {
-      navigator.pop();
-    } else if (context.mounted) {
-      AppSnackbar.error(context, error);
+    if (context.mounted) {
+      AppSnackbar.outcome(context, error, success: '${conduct.name} deleted');
     }
+    if (error == null) navigator.pop();
   }
 
   @override
