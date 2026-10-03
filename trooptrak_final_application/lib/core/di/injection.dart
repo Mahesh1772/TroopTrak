@@ -7,6 +7,7 @@ import '../../features/auth/data/datasources/firebase_auth_data_source.dart';
 import '../../features/auth/data/repositories/auth_repository_impl.dart';
 import '../../features/auth/domain/repositories/auth_repository.dart';
 import '../../features/auth/domain/usecases/auth_usecases.dart';
+import '../../features/auth/domain/usecases/complete_soldier_profile.dart';
 import '../../features/auth/domain/usecases/register_commander.dart';
 import '../../features/auth/domain/usecases/soldier_entry.dart';
 import '../../features/enlistment/data/datasources/men_remote_data_source.dart';
@@ -88,5 +89,6 @@ class AppDependencies {
         Provider(create: (_) => SoldierProfileExists(men)),
         Provider(create: (_) => ResolveSoldierEntry(authRepository, men)),
         Provider(create: (_) => CompleteSoldierSignIn(authRepository, men)),
+        Provider(create: (_) => CompleteSoldierProfile(authRepository, men)),
       ];
 }

@@ -9,6 +9,7 @@ import '../domain/usecases/soldier_entry.dart';
 import 'pages/commander_auth_gate.dart';
 import 'pages/forgot_password_page.dart';
 import 'pages/phone_entry_page.dart';
+import 'pages/profile_capture_page.dart';
 import 'pages/soldier_welcome_page.dart';
 import 'providers/commander_auth_provider.dart';
 import 'providers/phone_auth_provider.dart';
@@ -43,4 +44,5 @@ Map<String, RouteWidgetBuilder> authRoutes({
             create: _phoneAuth,
             child: const PhoneEntryPage(),
           ),
+      AppRoutes.profileCapture: (_, __) => const ProfileCapturePage(),
     };

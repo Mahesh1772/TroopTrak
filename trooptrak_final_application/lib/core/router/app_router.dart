@@ -12,7 +12,6 @@ abstract final class AppRouter {
     ...onboardingRoutes,
     ...authRoutes(commanderHome: (_) => const _Placeholder('Commander app')),
     AppRoutes.soldierHome: (_, __) => const _Placeholder('Soldier app'),
-    AppRoutes.profileCapture: (_, __) => const _Placeholder('Profile capture'),
   };
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {

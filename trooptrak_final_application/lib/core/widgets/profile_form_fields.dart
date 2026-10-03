@@ -8,9 +8,10 @@ import 'app_dropdown_field.dart';
 import 'picker_fields.dart';
 
 /// Holds the soldier profile fields shared by register, profile capture and
-/// add/edit soldier. Dates default to [today], as every source form did.
+/// add/edit soldier. Commander forms default the dates to [today]; profile
+/// capture leaves them empty so each must be picked (K17).
 class ProfileFormController extends ChangeNotifier {
-  ProfileFormController({required DateTime today})
+  ProfileFormController({DateTime? today})
       : dob = today,
         enlistment = today,
         ord = today;
@@ -23,9 +24,9 @@ class ProfileFormController extends ChangeNotifier {
   String? rank;
   String? rationType;
   String? bloodGroup;
-  DateTime dob;
-  DateTime enlistment;
-  DateTime ord;
+  DateTime? dob;
+  DateTime? enlistment;
+  DateTime? ord;
 
   void prefill({
     required String name,
@@ -138,14 +139,14 @@ class ProfileFormFields extends StatelessWidget {
                 controller.update(() => controller.bloodGroup = v),
           ),
           gap,
-          DatePickerField(
-            key: const Key('profile-dob'),
-            hintText: 'Date of Birth',
-            value: controller.dob,
+          _date(
+            key: 'profile-dob',
+            hint: 'Date of Birth',
+            missing: 'Select your date of birth',
             icon: Icons.cake,
-            firstDate: DateTime(1960),
+            value: controller.dob,
             lastDate: today,
-            onChanged: (d) => controller.update(() => controller.dob = d),
+            set: (d) => controller.dob = d,
           ),
           gap,
           _text('profile-company', controller.company, 'Company:', Icons.groups,
@@ -161,30 +162,56 @@ class ProfileFormFields extends StatelessWidget {
               Icons.person_pin,
               (v) => _required(v, 'Section Information Missing')),
           gap,
-          DatePickerField(
-            key: const Key('profile-enlistment'),
-            hintText: 'Enlistment Date',
-            value: controller.enlistment,
+          _date(
+            key: 'profile-enlistment',
+            hint: 'Enlistment Date',
+            missing: 'Select your enlistment date',
             icon: Icons.login,
-            firstDate: DateTime(1960),
+            value: controller.enlistment,
             lastDate: DateTime(2100),
-            onChanged: (d) =>
-                controller.update(() => controller.enlistment = d),
+            set: (d) => controller.enlistment = d,
           ),
           gap,
-          DatePickerField(
-            key: const Key('profile-ord'),
-            hintText: 'ORD',
-            value: controller.ord,
+          _date(
+            key: 'profile-ord',
+            hint: 'ORD',
+            missing: 'Select your ORD date',
             icon: Icons.logout,
-            firstDate: DateTime(1960),
+            value: controller.ord,
             lastDate: DateTime(2100),
-            onChanged: (d) => controller.update(() => controller.ord = d),
+            set: (d) => controller.ord = d,
           ),
         ],
       ),
     );
   }
+
+  Widget _date({
+    required String key,
+    required String hint,
+    required String missing,
+    required IconData icon,
+    required DateTime? value,
+    required DateTime lastDate,
+    required ValueSetter<DateTime> set,
+  }) =>
+      FormField<DateTime>(
+        validator: (picked) => (picked ?? value) == null ? missing : null,
+        builder: (state) => DatePickerField(
+          key: Key(key),
+          hintText: hint,
+          value: value,
+          initialDate: today,
+          icon: icon,
+          firstDate: DateTime(1960),
+          lastDate: lastDate,
+          errorText: state.errorText,
+          onChanged: (d) {
+            controller.update(() => set(d));
+            state.didChange(d);
+          },
+        ),
+      );
 
   Widget _text(
     String key,
