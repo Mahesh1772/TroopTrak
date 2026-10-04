@@ -31,6 +31,8 @@ class CommanderRegistration extends Equatable {
 
 /// Source register flow: account → TitleCase display name → `Users/{name}`
 /// with first attendance (R17) → sign out of Firebase, keeping preferences.
+/// The K13 name check needs a signed-in user (Firestore rules), so it runs
+/// after the account is created and deletes the account on a duplicate.
 class RegisterCommander implements UseCase<Unit, CommanderRegistration> {
   const RegisterCommander(this._auth, this._soldiers, this._clock);
 
@@ -52,17 +54,20 @@ class RegisterCommander implements UseCase<Unit, CommanderRegistration> {
       return const Left(ValidationFailure('You must have a name right'));
     }
 
+    final account =
+        await _auth.registerWithEmail(r.email.trim(), r.password.trim());
+    if (account.isLeft()) return account.map((_) => unit);
+
     final exists = await _soldiers.exists(name);
     final duplicate = exists.fold(
         (f) => f,
         (found) => found
             ? ValidationFailure('A soldier named $name already exists.')
             : null);
-    if (duplicate != null) return Left(duplicate);
-
-    final account =
-        await _auth.registerWithEmail(r.email.trim(), r.password.trim());
-    if (account.isLeft()) return account.map((_) => unit);
+    if (duplicate != null) {
+      await _auth.deleteAccount();
+      return Left(duplicate);
+    }
 
     final steps = [
       () => _auth.updateDisplayName(name),

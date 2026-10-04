@@ -63,6 +63,8 @@ void main() {
           .thenAnswer((_) async => const Right(unit));
       when(() => auth.signOut(clearPreferences: any(named: 'clearPreferences')))
           .thenAnswer((_) async => const Right(unit));
+      when(() => auth.deleteAccount())
+          .thenAnswer((_) async => const Right(unit));
     });
 
     test('runs the source sequence with a TitleCase name', () async {
@@ -71,8 +73,8 @@ void main() {
       expect(result, const Right<Failure, Unit>(unit));
 
       verifyInOrder([
-        () => soldiers.exists('Lee Wei'),
         () => auth.registerWithEmail('cmd@unit.sg', strong),
+        () => soldiers.exists('Lee Wei'),
         () => auth.updateDisplayName('Lee Wei'),
         () => soldiers.add(
             any(
@@ -83,6 +85,7 @@ void main() {
             createdAt: DateTime(2023, 7, 5, 9, 30)),
         () => auth.signOut(clearPreferences: false),
       ]);
+      verifyNever(() => auth.deleteAccount());
     });
 
     test('a weak password stops before any call', () async {
@@ -97,23 +100,33 @@ void main() {
       verifyZeroInteractions(auth);
     });
 
-    test('an existing name is refused before the account is created (K13)',
+    test('an existing name is refused and the new account deleted (K13)',
         () async {
       when(() => soldiers.exists(any()))
           .thenAnswer((_) async => const Right(true));
-      final result =
-          await RegisterCommander(auth, soldiers, clock)(registration);
-      expect(result.isLeft(), isTrue);
-      verifyNever(() => auth.registerWithEmail(any(), any()));
+      expect(
+          await RegisterCommander(auth, soldiers, clock)(registration),
+          const Left<Failure, Unit>(
+              ValidationFailure('A soldier named Lee Wei already exists.')));
+      verifyInOrder([
+        () => auth.registerWithEmail('cmd@unit.sg', strong),
+        () => soldiers.exists('Lee Wei'),
+        () => auth.deleteAccount(),
+      ]);
+      verifyNever(() => auth.updateDisplayName(any()));
+      verifyNever(
+          () => soldiers.add(any(), createdAt: any(named: 'createdAt')));
     });
 
-    test('a failed name check is passed on before the account is created',
+    test('a failed name check is passed on and the new account deleted',
         () async {
       when(() => soldiers.exists(any()))
           .thenAnswer((_) async => const Left(ServerFailure('down')));
       expect(await RegisterCommander(auth, soldiers, clock)(registration),
           const Left<Failure, Unit>(ServerFailure('down')));
-      verifyNever(() => auth.registerWithEmail(any(), any()));
+      verify(() => auth.deleteAccount()).called(1);
+      verifyNever(
+          () => soldiers.add(any(), createdAt: any(named: 'createdAt')));
     });
 
     test('registrations compare by value', () {
@@ -130,6 +143,7 @@ void main() {
           (await RegisterCommander(auth, soldiers, clock)(registration))
               .isLeft(),
           isTrue);
+      verifyNever(() => soldiers.exists(any()));
       verifyNever(
           () => soldiers.add(any(), createdAt: any(named: 'createdAt')));
     });

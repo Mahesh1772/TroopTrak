@@ -32,6 +32,12 @@ migrate_working_dir/
 /build/
 /coverage/
 
+# Firebase emulators and the rules test
+/firestore_rules_test/node_modules/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+
 # Symbolication related
 app.*.symbols
 

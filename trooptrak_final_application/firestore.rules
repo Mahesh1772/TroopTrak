@@ -1,0 +1,47 @@
+rules_version = '2';
+
+// Appendix B access patterns: every collection needs a signed-in user;
+// Men/{uid} is written only by the soldier it belongs to.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    match /Users/{name} {
+      allow read, write: if signedIn();
+
+      match /Statuses/{statusId} {
+        allow read, write: if signedIn();
+      }
+
+      match /Attendance/{recordId} {
+        allow read, write: if signedIn();
+      }
+    }
+
+    // collectionGroup reads behind the dashboard, nominal roll and rosters.
+    match /{path=**}/Statuses/{statusId} {
+      allow read: if signedIn();
+    }
+
+    match /{path=**}/Attendance/{recordId} {
+      allow read: if signedIn();
+    }
+
+    match /Conducts/{conductId} {
+      allow read, write: if signedIn();
+    }
+
+    match /Duties/{dutyId} {
+      allow read, write: if signedIn();
+    }
+
+    // Commanders read (QR lookup by QRid); the soldier registers, edits and
+    // publishes or clears their own code.
+    match /Men/{uid} {
+      allow read: if signedIn();
+      allow write: if signedIn() && request.auth.uid == uid;
+    }
+  }
+}
