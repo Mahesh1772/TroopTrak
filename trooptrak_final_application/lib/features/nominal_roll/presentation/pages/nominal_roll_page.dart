@@ -25,6 +25,7 @@ class NominalRollPage extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         key: const Key('scanQr'),
+        heroTag: null,
         onPressed: () => Navigator.of(context).pushNamed(AppRoutes.qrScanner),
         child: const Icon(Icons.add),
       ),

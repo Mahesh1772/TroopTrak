@@ -31,6 +31,7 @@ class GuardDutyPage extends StatelessWidget {
         floatingActionButton: canManage
             ? FloatingActionButton(
                 key: const Key('addDuty'),
+                heroTag: null,
                 onPressed: () =>
                     Navigator.of(context).pushNamed(AppRoutes.addDuty),
                 child: const Icon(Icons.add),
