@@ -2,14 +2,14 @@
 
 A Flutter and Firebase app for running a unit day to day. One app, two roles, chosen on first launch:
 
-- **Commander:** signs in with email and password. Dashboard of unit strength and a calendar of conducts and duties; nominal roll with search, book in/out and soldier profiles (statuses, attendance); adding soldiers manually or by scanning a soldier's QR code; conduct tracker with automatic exclusions by status; guard duty roster with weekday points and a leaderboard.
+- **Commander:** registers (with their own soldier profile) and signs in with email and password. Dashboard of unit strength and a calendar of conducts and duties; nominal roll with search, book in/out and soldier profiles (statuses, attendance); adding soldiers manually or by scanning a soldier's QR code; conduct tracker with automatic exclusions by status; guard duty roster with weekday points and a leaderboard.
 - **Soldier:** signs in by phone OTP and fills in a profile once. Own profile with statuses and attendance, a QR code for the commander to scan, a conduct tracker that marks the conducts they are on, and the guard duty leaderboard and upcoming duties.
 
 Light and dark themes; data lives in Cloud Firestore.
 
 ## Quick start
 
-Needs Flutter 3.47+, JDK 17, Node.js and the Firebase CLI, and an Android emulator. Details in the developer guide.
+Needs Flutter 3.47+, JDK 17, Node.js 18+, Firebase CLI 13.x and an Android emulator. Details in the developer guide.
 
 ```sh
 flutter pub get
@@ -31,4 +31,4 @@ flutter test
 ## Docs
 
 - [Architecture](docs/ARCHITECTURE.md): layers and the rules that enforce them, features, DI, routing, state, errors, Firestore data model, business rules, security rules.
-- [Developer guide](docs/DEVELOPER_GUIDE.md): setup, running against the emulators, every test command, adding a feature, conventions.
+- [Developer guide](docs/DEVELOPER_GUIDE.md): setup, running against the emulators, every test command, building an APK, adding a feature, conventions.

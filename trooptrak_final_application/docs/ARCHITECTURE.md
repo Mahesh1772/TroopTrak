@@ -8,7 +8,7 @@ The code is organised by feature, with clean-architecture layers inside each fea
 
 ```
 lib/
-  main.dart            bindings, Firebase, AppDependencies, runApp(App)
+  main.dart            bindings, no runtime font fetching, Firebase, AppDependencies, runApp(App)
   app.dart             MultiProvider, ScreenUtilInit (450x1000), MaterialApp, themes, router
   firebase_options.dart
   core/
@@ -144,7 +144,7 @@ Statuses and attendance are also read across all soldiers with collection-group 
 - **Attendance list:** newest first; future records are hidden.
 - **Soldiers:** adding a soldier whose name already exists is refused. Deleting a soldier deletes their statuses, attendance and `Users` document. New soldiers start `Inside Camp` with 0 points and an initial attendance record.
 - **QR enlistment:** the soldier writes a v4 UUID to `Men/{uid}.QRid` for 2 minutes and clears it when the dialog closes or expires. The commander's scan looks `Men` up by `QRid` and opens a prefilled add-soldier form.
-- **Validation:** status and conduct end cannot be before start; conduct date and times are required; soldier profile capture requires every date; passwords need at least 8 characters, and registration also checks a strength list (upper, lower, digit, special).
+- **Validation:** status and conduct end cannot be before start; conduct date and times are required; soldier profile capture requires every date; passwords need at least 8 characters, and registration also requires 1 uppercase letter, 3 lowercase letters, 1 digit and 1 special character.
 
 ## Security rules
 

@@ -11,8 +11,10 @@ Every command below runs from `trooptrak_final_application/`.
 | Flutter SDK | 3.47 or newer (Dart 3.13 or newer; see `pubspec.lock`) | building, `flutter test`, `flutter analyze` |
 | Java (JDK) | 17 | Android build (Gradle 8.14, AGP 8.11, Kotlin 2.2) and the Firebase emulators |
 | Node.js + npm | 18 or newer | Firebase CLI and the rules tests |
-| Firebase CLI | `npm install -g firebase-tools` (built with 13.x) | Auth and Firestore emulators. Newer CLI releases may need a newer JDK for the emulators |
+| Firebase CLI | 13.x: `npm install -g firebase-tools@13` | Auth and Firestore emulators |
 | Android SDK + AVD | an Android emulator image | running the app and the integration tests |
+
+Tested with Flutter 3.47.6, Java 17, Node.js 18 and firebase-tools 13.15.1. Newer firebase-tools releases raise the floor: 14.x needs Node.js 20 or newer, and 15.x needs Java 21 or newer for the emulators.
 
 The Firebase project is `trooptrak-54337` (`.firebaserc`, `lib/firebase_options.dart`, `android/app/google-services.json`). Use the emulators for development so real data is never touched.
 
@@ -42,10 +44,17 @@ npm ci --prefix firestore_rules_test   # once, for the rules tests
 How it connects (`lib/core/di/firebase_bootstrap.dart`):
 
 - `USE_EMULATOR=true` makes `initFirebase()` call `useFirestoreEmulator` and `useAuthEmulator`. Without it the app talks to the live project.
-- The host is `10.0.2.2` on Android (the emulator's alias for the host machine) and `localhost` elsewhere. Override it with `--dart-define=EMULATOR_HOST=<ip>`, for example for a physical device on the same network.
+- The host is `10.0.2.2` on Android (the emulator's alias for the host machine) and `localhost` on every other platform. `--dart-define=EMULATOR_HOST=<host>` replaces it on every platform.
 - Android blocks cleartext HTTP by default. Debug builds allow it only for `10.0.2.2`, `localhost` and `127.0.0.1` through `android/app/src/debug/res/xml/network_security_config.xml`, referenced from `android/app/src/debug/AndroidManifest.xml`. Release builds are unaffected.
+- **Physical Android device:** the emulators listen on `0.0.0.0` (`firebase.json`), so a device on the same network can reach them at the computer's LAN IP. Run with `--dart-define=USE_EMULATOR=true --dart-define=EMULATOR_HOST=<LAN IP>` and add that IP as a `<domain>` in the debug `network_security_config.xml`; otherwise Android blocks the cleartext requests.
 
-**Phone sign-in on the emulator:** the Auth emulator never sends an SMS. Enter any number, then read the code from the emulator log or fetch it over REST:
+**Phone sign-in on the emulator:** the Auth emulator never sends an SMS. Enter any phone number; the emulator prints the code in its terminal output:
+
+```
+i  To verify the phone number +6591234567, use the code 740076.
+```
+
+The same codes are listed over REST:
 
 ```sh
 curl http://localhost:9099/emulator/v1/projects/trooptrak-54337/verificationCodes
@@ -57,7 +66,7 @@ curl http://localhost:9099/emulator/v1/projects/trooptrak-54337/verificationCode
 |---|---|
 | Static analysis | `flutter analyze` |
 | Unit, widget and architecture tests | `flutter test` |
-| Coverage per layer | `flutter test --coverage`, then `dart run tool/coverage_by_layer.dart` |
+| Coverage per layer | `flutter test --coverage`, then `dart tool/coverage_by_layer.dart` |
 | Firestore rules | `firebase emulators:exec --only firestore "npm --prefix firestore_rules_test test"` |
 | Integration (Android emulator) | `firebase emulators:exec --only auth,firestore "flutter test integration_test -d emulator-5554 --dart-define=USE_EMULATOR=true"` |
 
@@ -76,8 +85,8 @@ curl http://localhost:9099/emulator/v1/projects/trooptrak-54337/verificationCode
 
 ```sh
 flutter test --coverage
-dart run tool/coverage_by_layer.dart           # per layer, against targets
-dart run tool/coverage_by_layer.dart --files   # also lists every file below 100%, lowest first
+dart tool/coverage_by_layer.dart           # per layer, against targets
+dart tool/coverage_by_layer.dart --files   # also lists every file below 100%, lowest first
 ```
 
 Targets: domain 95%, data 85%, presentation 70%. `core/data/` counts as data; the rest of `core/` is reported without a target. The tool exits with 1 if a layer is below its target. `coverage/` is gitignored.
@@ -88,7 +97,7 @@ Targets: domain 95%, data 85%, presentation 70%. `core/data/` counts as data; th
 firebase emulators:exec --only firestore "npm --prefix firestore_rules_test test"
 ```
 
-Runs `firestore_rules_test/rules.test.mjs` (`node:test` and `@firebase/rules-unit-testing`) against `firestore.rules` in a throwaway Firestore emulator.
+Runs `firestore_rules_test/rules.test.mjs` (`node:test` and `@firebase/rules-unit-testing`) against `firestore.rules` in a throwaway Firestore emulator. A passing run ends with `# pass 8` and `# fail 0`.
 
 ### Integration tests
 
@@ -104,7 +113,18 @@ Runs `firestore_rules_test/rules.test.mjs` (`node:test` and `@firebase/rules-uni
 - The tests refuse to run without `USE_EMULATOR=true`, so they never touch the live project.
 - Before each test, `integration_test/support/emulator.dart` empties Firestore and Auth through the emulator REST API, signs out and clears preferences.
 - The soldier flow reads its OTP from the Auth emulator's `verificationCodes` endpoint.
-- A run takes a few minutes. It occasionally fails at launch with "Connecting to the VM Service timed out"; re-run it.
+- A passing run ends with `+2: All tests passed!`. It takes a few minutes and occasionally fails at launch with "Connecting to the VM Service timed out"; re-run it.
+
+## Building an APK
+
+```sh
+flutter build apk --release
+```
+
+The APK is written to `build/app/outputs/flutter-apk/app-release.apk`. It talks to the live project (`USE_EMULATOR` is off).
+
+- `android/app/build.gradle` signs release builds with the debug key (`signingConfig = signingConfigs.debug`). Add a release keystore and signing config before publishing.
+- Phone sign-in on a real device against the live project needs the Phone provider enabled in Firebase Authentication, and the SHA-1 and SHA-256 of the signing key added to the Android app in the Firebase console (Project settings). Print them with `cd android && ./gradlew signingReport`, or for the debug key with `keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android`.
 
 ## Adding a feature
 
