@@ -123,7 +123,16 @@ flutter build apk --release
 
 The APK is written to `build/app/outputs/flutter-apk/app-release.apk`. It talks to the live project (`USE_EMULATOR` is off).
 
-- `android/app/build.gradle` signs release builds with the debug key (`signingConfig = signingConfigs.debug`). Add a release keystore and signing config before publishing.
+- Release builds are signed with the key named in `android/key.properties` (gitignored), and with the debug key when that file is missing. The file holds:
+
+  ```properties
+  storePassword=<password>
+  keyPassword=<password>
+  keyAlias=trooptrak
+  storeFile=<absolute path to the .jks, kept outside the repo>
+  ```
+
+  Back up the keystore and its password: an installed app only accepts updates signed with the same key.
 - Phone sign-in on a real device against the live project needs the Phone provider enabled in Firebase Authentication, and the SHA-1 and SHA-256 of the signing key added to the Android app in the Firebase console (Project settings). Print them with `cd android && ./gradlew signingReport`, or for the debug key with `keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android`.
 
 ## Adding a feature
