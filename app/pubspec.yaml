@@ -1,0 +1,76 @@
+name: trooptrak_final_application
+description: "TroopTrak: soldier and commander unit management app."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.4.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  animated_toggle_switch: ^0.8.7
+  auto_size_text: ^3.0.0
+  cloud_firestore: ^6.10.0
+  country_picker: ^2.0.20
+  dartz: ^0.10.1
+  equatable: ^2.0.5
+  firebase_auth: ^6.0.0
+  firebase_core: ^4.15.0
+  fl_chart: ^1.2.0
+  flip_card: ^0.7.0
+  flutter_screenutil: ^5.9.3
+  flutter_slidable: ^4.0.3
+  google_fonts: ^9.0.0
+  google_nav_bar: ^5.0.7
+  image_picker: ^1.1.2
+  intl: ^0.20.1
+  mobile_scanner: ^7.4.2
+  pinput: ^6.0.2
+  provider: ^6.1.5
+  qr_flutter: ^4.1.0
+  recase: ^4.1.0
+  rxdart: ^0.28.0
+  shared_preferences: ^2.3.0
+  uuid: ^4.4.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+  fake_cloud_firestore: ^4.0.0
+  firebase_auth_mocks: ^0.15.0
+  flutter_lints: ^6.0.0
+  mocktail: ^1.0.4
+  flutter_native_splash: ^2.4.8
+  flutter_launcher_icons: ^0.14.4
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - lib/assets/
+    - lib/assets/army-ranks/
+    - lib/assets/calendar-images/
+    - lib/assets/phone_auth/
+    - lib/assets/google_fonts/
+
+flutter_launcher_icons:
+  image_path: assets/launcher/app_icon.png
+  android: launcher_icon
+  min_sdk_android: 21
+  adaptive_icon_background: "#2B1748"
+  adaptive_icon_foreground: assets/launcher/app_icon.png
+  adaptive_icon_foreground_inset: 16
+  ios: true
+  remove_alpha_ios: true
+  web:
+    generate: true
+    image_path: assets/launcher/app_icon.png
+    background_color: "#2B1748"
+    theme_color: "#2B1748"
+  windows:
+    generate: true
+    image_path: assets/launcher/app_icon.png

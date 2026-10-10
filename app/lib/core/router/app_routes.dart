@@ -1,0 +1,23 @@
+abstract final class AppRoutes {
+  static const root = '/';
+  static const roleSelection = '/role';
+  static const commanderGate = '/commander';
+  static const commanderProfile = '/commander/me';
+  static const soldierProfile = '/commander/soldier';
+  static const editSoldier = '/commander/soldier/edit';
+  static const qrScanner = '/commander/scan';
+  static const addSoldier = '/commander/soldier/add';
+  static const addConduct = '/commander/conduct/add';
+  static const editConduct = '/commander/conduct/edit';
+  static const conductDetails = '/conduct';
+  static const conductDetailsReadOnly = '/soldier/conduct';
+  static const addDuty = '/commander/duty/add';
+  static const editDuty = '/commander/duty/edit';
+  static const forgotPassword = '/forgot-password';
+  static const soldierGate = '/soldier';
+  static const phoneEntry = '/soldier/phone';
+  static const profileCapture = '/soldier/profile-capture';
+  static const soldierHome = '/soldier/home';
+  static const editOwnProfile = '/soldier/me/edit';
+  static const generateQr = '/soldier/qr';
+}
