@@ -3,3 +3,5 @@
 *.hprof
 CLAUDE.md
 plan.md
+/legacy
+/legacy/prototype_1
