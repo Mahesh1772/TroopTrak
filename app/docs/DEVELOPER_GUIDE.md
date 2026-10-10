@@ -2,7 +2,7 @@
 
 How to set up, run and test the app, and how to add to it. Read [ARCHITECTURE.md](ARCHITECTURE.md) first for the layers and rules.
 
-Every command below runs from `trooptrak_final_application/`.
+Every command below runs from `app/`.
 
 ## Prerequisites
 

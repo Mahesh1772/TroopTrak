@@ -2,7 +2,7 @@
   "name": "trooptrak-firestore-rules-test",
   "private": true,
   "type": "module",
-  "description": "Firestore security rules tests; run from trooptrak_final_application with: firebase emulators:exec --only firestore \"npm --prefix firestore_rules_test test\"",
+  "description": "Firestore security rules tests; run from app/ with: firebase emulators:exec --only firestore \"npm --prefix firestore_rules_test test\"",
   "scripts": {
     "test": "node --test"
   },
