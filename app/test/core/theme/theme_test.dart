@@ -7,6 +7,7 @@ import 'package:trooptrak_final_application/core/constants/ranks.dart';
 import 'package:trooptrak_final_application/core/theme/app_colors.dart';
 import 'package:trooptrak_final_application/core/theme/app_layout.dart';
 import 'package:trooptrak_final_application/core/theme/app_palette.dart';
+import 'package:trooptrak_final_application/core/theme/app_radii.dart';
 import 'package:trooptrak_final_application/core/theme/app_text_styles.dart';
 import 'package:trooptrak_final_application/core/theme/dark_theme.dart';
 import 'package:trooptrak_final_application/core/theme/light_theme.dart';
@@ -59,6 +60,65 @@ void main() {
     expect(theme.appBarTheme.backgroundColor, AppColors.lightPrimary);
     expect(theme.extension<AppPalette>(), AppPalette.light);
     expect(theme.cardTheme.color, AppColors.lightCard);
+  });
+
+  test('dark palette carries the mockup tokens', () {
+    const palette = AppPalette.dark;
+    expect(palette.page, const Color(0xFF0D1016));
+    expect(palette.pageLine, const Color(0xFF1C2130));
+    expect(palette.navBar, const Color(0xFF202433));
+    expect(palette.secondaryText, const Color(0xFFB3B8C8));
+    expect(palette.mutedText, const Color(0xFF8C92A5));
+    expect(palette.line, const Color(0x14FFFFFF));
+    expect(palette.tickOff, const Color(0x21FFFFFF));
+    expect(palette.tickFuture, const Color(0x0DFFFFFF));
+    expect(palette.accentText, const Color(0xFFB196F5));
+    expect(palette.successText, const Color(0xFF6CCB70));
+    expect(palette.excuseText, const Color(0xFFFF9840));
+    expect(palette.leaveText, const Color(0xFFFF7A70));
+    expect(palette.medicalText, const Color(0xFF5AA9F0));
+    expect(palette.rankPlate, const Color(0xFFE9EBF4));
+    expect(palette.rankPlateDark, const Color(0xFF2D3241));
+    expect(palette.duty, const Color(0xFFE91E63));
+  });
+
+  test('light palette carries the mockup tokens', () {
+    const palette = AppPalette.light;
+    expect(palette.page, const Color(0xFFE4E8F2));
+    expect(palette.pageLine, const Color(0xFFD2D8E6));
+    expect(palette.navBar, const Color(0xFFFFFFFF));
+    expect(palette.secondaryText, const Color(0xFF4B5168));
+    expect(palette.mutedText, const Color(0xFF6E7489));
+    expect(palette.line, const Color(0x1412151D));
+    expect(palette.hover, const Color(0x0D12151D));
+    expect(palette.tickOff, const Color(0xFFDADEEA));
+    expect(palette.tickFuture, const Color(0xFFEBEEF6));
+    expect(palette.accentText, const Color(0xFF5B2BD0));
+    expect(palette.successText, const Color(0xFF2E7D32));
+    expect(palette.excuseText, const Color(0xFFC25400));
+    expect(palette.leaveText, const Color(0xFFC62828));
+    expect(palette.medicalText, const Color(0xFF1565C0));
+    expect(palette.rankPlate, const Color(0xFFEDEFF7));
+    expect(palette.rankPlateDark, const Color(0xFF2D3241));
+    expect(palette.duty, const Color(0xFFE91E63));
+  });
+
+  test('copyWith keeps the mockup tokens', () {
+    final copy = AppPalette.light.copyWith(card: AppColors.darkCard);
+    expect(copy.card, AppColors.darkCard);
+    expect(copy.tickOff, AppPalette.light.tickOff);
+    expect(copy.accentText, AppPalette.light.accentText);
+    expect(copy.rankPlate, AppPalette.light.rankPlate);
+    expect(copy.duty, AppPalette.light.duty);
+  });
+
+  test('radii follow the mockup scale', () {
+    expect(AppRadii.sm, 8);
+    expect(AppRadii.lg, 12);
+    expect(AppRadii.tile, 16);
+    expect(AppRadii.xl, 20);
+    expect(AppRadii.sheet, 28);
+    expect(AppRadii.pill, 30);
   });
 
   testWidgets('date and time pickers use the accent colour', (tester) async {

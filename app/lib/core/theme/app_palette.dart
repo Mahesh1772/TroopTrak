@@ -23,6 +23,23 @@ class AppPalette extends ThemeExtension<AppPalette> {
     required this.statusLeave,
     required this.statusMedical,
     required this.pastTile,
+    required this.page,
+    required this.pageLine,
+    required this.navBar,
+    required this.secondaryText,
+    required this.mutedText,
+    required this.line,
+    required this.hover,
+    required this.tickOff,
+    required this.tickFuture,
+    required this.accentText,
+    required this.successText,
+    required this.excuseText,
+    required this.leaveText,
+    required this.medicalText,
+    required this.rankPlate,
+    required this.rankPlateDark,
+    required this.duty,
   });
 
   final Color card;
@@ -43,6 +60,23 @@ class AppPalette extends ThemeExtension<AppPalette> {
   final Color statusLeave;
   final Color statusMedical;
   final Color pastTile;
+  final Color page;
+  final Color pageLine;
+  final Color navBar;
+  final Color secondaryText;
+  final Color mutedText;
+  final Color line;
+  final Color hover;
+  final Color tickOff;
+  final Color tickFuture;
+  final Color accentText;
+  final Color successText;
+  final Color excuseText;
+  final Color leaveText;
+  final Color medicalText;
+  final Color rankPlate;
+  final Color rankPlateDark;
+  final Color duty;
 
   static const dark = AppPalette(
     card: AppColors.darkCard,
@@ -66,6 +100,23 @@ class AppPalette extends ThemeExtension<AppPalette> {
     statusLeave: AppColors.statusLeave,
     statusMedical: AppColors.statusMedical,
     pastTile: AppColors.pastTileDark,
+    page: AppColors.darkPage,
+    pageLine: AppColors.darkPageLine,
+    navBar: AppColors.darkPrimary,
+    secondaryText: AppColors.darkSecondaryText,
+    mutedText: AppColors.darkMutedText,
+    line: AppColors.darkLine,
+    hover: AppColors.darkHover,
+    tickOff: AppColors.darkTickOff,
+    tickFuture: AppColors.darkTickFuture,
+    accentText: AppColors.darkAccentText,
+    successText: AppColors.darkSuccessText,
+    excuseText: AppColors.darkExcuseText,
+    leaveText: AppColors.darkLeaveText,
+    medicalText: AppColors.darkMedicalText,
+    rankPlate: AppColors.darkRankPlate,
+    rankPlateDark: AppColors.darkCard,
+    duty: AppColors.calendarDuty,
   );
 
   static const light = AppPalette(
@@ -90,6 +141,23 @@ class AppPalette extends ThemeExtension<AppPalette> {
     statusLeave: AppColors.statusLeave,
     statusMedical: AppColors.statusMedical,
     pastTile: AppColors.darkPrimary,
+    page: AppColors.lightPage,
+    pageLine: AppColors.lightPageLine,
+    navBar: AppColors.white,
+    secondaryText: AppColors.lightSecondaryText,
+    mutedText: AppColors.lightMutedText,
+    line: AppColors.lightLine,
+    hover: AppColors.lightHover,
+    tickOff: AppColors.lightTickOff,
+    tickFuture: AppColors.lightTickFuture,
+    accentText: AppColors.lightAccentText,
+    successText: AppColors.lightSuccessText,
+    excuseText: AppColors.lightExcuseText,
+    leaveText: AppColors.lightLeaveText,
+    medicalText: AppColors.lightMedicalText,
+    rankPlate: AppColors.lightCardElevated,
+    rankPlateDark: AppColors.darkCard,
+    duty: AppColors.calendarDuty,
   );
 
   @override
@@ -112,6 +180,23 @@ class AppPalette extends ThemeExtension<AppPalette> {
         statusLeave: statusLeave,
         statusMedical: statusMedical,
         pastTile: pastTile,
+        page: page,
+        pageLine: pageLine,
+        navBar: navBar,
+        secondaryText: secondaryText,
+        mutedText: mutedText,
+        line: line,
+        hover: hover,
+        tickOff: tickOff,
+        tickFuture: tickFuture,
+        accentText: accentText,
+        successText: successText,
+        excuseText: excuseText,
+        leaveText: leaveText,
+        medicalText: medicalText,
+        rankPlate: rankPlate,
+        rankPlateDark: rankPlateDark,
+        duty: duty,
       );
 
   @override
