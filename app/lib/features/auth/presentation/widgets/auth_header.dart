@@ -54,11 +54,12 @@ class AuthSwitchPrompt extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final style = context.textStyles.titleSmall;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Wrap(
+      alignment: WrapAlignment.center,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      spacing: 6,
       children: [
         Text(prompt, style: style?.copyWith(color: AppColors.white)),
-        const SizedBox(width: 6),
         GestureDetector(
           key: actionKey,
           onTap: onTap,

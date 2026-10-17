@@ -87,7 +87,7 @@ class _ProfileCapturePageState extends State<ProfileCapturePage> {
                       style: text.displayLarge?.copyWith(fontSize: 30.sp)),
                   Text('Fill in the details of the new soldier you wish to add',
                       style: text.bodySmall
-                          ?.copyWith(fontWeight: FontWeight.w300)),
+                          ?.copyWith(fontWeight: FontWeight.w400)),
                   SizedBox(height: AppSpacing.lg.h),
                   ProfileFormFields(
                     controller: _profile,

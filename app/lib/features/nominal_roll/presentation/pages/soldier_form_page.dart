@@ -151,7 +151,7 @@ class _SoldierFormPageState extends State<SoldierFormPage> {
                   _isAdd
                       ? 'Fill in the details of the new soldier you wish to add'
                       : 'Update the details of an existing soldier.',
-                  style: text.bodySmall?.copyWith(fontWeight: FontWeight.w300),
+                  style: text.bodySmall?.copyWith(fontWeight: FontWeight.w400),
                 ),
                 SizedBox(height: AppSpacing.lg.h),
                 ProfileFormFields(

@@ -202,7 +202,10 @@ void main() {
 
     testWidgets('tiles open the conduct details by id', (tester) async {
       final recorder = await pumpTracker(tester);
-      await tester.tap(find.byKey(const Key('conduct-ippt')));
+      final tile = find.byKey(const Key('conduct-ippt'));
+      await tester.ensureVisible(tile);
+      await tester.pumpAndSettle();
+      await tester.tap(tile);
       await tester.pumpAndSettle();
       expect(recorder.names.last, AppRoutes.conductDetails);
       expect(recorder.lastArguments, 'ippt');
@@ -241,7 +244,10 @@ void main() {
 
     testWidgets('tiles open the read-only details', (tester) async {
       final recorder = await pumpSoldier(tester);
-      await tester.tap(find.byKey(const Key('conduct-run')));
+      final tile = find.byKey(const Key('conduct-run'));
+      await tester.ensureVisible(tile);
+      await tester.pumpAndSettle();
+      await tester.tap(tile);
       await tester.pumpAndSettle();
       expect(recorder.names.last, AppRoutes.conductDetailsReadOnly);
       expect(recorder.lastArguments, 'run');

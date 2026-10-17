@@ -58,7 +58,7 @@ class _EditAttendancePageState extends State<EditAttendancePage> {
               Text('Edit Attendance',
                   style: text.displayLarge?.copyWith(fontSize: 30.sp)),
               Text('Fill in book in / book out time.',
-                  style: text.bodySmall?.copyWith(fontWeight: FontWeight.w300)),
+                  style: text.bodySmall?.copyWith(fontWeight: FontWeight.w400)),
               SizedBox(height: 40.h),
               DatePickerField(
                 key: const Key('attendanceDate'),

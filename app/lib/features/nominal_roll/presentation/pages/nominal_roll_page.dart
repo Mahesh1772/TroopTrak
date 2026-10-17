@@ -85,7 +85,7 @@ class NominalRollPage extends StatelessWidget {
                     itemCount: soldiers.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      childAspectRatio: 1.w / 1.5.h,
+                      childAspectRatio: 1.w / 1.65.h,
                     ),
                     itemBuilder: (context, i) {
                       final soldier = soldiers[i];

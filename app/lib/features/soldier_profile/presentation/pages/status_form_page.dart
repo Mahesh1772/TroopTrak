@@ -105,7 +105,7 @@ class _StatusFormPageState extends State<StatusFormPage> {
                 ),
                 Text('Fill in the details of the status',
                     style:
-                        text.bodySmall?.copyWith(fontWeight: FontWeight.w300)),
+                        text.bodySmall?.copyWith(fontWeight: FontWeight.w400)),
                 SizedBox(height: 40.h),
                 AppDropdownField<String>(
                   key: const Key('statusType'),

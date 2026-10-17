@@ -3,24 +3,39 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 abstract final class AppTextStyles {
-  static TextStyle poppins(double size, FontWeight weight, Color color) =>
-      GoogleFonts.poppins(fontSize: size.sp, fontWeight: weight, color: color);
+  static TextStyle barlow(double size, FontWeight weight, Color color) {
+    assert(weight.value >= 400 && weight.value <= 700,
+        'Barlow is bundled at w400-w700 only');
+    return GoogleFonts.barlow(
+        fontSize: size.sp, fontWeight: weight, color: color);
+  }
+
+  static TextStyle figure(double size, FontWeight weight, Color color) {
+    assert(weight.value >= 500 && weight.value <= 700,
+        'Barlow Condensed is bundled at w500-w700 only');
+    return GoogleFonts.barlowCondensed(
+      fontSize: size.sp,
+      fontWeight: weight,
+      color: color,
+      fontFeatures: const [FontFeature.tabularFigures()],
+    );
+  }
 
   static TextTheme textTheme(Color color) => TextTheme(
-        displayLarge: poppins(28, FontWeight.bold, color),
-        displayMedium: poppins(24, FontWeight.bold, color),
-        displaySmall: poppins(20, FontWeight.bold, color),
-        headlineLarge: poppins(18, FontWeight.bold, color),
-        headlineMedium: poppins(16, FontWeight.bold, color),
-        headlineSmall: poppins(14, FontWeight.bold, color),
-        titleLarge: poppins(18, FontWeight.w500, color),
-        titleMedium: poppins(16, FontWeight.w500, color),
-        titleSmall: poppins(14, FontWeight.w500, color),
-        bodyLarge: poppins(18, FontWeight.normal, color),
-        bodyMedium: poppins(16, FontWeight.normal, color),
-        bodySmall: poppins(14, FontWeight.normal, color),
-        labelLarge: poppins(16, FontWeight.w600, color),
-        labelMedium: poppins(14, FontWeight.w500, color),
-        labelSmall: poppins(12, FontWeight.w500, color),
+        displayLarge: barlow(28, FontWeight.bold, color),
+        displayMedium: barlow(24, FontWeight.bold, color),
+        displaySmall: barlow(20, FontWeight.bold, color),
+        headlineLarge: barlow(18, FontWeight.bold, color),
+        headlineMedium: barlow(16, FontWeight.bold, color),
+        headlineSmall: barlow(14, FontWeight.bold, color),
+        titleLarge: barlow(18, FontWeight.w500, color),
+        titleMedium: barlow(16, FontWeight.w500, color),
+        titleSmall: barlow(14, FontWeight.w500, color),
+        bodyLarge: barlow(18, FontWeight.normal, color),
+        bodyMedium: barlow(16, FontWeight.normal, color),
+        bodySmall: barlow(14, FontWeight.normal, color),
+        labelLarge: barlow(16, FontWeight.w600, color),
+        labelMedium: barlow(14, FontWeight.w500, color),
+        labelSmall: barlow(12, FontWeight.w500, color),
       );
 }

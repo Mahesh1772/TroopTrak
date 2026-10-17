@@ -67,7 +67,7 @@ class _SoldierWelcomePageState extends State<SoldierWelcomePage> {
                   SizedBox(height: AppSpacing.xxxl.h),
                   Text('Time to book in 😄',
                       style: text.displayMedium?.copyWith(
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w700,
                           color: AppColors.authHint)),
                   SizedBox(height: 50.h),
                   PrimaryButton(

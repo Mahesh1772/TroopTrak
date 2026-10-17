@@ -41,7 +41,15 @@ class DutySlots extends StatelessWidget {
         );
     Widget row(int from, int count) => Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [for (var i = from; i < from + count; i++) slot(i)],
+          children: [
+            for (var i = from; i < from + count; i++)
+              Flexible(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.xs.w),
+                  child: slot(i),
+                ),
+              ),
+          ],
         );
     return Column(
       children: [

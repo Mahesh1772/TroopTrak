@@ -99,6 +99,10 @@ void main() {
     expect(recorder.names.last, AppRoutes.roleSelection);
   });
 
+  final infoTab = find
+      .ancestor(of: find.text('ORD:'), matching: find.byType(Scrollable))
+      .first;
+
   testWidgets('the theme toggle switches the app theme', (tester) async {
     await pumpProfile(tester);
     final manager = tester
@@ -115,7 +119,7 @@ void main() {
       (tester) async {
     final recorder = await pumpProfile(tester);
     final edit = find.byKey(const Key('editSoldier'));
-    await tester.ensureVisible(edit);
+    await tester.scrollUntilVisible(edit, 100, scrollable: infoTab);
     await tester.pumpAndSettle();
     await tester.tap(edit);
     await tester.pumpAndSettle();
@@ -127,7 +131,7 @@ void main() {
       (tester) async {
     final recorder = await pumpProfile(tester);
     final delete = find.byKey(const Key('deleteSoldier'));
-    await tester.ensureVisible(delete);
+    await tester.scrollUntilVisible(delete, 100, scrollable: infoTab);
     await tester.pumpAndSettle();
     await tester.tap(delete);
     await tester.pumpAndSettle();
@@ -147,7 +151,7 @@ void main() {
         .thenAnswer((_) async => const Left(AuthFailure(reSignInMessage)));
     final recorder = await pumpProfile(tester);
     final delete = find.byKey(const Key('deleteSoldier'));
-    await tester.ensureVisible(delete);
+    await tester.scrollUntilVisible(delete, 100, scrollable: infoTab);
     await tester.pumpAndSettle();
     await tester.tap(delete);
     await tester.pumpAndSettle();
