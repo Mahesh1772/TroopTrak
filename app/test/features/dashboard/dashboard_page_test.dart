@@ -21,6 +21,7 @@ import 'package:trooptrak_final_application/features/dashboard/presentation/dash
 import 'package:trooptrak_final_application/features/dashboard/presentation/providers/dashboard_providers.dart';
 import 'package:trooptrak_final_application/features/guard_duty/domain/entities/duty.dart';
 import 'package:trooptrak_final_application/features/guard_duty/domain/repositories/duty_repository.dart';
+import 'package:trooptrak_final_application/features/statuses/domain/services/parade_roster.dart';
 
 import '../../helpers/builders.dart';
 import '../../helpers/fake_clock.dart';
@@ -40,7 +41,8 @@ void main() {
   final cpt = buildSoldier(name: 'Cpt Ong', rank: 'CPT', isInCamp: false);
   final cpl = buildSoldier(name: 'Cpl Tan', rank: 'CPL');
   final summary = StrengthSummary(
-      officers: [lt, cpt], woses: [cpl], onStatus: [cpl], onMa: const []);
+      entries: paradeRoster(
+          [lt, cpt, cpl], [buildStatus(soldierId: 'Cpl Tan')], clock.now()));
   final run = CalendarEvent(
       title: 'Run',
       start: DateTime(2023, 7, 5, 7),

@@ -7,6 +7,7 @@ import '../../features/attendance/data/datasources/attendance_remote_data_source
 import '../../features/attendance/data/repositories/attendance_repository_impl.dart';
 import '../../features/attendance/domain/repositories/attendance_repository.dart';
 import '../../features/attendance/domain/usecases/attendance_usecases.dart';
+import '../../features/attendance/domain/usecases/watch_parade_roster.dart';
 import '../../features/attendance/domain/usecases/watch_soldiers_in_camp.dart';
 import '../../features/auth/data/datasources/firebase_auth_data_source.dart';
 import '../../features/auth/data/repositories/auth_repository_impl.dart';
@@ -138,10 +139,12 @@ class AppDependencies {
         Provider(
             create: (_) => WatchSoldiersInCamp(soldiers, attendance, clock)),
         Provider(
-          create: (_) => WatchStrengthSummary(
-              WatchSoldiersInCamp(soldiers, attendance, clock),
-              statuses,
-              clock),
+          create: (context) => WatchParadeRoster(
+              context.read<WatchSoldiersInCamp>(), statuses, clock),
+        ),
+        Provider(
+          create: (context) =>
+              WatchStrengthSummary(context.read<WatchParadeRoster>()),
         ),
       ];
 
