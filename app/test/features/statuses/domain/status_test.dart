@@ -32,6 +32,46 @@ void main() {
     });
   });
 
+  group('daysLeft', () {
+    test('whole days from today to the end day', () {
+      final exBoots = buildStatus(
+          name: 'Ex Boots',
+          start: DateTime(2026, 10, 6),
+          end: DateTime(2026, 10, 12));
+      expect(exBoots.daysLeft(DateTime(2026, 10, 8)), 4);
+      expect(exBoots.daysLeft(DateTime(2026, 10, 11)), 1);
+    });
+
+    test('the start day has the whole stretch left', () {
+      expect(status.daysLeft(DateTime(2023, 7, 3)), 2);
+    });
+
+    test('0 on the end day, any time of day', () {
+      expect(status.daysLeft(DateTime(2023, 7, 5)), 0);
+      expect(status.daysLeft(DateTime(2023, 7, 5, 23, 59)), 0);
+    });
+
+    test('0, not negative, from the day after the end', () {
+      expect(status.daysLeft(DateTime(2023, 7, 6)), 0);
+      expect(status.daysLeft(DateTime(2024, 1, 1)), 0);
+    });
+
+    test('counts calendar days, ignoring the time of day', () {
+      final evening = buildStatus(end: DateTime(2023, 7, 5, 22));
+      expect(status.daysLeft(DateTime(2023, 7, 3, 0, 1)), 2);
+      expect(status.daysLeft(DateTime(2023, 7, 3, 23, 59)), 2);
+      expect(evening.daysLeft(DateTime(2023, 7, 4, 23, 59)), 1);
+      expect(evening.daysLeft(DateTime(2023, 7, 5, 22, 1)), 0);
+    });
+
+    test('counts across a month boundary', () {
+      final overMonthEnd =
+          buildStatus(start: DateTime(2023, 6, 28), end: DateTime(2023, 7, 3));
+      expect(overMonthEnd.daysLeft(DateTime(2023, 6, 28)), 5);
+      expect(overMonthEnd.daysLeft(DateTime(2023, 6, 30)), 3);
+    });
+  });
+
   group('linked attendance (R21)', () {
     test('Leave and MA book out at 00:30 on start and in at 22:00 on end', () {
       for (final type in ['Leave', 'Medical Appointment']) {

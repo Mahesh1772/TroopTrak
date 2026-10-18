@@ -35,6 +35,12 @@ class Status extends Equatable {
   /// R2: active up to and including the end day; the start day is not checked.
   bool isActiveOn(DateTime day) => dayDifference(day, end) <= 0;
 
+  /// Calendar days from [today] to the end day: 0 on it and once it has passed.
+  int daysLeft(DateTime today) {
+    final days = dayDifference(end, today);
+    return days < 0 ? 0 : days;
+  }
+
   /// R3: dashboard also requires the status to have started.
   bool isCurrentOnDashboard(DateTime day) =>
       isActiveOn(day) && dayDifference(start, day) <= 0;

@@ -20,6 +20,24 @@ class _MockSoldiers extends Mock implements SoldierRepository {}
 class _MockStatuses extends Mock implements StatusRepository {}
 
 void main() {
+  group('Duty.endsNextDay (D10)', () {
+    // Both times are stored on the duty day, 7 Jul 2023.
+    DateTime at(int hour, [int minute = 0]) =>
+        DateTime(2023, 7, 7, hour, minute);
+
+    for (final (label, start, end, nextDay) in [
+      ('8:00 AM - 8:00 AM', at(8), at(8), true),
+      ('6:00 PM - 10:00 PM', at(18), at(22), false),
+      ('6:00 PM - 6:00 PM, end equal to start', at(18), at(18), true),
+      ('8:00 AM - 8:01 AM, one minute after', at(8), at(8, 1), false),
+      ('8:00 PM - 8:00 AM', at(20), at(8), true),
+    ]) {
+      test('$label → $nextDay', () {
+        expect(buildDuty(start: start, end: end).endsNextDay, nextDay);
+      });
+    }
+  });
+
   group('DutyPoints.forDate (R7)', () {
     // 3 Jul 2023 is a Monday.
     for (final (offset, points, label) in [

@@ -28,6 +28,9 @@ class Duty extends Equatable {
 
   DateTime get day => DateTime(start.year, start.month, start.day);
 
+  /// D10: an end not after the start runs into the next day.
+  bool get endsNextDay => !end.isAfter(start);
+
   bool includes(String soldierName) => participants.containsKey(soldierName);
 
   Duty copyWith({
