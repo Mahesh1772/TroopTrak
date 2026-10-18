@@ -226,6 +226,16 @@ void main() {
     expect(figure.color, AppColors.white);
   });
 
+  testWidgets('caption is 13 px Barlow regular in the colour it is given',
+      (tester) async {
+    useDesignSurface(tester);
+    await _build(tester, buildDarkTheme);
+    final caption = AppTextStyles.caption(AppColors.darkSecondaryText);
+    expect(caption.fontFamily, 'Barlow_regular');
+    expect([caption.fontSize, caption.fontWeight], [13, FontWeight.w400]);
+    expect(caption.color, AppColors.darkSecondaryText);
+  });
+
   testWidgets('every bundled Barlow weight loads without runtime fetching',
       (tester) async {
     final manifest = await tester
@@ -455,6 +465,65 @@ void main() {
     expect((tester.widget<Container>(handle).decoration as BoxDecoration).color,
         palette.tickOff);
   }, variant: themeModes);
+
+  testWidgets('tooltip is a near-black 8 radius box in both themes',
+      (tester) async {
+    useDesignSurface(tester);
+    for (final builder in [buildDarkTheme, buildLightTheme]) {
+      final tooltip = (await _build(tester, builder)).tooltipTheme;
+      final style = tooltip.textStyle!;
+
+      expect(
+        tooltip.decoration,
+        BoxDecoration(
+          color: AppColors.tooltipBackground,
+          borderRadius: BorderRadius.circular(8),
+        ),
+      );
+      expect(tooltip.padding,
+          const EdgeInsets.symmetric(horizontal: 10, vertical: 6));
+      expect(style.color, AppColors.white);
+      expect([style.fontSize, style.fontWeight], [13, FontWeight.w500]);
+      expect(style.fontFamily, startsWith('Barlow_'));
+    }
+    expect(AppColors.tooltipBackground, const Color(0xFF07080C));
+    expect(AppColors.tooltipDetail, const Color(0xFFB3B8C8));
+  });
+
+  testWidgets('a Tooltip with no styling of its own takes the theme',
+      (tester) async {
+    await tester.pumpThemed(
+      const Center(child: Tooltip(message: 'Tan Wei Jie', child: Text('x'))),
+      mode: themeModes.currentValue!,
+    );
+    await tester.longPress(find.text('x'));
+    await tester.pump(const Duration(milliseconds: 200));
+
+    final message = find.text('Tan Wei Jie');
+    final box = tester.widget<Container>(
+      find.ancestor(of: message, matching: find.byType(Container)).first,
+    );
+    final style = tester.widget<Text>(message).style!;
+    expect(
+        (box.decoration! as BoxDecoration).color, AppColors.tooltipBackground);
+    expect(
+        box.padding, const EdgeInsets.symmetric(horizontal: 10, vertical: 6));
+    expect([style.color, style.fontSize, style.fontWeight],
+        [AppColors.white, 13, FontWeight.w500]);
+
+    await tester.pump(const Duration(seconds: 2));
+    await tester.pumpAndSettle();
+  }, variant: themeModes);
+
+  test('on-gradient colours are the mockup .ph-month values', () {
+    expect(AppColors.onGradientInCamp, const Color(0xFF7EE07F));
+    expect(AppColors.onGradientExcuse, const Color(0xFFFFA84D));
+    expect(AppColors.onGradientLeave, const Color(0xFFFF8A80));
+    expect(AppColors.onGradientMedical, const Color(0xFF82C4FF));
+    expect(AppColors.onGradientLabel, const Color(0xCCFFFFFF));
+    expect(AppColors.onGradientTickOff, const Color(0x33FFFFFF));
+    expect(AppColors.onGradientTickFuture, const Color(0x12FFFFFF));
+  });
 
   test('sheet surface is card2 in dark and card in light', () {
     expect(AppPalette.dark.sheet, AppPalette.dark.cardElevated);

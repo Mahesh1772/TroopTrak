@@ -88,6 +88,7 @@ ThemeData buildAppTheme({
     switchTheme: _switchTheme(palette),
     segmentedButtonTheme: _segmentedButtonTheme(scheme, palette),
     bottomSheetTheme: _bottomSheetTheme(palette),
+    tooltipTheme: _tooltipTheme(),
     progressIndicatorTheme: const ProgressIndicatorThemeData(
       color: AppColors.accent,
     ),
@@ -300,6 +301,17 @@ ChipThemeData _chipTheme(ColorScheme scheme, AppPalette palette) {
     secondaryLabelStyle: label.copyWith(color: AppColors.white),
   );
 }
+
+// The mockup's #tip is the same near-black box in both themes. Rich messages
+// inherit this style, so a span only sets a colour to dim a part of the text.
+TooltipThemeData _tooltipTheme() => TooltipThemeData(
+      decoration: BoxDecoration(
+        color: AppColors.tooltipBackground,
+        borderRadius: BorderRadius.circular(AppRadii.sm),
+      ),
+      textStyle: AppTextStyles.barlow(13, FontWeight.w500, AppColors.white),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+    );
 
 // A theme cannot hold the button gradient: the flat colour is its end and the
 // widget paints the gradient.

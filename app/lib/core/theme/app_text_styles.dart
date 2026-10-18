@@ -10,6 +10,8 @@ abstract final class AppTextStyles {
         fontSize: size.sp, fontWeight: weight, color: color);
   }
 
+  static TextStyle caption(Color color) => barlow(13, FontWeight.w400, color);
+
   static TextStyle figure(double size, FontWeight weight, Color color) {
     assert(weight.value >= 500 && weight.value <= 700,
         'Barlow Condensed is bundled at w500-w700 only');

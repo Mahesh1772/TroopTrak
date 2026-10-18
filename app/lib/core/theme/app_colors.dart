@@ -44,6 +44,18 @@ abstract final class AppColors {
   static const lightLeaveText = Color(0xFFC62828);
   static const lightMedicalText = Color(0xFF1565C0);
 
+  static const tooltipBackground = Color(0xFF07080C);
+  static const tooltipDetail = darkSecondaryText;
+
+  static const onGradientLabel = Color(0xCCFFFFFF);
+  // One 20% white for the mockup's 18% (profile card) and 22% (headers).
+  static const onGradientTickOff = Color(0x33FFFFFF);
+  static const onGradientTickFuture = Color(0x12FFFFFF);
+  static const onGradientInCamp = Color(0xFF7EE07F);
+  static const onGradientExcuse = Color(0xFFFFA84D);
+  static const onGradientLeave = Color(0xFFFF8A80);
+  static const onGradientMedical = Color(0xFF82C4FF);
+
   static const white = Color(0xFFFFFFFF);
   static const white70 = Color(0xB3FFFFFF);
   static const black = Color(0xFF000000);
