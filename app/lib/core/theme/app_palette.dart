@@ -26,6 +26,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
     required this.page,
     required this.pageLine,
     required this.navBar,
+    required this.sheet,
     required this.secondaryText,
     required this.mutedText,
     required this.line,
@@ -63,6 +64,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
   final Color page;
   final Color pageLine;
   final Color navBar;
+  final Color sheet;
   final Color secondaryText;
   final Color mutedText;
   final Color line;
@@ -103,6 +105,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
     page: AppColors.darkPage,
     pageLine: AppColors.darkPageLine,
     navBar: AppColors.darkPrimary,
+    sheet: AppColors.darkCardElevated,
     secondaryText: AppColors.darkSecondaryText,
     mutedText: AppColors.darkMutedText,
     line: AppColors.darkLine,
@@ -144,6 +147,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
     page: AppColors.lightPage,
     pageLine: AppColors.lightPageLine,
     navBar: AppColors.white,
+    sheet: AppColors.lightCard,
     secondaryText: AppColors.lightSecondaryText,
     mutedText: AppColors.lightMutedText,
     line: AppColors.lightLine,
@@ -183,6 +187,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
         page: page,
         pageLine: pageLine,
         navBar: navBar,
+        sheet: sheet,
         secondaryText: secondaryText,
         mutedText: mutedText,
         line: line,

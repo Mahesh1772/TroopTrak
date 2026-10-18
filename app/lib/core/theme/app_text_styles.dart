@@ -31,7 +31,7 @@ abstract final class AppTextStyles {
         titleLarge: barlow(18, FontWeight.w500, color),
         titleMedium: barlow(16, FontWeight.w500, color),
         titleSmall: barlow(14, FontWeight.w500, color),
-        bodyLarge: barlow(18, FontWeight.normal, color),
+        bodyLarge: barlow(16, FontWeight.normal, color),
         bodyMedium: barlow(16, FontWeight.normal, color),
         bodySmall: barlow(14, FontWeight.normal, color),
         labelLarge: barlow(16, FontWeight.w600, color),
