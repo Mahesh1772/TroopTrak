@@ -10,6 +10,8 @@ abstract final class AppTextStyles {
         fontSize: size.sp, fontWeight: weight, color: color);
   }
 
+  static TextStyle h3(Color color) => barlow(16, FontWeight.w600, color);
+
   static TextStyle caption(Color color) => barlow(13, FontWeight.w400, color);
 
   static TextStyle figure(double size, FontWeight weight, Color color) {

@@ -38,7 +38,6 @@ class AttendanceTab extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(30.w, 0, 30.w, AppSpacing.xxxl.h),
         children: [
           SectionHeader('Book In / Book Out',
-              icon: Icons.outbond,
               padding: EdgeInsets.symmetric(vertical: AppSpacing.md.h)),
           if (records.isEmpty)
             const EmptyState(message: 'No attendance records', image: null),

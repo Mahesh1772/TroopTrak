@@ -43,9 +43,7 @@ class StatusesTab extends StatelessWidget {
         return ListView(
           padding: EdgeInsets.only(bottom: AppSpacing.xxxl.h),
           children: [
-            SectionHeader('Active Statuses',
-                icon: Icons.medical_information_rounded,
-                padding: headerPadding),
+            SectionHeader('Active Statuses', padding: headerPadding),
             SizedBox(
               height: 260.h,
               child: ListView(
@@ -63,8 +61,7 @@ class StatusesTab extends StatelessWidget {
                 ],
               ),
             ),
-            SectionHeader('Past Statuses',
-                icon: Icons.av_timer_rounded, padding: headerPadding),
+            SectionHeader('Past Statuses', padding: headerPadding),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 30.w),
               child: Column(

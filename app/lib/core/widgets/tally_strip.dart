@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../theme/app_colors.dart';
+import '../theme/app_motion.dart';
 import '../theme/app_palette.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_text_styles.dart';
@@ -20,8 +21,6 @@ const _tooltipGap = 6.0;
 const _highlightScale = 1.18;
 const _fadedOpacity = 0.35;
 const _figureTracking = 0.02;
-const _motion = Duration(milliseconds: 250);
-const _ease = Cubic(0.16, 1, 0.3, 1);
 
 @immutable
 class TallyTick {
@@ -336,12 +335,12 @@ class _Emphasis extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedOpacity(
       opacity: matched == false ? _fadedOpacity : 1,
-      duration: _motion,
-      curve: _ease,
+      duration: AppMotion.standard,
+      curve: AppMotion.ease,
       child: AnimatedContainer(
         key: boxKey,
-        duration: _motion,
-        curve: _ease,
+        duration: AppMotion.standard,
+        curve: AppMotion.ease,
         transform: Matrix4.diagonal3Values(
           1,
           matched == true ? _highlightScale : 1,

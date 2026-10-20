@@ -55,6 +55,9 @@ abstract final class AppColors {
   static const onGradientExcuse = Color(0xFFFFA84D);
   static const onGradientLeave = Color(0xFFFF8A80);
   static const onGradientMedical = Color(0xFF82C4FF);
+  static const onGradientTrack = Color(0x24FFFFFF);
+  static const onGradientSolidText = Color(0xFF2B1580);
+  static const segmentShadow = Color(0x59000000);
 
   static const white = Color(0xFFFFFFFF);
   static const white70 = Color(0xB3FFFFFF);

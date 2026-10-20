@@ -6,8 +6,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:trooptrak_final_application/core/constants/ranks.dart';
 import 'package:trooptrak_final_application/core/theme/app_colors.dart';
 import 'package:trooptrak_final_application/core/theme/app_layout.dart';
+import 'package:trooptrak_final_application/core/theme/app_motion.dart';
 import 'package:trooptrak_final_application/core/theme/app_palette.dart';
 import 'package:trooptrak_final_application/core/theme/app_radii.dart';
+import 'package:trooptrak_final_application/core/theme/app_shadows.dart';
 import 'package:trooptrak_final_application/core/theme/app_tab_indicator.dart';
 import 'package:trooptrak_final_application/core/theme/app_text_styles.dart';
 import 'package:trooptrak_final_application/core/theme/dark_theme.dart';
@@ -167,6 +169,7 @@ void main() {
     expect(AppRadii.sm, 8);
     expect(AppRadii.lg, 12);
     expect(AppRadii.segmented, 13);
+    expect(AppRadii.control, 14);
     expect(AppRadii.tile, 16);
     expect(AppRadii.xl, 20);
     expect(AppRadii.sheet, 28);
@@ -235,6 +238,16 @@ void main() {
     expect(caption.fontFamily, 'Barlow_regular');
     expect([caption.fontSize, caption.fontWeight], [13, FontWeight.w400]);
     expect(caption.color, AppColors.darkSecondaryText);
+  });
+
+  testWidgets('h3 is 16 px Barlow semibold in the colour it is given',
+      (tester) async {
+    useDesignSurface(tester);
+    await _build(tester, buildDarkTheme);
+    final h3 = AppTextStyles.h3(AppColors.white);
+    expect(h3.fontFamily, 'Barlow_600');
+    expect([h3.fontSize, h3.fontWeight], [16, FontWeight.w600]);
+    expect(h3.color, AppColors.white);
   });
 
   testWidgets('every bundled Barlow weight loads without runtime fetching',
@@ -524,6 +537,19 @@ void main() {
     expect(AppColors.onGradientLabel, const Color(0xCCFFFFFF));
     expect(AppColors.onGradientTickOff, const Color(0x33FFFFFF));
     expect(AppColors.onGradientTickFuture, const Color(0x12FFFFFF));
+  });
+
+  test('glass segmented control colours follow the mockup .seg.glass', () {
+    expect(AppColors.onGradientTrack, const Color(0x24FFFFFF));
+    expect(AppColors.onGradientSolidText, const Color(0xFF2B1580));
+    expect(AppColors.segmentShadow, const Color(0x59000000));
+    expect(AppShadows.segment.single.offset, const Offset(0, 2));
+  });
+
+  test('motion is the mockup 200/250 ms with its ease-out curve', () {
+    expect(AppMotion.quick, const Duration(milliseconds: 200));
+    expect(AppMotion.standard, const Duration(milliseconds: 250));
+    expect(AppMotion.ease, const Cubic(0.16, 1, 0.3, 1));
   });
 
   test('sheet surface is card2 in dark and card in light', () {

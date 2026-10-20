@@ -53,9 +53,9 @@ void main() {
     expect(find.text('5 Jul 2000'), findsOneWidget);
   }, variant: themeModes);
 
-  testWidgets('SectionHeader shows title and trailing', (tester) async {
+  testWidgets('SectionHeader shows title and caption', (tester) async {
     await tester.pumpThemed(
-      const SectionHeader('Participation Strength', trailing: Text('3')),
+      const SectionHeader('Participation Strength', caption: '3'),
       mode: themeModes.currentValue!,
     );
     expect(find.text('Participation Strength'), findsOneWidget);

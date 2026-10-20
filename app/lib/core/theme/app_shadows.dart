@@ -11,4 +11,13 @@ abstract final class AppShadows {
       color: AppColors.black54,
     ),
   ];
+
+  static const segment = [
+    BoxShadow(
+      blurRadius: 6,
+      spreadRadius: -2,
+      offset: Offset(0, 2),
+      color: AppColors.segmentShadow,
+    ),
+  ];
 }
