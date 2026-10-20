@@ -9,7 +9,7 @@ import '../../../../core/theme/app_radii.dart';
 import '../../../../core/theme/app_shadows.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/theme_context.dart';
-import '../../../../core/widgets/rank_avatar.dart';
+import '../../../../core/widgets/rank_plate.dart';
 import '../../../soldiers/domain/entities/soldier.dart';
 
 /// Rebuild of `nominal_roll_screen/util/solider_tile.dart` (R4, R10).
@@ -47,24 +47,11 @@ class SoldierTile extends StatelessWidget {
             borderRadius: BorderRadius.all(radius),
             child: Column(
               children: [
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Container(
-                    width: 40.w,
-                    height: 40.h,
-                    padding: EdgeInsets.all(5.sp),
-                    decoration: BoxDecoration(
-                      color: AppColors.black.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.only(
-                          topRight: radius, bottomLeft: radius),
-                    ),
-                    child: RankAvatar.insignia(soldier.rank, size: 30.w),
-                  ),
-                ),
                 Padding(
                   padding: EdgeInsets.symmetric(
-                      horizontal: AppSpacing.xxl.w, vertical: AppSpacing.sm.h),
-                  child: RankAvatar.person(soldier.rank, size: 90.w),
+                      horizontal: AppSpacing.xxl.w,
+                      vertical: AppSpacing.xxxl.h),
+                  child: RankPlate(soldier.rank, size: RankPlate.lg),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: AppSpacing.sm.w),

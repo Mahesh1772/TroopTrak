@@ -11,7 +11,7 @@ import '../../../../core/widgets/app_search_field.dart';
 import '../../../../core/widgets/app_snackbar.dart';
 import '../../../../core/widgets/person_tile.dart';
 import '../../../../core/widgets/primary_button.dart';
-import '../../../../core/widgets/rank_avatar.dart';
+import '../../../../core/widgets/rank_plate.dart';
 import '../../../../core/widgets/state_view.dart';
 import '../../domain/usecases/duty_usecases.dart';
 import '../providers/duty_form_provider.dart';
@@ -96,11 +96,7 @@ class _Slot extends StatelessWidget {
             : Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircleAvatar(
-                    backgroundColor: AppColors.black,
-                    child: RankAvatar.insignia(rank!,
-                        size: 20.w, color: AppColors.white),
-                  ),
+                  RankPlate(rank!),
                   SizedBox(height: AppSpacing.xs.h),
                   SizedBox(
                     width: 90.w,

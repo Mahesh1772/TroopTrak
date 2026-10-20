@@ -90,13 +90,9 @@ void main() {
       expect(File(RankAssets.soldierIcon).existsSync(), isTrue);
     });
 
-    test('insignia tint applies to enlisted, specialists and warrant officers',
-        () {
-      final tinted = Ranks.all.where(RankAssets.tintInsignia).toList();
-      expect(
-          tinted,
-          'REC PTE LCP CPL CFC 3SG 2SG 1SG SSG MSG 3WO 2WO 1WO MWO SWO CWO'
-              .split(' '));
+    test('only the warrant officer insignia are pale', () {
+      final pale = Ranks.all.where(RankAssets.paleInsignia).toList();
+      expect(pale, '3WO 2WO 1WO MWO SWO CWO'.split(' '));
     });
   });
 

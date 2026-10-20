@@ -8,7 +8,7 @@ import '../theme/app_radii.dart';
 import '../theme/app_shadows.dart';
 import '../theme/app_spacing.dart';
 import '../theme/theme_context.dart';
-import 'rank_avatar.dart';
+import 'rank_plate.dart';
 
 /// Rank-coloured mini card with person icon, insignia and name; the source
 /// drew it for duty participants and dashboard breakdowns.
@@ -46,13 +46,7 @@ class SoldierCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      RankAvatar.person(rank, size: 60.w),
-                      RankAvatar.insignia(rank, size: 30.w, tint: false),
-                    ],
-                  ),
+                  RankPlate(rank, size: RankPlate.lg),
                   SizedBox(height: AppSpacing.md.h),
                   AutoSizeText(
                     name,

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:trooptrak_final_application/core/theme/app_colors.dart';
 import 'package:trooptrak_final_application/core/widgets/app_scaffold.dart';
 import 'package:trooptrak_final_application/core/widgets/app_search_field.dart';
 import 'package:trooptrak_final_application/core/widgets/expandable_count_tile.dart';
 import 'package:trooptrak_final_application/core/widgets/info_row.dart';
 import 'package:trooptrak_final_application/core/widgets/person_tile.dart';
-import 'package:trooptrak_final_application/core/widgets/rank_avatar.dart';
 import 'package:trooptrak_final_application/core/widgets/section_header.dart';
 
 import '../../helpers/pump_app.dart';
@@ -63,38 +61,6 @@ void main() {
     expect(find.text('Participation Strength'), findsOneWidget);
     expect(find.text('3'), findsOneWidget);
   }, variant: themeModes);
-
-  group('RankAvatar', () {
-    testWidgets('insignia uses lowercase rank asset and tints dark insignia',
-        (tester) async {
-      await tester.pumpThemed(const Row(children: [
-        RankAvatar.insignia('3SG', key: Key('sg')),
-        RankAvatar.insignia('CPT', key: Key('cpt')),
-      ]));
-      final sg = tester.widget<RankAvatar>(find.byKey(const Key('sg')));
-      expect(sg.assetPath, 'lib/assets/army-ranks/3sg.png');
-      final images = tester.widgetList<Image>(find.byType(Image)).toList();
-      expect(images[0].color, AppColors.white70);
-      expect(images[1].color, isNull);
-    });
-
-    testWidgets('person icon picks men.png for enlisted', (tester) async {
-      await tester.pumpThemed(const Row(children: [
-        RankAvatar.person('PTE', key: Key('pte')),
-        RankAvatar.person('LTA', key: Key('lta')),
-      ]));
-      expect(tester.widget<RankAvatar>(find.byKey(const Key('pte'))).assetPath,
-          'lib/assets/army-ranks/men.png');
-      expect(tester.widget<RankAvatar>(find.byKey(const Key('lta'))).assetPath,
-          'lib/assets/army-ranks/soldier.png');
-    });
-
-    testWidgets('unknown rank falls back to an icon', (tester) async {
-      await tester.pumpThemed(const RankAvatar.insignia('XYZ'));
-      await tester.pumpAndSettle();
-      expect(find.byIcon(Icons.military_tech), findsOneWidget);
-    });
-  });
 
   testWidgets('PersonTile shows name, reason, trailing and fires onTap',
       (tester) async {

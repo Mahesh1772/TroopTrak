@@ -7,6 +7,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
 import 'package:trooptrak_final_application/core/error/failures.dart';
 import 'package:trooptrak_final_application/core/widgets/feedback_views.dart';
+import 'package:trooptrak_final_application/core/widgets/rank_plate.dart';
 import 'package:trooptrak_final_application/features/attendance/domain/entities/attendance_record.dart';
 import 'package:trooptrak_final_application/features/attendance/domain/usecases/attendance_usecases.dart';
 import 'package:trooptrak_final_application/features/soldier_profile/presentation/pages/soldier_profile_page.dart';
@@ -97,21 +98,21 @@ void main() {
     expect(find.text('Section IC'), findsOneWidget);
     expect(find.text('ALPHA COMPANY'), findsOneWidget);
     expect(find.text('Platoon 1, Section 2'), findsOneWidget);
-    final insignia = tester.widget<Image>(find.byWidgetPredicate((w) =>
-        w is Image &&
-        w.image is AssetImage &&
-        (w.image as AssetImage).assetName == 'lib/assets/army-ranks/cpl.png'));
-    expect(insignia.color, Colors.white);
+    expect(tester.widget<RankPlate>(find.byType(RankPlate)).rank, 'CPL');
+    final insignia = tester.widget<Image>(find.descendant(
+        of: find.byType(RankPlate), matching: find.byType(Image)));
+    expect((insignia.image as AssetImage).assetName,
+        'lib/assets/army-ranks/cpl.png');
   }, variant: themeModes);
 
-  testWidgets('officer insignia keeps its own colours', (tester) async {
+  testWidgets('insignia keeps its own colours on the plate', (tester) async {
     await pumpProfile(tester);
     soldier.add(Right(buildSoldier(rank: '2LT')));
     await tester.pumpAndSettle();
-    final insignia = tester.widget<Image>(find.byWidgetPredicate((w) =>
-        w is Image &&
-        w.image is AssetImage &&
-        (w.image as AssetImage).assetName == 'lib/assets/army-ranks/2lt.png'));
+    final insignia = tester.widget<Image>(find.descendant(
+        of: find.byType(RankPlate), matching: find.byType(Image)));
+    expect((insignia.image as AssetImage).assetName,
+        'lib/assets/army-ranks/2lt.png');
     expect(insignia.color, isNull);
   });
 

@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../core/constants/rank_assets.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radii.dart';
 import '../../../../core/theme/app_shadows.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/theme_context.dart';
 import '../../../../core/widgets/app_search_field.dart';
-import '../../../../core/widgets/rank_avatar.dart';
+import '../../../../core/widgets/rank_plate.dart';
 import '../../../../core/widgets/state_view.dart';
 import '../../../soldiers/domain/entities/soldier.dart';
 import '../providers/leaderboard_provider.dart';
@@ -87,14 +86,7 @@ class LeaderboardTab extends StatelessWidget {
                   key: ValueKey('row-${s.id}'),
                   cells: [
                     DataCell(Center(
-                      child: RankAvatar.insignia(
-                        s.rank,
-                        size: 35.w,
-                        tint: false,
-                        color: RankAssets.tintInsignia(s.rank)
-                            ? AppColors.warning
-                            : null,
-                      ),
+                      child: RankPlate(s.rank, size: RankPlate.sm),
                     )),
                     DataCell(Text(s.name, style: text.bodyMedium)),
                     DataCell(Text('${s.points}', style: text.bodyMedium)),

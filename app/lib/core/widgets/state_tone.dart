@@ -3,6 +3,9 @@ import 'dart:ui' show Color;
 import '../../features/statuses/domain/services/parade_state.dart';
 import '../theme/app_palette.dart';
 
+const _tint = 0.16;
+const _tintStrong = 0.18;
+
 enum StateTone {
   inCamp,
   excuse,
@@ -18,6 +21,23 @@ enum StateTone {
         medical => palette.statusMedical,
         out => palette.tickOff,
         accent => palette.accent,
+      };
+
+  /// Legible text colour for this tone on a card.
+  Color text(AppPalette palette) => switch (this) {
+        inCamp => palette.successText,
+        excuse => palette.excuseText,
+        leave => palette.leaveText,
+        medical => palette.medicalText,
+        out => palette.secondaryText,
+        accent => palette.accentText,
+      };
+
+  /// Soft background that sits behind [text].
+  Color tint(AppPalette palette) => switch (this) {
+        out => palette.hover,
+        medical || accent => fill(palette).withValues(alpha: _tintStrong),
+        _ => fill(palette).withValues(alpha: _tint),
       };
 }
 

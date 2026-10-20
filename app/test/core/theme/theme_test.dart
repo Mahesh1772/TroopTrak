@@ -163,6 +163,7 @@ void main() {
   });
 
   test('radii follow the mockup scale', () {
+    expect(AppRadii.xs, 5);
     expect(AppRadii.sm, 8);
     expect(AppRadii.lg, 12);
     expect(AppRadii.segmented, 13);

@@ -12,7 +12,7 @@ import '../../../../core/utils/date_formats.dart';
 import '../../../../core/widgets/app_search_field.dart';
 import '../../../../core/widgets/app_snackbar.dart';
 import '../../../../core/widgets/confirm_dialog.dart';
-import '../../../../core/widgets/rank_avatar.dart';
+import '../../../../core/widgets/rank_plate.dart';
 import '../../../../core/widgets/section_header.dart';
 import '../../../../core/widgets/state_view.dart';
 import '../../../soldiers/domain/entities/soldier.dart';
@@ -175,21 +175,13 @@ class _PersonRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final text = context.textStyles;
-    final tertiary = context.colors.tertiary;
     return Padding(
       key: Key('person-${soldier.name}'),
       padding: EdgeInsets.symmetric(
           horizontal: AppSpacing.xl.w, vertical: AppSpacing.sm.h),
       child: Row(
         children: [
-          Container(
-            padding: EdgeInsets.all(AppSpacing.lg.sp),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: tertiary),
-            ),
-            child: RankAvatar.insignia(soldier.rank, size: 20, color: tertiary),
-          ),
+          RankPlate(soldier.rank),
           SizedBox(width: AppSpacing.lg.w),
           Expanded(
             child: Column(

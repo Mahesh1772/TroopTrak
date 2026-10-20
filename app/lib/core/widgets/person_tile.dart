@@ -5,7 +5,7 @@ import '../theme/app_colors.dart';
 import '../theme/app_radii.dart';
 import '../theme/app_spacing.dart';
 import '../theme/theme_context.dart';
-import 'rank_avatar.dart';
+import 'rank_plate.dart';
 
 class PersonTile extends StatelessWidget {
   const PersonTile({
@@ -44,16 +44,7 @@ class PersonTile extends StatelessWidget {
             padding: EdgeInsets.all(AppSpacing.md.r),
             child: Row(
               children: [
-                CircleAvatar(
-                  radius: 30.r,
-                  backgroundColor:
-                      AppColors.personTile.withValues(alpha: muted ? 0.35 : 1),
-                  child: RankAvatar.insignia(
-                    rank,
-                    size: 30.w,
-                    color: muted ? onTile : null,
-                  ),
-                ),
+                Opacity(opacity: alpha, child: RankPlate(rank)),
                 SizedBox(width: AppSpacing.xxl.w),
                 Expanded(
                   child: Column(

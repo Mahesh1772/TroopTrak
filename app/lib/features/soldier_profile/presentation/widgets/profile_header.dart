@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/constants/rank_assets.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radii.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/theme_context.dart';
-import '../../../../core/widgets/rank_avatar.dart';
+import '../../../../core/widgets/rank_plate.dart';
 import '../../../soldiers/domain/entities/soldier.dart';
 
 /// Gradient header of the source detail and profile screens.
@@ -81,14 +80,7 @@ class ProfileHeader extends StatelessWidget {
                         ],
                       ),
                     ),
-                    RankAvatar.insignia(
-                      soldier.rank,
-                      size: 60.w,
-                      tint: false,
-                      color: RankAssets.tintInsignia(soldier.rank)
-                          ? AppColors.white
-                          : null,
-                    ),
+                    RankPlate(soldier.rank, size: RankPlate.lg),
                   ],
                 ),
               ),
