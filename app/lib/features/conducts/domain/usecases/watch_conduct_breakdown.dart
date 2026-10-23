@@ -9,44 +9,60 @@ import '../../../soldiers/domain/entities/soldier.dart';
 import '../../../soldiers/domain/repositories/soldier_repository.dart';
 import '../entities/conduct.dart';
 import '../repositories/conduct_repository.dart';
+import '../services/participation_ticks.dart';
+
+enum ConductGroup { participants, nonParticipants }
 
 class ConductBreakdown extends Equatable {
-  const ConductBreakdown({
-    required this.conduct,
-    required this.participants,
-    required this.nonParticipants,
-  });
+  const ConductBreakdown({required this.conduct, required this.roster});
 
   final Conduct conduct;
-  final List<Soldier> participants;
-  final List<Soldier> nonParticipants;
+  final List<Soldier> roster;
 
-  /// Case-insensitive name search over both lists, as the source details page.
+  List<Soldier> get participants => [
+        for (final s in roster)
+          if (conduct.includes(s.name)) s
+      ];
+
+  List<Soldier> get nonParticipants => [
+        for (final s in roster)
+          if (!conduct.includes(s.name)) s
+      ];
+
+  List<Soldier> members(ConductGroup group) => switch (group) {
+        ConductGroup.participants => participants,
+        ConductGroup.nonParticipants => nonParticipants,
+      };
+
+  /// The appointment of a participant, the reason a non-participant is out.
+  String noteFor(Soldier soldier) => conduct.includes(soldier.name)
+      ? soldier.appointment
+      : conduct.reasonFor(soldier.name);
+
+  /// One tick per soldier, in roster order.
+  ParticipationTicks get ticks =>
+      participationTicks(roster: roster, conduct: conduct);
+
+  /// Case-insensitive name search over the roster, as the source details page.
   ConductBreakdown search(String query) {
     final q = query.toLowerCase();
-    bool keep(Soldier s) => q.isEmpty || s.name.toLowerCase().contains(q);
     return ConductBreakdown(
       conduct: conduct,
-      participants: participants.where(keep).toList(),
-      nonParticipants: nonParticipants.where(keep).toList(),
+      roster: [
+        for (final s in roster)
+          if (q.isEmpty || s.name.toLowerCase().contains(q)) s,
+      ],
     );
   }
 
-  bool get isEmpty => participants.isEmpty && nonParticipants.isEmpty;
+  bool get isEmpty => roster.isEmpty;
 
   @override
-  List<Object?> get props => [conduct, participants, nonParticipants];
+  List<Object?> get props => [conduct, roster];
 }
 
-ConductBreakdown breakdownOf(Conduct conduct, Iterable<Soldier> soldiers) {
-  final yes = <Soldier>[];
-  final no = <Soldier>[];
-  for (final s in soldiers) {
-    (conduct.includes(s.name) ? yes : no).add(s);
-  }
-  return ConductBreakdown(
-      conduct: conduct, participants: yes, nonParticipants: no);
-}
+ConductBreakdown breakdownOf(Conduct conduct, Iterable<Soldier> soldiers) =>
+    ConductBreakdown(conduct: conduct, roster: soldiers.toList());
 
 /// The conduct and every soldier split by participation, kept live.
 class WatchConductBreakdown implements StreamUseCase<ConductBreakdown, String> {

@@ -17,6 +17,9 @@ abstract final class AppTextStyles {
     return style.copyWith(letterSpacing: style.fontSize! * 0.01, height: 1.1);
   }
 
+  static TextStyle headerTitle(Color color) =>
+      barlow(28, FontWeight.w700, color).copyWith(height: 1.1);
+
   static TextStyle compactTitle(Color color) =>
       barlow(20, FontWeight.w600, color);
 

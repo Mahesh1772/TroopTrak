@@ -169,9 +169,51 @@ void main() {
     final soldier = buildSoldier();
     ConductBreakdown of(List<String> names) => ConductBreakdown(
         conduct: run,
-        participants: [for (final n in names) soldier.copyWith(name: n)],
-        nonParticipants: const []);
+        roster: [for (final n in names) soldier.copyWith(name: n)]);
     expect(of(['A']), of(['A']));
     expect(of(['A']), isNot(of(['B'])));
+  });
+
+  group('ConductBreakdown', () {
+    final staff = buildSoldier(
+        name: 'Tan Ah Kow', rank: 'CPL', appointment: 'Section IC');
+    final out = buildSoldier(name: 'Lee Wei', rank: '2LT');
+    final removed = buildSoldier(name: 'Lim Bah', rank: 'PTE');
+    final run = buildConduct(
+        participants: ['Tan Ah Kow'], soldierReason: {'Lee Wei': 'OL'});
+    final breakdown = breakdownOf(run, [out, staff, removed]);
+
+    test('members picks the group and keeps roster order', () {
+      expect(breakdown.members(ConductGroup.participants), [staff]);
+      expect(breakdown.members(ConductGroup.nonParticipants), [out, removed]);
+    });
+
+    test('noteFor is the appointment, the status reason or the fallback', () {
+      expect(breakdown.noteFor(staff), 'Section IC');
+      expect(breakdown.noteFor(out), 'OL');
+      expect(breakdown.noteFor(removed), Conduct.removedReason);
+    });
+
+    test('ticks run over the whole roster in order', () {
+      final ticks = breakdown.ticks;
+      expect(ticks.ticks.map((t) => t.soldier), [out, staff, removed]);
+      expect(ticks.ticks.map((t) => t.tookPart), [false, true, false]);
+      expect(ticks.participating, 1);
+      expect(ticks.total, 3);
+    });
+
+    test('search narrows the roster, so ticks and groups follow it', () {
+      final found = breakdown.search('LEE');
+      expect(found.roster, [out]);
+      expect(found.members(ConductGroup.participants), isEmpty);
+      expect(found.members(ConductGroup.nonParticipants), [out]);
+      expect(breakdown.search('').roster, breakdown.roster);
+    });
+
+    test('isEmpty is true only for an empty roster', () {
+      expect(breakdown.isEmpty, isFalse);
+      expect(breakdown.search('zzz').isEmpty, isTrue);
+      expect(breakdownOf(run, const []).isEmpty, isTrue);
+    });
   });
 }

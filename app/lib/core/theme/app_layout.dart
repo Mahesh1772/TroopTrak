@@ -76,4 +76,6 @@ abstract final class AppLayout {
   static const conductBadge = 48.0;
   static const conductBadgeIcon = 26.0;
   static const conductTick = 18.0;
+  static const conductDetailsTick = 28.0;
+  static const conductDetailsStripTop = 18.0;
 }

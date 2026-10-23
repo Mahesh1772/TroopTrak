@@ -7,9 +7,9 @@ import '../../../../core/theme/app_radii.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/gradient_header.dart';
+import '../../../../core/widgets/header_buttons.dart';
 import '../../../../core/widgets/rank_plate.dart';
 import '../../../soldiers/domain/entities/soldier.dart';
-import 'profile_header_actions.dart';
 
 const _unitFontSize = 14.0;
 const _unitIconSize = 18.0;

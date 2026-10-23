@@ -14,12 +14,12 @@ import '../../features/soldier_profile/presentation/pages/soldier_profile_page.d
 import '../../features/soldier_profile/presentation/profile_actions.dart';
 import '../../features/soldier_profile/presentation/profile_capabilities.dart';
 import '../../features/soldier_profile/presentation/providers/soldier_profile_provider.dart';
-import '../../features/soldier_profile/presentation/widgets/profile_header_actions.dart';
 import '../../features/soldiers/domain/entities/soldier.dart';
 import '../constants/ranks.dart';
 import '../services/clock.dart';
 import '../services/tick_source.dart';
 import '../usecase/usecase.dart';
+import '../widgets/header_buttons.dart';
 import '../widgets/hero_dialog_route.dart';
 import 'app_routes.dart';
 import 'route_builder.dart';
