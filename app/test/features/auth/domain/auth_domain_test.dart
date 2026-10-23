@@ -35,6 +35,31 @@ void main() {
       expect(AuthValidators.confirmPassword(' abc ', 'abc'), isNull);
     });
 
+    test('new password: the length rule first, then strength', () {
+      expect(AuthValidators.newPassword(''), 'Password can not be empty');
+      expect(AuthValidators.newPassword('1234567'),
+          'Password should be at least 8 characters long');
+      expect(AuthValidators.newPassword('password1'),
+          'Password needs to be stronger');
+      expect(AuthValidators.newPassword(' Trooper1! '), isNull);
+    });
+
+    test('repeated password', () {
+      expect(AuthValidators.repeatedPassword('abc', 'abd'),
+          'Make sure both Passwords match');
+      expect(AuthValidators.repeatedPassword(null, 'abd'),
+          'Make sure both Passwords match');
+      expect(AuthValidators.repeatedPassword(' abc ', 'abc'), isNull);
+    });
+
+    test('commander name', () {
+      expect(AuthValidators.commanderName('  '), 'You must have a name right');
+      expect(AuthValidators.commanderName(null), 'You must have a name right');
+      expect(AuthValidators.commanderName('12345'), 'Your name got number meh');
+      expect(AuthValidators.commanderName(' Lim '), isNull);
+      expect(AuthValidators.commanderName(' Tan Ah Kow '), isNull);
+    });
+
     test('soldier name: empty, all-numeric, shorter than 5', () {
       expect(AuthValidators.soldierName(''), 'Must have a name right');
       expect(AuthValidators.soldierName('12345'), 'Name got number meh');

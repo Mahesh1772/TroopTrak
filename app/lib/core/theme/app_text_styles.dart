@@ -12,6 +12,12 @@ abstract final class AppTextStyles {
 
   static TextStyle pageTitle(Color color) => barlow(24, FontWeight.w600, color);
 
+  static TextStyle compactTitle(Color color) =>
+      barlow(20, FontWeight.w600, color);
+
+  static TextStyle subtitle(Color color) =>
+      barlow(14.5, FontWeight.w400, color);
+
   static TextStyle h2(Color color) => barlow(18, FontWeight.w600, color);
 
   static TextStyle h3(Color color) => barlow(16, FontWeight.w600, color);

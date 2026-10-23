@@ -6,12 +6,13 @@ import '../../../../core/constants/ranks.dart';
 import '../../../../core/services/clock.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/app_snackbar.dart';
+import '../../../../core/widgets/app_text_field.dart';
+import '../../../../core/widgets/form_page_scaffold.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/profile_form_fields.dart';
 import '../../../soldiers/domain/entities/soldier.dart';
 import '../../domain/usecases/register_commander.dart';
 import '../../domain/validators/auth_validators.dart';
-import '../../domain/validators/password_rules.dart';
 import '../providers/commander_auth_provider.dart';
 import '../widgets/auth_header.dart';
 import '../widgets/password_checklist.dart';
@@ -38,15 +39,6 @@ class _CommanderRegisterPageState extends State<CommanderRegisterPage> {
     _confirm.dispose();
     _profile.dispose();
     super.dispose();
-  }
-
-  static String? _name(String? value) {
-    final v = value?.trim() ?? '';
-    if (v.isEmpty) return 'You must have a name right';
-    if (AuthValidators.soldierName(v) == 'Name got number meh') {
-      return 'Your name got number meh';
-    }
-    return null;
   }
 
   Future<void> _submit() async {
@@ -84,90 +76,60 @@ class _CommanderRegisterPageState extends State<CommanderRegisterPage> {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<CommanderAuthProvider>();
-    final gap = SizedBox(height: AppSpacing.lg.h);
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 25.w),
-          child: Form(
-            key: _formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                SizedBox(height: 30.h),
-                const AuthHeader(
-                  title: 'Sign Up!',
-                  subtitle: 'Make your life easier, Register',
-                ),
-                SizedBox(height: 30.h),
-                ProfileFormFields(
-                  controller: _profile,
-                  ranks: Ranks.commanderRegistration,
-                  nameValidator: _name,
-                  today: _today,
-                ),
-                gap,
-                TextFormField(
-                  key: const Key('register-email'),
-                  controller: _email,
-                  keyboardType: TextInputType.emailAddress,
-                  validator: AuthValidators.email,
-                  decoration: const InputDecoration(
-                    labelText: 'Email: (example - Email@example.com)',
-                    prefixIcon: Icon(Icons.email_outlined),
-                  ),
-                ),
-                gap,
-                TextFormField(
-                  key: const Key('register-password'),
-                  controller: _password,
-                  obscureText: true,
-                  validator: (v) =>
-                      AuthValidators.password(v) ??
-                      (PasswordRule.isStrong(v!.trim())
-                          ? null
-                          : 'Password needs to be stronger'),
-                  decoration: const InputDecoration(
-                    labelText: 'Enter password:',
-                    prefixIcon: Icon(Icons.lock_open),
-                  ),
-                ),
-                SizedBox(height: AppSpacing.sm.h),
-                PasswordChecklist(controller: _password),
-                gap,
-                TextFormField(
-                  key: const Key('register-confirm'),
-                  controller: _confirm,
-                  obscureText: true,
-                  validator: (v) => (v?.trim() ?? '') == _password.text.trim()
-                      ? null
-                      : 'Make sure both Passwords match',
-                  decoration: const InputDecoration(
-                    labelText: 'Confirm password:',
-                    prefixIcon: Icon(Icons.lock),
-                  ),
-                ),
-                SizedBox(height: AppSpacing.xxl.h),
-                PrimaryButton(
-                  key: const Key('registerButton'),
-                  label: 'Sign Up',
-                  loading: provider.loading,
-                  onPressed: _submit,
-                ),
-                gap,
-                AuthSwitchPrompt(
-                  prompt: 'Alr have an account?',
-                  action: 'Login here',
-                  actionKey: const Key('signInPageButton'),
-                  onTap: provider.toggleMode,
-                ),
-                gap,
-              ],
-            ),
-          ),
-        ),
+    return FormPageScaffold(
+      formKey: _formKey,
+      cta: PrimaryButton(
+        key: const Key('registerButton'),
+        label: 'Sign Up',
+        loading: provider.loading,
+        onPressed: _submit,
       ),
+      children: [
+        SizedBox(height: AppSpacing.xxl.h),
+        const AuthHeader(
+          title: 'Sign Up!',
+          subtitle: 'Make your life easier, Register',
+        ),
+        SizedBox(height: AppSpacing.xxl.h),
+        ProfileFormFields(
+          controller: _profile,
+          ranks: Ranks.commanderRegistration,
+          nameValidator: AuthValidators.commanderName,
+          today: _today,
+        ),
+        AppTextField(
+          key: const Key('register-email'),
+          controller: _email,
+          label: 'Email:',
+          hintText: 'Email@example.com',
+          icon: Icons.email_rounded,
+          keyboardType: TextInputType.emailAddress,
+          validator: AuthValidators.email,
+        ),
+        AppTextField(
+          key: const Key('register-password'),
+          controller: _password,
+          label: 'Enter password:',
+          icon: Icons.lock_open_rounded,
+          obscureText: true,
+          validator: AuthValidators.newPassword,
+        ),
+        PasswordChecklist(controller: _password),
+        AppTextField(
+          key: const Key('register-confirm'),
+          controller: _confirm,
+          label: 'Confirm password:',
+          icon: Icons.lock_rounded,
+          obscureText: true,
+          validator: (v) => AuthValidators.repeatedPassword(v, _password.text),
+        ),
+        AuthSwitchPrompt(
+          prompt: 'Alr have an account?',
+          action: 'Login here',
+          actionKey: const Key('signInPageButton'),
+          onTap: provider.toggleMode,
+        ),
+      ],
     );
   }
 }

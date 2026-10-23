@@ -12,6 +12,9 @@ import 'package:trooptrak_final_application/features/soldiers/domain/entities/so
 import '../../../helpers/builders.dart';
 import '../../../helpers/pump_app.dart';
 
+Finder _input(String key) => find.descendant(
+    of: find.byKey(Key(key)), matching: find.byType(InputDecorator));
+
 class _MockComplete extends Mock implements CompleteSoldierProfile {}
 
 void main() {
@@ -87,11 +90,37 @@ void main() {
   testWidgets('renders the source heading and the dates start empty',
       (tester) async {
     await pumpPage(tester, mode: themeModes.currentValue!);
-    expect(find.text("Let's get things set up  ✍️"), findsOneWidget);
-    expect(find.text('Date of Birth'), findsOneWidget);
-    expect(find.text('Enlistment Date'), findsOneWidget);
-    expect(find.text('ORD'), findsOneWidget);
+    expect(find.text("Let's get things set up"), findsOneWidget);
+    expect(find.text('Date of Birth:'), findsOneWidget);
+    expect(find.text('Enlistment Date:'), findsOneWidget);
+    expect(find.text('ORD:'), findsOneWidget);
+    expect(find.text('Pick a date'), findsNWidgets(3));
     expect(find.text('5 Jul 2023'), findsNothing);
+  }, variant: themeModes);
+
+  testWidgets('labels sit above their fields and the button stays pinned',
+      (tester) async {
+    await pumpPage(tester, mode: themeModes.currentValue!);
+    final button = find.byKey(const Key('captureButton'));
+
+    for (final (label, key) in [
+      ('Enter Name (as in NRIC):', 'profile-name'),
+      ('Appointment (in unit):', 'profile-appointment'),
+      ('Ration type:', 'profile-ration'),
+      ('Blood type:', 'profile-blood'),
+      ('Date of Birth:', 'profile-dob'),
+    ]) {
+      expect(tester.getRect(find.text(label)).bottom,
+          lessThan(tester.getRect(_input(key)).top),
+          reason: label);
+    }
+
+    final before = tester.getRect(button);
+    await tester.drag(
+        find.byType(SingleChildScrollView), const Offset(0, -600));
+    await tester.pumpAndSettle();
+    expect(tester.getRect(button), before);
+    expect(before.bottom, lessThanOrEqualTo(tester.view.physicalSize.height));
   }, variant: themeModes);
 
   testWidgets('empty submit shows every validator and no save', (tester) async {

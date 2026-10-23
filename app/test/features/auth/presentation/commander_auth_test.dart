@@ -17,6 +17,9 @@ import 'package:trooptrak_final_application/features/auth/presentation/providers
 import '../../../helpers/builders.dart';
 import '../../../helpers/pump_app.dart';
 
+Finder _input(String key) => find.descendant(
+    of: find.byKey(Key(key)), matching: find.byType(InputDecorator));
+
 class _MockSignIn extends Mock implements SignInWithEmail {}
 
 class _MockRegister extends Mock implements RegisterCommander {}
@@ -186,14 +189,28 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('Sign Up!'), findsOneWidget);
 
+      final button = find.byKey(const Key('registerButton'));
+      final pinned = tester.getRect(button);
+      expect(pinned.bottom, lessThanOrEqualTo(tester.view.physicalSize.height));
       await tester.scrollUntilVisible(
-          find.byKey(const Key('registerButton')), 300,
+          find.byKey(const Key('signInPageButton')), 300,
           scrollable: find.byType(Scrollable).first);
-      await tester.tap(find.byKey(const Key('registerButton')));
+      expect(tester.getRect(button), pinned);
+      await tester.tap(button);
       await tester.pumpAndSettle();
       expect(find.text('Details missing'), findsOneWidget);
       expect(find.text('Password needs to be stronger'), findsNothing);
       verifyNever(() => register(any()));
+      for (final (label, key) in [
+        ('Email:', 'register-email'),
+        ('Enter password:', 'register-password'),
+        ('Confirm password:', 'register-confirm'),
+      ]) {
+        await tester.ensureVisible(find.text(label));
+        expect(tester.getRect(find.text(label)).bottom,
+            lessThan(tester.getRect(_input(key)).top),
+            reason: label);
+      }
 
       await tester.pump(const Duration(seconds: 5));
       await tester.pumpAndSettle();

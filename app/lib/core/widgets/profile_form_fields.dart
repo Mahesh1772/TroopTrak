@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../features/soldiers/domain/validators/profile_date_limits.dart';
+import '../../features/soldiers/domain/validators/soldier_validators.dart';
 import '../constants/blood_types.dart';
 import '../constants/ration_types.dart';
 import '../theme/app_spacing.dart';
 import 'app_dropdown_field.dart';
+import 'app_text_field.dart';
 import 'picker_fields.dart';
 
 /// Holds the soldier profile fields shared by register, profile capture and
@@ -69,9 +72,8 @@ class ProfileFormController extends ChangeNotifier {
   }
 }
 
-String? _required(String? value, String message) =>
-    (value == null || value.trim().isEmpty) ? message : null;
-
+/// The labelled fields of the soldier profile, one per row. Validation comes
+/// from [SoldierValidators]; only the name rule varies by screen.
 class ProfileFormFields extends StatelessWidget {
   const ProfileFormFields({
     super.key,
@@ -90,95 +92,104 @@ class ProfileFormFields extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final gap = SizedBox(height: AppSpacing.lg.h);
     return ListenableBuilder(
       listenable: controller,
       builder: (context, _) => Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
+        spacing: AppSpacing.md.h,
         children: [
-          _text('profile-name', controller.name, nameLabel, Icons.person,
-              nameValidator),
-          gap,
-          _text(
-              'profile-appointment',
-              controller.appointment,
-              'Appointment (in unit):',
-              Icons.work_outline,
-              (v) => _required(v, 'Appointment Missing')),
-          gap,
+          AppTextField(
+            key: const Key('profile-name'),
+            controller: controller.name,
+            label: nameLabel,
+            icon: Icons.person_rounded,
+            validator: nameValidator,
+          ),
+          AppTextField(
+            key: const Key('profile-appointment'),
+            controller: controller.appointment,
+            label: 'Appointment (in unit):',
+            icon: Icons.work_outline_rounded,
+            validator: SoldierValidators.appointment,
+          ),
           AppDropdownField<String>(
             key: const Key('profile-ration'),
+            label: 'Ration type:',
             items: RationTypes.all,
             value: controller.rationType,
             hintText: 'Select your ration type...',
-            prefixIcon: Icons.restaurant,
-            validator: (v) => v == null ? 'Walao what food you eat?' : null,
+            prefixIcon: Icons.restaurant_rounded,
+            validator: SoldierValidators.rationType,
             onChanged: (v) =>
                 controller.update(() => controller.rationType = v),
           ),
-          gap,
           AppDropdownField<String>(
             key: const Key('profile-rank'),
+            label: 'Rank:',
             items: ranks,
             value: controller.rank,
             hintText: 'Select your rank...',
-            prefixIcon: Icons.military_tech,
-            validator: (v) => v == null ? 'Walao provide rank liao' : null,
+            prefixIcon: Icons.military_tech_rounded,
+            validator: SoldierValidators.rank,
             onChanged: (v) => controller.update(() => controller.rank = v),
           ),
-          gap,
           AppDropdownField<String>(
             key: const Key('profile-blood'),
+            label: 'Blood type:',
             items: BloodTypes.all,
             value: controller.bloodGroup,
             hintText: 'Select your blood type...',
-            prefixIcon: Icons.bloodtype,
-            validator: (v) =>
-                v == null ? 'Why your blood field empty ah?' : null,
+            prefixIcon: Icons.bloodtype_rounded,
+            validator: SoldierValidators.bloodGroup,
             onChanged: (v) =>
                 controller.update(() => controller.bloodGroup = v),
           ),
-          gap,
           _date(
             key: 'profile-dob',
-            hint: 'Date of Birth',
-            missing: 'Select your date of birth',
-            icon: Icons.cake,
+            label: 'Date of Birth:',
+            icon: Icons.cake_rounded,
             value: controller.dob,
-            lastDate: today,
+            lastDate: ProfileDateLimits.latestBirth(today),
+            validator: SoldierValidators.dateOfBirth,
             set: (d) => controller.dob = d,
           ),
-          gap,
-          _text('profile-company', controller.company, 'Company:', Icons.groups,
-              (v) => _required(v, 'Company Name Missing')),
-          gap,
-          _text('profile-platoon', controller.platoon, 'Platoon:', Icons.group,
-              (v) => _required(v, 'Platoon Information Missing')),
-          gap,
-          _text(
-              'profile-section',
-              controller.section,
-              'Section/Detail:',
-              Icons.person_pin,
-              (v) => _required(v, 'Section Information Missing')),
-          gap,
+          AppTextField(
+            key: const Key('profile-company'),
+            controller: controller.company,
+            label: 'Company:',
+            icon: Icons.groups_rounded,
+            validator: SoldierValidators.company,
+          ),
+          AppTextField(
+            key: const Key('profile-platoon'),
+            controller: controller.platoon,
+            label: 'Platoon:',
+            icon: Icons.group_rounded,
+            validator: SoldierValidators.platoon,
+          ),
+          AppTextField(
+            key: const Key('profile-section'),
+            controller: controller.section,
+            label: 'Section/Detail:',
+            icon: Icons.person_pin_rounded,
+            validator: SoldierValidators.section,
+          ),
           _date(
             key: 'profile-enlistment',
-            hint: 'Enlistment Date',
-            missing: 'Select your enlistment date',
-            icon: Icons.login,
+            label: 'Enlistment Date:',
+            icon: Icons.login_rounded,
             value: controller.enlistment,
-            lastDate: DateTime(2100),
+            lastDate: ProfileDateLimits.latest,
+            validator: SoldierValidators.enlistmentDate,
             set: (d) => controller.enlistment = d,
           ),
-          gap,
           _date(
             key: 'profile-ord',
-            hint: 'ORD',
-            missing: 'Select your ORD date',
-            icon: Icons.logout,
+            label: 'ORD:',
+            icon: Icons.logout_rounded,
             value: controller.ord,
-            lastDate: DateTime(2100),
+            lastDate: ProfileDateLimits.latest,
+            validator: SoldierValidators.ordDate,
             set: (d) => controller.ord = d,
           ),
         ],
@@ -188,36 +199,23 @@ class ProfileFormFields extends StatelessWidget {
 
   Widget _date({
     required String key,
-    required String hint,
-    required String missing,
+    required String label,
     required IconData icon,
     required DateTime? value,
     required DateTime lastDate,
+    required FormFieldValidator<DateTime> validator,
     required ValueSetter<DateTime> set,
   }) =>
       DatePickerField(
         key: Key(key),
-        hintText: hint,
+        label: label,
+        hintText: 'Pick a date',
         value: value,
         initialDate: today,
         icon: icon,
-        firstDate: DateTime(1960),
+        firstDate: ProfileDateLimits.earliest,
         lastDate: lastDate,
-        validator: (d) => d == null ? missing : null,
-        onChanged: (d) => controller.update(() => set(d)),
-      );
-
-  Widget _text(
-    String key,
-    TextEditingController c,
-    String label,
-    IconData icon,
-    FormFieldValidator<String> validator,
-  ) =>
-      TextFormField(
-        key: Key(key),
-        controller: c,
         validator: validator,
-        decoration: InputDecoration(labelText: label, prefixIcon: Icon(icon)),
+        onChanged: (d) => controller.update(() => set(d)),
       );
 }

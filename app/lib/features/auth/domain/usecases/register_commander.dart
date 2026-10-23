@@ -10,7 +10,6 @@ import '../../../soldiers/domain/entities/soldier.dart';
 import '../../../soldiers/domain/repositories/soldier_repository.dart';
 import '../repositories/auth_repository.dart';
 import '../validators/auth_validators.dart';
-import '../validators/password_rules.dart';
 
 class CommanderRegistration extends Equatable {
   const CommanderRegistration({
@@ -42,11 +41,8 @@ class RegisterCommander implements UseCase<Unit, CommanderRegistration> {
 
   @override
   Result<Unit> call(CommanderRegistration r) async {
-    final error = AuthValidators.email(r.email) ??
-        AuthValidators.password(r.password) ??
-        (PasswordRule.isStrong(r.password.trim())
-            ? null
-            : 'Password needs to be stronger');
+    final error =
+        AuthValidators.email(r.email) ?? AuthValidators.newPassword(r.password);
     if (error != null) return Left(ValidationFailure(error));
 
     final name = r.profile.name.trim().titleCase;
