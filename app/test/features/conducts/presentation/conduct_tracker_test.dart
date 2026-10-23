@@ -129,6 +129,82 @@ void main() {
       expect(p.lastDay, DateTime(2024, 7, 5));
       p.dispose();
     });
+
+    group('tick data', () {
+      final roster = [
+        for (final n in ['A', 'B', 'C', 'D']) buildSoldier(name: n)
+      ];
+
+      void rosterIs(List<Soldier> list) => when(() => soldiers(any()))
+          .thenAnswer((_) => Stream.value(Right<Failure, List<Soldier>>(list)));
+
+      test('keeps the roster in the order it arrives', () async {
+        rosterIs(roster);
+        final p = provider();
+        expect(p.roster, isEmpty);
+        await Future<void>.delayed(Duration.zero);
+        expect(p.roster, roster);
+        p.dispose();
+      });
+
+      test('a failed roster stream keeps the last good roster', () async {
+        final controller = StreamController<Either<Failure, List<Soldier>>>();
+        when(() => soldiers(any())).thenAnswer((_) => controller.stream);
+        final p = provider();
+        controller.add(Right(roster));
+        await Future<void>.delayed(Duration.zero);
+        controller.add(const Left(ServerFailure('Roster down')));
+        await Future<void>.delayed(Duration.zero);
+        expect(p.roster, roster);
+        p.dispose();
+        await controller.close();
+      });
+
+      test('ticksFor marks who took part, one tick per rostered soldier',
+          () async {
+        rosterIs(roster);
+        final p = provider();
+        await Future<void>.delayed(Duration.zero);
+
+        final ticks = p.ticksFor(run);
+        expect(ticks.ticks.map((t) => t.soldier), roster);
+        expect(ticks.ticks.map((t) => t.tookPart), [true, true, true, false]);
+        expect(ticks.participating, 3);
+        expect(ticks.total, 4);
+        expect(ticks.self, isNull);
+        p.dispose();
+      });
+
+      test('ticksFor marks the signed-in soldier, who took part or not',
+          () async {
+        rosterIs(roster);
+        final p = provider(participant: 'B');
+        await Future<void>.delayed(Duration.zero);
+
+        expect(p.ticksFor(run).self?.soldier.name, 'B');
+        expect(p.ticksFor(run).self?.tookPart, isTrue);
+        expect(p.ticksFor(ippt).self?.soldier.name, 'B');
+        expect(p.ticksFor(ippt).self?.tookPart, isFalse);
+        p.dispose();
+      });
+
+      test('ticksFor is empty until the roster arrives', () {
+        rosterIs(roster);
+        final p = provider();
+        expect(p.ticksFor(run).ticks, isEmpty);
+        p.dispose();
+      });
+
+      test('listeners are told when the roster arrives', () async {
+        rosterIs(roster);
+        final p = provider();
+        var notified = 0;
+        p.addListener(() => notified++);
+        await Future<void>.delayed(Duration.zero);
+        expect(notified, greaterThan(0));
+        p.dispose();
+      });
+    });
   });
 
   Future<RouteRecorder> pumpTracker(WidgetTester tester,
