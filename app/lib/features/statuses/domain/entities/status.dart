@@ -32,6 +32,9 @@ class Status extends Equatable {
   bool get isLeave => type == StatusTypes.leave;
   bool get isMedicalAppointment => type == StatusTypes.medicalAppointment;
 
+  /// R21: only these two types book the soldier out.
+  bool get booksOut => isLeave || isMedicalAppointment;
+
   /// R2: active up to and including the end day; the start day is not checked.
   bool isActiveOn(DateTime day) => dayDifference(day, end) <= 0;
 

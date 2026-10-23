@@ -24,7 +24,8 @@ Widget _validated<T>({
 }
 
 /// A tappable field that opens the date picker. [label] sits above the field;
-/// [hintText] shows inside it until a [value] is picked.
+/// [hintText] shows inside it until a [value] is picked. [invalid] draws the
+/// error border with no message, for fields that share a message elsewhere.
 class DatePickerField extends StatelessWidget {
   const DatePickerField({
     super.key,
@@ -37,6 +38,7 @@ class DatePickerField extends StatelessWidget {
     this.initialDate,
     this.icon = Icons.calendar_month_rounded,
     this.errorText,
+    this.invalid = false,
     this.validator,
   });
 
@@ -49,6 +51,7 @@ class DatePickerField extends StatelessWidget {
   final DateTime? initialDate;
   final IconData icon;
   final String? errorText;
+  final bool invalid;
   final FormFieldValidator<DateTime>? validator;
 
   DateTime get _initial {
@@ -81,6 +84,7 @@ class DatePickerField extends StatelessWidget {
           hintText: hintText,
           text: value == null ? null : formatDay(value!),
           errorText: error,
+          invalid: invalid,
           onTap: () => _pick(context, report),
         ),
       );
@@ -149,6 +153,7 @@ class _PickerShell extends StatelessWidget {
     required this.text,
     required this.errorText,
     required this.onTap,
+    this.invalid = false,
   });
 
   final IconData icon;
@@ -156,6 +161,7 @@ class _PickerShell extends StatelessWidget {
   final String hintText;
   final String? text;
   final String? errorText;
+  final bool invalid;
   final VoidCallback onTap;
 
   @override
@@ -173,6 +179,8 @@ class _PickerShell extends StatelessWidget {
             prefixIconConstraints: fieldPrefixConstraints,
             hintText: hintText,
             errorText: errorText,
+            error:
+                invalid && errorText == null ? const SizedBox.shrink() : null,
           ),
           child: text == null
               ? null

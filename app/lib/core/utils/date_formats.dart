@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 abstract final class DatePatterns {
   static const day = 'd MMM yyyy';
   static const time = 'h:mm a';
+  static const clock = 'HH:mm';
   static const weekdayDay = 'E d MMM yyyy';
   static const attendanceDisplay = 'E d MMM yyyy HH:mm:ss';
   static const attendanceDocId = 'yyyy-MM-dd HH:mm:ss';
@@ -18,6 +19,7 @@ const _locale = 'en_US';
 
 final _day = DateFormat(DatePatterns.day, _locale);
 final _time = DateFormat(DatePatterns.time, _locale);
+final _clock = DateFormat(DatePatterns.clock, _locale);
 final _weekdayDay = DateFormat(DatePatterns.weekdayDay, _locale);
 final _attendanceDisplay = DateFormat(DatePatterns.attendanceDisplay, _locale);
 final _attendanceDocId = DateFormat(DatePatterns.attendanceDocId, _locale);
@@ -47,6 +49,8 @@ String formatDaysLeft(int days) => switch (days) {
 DateTime? parseDay(String? value) => _parse(_day, value);
 
 String formatTime(DateTime time) => _time.format(time);
+
+String formatClock(DateTime time) => _clock.format(time);
 
 DateTime? parseTime(String? value) => _parse(_time, value);
 

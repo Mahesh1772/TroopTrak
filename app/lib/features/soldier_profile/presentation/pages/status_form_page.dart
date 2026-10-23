@@ -2,26 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../core/constants/status_names.dart';
-import '../../../../core/constants/status_types.dart';
 import '../../../../core/services/clock.dart';
 import '../../../../core/theme/app_spacing.dart';
-import '../../../../core/theme/theme_context.dart';
-import '../../../../core/widgets/app_dropdown_field.dart';
 import '../../../../core/widgets/app_snackbar.dart';
+import '../../../../core/widgets/app_text_field.dart';
+import '../../../../core/widgets/form_page_scaffold.dart';
+import '../../../../core/widgets/inline_error.dart';
 import '../../../../core/widgets/picker_fields.dart';
 import '../../../../core/widgets/primary_button.dart';
+import '../../../soldiers/domain/entities/soldier.dart';
 import '../../../statuses/domain/entities/status.dart';
+import '../../../statuses/domain/services/book_out_note.dart';
 import '../../../statuses/domain/usecases/status_usecases.dart';
-import '../widgets/suggestion_field.dart';
+import '../../../statuses/domain/validators/status_validators.dart';
+import '../widgets/book_out_note_card.dart';
+import '../widgets/soldier_summary_card.dart';
+import '../widgets/status_type_field.dart';
+import '../widgets/suggestion_chips.dart';
 
 /// Rebuild of `add_new_status_screen.dart` and `update_status_screen.dart`.
 /// The source update screen saved on every change and reverted on back; here
 /// nothing is written until UPDATE STATUS.
 class StatusFormPage extends StatefulWidget {
-  const StatusFormPage({super.key, required this.soldierId, this.status});
+  const StatusFormPage({super.key, required this.soldier, this.status});
 
-  final String soldierId;
+  final Soldier soldier;
 
   /// The status being edited; null to add a new one.
   final Status? status;
@@ -41,6 +46,17 @@ class _StatusFormPageState extends State<StatusFormPage> {
 
   bool get _isUpdate => widget.status != null;
 
+  Status get _draft => Status(
+        id: widget.status?.id ?? '',
+        soldierId: widget.soldier.id,
+        type: _type ?? '',
+        name: _name.text,
+        start: _start,
+        end: _end,
+        startAttendanceId: widget.status?.startAttendanceId,
+        endAttendanceId: widget.status?.endAttendanceId,
+      );
+
   @override
   void dispose() {
     _name.dispose();
@@ -52,16 +68,7 @@ class _StatusFormPageState extends State<StatusFormPage> {
       AppSnackbar.error(context, 'Details missing');
       return;
     }
-    final draft = Status(
-      id: widget.status?.id ?? '',
-      soldierId: widget.soldierId,
-      type: _type!,
-      name: _name.text,
-      start: _start,
-      end: _end,
-      startAttendanceId: widget.status?.startAttendanceId,
-      endAttendanceId: widget.status?.endAttendanceId,
-    );
+    final draft = _draft;
     setState(() => _saving = true);
     final result = await (_isUpdate
         ? context.read<UpdateStatus>()(
@@ -84,88 +91,78 @@ class _StatusFormPageState extends State<StatusFormPage> {
 
   @override
   Widget build(BuildContext context) {
-    final text = context.textStyles;
-    final gap = SizedBox(height: 30.h);
-    return Scaffold(
-      appBar: AppBar(),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: AppSpacing.md.w),
-          child: Form(
-            key: _formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+    final periodError = StatusValidators.period(_start, _end);
+    final note = bookOutNote(_draft, widget.soldier);
+    return FormPageScaffold(
+      formKey: _formKey,
+      title:
+          _isUpdate ? 'Edit the status for this soldier' : 'Add a new status',
+      subtitle: 'Fill in the details of the status',
+      cta: PrimaryButton(
+        key: const Key('saveStatus'),
+        label: _isUpdate ? 'UPDATE STATUS' : 'ADD STATUS',
+        icon: _isUpdate ? Icons.edit_rounded : Icons.add_rounded,
+        loading: _saving,
+        onPressed: _submit,
+      ),
+      children: [
+        SoldierSummaryCard(soldier: widget.soldier),
+        StatusTypeField(
+          key: const Key('statusType'),
+          initialValue: _type,
+          onChanged: (type) => setState(() => _type = type),
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            AppTextField(
+              key: const Key('statusName'),
+              controller: _name,
+              label: 'Enter Status Name:',
+              validator: StatusValidators.name,
+            ),
+            SuggestionChips(controller: _name, type: _type),
+          ],
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          spacing: AppSpacing.inline.h,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: AppSpacing.md.w,
               children: [
-                Text(
-                  _isUpdate
-                      ? 'Edit the status for this soldier ✍️'
-                      : "Let's add a new status for this soldier ✍️",
-                  style: text.displayLarge?.copyWith(fontSize: 30.sp),
+                Expanded(
+                  child: DatePickerField(
+                    key: const Key('statusStart'),
+                    label: 'Start date',
+                    hintText: 'Start date',
+                    value: _start,
+                    firstDate: DateTime(1960),
+                    lastDate: DateTime(2100),
+                    onChanged: (d) => setState(() => _start = d),
+                  ),
                 ),
-                Text('Fill in the details of the status',
-                    style:
-                        text.bodySmall?.copyWith(fontWeight: FontWeight.w400)),
-                SizedBox(height: 40.h),
-                AppDropdownField<String>(
-                  key: const Key('statusType'),
-                  items: StatusTypes.all,
-                  value: _type,
-                  hintText: 'Select status type...',
-                  validator: (v) => v == null ? 'Bruh select Dei!' : null,
-                  onChanged: (v) => setState(() => _type = v),
-                ),
-                gap,
-                SuggestionField(
-                  key: const Key('statusName'),
-                  controller: _name,
-                  suggestions: StatusNames.suggestions,
-                  labelText: 'Enter Status Name:',
-                  validator: (v) => (v ?? '').trim().isEmpty
-                      ? 'Oi can enter the status type please?'
-                      : null,
-                ),
-                gap,
-                Row(
-                  children: [
-                    Expanded(
-                      child: DatePickerField(
-                        key: const Key('statusStart'),
-                        hintText: 'Start date',
-                        value: _start,
-                        firstDate: DateTime(1960),
-                        lastDate: DateTime(2100),
-                        onChanged: (d) => setState(() => _start = d),
-                      ),
-                    ),
-                    SizedBox(width: AppSpacing.md.w),
-                    Expanded(
-                      child: DatePickerField(
-                        key: const Key('statusEnd'),
-                        hintText: 'End date',
-                        value: _end,
-                        firstDate: DateTime(1960),
-                        lastDate: DateTime(2100),
-                        onChanged: (d) => setState(() => _end = d),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 40.h),
-                PrimaryButton(
-                  key: const Key('saveStatus'),
-                  label: _isUpdate ? 'UPDATE STATUS' : 'ADD STATUS',
-                  icon: _isUpdate
-                      ? Icons.edit_document
-                      : Icons.add_to_photos_rounded,
-                  loading: _saving,
-                  onPressed: _submit,
+                Expanded(
+                  child: DatePickerField(
+                    key: const Key('statusEnd'),
+                    label: 'End date',
+                    hintText: 'End date',
+                    value: _end,
+                    firstDate: DateTime(1960),
+                    lastDate: DateTime(2100),
+                    invalid: periodError != null,
+                    onChanged: (d) => setState(() => _end = d),
+                  ),
                 ),
               ],
             ),
-          ),
+            if (periodError != null)
+              InlineError(periodError, key: const Key('periodError')),
+          ],
         ),
-      ),
+        if (note != null) BookOutNoteCard(note, key: const Key('bookOutNote')),
+      ],
     );
   }
 }

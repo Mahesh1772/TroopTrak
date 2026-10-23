@@ -66,7 +66,7 @@ void main() {
     await tester.tapKey('soldierTile-$soldier');
     await tester.tapOn(find.text('STATUSES'));
     await tester.tapKey('addStatus');
-    await tester.choose('statusType', 'Excuse');
+    await tester.tapKey('segment-Excuse');
     await tester.type('statusName', excuse);
     tester.hideKeyboard();
     await tester.submit('saveStatus');

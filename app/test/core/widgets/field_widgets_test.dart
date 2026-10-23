@@ -6,6 +6,7 @@ import 'package:trooptrak_final_application/core/widgets/app_dropdown_field.dart
 import 'package:trooptrak_final_application/core/widgets/app_search_field.dart';
 import 'package:trooptrak_final_application/core/widgets/field_chrome.dart';
 import 'package:trooptrak_final_application/core/widgets/horizontal_date_strip.dart';
+import 'package:trooptrak_final_application/core/widgets/inline_error.dart';
 import 'package:trooptrak_final_application/core/widgets/picker_fields.dart';
 
 import '../../helpers/pump_app.dart';
@@ -111,6 +112,48 @@ void main() {
       final style = tester.widget<Text>(find.text('Required')).style!;
       expect(style.color, AppPalette.dark.leaveText);
     });
+
+    testWidgets('invalid draws the error border and no message of its own',
+        (tester) async {
+      Future<void> pump({required bool invalid}) => tester.pumpThemed(
+            DatePickerField(
+              hintText: 'End',
+              value: DateTime(2023, 7, 5),
+              invalid: invalid,
+              firstDate: DateTime(2020),
+              lastDate: DateTime(2030),
+              onChanged: (_) {},
+            ),
+          );
+      InputDecorator input() =>
+          tester.widget<InputDecorator>(find.byType(InputDecorator));
+
+      await pump(invalid: false);
+      expect(input().decoration.error, isNull);
+      final resting = tester.getSize(find.byType(InputDecorator));
+
+      await pump(invalid: true);
+      expect(input().decoration.error, isNotNull);
+      expect(input().decoration.errorText, isNull);
+      expect(tester.getSize(find.byType(InputDecorator)), resting);
+    });
+  });
+
+  group('InlineError', () {
+    testWidgets('is an error icon and the message in the legible red',
+        (tester) async {
+      final palette = _paletteOf(themeModes.currentValue!);
+      await tester.pumpThemed(const InlineError('Something is off'),
+          mode: themeModes.currentValue!);
+      final text = tester.widget<Text>(find.text('Something is off'));
+      final icon = tester.widget<Icon>(find.byIcon(Icons.error_rounded));
+
+      expect(text.style!.color, palette.leaveText);
+      expect(text.style!.fontSize, 13.5);
+      expect(icon.color, palette.leaveText);
+      expect(icon.size, 18);
+      expect(tester.getTopLeft(find.byIcon(Icons.error_rounded)).dx, 4);
+    }, variant: themeModes);
   });
 
   group('AppSearchField', () {

@@ -129,7 +129,10 @@ class SoldierProfilePage extends StatelessWidget {
                     capabilities: capabilities,
                     actions: actions,
                   ),
-                  StatusesTab(canManage: capabilities.canManageStatuses),
+                  StatusesTab(
+                    soldier: soldier,
+                    canManage: capabilities.canManageStatuses,
+                  ),
                   AttendanceTab(canManage: capabilities.canManageAttendance),
                 ],
               ),

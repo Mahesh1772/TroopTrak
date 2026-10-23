@@ -40,6 +40,11 @@ void main() {
       expect(formatTime(DateTime(2023, 1, 1, 9, 5)), '9:05 AM');
     });
 
+    test('the 24-hour clock pads the hour and the minute', () {
+      expect(formatClock(DateTime(2023, 1, 1, 0, 30)), '00:30');
+      expect(formatClock(sample), '17:30');
+    });
+
     test('parses plain and narrow no-break space variants', () {
       final plain = parseTime('5:30 PM')!;
       final narrow = parseTime('5:30${String.fromCharCode(0x202F)}PM')!;

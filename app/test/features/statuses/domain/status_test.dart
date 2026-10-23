@@ -32,6 +32,15 @@ void main() {
     });
   });
 
+  group('booksOut (R21)', () {
+    test('Leave and Medical Appointment book out, an Excuse does not', () {
+      expect(buildStatus(type: 'Leave').booksOut, isTrue);
+      expect(buildStatus(type: 'Medical Appointment').booksOut, isTrue);
+      expect(buildStatus(type: 'Excuse').booksOut, isFalse);
+      expect(buildStatus(type: '').booksOut, isFalse);
+    });
+  });
+
   group('daysLeft', () {
     test('whole days from today to the end day', () {
       final exBoots = buildStatus(

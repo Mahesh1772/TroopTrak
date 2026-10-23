@@ -7,18 +7,24 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+import 'package:trooptrak_final_application/core/constants/status_names.dart';
 import 'package:trooptrak_final_application/core/error/failures.dart';
 import 'package:trooptrak_final_application/core/theme/app_palette.dart';
+import 'package:trooptrak_final_application/core/widgets/app_segmented_control.dart';
 import 'package:trooptrak_final_application/core/widgets/feedback_views.dart';
 import 'package:trooptrak_final_application/core/widgets/icon_plate.dart';
+import 'package:trooptrak_final_application/core/widgets/rank_plate.dart';
 import 'package:trooptrak_final_application/core/widgets/section_header.dart';
 import 'package:trooptrak_final_application/core/widgets/state_tone.dart';
+import 'package:trooptrak_final_application/core/widgets/sticky_cta_bar.dart';
 import 'package:trooptrak_final_application/features/soldier_profile/presentation/pages/status_form_page.dart';
 import 'package:trooptrak_final_application/features/soldier_profile/presentation/providers/statuses_provider.dart';
+import 'package:trooptrak_final_application/features/soldier_profile/presentation/widgets/soldier_summary_card.dart';
 import 'package:trooptrak_final_application/features/soldier_profile/presentation/widgets/status_tiles.dart';
 import 'package:trooptrak_final_application/features/soldier_profile/presentation/widgets/statuses_tab.dart';
 import 'package:trooptrak_final_application/features/statuses/domain/entities/status.dart';
 import 'package:trooptrak_final_application/features/statuses/domain/usecases/status_usecases.dart';
+import 'package:trooptrak_final_application/features/statuses/domain/validators/status_validators.dart';
 
 import '../../helpers/builders.dart';
 import '../../helpers/fake_clock.dart';
@@ -39,6 +45,7 @@ void main() {
   late _MockUpdate update;
   late StreamController<Either<Failure, List<Status>>> statuses;
   final clock = FixedClock(DateTime(2023, 7, 5, 9));
+  final soldier = buildSoldier(name: 'Tan Ah Kow', rank: 'CPL');
 
   final active = buildStatus(
       id: 'a',
@@ -120,7 +127,7 @@ void main() {
       Scaffold(
         body: ChangeNotifierProvider(
           create: (_) => provider(),
-          child: StatusesTab(canManage: canManage),
+          child: StatusesTab(soldier: soldier, canManage: canManage),
         ),
       ),
       mode: mode,
@@ -259,7 +266,7 @@ void main() {
         Scaffold(
           body: ChangeNotifierProvider(
             create: (_) => provider(),
-            child: const StatusesTab(canManage: true),
+            child: StatusesTab(soldier: soldier, canManage: true),
           ),
         ),
         clock: clock,
@@ -318,7 +325,7 @@ void main() {
       await pumpTab(tester);
       await tester.tap(find.byKey(const Key('activeStatus-a')));
       await tester.pumpAndSettle();
-      expect(find.text('Edit the status for this soldier ✍️'), findsOneWidget);
+      expect(find.text('Edit the status for this soldier'), findsOneWidget);
       expect(find.text('UPDATE STATUS'), findsOneWidget);
     });
 
@@ -334,7 +341,11 @@ void main() {
   });
 
   group('StatusFormPage', () {
-    Future<void> pumpForm(WidgetTester tester, {Status? status}) async {
+    Future<void> pumpForm(
+      WidgetTester tester, {
+      Status? status,
+      ThemeMode mode = ThemeMode.dark,
+    }) async {
       await tester.pumpApp(
         Builder(
           builder: (context) => Scaffold(
@@ -342,7 +353,7 @@ void main() {
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute<void>(
                   builder: (_) =>
-                      StatusFormPage(soldierId: 'Tan Ah Kow', status: status),
+                      StatusFormPage(soldier: soldier, status: status),
                 ),
               ),
               child: const Text('open'),
@@ -351,6 +362,7 @@ void main() {
         ),
         clock: clock,
         providers: useCases(),
+        mode: mode,
       );
       await tester.tap(find.text('open'));
       await tester.pumpAndSettle();
@@ -367,10 +379,30 @@ void main() {
       await tester.pumpAndSettle();
     }
 
+    Future<void> chooseType(WidgetTester tester, String type) async {
+      await tester.tap(find.byKey(Key('segment-$type')));
+      await tester.pumpAndSettle();
+    }
+
+    String? selectedType(WidgetTester tester) => tester
+        .widget<AppSegmentedControl<String?>>(
+            find.byType(AppSegmentedControl<String?>))
+        .selected;
+
+    Finder chip(String name) => find.byKey(Key('suggestion-$name'));
+
+    Future<void> pickDay(WidgetTester tester, Key field, String day) async {
+      await tester.tap(find.byKey(field));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text(day));
+      await tester.tap(find.text('OK'));
+      await tester.pumpAndSettle();
+    }
+
     testWidgets('empty add shows the source validation texts', (tester) async {
       await pumpForm(tester);
-      expect(find.text("Let's add a new status for this soldier ✍️"),
-          findsOneWidget);
+      expect(find.text('Add a new status'), findsOneWidget);
+      expect(find.text('Fill in the details of the status'), findsOneWidget);
       await save(tester);
       expect(find.text('Bruh select Dei!'), findsOneWidget);
       expect(find.text('Oi can enter the status type please?'), findsOneWidget);
@@ -378,23 +410,257 @@ void main() {
       verifyNever(() => add(any()));
     });
 
-    testWidgets('name suggestions filter as you type', (tester) async {
+    testWidgets('shows whose status it is on a soldier card', (tester) async {
       await pumpForm(tester);
-      await tester.enterText(find.byType(TextFormField), 'limb');
-      await tester.pumpAndSettle();
-      expect(find.text('Ex Upper Limb'), findsOneWidget);
-      expect(find.text('Ex Lower Limb'), findsOneWidget);
-      await tester.tap(find.text('Ex Upper Limb'));
-      await tester.pumpAndSettle();
-      expect(find.text('LD'), findsNothing);
+      final card = find.byType(SoldierSummaryCard);
+      expect(find.descendant(of: card, matching: find.text('Tan Ah Kow')),
+          findsOneWidget);
+      expect(find.descendant(of: card, matching: find.text('CPL · Section IC')),
+          findsOneWidget);
+      expect(find.descendant(of: card, matching: find.byType(RankPlate)),
+          findsOneWidget);
+    });
+
+    group('status type switch', () {
+      testWidgets('is Excuse, Leave and MA with nothing chosen at first',
+          (tester) async {
+        await pumpForm(tester);
+        for (final label in ['Excuse', 'Leave', 'MA']) {
+          expect(find.text(label), findsOneWidget);
+        }
+        expect(find.text('Status type'), findsOneWidget);
+        expect(find.byType(DropdownButtonFormField<String>), findsNothing);
+        expect(selectedType(tester), isNull);
+      });
+
+      testWidgets('choosing a segment selects it and clears the type error',
+          (tester) async {
+        await pumpForm(tester);
+        await save(tester);
+        expect(find.text('Bruh select Dei!'), findsOneWidget);
+        await chooseType(tester, 'Leave');
+        expect(selectedType(tester), 'Leave');
+        expect(find.text('Bruh select Dei!'), findsNothing);
+      });
+
+      testWidgets('MA is saved as Medical Appointment', (tester) async {
+        await pumpForm(tester);
+        await chooseType(tester, 'Medical Appointment');
+        await typeName(tester, 'Dental');
+        await save(tester);
+        final saved = verify(() => add(captureAny())).captured.single as Status;
+        expect(saved.type, 'Medical Appointment');
+      });
+
+      testWidgets('an existing status opens on its own type', (tester) async {
+        await pumpForm(tester, status: past);
+        expect(selectedType(tester), 'Leave');
+      });
+    });
+
+    group('name suggestions', () {
+      testWidgets('an Excuse shows the common names as chips', (tester) async {
+        await pumpForm(tester);
+        expect(chip('LD'), findsNothing);
+        await chooseType(tester, 'Excuse');
+        for (final name in StatusNames.common) {
+          expect(chip(name), findsOneWidget);
+        }
+        expect(chip('Ex Shoes'), findsNothing);
+      });
+
+      testWidgets('Leave and MA have none', (tester) async {
+        await pumpForm(tester);
+        await chooseType(tester, 'Excuse');
+        await chooseType(tester, 'Leave');
+        expect(find.byType(ChoiceChip), findsNothing);
+        await chooseType(tester, 'Medical Appointment');
+        expect(find.byType(ChoiceChip), findsNothing);
+      });
+
+      testWidgets('typing narrows them case-insensitively', (tester) async {
+        await pumpForm(tester);
+        await chooseType(tester, 'Excuse');
+        await tester.enterText(find.byType(TextFormField), 'limb');
+        await tester.pumpAndSettle();
+        expect(chip('Ex Upper Limb'), findsOneWidget);
+        expect(chip('Ex Lower Limb'), findsOneWidget);
+        expect(chip('LD'), findsNothing);
+        expect(find.byType(ChoiceChip), findsNWidgets(2));
+      });
+
+      testWidgets('typing finds a name outside the common ones',
+          (tester) async {
+        await pumpForm(tester);
+        await chooseType(tester, 'Excuse');
+        await tester.enterText(find.byType(TextFormField), 'shoes');
+        await tester.pumpAndSettle();
+        expect(chip('Ex Shoes'), findsOneWidget);
+        expect(find.byType(ChoiceChip), findsOneWidget);
+      });
+
+      testWidgets('tapping one fills the name and marks it chosen',
+          (tester) async {
+        await pumpForm(tester);
+        await chooseType(tester, 'Excuse');
+        await tester.enterText(find.byType(TextFormField), 'limb');
+        await tester.pumpAndSettle();
+        await tester.tap(chip('Ex Upper Limb'));
+        await tester.pumpAndSettle();
+        expect(find.widgetWithText(TextFormField, 'Ex Upper Limb'),
+            findsOneWidget);
+        expect(
+            tester.widget<ChoiceChip>(chip('Ex Upper Limb')).selected, isTrue);
+        expect(tester.widget<ChoiceChip>(chip('LD')).selected, isFalse);
+      });
+
+      testWidgets('a chosen name is what gets saved', (tester) async {
+        await pumpForm(tester);
+        await chooseType(tester, 'Excuse');
+        await tester.tap(chip('Ex Boots'));
+        await tester.pumpAndSettle();
+        await save(tester);
+        final saved = verify(() => add(captureAny())).captured.single as Status;
+        expect([saved.type, saved.name], ['Excuse', 'Ex Boots']);
+      });
+    });
+
+    group('dates', () {
+      testWidgets('start and end sit side by side with their labels above',
+          (tester) async {
+        await pumpForm(tester);
+        final start = tester.getRect(find.byKey(const Key('statusStart')));
+        final end = tester.getRect(find.byKey(const Key('statusEnd')));
+        expect(start.top, end.top);
+        expect(start.right, lessThan(end.left));
+        Finder label(String text) => find.byWidgetPredicate(
+            (w) => w is Text && w.data == text && w.style?.fontSize == 13.5);
+        expect(tester.getRect(label('Start date')).bottom,
+            lessThan(start.top + 20));
+        expect(label('Start date'), findsOneWidget);
+        expect(label('End date'), findsOneWidget);
+        expect(
+            tester.getRect(label('End date')).left, greaterThan(start.right));
+        expect(find.text('5 Jul 2023'), findsNWidgets(2));
+      });
+
+      testWidgets('no error while the end is on or after the start',
+          (tester) async {
+        await pumpForm(tester);
+        expect(find.byKey(const Key('periodError')), findsNothing);
+        await pickDay(tester, const Key('statusEnd'), '20');
+        expect(find.text('20 Jul 2023'), findsOneWidget);
+        expect(find.byKey(const Key('periodError')), findsNothing);
+      });
+
+      testWidgets('an end before the start shows the K18 error under the dates',
+          (tester) async {
+        await pumpForm(tester);
+        await pickDay(tester, const Key('statusStart'), '20');
+        final error = find.byKey(const Key('periodError'));
+        expect(find.descendant(of: error, matching: find.text(endBeforeStart)),
+            findsOneWidget);
+        expect(
+            tester.getRect(error).top,
+            greaterThan(
+                tester.getRect(find.byKey(const Key('statusEnd'))).bottom));
+        await pickDay(tester, const Key('statusEnd'), '25');
+        expect(error, findsNothing);
+      });
+
+      testWidgets('only the end field takes the error border', (tester) async {
+        final mode = themeModes.currentValue!;
+        final palette =
+            mode == ThemeMode.dark ? AppPalette.dark : AppPalette.light;
+        await pumpForm(tester, mode: mode);
+        InputDecorator field(String key) =>
+            tester.widget<InputDecorator>(find.descendant(
+                of: find.byKey(Key(key)),
+                matching: find.byType(InputDecorator)));
+        await pickDay(tester, const Key('statusStart'), '20');
+        expect(field('statusStart').decoration.error, isNull);
+        expect(field('statusEnd').decoration.error, isNotNull);
+        final error = tester.widget<Text>(find.descendant(
+            of: find.byKey(const Key('periodError')),
+            matching: find.text(endBeforeStart)));
+        expect(error.style!.color, palette.leaveText);
+      }, variant: themeModes);
+    });
+
+    group('book-out note', () {
+      testWidgets('Leave says when the soldier is booked out and in',
+          (tester) async {
+        await pumpForm(tester);
+        await chooseType(tester, 'Leave');
+        expect(
+            find.text('Leave books Tan out at 00:30 on the start day and '
+                'back in at 22:00 on the end day.'),
+            findsOneWidget);
+      });
+
+      testWidgets('MA names its own type', (tester) async {
+        await pumpForm(tester);
+        await chooseType(tester, 'Medical Appointment');
+        expect(
+            find.text('Medical Appointment books Tan out at 00:30 on the '
+                'start day and back in at 22:00 on the end day.'),
+            findsOneWidget);
+      });
+
+      testWidgets('an Excuse, or no type yet, has no note', (tester) async {
+        await pumpForm(tester);
+        expect(find.byKey(const Key('bookOutNote')), findsNothing);
+        await chooseType(tester, 'Leave');
+        expect(find.byKey(const Key('bookOutNote')), findsOneWidget);
+        await chooseType(tester, 'Excuse');
+        expect(find.byKey(const Key('bookOutNote')), findsNothing);
+      });
+
+      testWidgets('is a tinted note in the MA colour', (tester) async {
+        final mode = themeModes.currentValue!;
+        final palette =
+            mode == ThemeMode.dark ? AppPalette.dark : AppPalette.light;
+        await pumpForm(tester, mode: mode);
+        await chooseType(tester, 'Leave');
+        final box = tester.widget<DecoratedBox>(find
+            .descendant(
+                of: find.byKey(const Key('bookOutNote')),
+                matching: find.byType(DecoratedBox))
+            .first);
+        expect((box.decoration as BoxDecoration).color,
+            StateTone.medical.tint(palette));
+        expect(find.byIcon(Icons.info_rounded), findsOneWidget);
+      }, variant: themeModes);
+    });
+
+    group('save bar', () {
+      testWidgets('ADD STATUS sits below the scrolling form', (tester) async {
+        await pumpForm(tester);
+        final button = find.byKey(const Key('saveStatus'));
+        expect(find.text('ADD STATUS'), findsOneWidget);
+        expect(
+            find.descendant(
+                of: find.byType(SingleChildScrollView), matching: button),
+            findsNothing);
+        expect(find.byType(StickyCtaBar), findsOneWidget);
+        expect(tester.getRect(button).bottom,
+            lessThanOrEqualTo(tester.view.physicalSize.height));
+      });
+
+      testWidgets('stays in view while a note lengthens the form',
+          (tester) async {
+        await pumpForm(tester);
+        await chooseType(tester, 'Leave');
+        final button = tester.getRect(find.byKey(const Key('saveStatus')));
+        expect(
+            button.bottom, lessThanOrEqualTo(tester.view.physicalSize.height));
+        expect(button.top, greaterThan(0));
+      });
     });
 
     testWidgets('valid add saves today-dated status and pops', (tester) async {
       await pumpForm(tester);
-      await tester.tap(find.byKey(const Key('statusType')));
-      await tester.pumpAndSettle();
-      await tester.tap(find.text('Leave').last);
-      await tester.pumpAndSettle();
+      await chooseType(tester, 'Leave');
       await typeName(tester, ' OL ');
       await save(tester);
 
@@ -410,13 +676,17 @@ void main() {
 
     testWidgets('update passes the previous and edited status', (tester) async {
       await pumpForm(tester, status: active);
-      expect(find.text('Ex RMJ'), findsOneWidget);
+      expect(find.text('Edit the status for this soldier'), findsOneWidget);
+      expect(find.text('UPDATE STATUS'), findsOneWidget);
+      expect(find.widgetWithText(TextFormField, 'Ex RMJ'), findsOneWidget);
+      expect(tester.widget<ChoiceChip>(chip('Ex RMJ')).selected, isTrue);
       await typeName(tester, 'LD');
       await save(tester);
       final params = verify(() => update(captureAny())).captured.single
           as UpdateStatusParams;
       expect(params.previous, active);
       expect(params.updated, active.copyWith(name: 'LD'));
+      expect(find.text('Status updated successfully!'), findsOneWidget);
     });
 
     testWidgets('a domain failure (K18) is shown and the form stays',

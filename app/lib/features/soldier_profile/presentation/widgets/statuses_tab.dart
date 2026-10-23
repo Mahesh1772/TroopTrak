@@ -11,6 +11,7 @@ import '../../../../core/widgets/feedback_views.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/section_header.dart';
 import '../../../../core/widgets/state_view.dart';
+import '../../../soldiers/domain/entities/soldier.dart';
 import '../../../statuses/domain/entities/status.dart';
 import '../pages/status_form_page.dart';
 import '../providers/statuses_provider.dart';
@@ -19,13 +20,15 @@ import 'status_tiles.dart';
 /// Active status cards, past status rows and the add button. Read-only when
 /// [canManage] is false.
 class StatusesTab extends StatelessWidget {
-  const StatusesTab({super.key, required this.canManage});
+  const StatusesTab(
+      {super.key, required this.soldier, required this.canManage});
 
+  final Soldier soldier;
   final bool canManage;
 
-  Future<void> _open(BuildContext context, String soldierId, [Status? s]) =>
+  Future<void> _open(BuildContext context, [Status? s]) =>
       Navigator.of(context).push(MaterialPageRoute<void>(
-        builder: (_) => StatusFormPage(soldierId: soldierId, status: s),
+        builder: (_) => StatusFormPage(soldier: soldier, status: s),
       ));
 
   Future<void> _delete(BuildContext context, Status status) async {
@@ -42,7 +45,6 @@ class StatusesTab extends StatelessWidget {
       state: provider.state,
       builder: (context, _) {
         final split = provider.split!;
-        final id = provider.soldierId;
         final sides = EdgeInsets.symmetric(horizontal: AppSpacing.lg.w);
         return ListView(
           padding: EdgeInsets.only(bottom: AppSpacing.xxxl.h),
@@ -65,7 +67,7 @@ class StatusesTab extends StatelessWidget {
                           key: Key('activeStatus-${s.id}'),
                           status: s,
                           daysLeft: provider.daysLeftLabel(s),
-                          onTap: canManage ? () => _open(context, id, s) : null,
+                          onTap: canManage ? () => _open(context, s) : null,
                           onDelete:
                               canManage ? () => _delete(context, s) : null,
                         ),
@@ -84,7 +86,7 @@ class StatusesTab extends StatelessWidget {
                     for (final s in split.past)
                       PastStatusRow(
                         status: s,
-                        onEdit: canManage ? () => _open(context, id, s) : null,
+                        onEdit: canManage ? () => _open(context, s) : null,
                         onDelete: canManage ? () => _delete(context, s) : null,
                       ),
                   ],
@@ -114,7 +116,7 @@ class StatusesTab extends StatelessWidget {
                       key: const Key('addStatus'),
                       label: 'ADD NEW STATUS',
                       icon: Icons.add_rounded,
-                      onPressed: () => _open(context, id),
+                      onPressed: () => _open(context),
                     ),
                   ],
                 ),
