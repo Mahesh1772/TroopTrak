@@ -20,4 +20,13 @@ abstract final class AppShadows {
       color: AppColors.segmentShadow,
     ),
   ];
+
+  static List<BoxShadow> button(Color color) => [
+        BoxShadow(
+          blurRadius: 18,
+          spreadRadius: -10,
+          offset: const Offset(0, 8),
+          color: color.withValues(alpha: 0.9),
+        ),
+      ];
 }

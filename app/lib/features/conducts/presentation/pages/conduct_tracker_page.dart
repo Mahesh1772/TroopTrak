@@ -87,8 +87,7 @@ class ConductTrackerPage extends StatelessWidget {
                   key: const Key('addConduct'),
                   label: 'Add Conduct',
                   icon: Icons.add,
-                  style: PrimaryButtonStyle.brand,
-                  expand: false,
+                  style: PrimaryButtonStyle.tonal,
                   onPressed: () =>
                       Navigator.of(context).pushNamed(AppRoutes.addConduct),
                 ),
@@ -109,7 +108,10 @@ class ConductTrackerPage extends StatelessWidget {
         StateView<List<Conduct>>(
           state: provider.conducts,
           isEmpty: (c) => c.isEmpty,
-          empty: const EmptyState(message: 'NO CONDUCTS FOR TODAY!'),
+          empty: const EmptyState(
+            message: 'NO CONDUCTS FOR TODAY!',
+            icon: Icons.event_busy_rounded,
+          ),
           builder: (context, conducts) => Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [

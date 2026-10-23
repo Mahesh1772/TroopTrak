@@ -26,8 +26,7 @@ class StateView<T> extends StatelessWidget {
       ViewError<T>(:final failure) =>
         ErrorView(message: failure.message, onRetry: onRetry),
       ViewData<T>(:final data) => (isEmpty?.call(data) ?? false)
-          ? (empty ??
-              const EmptyState(message: 'Nothing here yet', image: null))
+          ? (empty ?? const EmptyState(message: 'Nothing here yet'))
           : builder(context, data),
     };
   }

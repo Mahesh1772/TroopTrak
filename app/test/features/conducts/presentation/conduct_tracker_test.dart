@@ -165,8 +165,16 @@ void main() {
       expect(find.text('Participation Strength'), findsOneWidget);
       expect(find.byType(BarChart), findsOneWidget);
       expect(find.byKey(const Key('conduct-run')), findsOneWidget);
-      expect(find.text('1'), findsOneWidget);
-      expect(find.text('2'), findsOneWidget);
+      expect(
+          find.descendant(
+              of: find.byKey(const Key('conduct-run')),
+              matching: find.text('1')),
+          findsOneWidget);
+      expect(
+          find.descendant(
+              of: find.byKey(const Key('conduct-ippt')),
+              matching: find.text('2')),
+          findsOneWidget);
     }, variant: themeModes);
 
     testWidgets('tapping another day on the strip updates the list',
@@ -178,18 +186,13 @@ void main() {
       expect(find.byKey(const Key('conduct-run')), findsNothing);
     });
 
-    testWidgets('a day without conducts shows the empty image and text',
+    testWidgets('a day without conducts shows the empty icon and text',
         (tester) async {
       await pumpTracker(tester);
       await tester.tap(find.byKey(const ValueKey('date-strip-7 Jul 2023')));
       await tester.pumpAndSettle();
       expect(find.text('NO CONDUCTS FOR TODAY!'), findsOneWidget);
-      expect(
-          find.byWidgetPredicate((w) =>
-              w is Image &&
-              (w.image as AssetImage).assetName ==
-                  'lib/assets/noConductspng.png'),
-          findsOneWidget);
+      expect(find.byIcon(Icons.event_busy_rounded), findsOneWidget);
     });
 
     testWidgets('a failed conduct stream shows the error', (tester) async {

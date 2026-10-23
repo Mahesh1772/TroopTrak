@@ -60,7 +60,7 @@ ThemeData buildAppTheme({
       titleTextStyle: text.headlineLarge,
       contentTextStyle: text.bodyMedium,
     ),
-    inputDecorationTheme: _inputDecorationTheme(palette),
+    inputDecorationTheme: buildInputDecorationTheme(palette),
     // The default cursor and selection use scheme.primary, which vanishes on
     // the card2 fill.
     textSelectionTheme: TextSelectionThemeData(
@@ -212,6 +212,7 @@ SegmentedButtonThemeData _segmentedButtonTheme(
 BottomSheetThemeData _bottomSheetTheme(AppPalette palette) =>
     BottomSheetThemeData(
       backgroundColor: palette.sheet,
+      modalBarrierColor: AppColors.scrim,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(AppRadii.sheet),
@@ -249,10 +250,14 @@ TabBarThemeData _tabBarTheme(ColorScheme scheme, AppPalette palette) {
 }
 
 // Borders are drawn inside the box, so the 2 px rings never resize the field:
-// 14 + 24 (16 px text at 1.5) + 14 = 52.
-InputDecorationThemeData _inputDecorationTheme(AppPalette palette) {
+// 14 + 24 (16 px text at 1.5) + 14 = 52. A [radius] of half the height makes
+// the pill of the search field.
+InputDecorationThemeData buildInputDecorationTheme(
+  AppPalette palette, {
+  double radius = AppRadii.lg,
+}) {
   OutlineInputBorder outline(Color color, double width) => OutlineInputBorder(
-        borderRadius: BorderRadius.circular(AppRadii.lg),
+        borderRadius: BorderRadius.circular(radius),
         borderSide: BorderSide(color: color, width: width),
       );
   final rest = outline(palette.line, 1);

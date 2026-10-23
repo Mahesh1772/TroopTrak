@@ -18,4 +18,19 @@ abstract final class AppLayout {
   static const tabIndicatorHeight = 3.0;
   static const tabIndicatorInsetFraction = 0.14;
   static const sheetHandle = Size(40, 4);
+  static const sheetTop = 10.0;
+  static const sheetHandleGap = 14.0;
+  static const sheetBottom = 34.0;
+  static const sheetMaxHeightFraction = 0.9;
+  static const buttonHeight = 50.0;
+  static const buttonTonalHeight = 40.0;
+  static const buttonCompactHeight = 36.0;
+  static const buttonIconSize = 20.0;
+  static const searchHeight = 46.0;
+  static const searchIconSize = 24.0;
+  static const fieldLineHeight = 24.0;
+  static const fieldIconSize = 20.0;
+  static const dateTile = Size(54, 72);
+  static const emptyIconSize = 40.0;
+  static const emptyVertical = 36.0;
 }

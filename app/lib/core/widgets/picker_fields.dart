@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../theme/theme_context.dart';
 import '../utils/date_formats.dart';
+import 'field_chrome.dart';
 
 /// Wraps a picker shell in a [FormField] when a validator is given, so the
 /// pick takes part in `Form.validate()`.
@@ -21,6 +23,8 @@ Widget _validated<T>({
   );
 }
 
+/// A tappable field that opens the date picker. [label] sits above the field;
+/// [hintText] shows inside it until a [value] is picked.
 class DatePickerField extends StatelessWidget {
   const DatePickerField({
     super.key,
@@ -28,6 +32,7 @@ class DatePickerField extends StatelessWidget {
     required this.firstDate,
     required this.lastDate,
     required this.hintText,
+    this.label,
     this.value,
     this.initialDate,
     this.icon = Icons.calendar_month_rounded,
@@ -39,6 +44,7 @@ class DatePickerField extends StatelessWidget {
   final DateTime firstDate;
   final DateTime lastDate;
   final String hintText;
+  final String? label;
   final DateTime? value;
   final DateTime? initialDate;
   final IconData icon;
@@ -71,19 +77,23 @@ class DatePickerField extends StatelessWidget {
         onChanged: onChanged,
         shell: (error, report) => _PickerShell(
           icon: icon,
+          label: label,
           hintText: hintText,
-          label: value == null ? null : formatDay(value!),
+          text: value == null ? null : formatDay(value!),
           errorText: error,
           onTap: () => _pick(context, report),
         ),
       );
 }
 
+/// A tappable field that opens the time picker, laid out like
+/// [DatePickerField].
 class TimePickerField extends StatelessWidget {
   const TimePickerField({
     super.key,
     required this.onChanged,
     required this.hintText,
+    this.label,
     this.value,
     this.initialTime = const TimeOfDay(hour: 9, minute: 0),
     this.icon = Icons.access_time_rounded,
@@ -93,6 +103,7 @@ class TimePickerField extends StatelessWidget {
 
   final ValueChanged<TimeOfDay> onChanged;
   final String hintText;
+  final String? label;
   final TimeOfDay? value;
   final TimeOfDay initialTime;
   final IconData icon;
@@ -118,8 +129,9 @@ class TimePickerField extends StatelessWidget {
       onChanged: onChanged,
       shell: (error, report) => _PickerShell(
         icon: icon,
+        label: label,
         hintText: hintText,
-        label: time == null
+        text: time == null
             ? null
             : formatTime(DateTime(2000, 1, 1, time.hour, time.minute)),
         errorText: error,
@@ -132,34 +144,40 @@ class TimePickerField extends StatelessWidget {
 class _PickerShell extends StatelessWidget {
   const _PickerShell({
     required this.icon,
-    required this.hintText,
     required this.label,
+    required this.hintText,
+    required this.text,
     required this.errorText,
     required this.onTap,
   });
 
   final IconData icon;
-  final String hintText;
   final String? label;
+  final String hintText;
+  final String? text;
   final String? errorText;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: InputDecorator(
-        isEmpty: label == null,
-        decoration: InputDecoration(
-          prefixIcon: Icon(icon),
-          hintText: hintText,
-          errorText: errorText,
+    final text = this.text;
+    return LabeledField(
+      label: label,
+      child: InkWell(
+        onTap: onTap,
+        customBorder: context.theme.inputDecorationTheme.border,
+        child: InputDecorator(
+          isEmpty: text == null,
+          decoration: InputDecoration(
+            prefixIcon: FieldIcon(icon),
+            prefixIconConstraints: fieldPrefixConstraints,
+            hintText: hintText,
+            errorText: errorText,
+          ),
+          child: text == null
+              ? null
+              : Text(text, maxLines: 1, style: fieldValueStyle(context)),
         ),
-        child: label == null
-            ? null
-            : Text(label!, style: theme.textTheme.bodyMedium),
       ),
     );
   }

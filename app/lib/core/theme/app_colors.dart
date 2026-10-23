@@ -58,6 +58,7 @@ abstract final class AppColors {
   static const onGradientTrack = Color(0x24FFFFFF);
   static const onGradientSolidText = Color(0xFF2B1580);
   static const segmentShadow = Color(0x59000000);
+  static const scrim = Color(0x9E05060C);
 
   static const white = Color(0xFFFFFFFF);
   static const white70 = Color(0xB3FFFFFF);
@@ -67,7 +68,6 @@ abstract final class AppColors {
 
   static const success = Color(0xFF4CAF50);
   static const danger = Color(0xFFF44336);
-  static const dangerGradientEnd = Color(0xFFED837C);
   static const warning = Color(0xFFFFC107);
 
   static const buttonGradientStart = Color(0xFF7E57C2);

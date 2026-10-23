@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:trooptrak_final_application/core/theme/app_colors.dart';
 import 'package:trooptrak_final_application/core/widgets/app_dropdown_field.dart';
 import 'package:trooptrak_final_application/core/widgets/horizontal_date_strip.dart';
 import 'package:trooptrak_final_application/core/widgets/picker_fields.dart';
-import 'package:trooptrak_final_application/core/widgets/primary_button.dart';
 
 import '../../helpers/pump_app.dart';
 
@@ -127,55 +125,5 @@ void main() {
     await tester.pumpAndSettle();
     expect(
         find.byKey(const ValueKey('date-strip-15 Jun 2024')), findsOneWidget);
-  });
-
-  group('PrimaryButton', () {
-    testWidgets('danger pill uses the red gradient and pill radius',
-        (tester) async {
-      await tester.pumpThemed(PrimaryButton(
-          label: 'Delete',
-          style: PrimaryButtonStyle.danger,
-          pill: true,
-          onPressed: () {}));
-      final box = tester
-          .widget<DecoratedBox>(find
-              .descendant(
-                  of: find.byType(PrimaryButton),
-                  matching: find.byType(DecoratedBox))
-              .first)
-          .decoration as BoxDecoration;
-      expect((box.gradient! as LinearGradient).colors,
-          [AppColors.danger, AppColors.dangerGradientEnd]);
-      expect(box.borderRadius, isNot(BorderRadius.circular(12)));
-    });
-
-    testWidgets('fires onPressed', (tester) async {
-      var taps = 0;
-      await tester.pumpThemed(
-        PrimaryButton(
-            label: 'Submit', icon: Icons.add, onPressed: () => taps++),
-        mode: themeModes.currentValue!,
-      );
-      await tester.tap(find.text('Submit'));
-      expect(taps, 1);
-      expect(find.byIcon(Icons.add), findsOneWidget);
-    }, variant: themeModes);
-
-    testWidgets('loading shows a spinner and ignores taps', (tester) async {
-      var taps = 0;
-      await tester.pumpThemed(PrimaryButton(
-          label: 'Submit', loading: true, onPressed: () => taps++));
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      expect(find.text('Submit'), findsNothing);
-      await tester.tap(find.byType(PrimaryButton));
-      expect(taps, 0);
-    });
-
-    testWidgets('null onPressed is disabled', (tester) async {
-      await tester
-          .pumpThemed(const PrimaryButton(label: 'Go', onPressed: null));
-      await tester.tap(find.text('Go'));
-      expect(tester.widget<Opacity>(find.byType(Opacity)).opacity, 0.5);
-    });
   });
 }

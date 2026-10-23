@@ -109,7 +109,7 @@ class _ScanResultDialog extends StatelessWidget {
                 key: const Key('goToEditPage'),
                 label: 'GO TO EDIT PAGE',
                 icon: Icons.edit_document,
-                style: PrimaryButtonStyle.brand,
+                style: PrimaryButtonStyle.primary,
                 onPressed: () => Navigator.of(context).pop(true),
               ),
             ],

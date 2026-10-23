@@ -118,7 +118,7 @@ class DutyTile extends StatelessWidget {
                 key: Key('editDuty-${duty.id}'),
                 label: 'EDIT DUTY',
                 icon: Icons.edit_document,
-                style: PrimaryButtonStyle.brand,
+                style: PrimaryButtonStyle.ghost,
                 onPressed: onEdit,
               ),
               gap,

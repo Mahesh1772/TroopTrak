@@ -129,7 +129,7 @@ class _CameraScannerViewState extends State<CameraScannerView> {
         PrimaryButton(
           label: 'SELECT FROM GALLERY',
           icon: Icons.image,
-          style: PrimaryButtonStyle.brand,
+          style: PrimaryButtonStyle.ghost,
           onPressed: _pickFromGallery,
         ),
       ],

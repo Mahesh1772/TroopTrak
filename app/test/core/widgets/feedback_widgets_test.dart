@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:trooptrak_final_application/core/error/failures.dart';
 import 'package:trooptrak_final_application/core/state/view_state.dart';
+import 'package:trooptrak_final_application/core/theme/app_palette.dart';
 import 'package:trooptrak_final_application/core/widgets/app_snackbar.dart';
 import 'package:trooptrak_final_application/core/widgets/confirm_dialog.dart';
 import 'package:trooptrak_final_application/core/widgets/feedback_views.dart';
@@ -17,14 +18,77 @@ void main() {
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
   }, variant: themeModes);
 
-  testWidgets('EmptyState shows image and message', (tester) async {
-    await tester.pumpThemed(
-      const EmptyState(message: 'NO CONDUCTS FOR TODAY!'),
-      mode: themeModes.currentValue!,
-    );
-    expect(find.text('NO CONDUCTS FOR TODAY!'), findsOneWidget);
-    expect(find.byType(Image), findsOneWidget);
-  }, variant: themeModes);
+  group('EmptyState', () {
+    testWidgets('shows a 40 px muted icon over a bold message', (tester) async {
+      final mode = themeModes.currentValue!;
+      final palette =
+          mode == ThemeMode.dark ? AppPalette.dark : AppPalette.light;
+      await tester.pumpThemed(
+        const EmptyState(
+          message: 'NO CONDUCTS FOR TODAY!',
+          icon: Icons.event_busy_rounded,
+        ),
+        mode: mode,
+      );
+      final icon = tester.widget<Icon>(find.byIcon(Icons.event_busy_rounded));
+      final message =
+          tester.widget<Text>(find.text('NO CONDUCTS FOR TODAY!')).style!;
+
+      expect(icon.size, 40);
+      expect(icon.color, palette.mutedText);
+      expect([message.fontSize, message.fontWeight], [17, FontWeight.w700]);
+      expect(message.color, palette.onCard);
+      expect(message.fontFamily, startsWith('Barlow'));
+      expect(find.byType(Image), findsNothing);
+      expect(tester.getCenter(find.text('NO CONDUCTS FOR TODAY!')).dx, 195);
+    }, variant: themeModes);
+
+    testWidgets('without an icon or subtitle it is only the message',
+        (tester) async {
+      await tester.pumpThemed(const EmptyState(message: 'Nothing here yet'));
+      expect(find.text('Nothing here yet'), findsOneWidget);
+      expect(find.byType(Icon), findsNothing);
+      expect(find.byType(Text), findsOneWidget);
+    });
+
+    testWidgets('a subtitle sits under the message in secondary text',
+        (tester) async {
+      await tester.pumpThemed(const EmptyState(
+        message: 'No duties',
+        subtitle: 'Add one with the plus button',
+        icon: Icons.shield_outlined,
+      ));
+      final message = tester.getRect(find.text('No duties'));
+      final subtitle =
+          tester.getRect(find.text('Add one with the plus button'));
+      final style =
+          tester.widget<Text>(find.text('Add one with the plus button')).style!;
+
+      expect(subtitle.top, greaterThanOrEqualTo(message.bottom + 4));
+      expect(style.color, AppPalette.dark.secondaryText);
+      expect(style.fontSize, 16);
+    });
+
+    testWidgets('keeps 36 px above and below', (tester) async {
+      await tester.pumpThemed(
+          const SingleChildScrollView(child: EmptyState(message: 'Nothing')));
+      final box = tester.getRect(find.byType(EmptyState));
+      final text = tester.getRect(find.text('Nothing'));
+
+      expect(text.top - box.top, 36);
+      expect(box.bottom - text.bottom, 36);
+    });
+
+    testWidgets('a long message wraps inside 24 px side padding',
+        (tester) async {
+      await tester.pumpThemed(SingleChildScrollView(
+          child: EmptyState(message: List.filled(40, 'Nothing').join(' '))));
+      final text = tester.getRect(find.byType(Text));
+
+      expect(text.width, lessThanOrEqualTo(390 - 48));
+      expect(text.left, greaterThanOrEqualTo(24));
+    });
+  });
 
   testWidgets('ErrorView shows message and retry', (tester) async {
     var retries = 0;
