@@ -6,10 +6,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
 import 'package:trooptrak_final_application/core/error/failures.dart';
+import 'package:trooptrak_final_application/core/theme/app_colors.dart';
 import 'package:trooptrak_final_application/core/widgets/feedback_views.dart';
+import 'package:trooptrak_final_application/core/widgets/icon_tab.dart';
 import 'package:trooptrak_final_application/core/widgets/rank_plate.dart';
+import 'package:trooptrak_final_application/core/widgets/tally_strip.dart';
 import 'package:trooptrak_final_application/features/attendance/domain/entities/attendance_record.dart';
 import 'package:trooptrak_final_application/features/attendance/domain/usecases/attendance_usecases.dart';
+import 'package:trooptrak_final_application/features/attendance/domain/usecases/watch_month_presence.dart';
 import 'package:trooptrak_final_application/features/soldier_profile/presentation/pages/soldier_profile_page.dart';
 import 'package:trooptrak_final_application/features/soldier_profile/presentation/profile_actions.dart';
 import 'package:trooptrak_final_application/features/soldier_profile/presentation/profile_capabilities.dart';
@@ -19,6 +23,7 @@ import 'package:trooptrak_final_application/features/statuses/domain/entities/st
 import 'package:trooptrak_final_application/features/statuses/domain/usecases/status_usecases.dart';
 
 import '../../helpers/builders.dart';
+import '../../helpers/month_presence_stub.dart';
 import '../../helpers/pump_app.dart';
 
 class _MockWatchStatuses extends Mock implements WatchSoldierStatuses {}
@@ -44,6 +49,7 @@ void main() {
     Provider<DeleteStatus>.value(value: _MockDeleteStatus()),
     Provider<WatchAttendance>.value(value: watchAttendance),
     Provider<DeleteAttendance>.value(value: _MockDeleteAttendance()),
+    Provider<WatchMonthPresence>.value(value: StubWatchMonthPresence()),
   ];
 
   late List<String> calls;
@@ -95,15 +101,90 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('TAN AH KOW'), findsOneWidget);
-    expect(find.text('Section IC'), findsOneWidget);
+    expect(find.text('CPL · Section IC'), findsOneWidget);
     expect(find.text('ALPHA COMPANY'), findsOneWidget);
     expect(find.text('Platoon 1, Section 2'), findsOneWidget);
-    expect(tester.widget<RankPlate>(find.byType(RankPlate)).rank, 'CPL');
+    final plate = tester.widget<RankPlate>(find.byType(RankPlate));
+    expect([plate.rank, plate.size], ['CPL', RankPlate.lg]);
     final insignia = tester.widget<Image>(find.descendant(
         of: find.byType(RankPlate), matching: find.byType(Image)));
     expect((insignia.image as AssetImage).assetName,
         'lib/assets/army-ranks/cpl.png');
   }, variant: themeModes);
+
+  group('month tally', () {
+    Future<void> openWith(
+      WidgetTester tester,
+      WatchMonthPresence watch, {
+      ThemeMode mode = ThemeMode.dark,
+    }) async {
+      await tester.pumpApp(
+        ChangeNotifierProvider(
+          create: (_) => SoldierProfileProvider(soldier.stream),
+          child: SoldierProfilePage(
+            capabilities: ProfileCapabilities.commanderViewingSoldier,
+            actions: profileActions,
+          ),
+        ),
+        mode: mode,
+        providers: [
+          ...tabProviders.where((p) => p is! Provider<WatchMonthPresence>),
+          Provider<WatchMonthPresence>.value(value: watch),
+        ],
+      );
+      soldier.add(Right(buildSoldier()));
+      await tester.pumpAndSettle();
+    }
+
+    Color tickColor(WidgetTester tester, int day) => (tester
+            .widget<AnimatedContainer>(find.byKey(ValueKey('tick-0-$day')))
+            .decoration! as BoxDecoration)
+        .color!;
+
+    testWidgets('reads the month name and the in-camp days from the use case',
+        (tester) async {
+      await openWith(tester, StubWatchMonthPresence(),
+          mode: themeModes.currentValue!);
+      expect(find.text('July in camp'), findsOneWidget);
+      expect(find.text('3 of 5 days'), findsOneWidget);
+    }, variant: themeModes);
+
+    testWidgets('has a tick per day, coloured by state, today ringed',
+        (tester) async {
+      await openWith(tester, StubWatchMonthPresence());
+      expect(find.byType(TallyStrip), findsOneWidget);
+      for (var day = 0; day < 31; day++) {
+        expect(find.byKey(ValueKey('tick-0-$day')), findsOneWidget);
+      }
+      expect(tickColor(tester, 0), AppColors.onGradientInCamp);
+      expect(tickColor(tester, 2), AppColors.onGradientLeave);
+      expect(tickColor(tester, 3), AppColors.onGradientMedical);
+      expect(tickColor(tester, 5), AppColors.onGradientTickFuture);
+      expect(find.byKey(const ValueKey('tick-0-4-self')), findsOneWidget);
+      expect(find.byKey(const ValueKey('tick-0-0-self')), findsNothing);
+    });
+
+    testWidgets('shows nothing when the use case fails', (tester) async {
+      await openWith(tester,
+          StubWatchMonthPresence.failing(const ServerFailure('presence down')));
+      expect(find.byType(TallyStrip), findsNothing);
+      expect(find.text('TAN AH KOW'), findsOneWidget);
+    });
+  });
+
+  testWidgets('the tab bar pairs an icon with each tab', (tester) async {
+    await pumpProfile(tester);
+    soldier.add(Right(buildSoldier()));
+    await tester.pumpAndSettle();
+    expect(find.byType(IconTab), findsNWidgets(3));
+    for (final icon in [
+      Icons.info_outline_rounded,
+      Icons.warning_amber_rounded,
+      Icons.how_to_reg_rounded,
+    ]) {
+      expect(find.byIcon(icon), findsOneWidget);
+    }
+  });
 
   testWidgets('insignia keeps its own colours on the plate', (tester) async {
     await pumpProfile(tester);
@@ -121,9 +202,10 @@ void main() {
     soldier.add(Right(buildSoldier()));
     await tester.pumpAndSettle();
 
-    for (final label in ['BASIC INFO', 'STATUSES', 'ATTENDANCE']) {
+    for (final label in ['INFO', 'STATUSES', 'ATTENDANCE']) {
       expect(find.text(label), findsOneWidget);
     }
+    expect(find.text('BASIC INFO'), findsNothing);
     expect(find.text('Date Of Birth'), findsOneWidget);
     await tester.tap(find.text('STATUSES'));
     await tester.pumpAndSettle();

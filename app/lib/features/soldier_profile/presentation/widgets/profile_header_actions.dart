@@ -1,48 +1,81 @@
-import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_radii.dart';
-import '../../../../core/theme/app_spacing.dart';
-import '../../../../core/theme/theme_context.dart';
+import '../../../../core/theme/app_layout.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/theme/theme_manager.dart';
 
-/// Translucent pill used for SIGN OUT (and SHOW QR CODE on the soldier side).
+const _labelSize = 13.5;
+const _labelTracking = 0.04;
+const _iconGap = 6.0;
+const _startPadding = 10.0;
+const _endPadding = 14.0;
+
+/// A 36 px pill on the gradient header. [solid] is the white main action
+/// (SHOW QR CODE); the default is a translucent one (SIGN OUT).
 class HeaderPillButton extends StatelessWidget {
   const HeaderPillButton({
     super.key,
     required this.label,
     required this.icon,
     required this.onPressed,
+    this.solid = false,
+    this.iconColor,
   });
 
   final String label;
   final IconData icon;
   final VoidCallback onPressed;
+  final bool solid;
+
+  /// Defaults to the label colour.
+  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {
-    final radius = BorderRadius.circular(AppRadii.xl.r);
-    return Material(
-      color: AppColors.black.withValues(alpha: 0.1),
-      borderRadius: radius,
-      child: InkWell(
-        onTap: onPressed,
-        borderRadius: radius,
-        child: Container(
-          width: 300.w,
-          padding: EdgeInsets.all(AppSpacing.lg.sp),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon, color: AppColors.white, size: 35.sp),
-              SizedBox(width: AppSpacing.xl.w),
-              Text(label,
-                  style: context.textStyles.displaySmall
-                      ?.copyWith(color: AppColors.white)),
-            ],
+    final content = solid ? AppColors.onGradientSolidText : AppColors.white;
+    const shape = StadiumBorder();
+    return Semantics(
+      button: true,
+      child: Material(
+        color: solid ? AppColors.white : AppColors.onGradientChip,
+        shape: shape,
+        child: InkWell(
+          customBorder: shape,
+          onTap: onPressed,
+          child: SizedBox(
+            height: AppLayout.headerPillHeight.h,
+            child: Padding(
+              padding: EdgeInsetsDirectional.only(
+                start: _startPadding.w,
+                end: _endPadding.w,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                spacing: _iconGap.w,
+                children: [
+                  Icon(
+                    icon,
+                    size: AppLayout.headerPillIcon.r,
+                    color: iconColor ?? content,
+                  ),
+                  Flexible(
+                    child: Text(
+                      label,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyles.barlow(
+                        _labelSize,
+                        FontWeight.w600,
+                        content,
+                      ).copyWith(letterSpacing: _labelSize.sp * _labelTracking),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -50,30 +83,43 @@ class HeaderPillButton extends StatelessWidget {
   }
 }
 
-/// Source rolling light/dark switch; true is dark.
+/// A round 44 px icon button on the gradient: back or sign out.
+class HeaderIconButton extends StatelessWidget {
+  const HeaderIconButton({
+    super.key,
+    required this.icon,
+    required this.tooltip,
+    required this.onPressed,
+  });
+
+  final IconData icon;
+  final String tooltip;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      tooltip: tooltip,
+      onPressed: onPressed,
+      icon: Icon(icon, color: AppColors.white),
+    );
+  }
+}
+
+/// Shows the theme a tap switches to, as the mockup's gallery button does.
 class ThemeToggle extends StatelessWidget {
   const ThemeToggle({super.key});
 
   @override
   Widget build(BuildContext context) {
     final manager = context.watch<ThemeManager>();
-    return AnimatedToggleSwitch<bool>.rolling(
+    final toDark = !manager.isDark;
+    return HeaderPillButton(
       key: const Key('themeToggle'),
-      current: manager.isDark,
-      values: const [false, true],
-      onChanged: manager.setDark,
-      height: 40.h,
-      spacing: 10.w,
-      borderWidth: 3.w,
-      iconBuilder: (dark, _) => dark
-          ? const Icon(Icons.dark_mode_rounded, color: AppColors.white)
-          : const Icon(Icons.light_mode_rounded,
-              color: AppColors.lightModeIcon),
-      style: ToggleStyle(
-        indicatorColor: context.colors.surface,
-        backgroundColor: AppColors.warning,
-        borderColor: Colors.transparent,
-      ),
+      label: toDark ? 'Dark' : 'Light',
+      icon: toDark ? Icons.dark_mode_rounded : Icons.light_mode_rounded,
+      iconColor: AppColors.warning,
+      onPressed: () => manager.setDark(toDark),
     );
   }
 }

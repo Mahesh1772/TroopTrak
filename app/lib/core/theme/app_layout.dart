@@ -11,6 +11,15 @@ abstract final class AppLayout {
   static const segmentHeight = 38.0;
   static const segmentFrame = 3.0;
   static const headerBottom = 22.0;
+  static const headerPillHeight = 36.0;
+  static const headerPillIcon = 20.0;
+  static const unitChipHeight = 30.0;
+  static const profileTick = 26.0;
+  static const profileIdTop = 6.0;
+  static const profileUnitTop = 16.0;
+  static const profileActionTop = 14.0;
+  static const profileMonthTop = 18.0;
+  static const tabIconSize = 19.0;
   static const overlapHeaderBottom = 64.0;
   static const headerOverlap = 48.0;
   static const sectionTop = 28.0;

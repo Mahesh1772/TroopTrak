@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/services/clock.dart';
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_spacing.dart';
-import '../../../../core/theme/theme_context.dart';
 import '../../../../core/widgets/app_snackbar.dart';
+import '../../../../core/widgets/icon_tab.dart';
 import '../../../../core/widgets/state_view.dart';
 import '../../../attendance/domain/usecases/attendance_usecases.dart';
+import '../../../attendance/domain/usecases/watch_month_presence.dart';
 import '../../../soldiers/domain/entities/soldier.dart';
 import '../../../statuses/domain/usecases/status_usecases.dart';
 import '../profile_actions.dart';
 import '../profile_capabilities.dart';
 import '../providers/attendance_provider.dart';
+import '../providers/month_presence_provider.dart';
 import '../providers/soldier_profile_provider.dart';
 import '../providers/statuses_provider.dart';
 import '../widgets/attendance_tab.dart';
 import '../widgets/basic_info_tab.dart';
+import '../widgets/month_tally.dart';
 import '../widgets/profile_header.dart';
 import '../widgets/profile_header_actions.dart';
 import '../widgets/statuses_tab.dart';
@@ -63,7 +63,7 @@ class SoldierProfilePage extends StatelessWidget {
         HeaderPillButton(
           key: const Key('signOutButton'),
           label: 'SIGN OUT',
-          icon: Icons.exit_to_app_rounded,
+          icon: Icons.logout_rounded,
           onPressed: () => _signOut(context),
         ),
       if (capabilities.showThemeToggle) const ThemeToggle(),
@@ -89,6 +89,12 @@ class SoldierProfilePage extends StatelessWidget {
                 soldierId: soldier.id,
               ),
             ),
+            ChangeNotifierProvider(
+              create: (context) => MonthPresenceProvider(
+                watch: context.read<WatchMonthPresence>(),
+                soldier: soldier,
+              ),
+            ),
           ],
           child: DefaultTabController(
             length: 3,
@@ -100,17 +106,17 @@ class SoldierProfilePage extends StatelessWidget {
                       ProfileHeader(
                         soldier: soldier,
                         actions: header,
+                        footer: const MonthTally(),
                         showBack: !inShell,
                         topTrailing: canSignOut && inShell
-                            ? IconButton(
+                            ? HeaderIconButton(
                                 key: const Key('signOutIcon'),
+                                icon: Icons.logout_rounded,
+                                tooltip: 'Sign out',
                                 onPressed: () => _signOut(context),
-                                icon: Icon(Icons.exit_to_app_rounded,
-                                    color: AppColors.white, size: 35.sp),
                               )
                             : null,
                       ),
-                      SizedBox(height: AppSpacing.sm.h),
                       const _ProfileTabBar(),
                     ],
                   ),
@@ -140,17 +146,11 @@ class _ProfileTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = context.textStyles.titleSmall
-        ?.copyWith(fontSize: 15.sp, letterSpacing: 1.5);
-    return TabBar(
-      indicatorColor: AppColors.brandIndigo,
-      labelStyle: style,
-      unselectedLabelStyle: style,
-      unselectedLabelColor: context.colors.onSurface,
-      tabs: const [
-        Tab(text: 'BASIC INFO', icon: Icon(Icons.info)),
-        Tab(text: 'STATUSES', icon: Icon(Icons.warning_rounded)),
-        Tab(text: 'ATTENDANCE', icon: Icon(Icons.person_add_alt_1)),
+    return const TabBar(
+      tabs: [
+        IconTab(icon: Icons.info_outline_rounded, label: 'INFO'),
+        IconTab(icon: Icons.warning_amber_rounded, label: 'STATUSES'),
+        IconTab(icon: Icons.how_to_reg_rounded, label: 'ATTENDANCE'),
       ],
     );
   }

@@ -10,6 +10,7 @@ abstract final class DatePatterns {
   static const shortWeekday = 'E';
   static const shortMonth = 'MMM';
   static const monthYear = 'MMMM yyyy';
+  static const monthName = 'MMMM';
   static const dashboardStamp = 'd MMM yyyy, HH:mm';
 }
 
@@ -24,6 +25,7 @@ final _weekday = DateFormat(DatePatterns.weekday, _locale);
 final _shortWeekday = DateFormat(DatePatterns.shortWeekday, _locale);
 final _shortMonth = DateFormat(DatePatterns.shortMonth, _locale);
 final _monthYear = DateFormat(DatePatterns.monthYear, _locale);
+final _monthName = DateFormat(DatePatterns.monthName, _locale);
 final _longDate = DateFormat.yMMMMd(_locale);
 final _dashboardStamp = DateFormat(DatePatterns.dashboardStamp, _locale);
 
@@ -65,6 +67,8 @@ String formatShortWeekday(DateTime date) => _shortWeekday.format(date);
 String formatShortMonth(DateTime date) => _shortMonth.format(date);
 
 String formatMonthYear(DateTime date) => _monthYear.format(date);
+
+String formatMonthName(DateTime date) => _monthName.format(date);
 
 DateTime dateOnly(DateTime date) => DateTime(date.year, date.month, date.day);
 

@@ -7,18 +7,22 @@ import 'package:provider/provider.dart';
 import 'package:trooptrak_final_application/core/error/failures.dart';
 import 'package:trooptrak_final_application/core/router/app_routes.dart';
 import 'package:trooptrak_final_application/core/router/soldier_routes.dart';
+import 'package:trooptrak_final_application/core/theme/app_colors.dart';
 import 'package:trooptrak_final_application/core/usecase/usecase.dart';
 import 'package:trooptrak_final_application/features/attendance/domain/entities/attendance_record.dart';
 import 'package:trooptrak_final_application/features/attendance/domain/usecases/attendance_usecases.dart';
+import 'package:trooptrak_final_application/features/attendance/domain/usecases/watch_month_presence.dart';
 import 'package:trooptrak_final_application/features/auth/domain/entities/auth_user.dart';
 import 'package:trooptrak_final_application/features/auth/domain/usecases/auth_usecases.dart';
 import 'package:trooptrak_final_application/features/auth/domain/usecases/update_soldier_profile.dart';
 import 'package:trooptrak_final_application/features/enlistment/domain/usecases/men_usecases.dart';
+import 'package:trooptrak_final_application/features/enlistment/presentation/pages/generate_qr_page.dart';
 import 'package:trooptrak_final_application/features/soldiers/domain/entities/soldier.dart';
 import 'package:trooptrak_final_application/features/statuses/domain/entities/status.dart';
 import 'package:trooptrak_final_application/features/statuses/domain/usecases/status_usecases.dart';
 
 import '../../helpers/builders.dart';
+import '../../helpers/month_presence_stub.dart';
 import '../../helpers/pump_app.dart';
 
 class _MockWatchAuth extends Mock implements WatchAuthState {}
@@ -92,6 +96,7 @@ void main() {
         Provider<DeleteStatus>.value(value: _MockDeleteStatus()),
         Provider<WatchAttendance>.value(value: attendance),
         Provider<DeleteAttendance>.value(value: _MockDeleteAttendance()),
+        Provider<WatchMonthPresence>.value(value: StubWatchMonthPresence()),
         Provider<SignOut>.value(value: signOut),
         Provider<UpdateSoldierProfile>.value(value: updateProfile),
       ],
@@ -114,6 +119,24 @@ void main() {
     expect(find.byKey(const Key('editSoldier')), findsOneWidget);
     expect(find.byKey(const Key('deleteSoldier')), findsNothing);
   }, variant: themeModes);
+
+  testWidgets('SHOW QR CODE is the solid white pill and keeps its Hero',
+      (tester) async {
+    await pumpTab(tester);
+    final pill = find.byKey(const Key('showQr'));
+    final material = tester.widget<Material>(
+        find.descendant(of: pill, matching: find.byType(Material)).first);
+    expect(material.color, AppColors.white);
+    expect(
+        find
+            .ancestor(of: pill, matching: find.byType(Hero))
+            .evaluate()
+            .single
+            .widget,
+        isA<Hero>().having((h) => h.tag, 'tag', GenerateQrPage.heroTag));
+    expect(find.text('July in camp'), findsOneWidget);
+    expect(find.text('INFO'), findsOneWidget);
+  });
 
   testWidgets('statuses and attendance tabs are read-only', (tester) async {
     await pumpTab(tester);

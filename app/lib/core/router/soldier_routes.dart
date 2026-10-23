@@ -71,6 +71,7 @@ Widget soldierProfileTab(BuildContext context) {
                 key: const Key('showQr'),
                 label: 'SHOW QR CODE',
                 icon: Icons.qr_code_2_rounded,
+                solid: true,
                 onPressed: () =>
                     Navigator.of(context).pushNamed(AppRoutes.generateQr),
               ),

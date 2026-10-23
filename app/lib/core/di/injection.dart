@@ -7,6 +7,7 @@ import '../../features/attendance/data/datasources/attendance_remote_data_source
 import '../../features/attendance/data/repositories/attendance_repository_impl.dart';
 import '../../features/attendance/domain/repositories/attendance_repository.dart';
 import '../../features/attendance/domain/usecases/attendance_usecases.dart';
+import '../../features/attendance/domain/usecases/watch_month_presence.dart';
 import '../../features/attendance/domain/usecases/watch_parade_roster.dart';
 import '../../features/attendance/domain/usecases/watch_soldiers_in_camp.dart';
 import '../../features/auth/data/datasources/firebase_auth_data_source.dart';
@@ -146,6 +147,8 @@ class AppDependencies {
           create: (context) =>
               WatchStrengthSummary(context.read<WatchParadeRoster>()),
         ),
+        Provider(
+            create: (_) => WatchMonthPresence(attendance, statuses, clock)),
       ];
 
   List<SingleChildWidget> _statusProviders() => [

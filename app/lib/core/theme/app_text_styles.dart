@@ -12,6 +12,11 @@ abstract final class AppTextStyles {
 
   static TextStyle pageTitle(Color color) => barlow(24, FontWeight.w600, color);
 
+  static TextStyle profileName(Color color) {
+    final style = barlow(24, FontWeight.w700, color);
+    return style.copyWith(letterSpacing: style.fontSize! * 0.01, height: 1.1);
+  }
+
   static TextStyle compactTitle(Color color) =>
       barlow(20, FontWeight.w600, color);
 
