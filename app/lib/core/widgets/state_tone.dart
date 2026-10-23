@@ -2,6 +2,7 @@ import 'dart:ui' show Color;
 
 import '../../features/statuses/domain/entities/status.dart';
 import '../../features/statuses/domain/services/parade_state.dart';
+import '../theme/app_colors.dart';
 import '../theme/app_palette.dart';
 
 const _tint = 0.16;
@@ -22,6 +23,14 @@ enum StateTone {
         medical => palette.statusMedical,
         out => palette.tickOff,
         accent => palette.accent,
+      };
+
+  /// Card gradient from [fill] to a darker end; tones without one stay flat.
+  List<Color> gradient(AppPalette palette) => switch (this) {
+        excuse => [fill(palette), AppColors.statusExcuseEnd],
+        leave => [fill(palette), AppColors.statusLeaveEnd],
+        medical => [fill(palette), AppColors.statusMedicalEnd],
+        _ => [fill(palette), fill(palette)],
       };
 
   /// Legible text colour for this tone on a card.

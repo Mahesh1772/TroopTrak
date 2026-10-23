@@ -1,5 +1,6 @@
 import '../../../../core/services/clock.dart';
 import '../../../../core/state/stream_state_notifier.dart';
+import '../../../../core/utils/date_formats.dart';
 import '../../../statuses/domain/entities/status.dart';
 import '../../../statuses/domain/usecases/status_usecases.dart';
 
@@ -24,6 +25,10 @@ class StatusesProvider extends StreamStateNotifier<List<Status>> {
     final all = state.dataOrNull;
     return all == null ? null : partitionStatuses(all, _clock.now());
   }
+
+  /// The "N days left" caption of an active status, against the current day.
+  String daysLeftLabel(Status status) =>
+      formatDaysLeft(status.daysLeft(_clock.now()));
 
   /// Returns null on success, otherwise the message to show.
   Future<String?> delete(Status status) async =>

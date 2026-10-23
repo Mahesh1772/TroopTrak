@@ -146,8 +146,9 @@ void main() {
     expect(find.byKey(const Key('addStatus')), findsNothing);
     expect(find.byKey(const Key('deleteStatus-a')), findsNothing);
     expect(find.text('Past Statuses'), findsOneWidget);
-    expect(find.text('1 Jun 2023 - 4 Jun 2023', skipOffstage: false),
+    expect(find.text('EXCUSE · 1 Jun 2023 - 4 Jun 2023', skipOffstage: false),
         findsOneWidget);
+    expect(find.text('5 days left'), findsOneWidget);
     expect(find.byType(Slidable), findsNothing);
 
     await tester.tap(find.text('ATTENDANCE'));

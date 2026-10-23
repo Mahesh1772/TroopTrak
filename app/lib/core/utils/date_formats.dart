@@ -38,6 +38,12 @@ String formatDay(DateTime date) => _day.format(date);
 String formatDayCaps(DateTime? date) =>
     date == null ? '-' : _day.format(date).toUpperCase();
 
+String formatDaysLeft(int days) => switch (days) {
+      <= 0 => 'Ends today',
+      1 => '1 day left',
+      _ => '$days days left',
+    };
+
 DateTime? parseDay(String? value) => _parse(_day, value);
 
 String formatTime(DateTime time) => _time.format(time);

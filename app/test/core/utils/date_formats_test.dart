@@ -17,6 +17,14 @@ void main() {
       expect(formatDayCaps(null), '-');
     });
 
+    test('days left reads singular, plural and zero', () {
+      expect(formatDaysLeft(4), '4 days left');
+      expect(formatDaysLeft(2), '2 days left');
+      expect(formatDaysLeft(1), '1 day left');
+      expect(formatDaysLeft(0), 'Ends today');
+      expect(formatDaysLeft(-3), 'Ends today');
+    });
+
     test('invalid strings return null', () {
       expect(parseDay(null), isNull);
       expect(parseDay(''), isNull);

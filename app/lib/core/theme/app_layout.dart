@@ -31,6 +31,15 @@ abstract final class AppLayout {
   static const listDividerInset = 66.0;
   static const listFabClearance = 96.0;
   static const definitionRowMinHeight = 50.0;
+  static const statusCardWidth = 236.0;
+  static const statusCardIcon = 24.0;
+  static const statusCardNameTop = 18.0;
+  static const statusCardDelete = 40.0;
+  static const statusCardDeleteInset = 6.0;
+  static const badgeVertical = 3.0;
+  static const iconPlateSize = 32.0;
+  static const iconPlateIcon = 20.0;
+  static const slideActionExtent = 0.18;
   static const definitionInset = 18.0;
   static const columnHeaderHeight = 38.0;
   static const dateButtonSize = 48.0;

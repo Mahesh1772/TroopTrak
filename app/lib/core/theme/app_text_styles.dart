@@ -29,6 +29,15 @@ abstract final class AppTextStyles {
 
   static TextStyle caption(Color color) => barlow(13, FontWeight.w400, color);
 
+  static TextStyle badge(Color color) => barlow(13, FontWeight.w600, color);
+
+  static TextStyle cardTitle(Color color) => barlow(21, FontWeight.w700, color);
+
+  static TextStyle overline(Color color) {
+    final style = barlow(12.5, FontWeight.w700, color);
+    return style.copyWith(letterSpacing: style.fontSize! * 0.08);
+  }
+
   static TextStyle columnHeader(Color color) {
     final style = barlow(13, FontWeight.w600, color);
     return style.copyWith(letterSpacing: style.fontSize! * 0.04);

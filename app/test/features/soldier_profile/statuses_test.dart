@@ -8,9 +8,14 @@ import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:trooptrak_final_application/core/error/failures.dart';
+import 'package:trooptrak_final_application/core/theme/app_palette.dart';
 import 'package:trooptrak_final_application/core/widgets/feedback_views.dart';
+import 'package:trooptrak_final_application/core/widgets/icon_plate.dart';
+import 'package:trooptrak_final_application/core/widgets/section_header.dart';
+import 'package:trooptrak_final_application/core/widgets/state_tone.dart';
 import 'package:trooptrak_final_application/features/soldier_profile/presentation/pages/status_form_page.dart';
 import 'package:trooptrak_final_application/features/soldier_profile/presentation/providers/statuses_provider.dart';
+import 'package:trooptrak_final_application/features/soldier_profile/presentation/widgets/status_tiles.dart';
 import 'package:trooptrak_final_application/features/soldier_profile/presentation/widgets/statuses_tab.dart';
 import 'package:trooptrak_final_application/features/statuses/domain/entities/status.dart';
 import 'package:trooptrak_final_application/features/statuses/domain/usecases/status_usecases.dart';
@@ -82,6 +87,16 @@ void main() {
       p.dispose();
     });
 
+    test('daysLeftLabel counts calendar days to the end day', () {
+      final p = provider();
+      expect(p.daysLeftLabel(active), 'Ends today');
+      expect(p.daysLeftLabel(active.copyWith(end: DateTime(2023, 7, 6))),
+          '1 day left');
+      expect(p.daysLeftLabel(active.copyWith(end: DateTime(2023, 7, 9))),
+          '4 days left');
+      p.dispose();
+    });
+
     test('delete returns null or the failure message', () async {
       final p = provider();
       expect(await p.delete(active), isNull);
@@ -98,7 +113,9 @@ void main() {
       ];
 
   Future<void> pumpTab(WidgetTester tester,
-      {bool canManage = true, ThemeMode mode = ThemeMode.dark}) async {
+      {bool canManage = true,
+      ThemeMode mode = ThemeMode.dark,
+      List<Status>? shown}) async {
     await tester.pumpApp(
       Scaffold(
         body: ChangeNotifierProvider(
@@ -110,13 +127,12 @@ void main() {
       clock: clock,
       providers: useCases(),
     );
-    statuses.add(Right([active, past]));
+    statuses.add(Right(shown ?? [active, past]));
     await tester.pumpAndSettle();
   }
 
   group('StatusesTab', () {
-    testWidgets('active cards and past tiles in their sections',
-        (tester) async {
+    testWidgets('active cards and past rows in their sections', (tester) async {
       await pumpTab(tester, mode: themeModes.currentValue!);
       expect(find.text('Active Statuses'), findsOneWidget);
       expect(find.text('Past Statuses'), findsOneWidget);
@@ -125,9 +141,100 @@ void main() {
               of: find.byKey(const Key('activeStatuses')),
               matching: find.text('Ex RMJ')),
           findsOneWidget);
-      expect(find.text('1 Jun 2023 - 4 Jul 2023'), findsOneWidget);
+      expect(find.text('LEAVE · 1 Jun 2023 - 4 Jul 2023'), findsOneWidget);
       expect(find.text('EXCUSE'), findsOneWidget);
+      expect(find.text('1 Jul 2023 - 5 Jul 2023'), findsOneWidget);
     }, variant: themeModes);
+
+    testWidgets('each section shows how many statuses it holds',
+        (tester) async {
+      await pumpTab(tester);
+      final headers = find.byType(SectionHeader);
+      expect(
+          find.descendant(
+              of: find.ancestor(
+                  of: find.text('Active Statuses'), matching: headers),
+              matching: find.text('1')),
+          findsOneWidget);
+      expect(
+          find.descendant(
+              of: find.ancestor(
+                  of: find.text('Past Statuses'), matching: headers),
+              matching: find.text('1')),
+          findsOneWidget);
+    });
+
+    testWidgets('an active card says how many days are left', (tester) async {
+      final soon = buildStatus(
+          id: 'soon',
+          type: 'Leave',
+          name: 'Block Leave',
+          start: DateTime(2023, 7, 1),
+          end: DateTime(2023, 7, 6));
+      final later = buildStatus(
+          id: 'later',
+          type: 'Medical Appointment',
+          name: 'Dental',
+          start: DateTime(2023, 7, 1),
+          end: DateTime(2023, 7, 9));
+      await pumpTab(tester, shown: [active, soon, later, past]);
+      Finder badge(String id, String text) => find.descendant(
+          of: find.byKey(Key('activeStatus-$id')), matching: find.text(text));
+      expect(badge('a', 'Ends today'), findsOneWidget);
+      expect(badge('soon', '1 day left'), findsOneWidget);
+      expect(badge('later', '4 days left'), findsOneWidget);
+    });
+
+    testWidgets('an active card is a gradient of its status type',
+        (tester) async {
+      final leave = buildStatus(
+          id: 'lv',
+          type: 'Leave',
+          name: 'Block Leave',
+          end: DateTime(2023, 7, 8));
+      final medical = buildStatus(
+          id: 'ma',
+          type: 'Medical Appointment',
+          name: 'Dental',
+          end: DateTime(2023, 7, 8));
+      await pumpTab(tester, shown: [active, leave, medical]);
+      for (final (id, tone) in [
+        ('a', StateTone.excuse),
+        ('lv', StateTone.leave),
+        ('ma', StateTone.medical),
+      ]) {
+        final box = tester.widget<Ink>(find.descendant(
+            of: find.byKey(Key('activeStatus-$id')),
+            matching: find.byType(Ink)));
+        final gradient =
+            (box.decoration! as BoxDecoration).gradient! as LinearGradient;
+        expect(gradient.colors, tone.gradient(AppPalette.dark));
+        expect(gradient.colors.first, tone.fill(AppPalette.dark));
+        expect(gradient.colors.first, isNot(gradient.colors.last));
+      }
+    });
+
+    testWidgets('a past row has a plate of its type and tone', (tester) async {
+      await pumpTab(tester);
+      final plate = find.descendant(
+          of: find.byKey(const Key('pastStatus-p')),
+          matching: find.byType(IconPlate));
+      expect(plate, findsOneWidget);
+      final widget = tester.widget<IconPlate>(plate);
+      expect(widget.icon, statusIcon('Leave'));
+      expect(widget.tone, StateTone.leave);
+      expect(statusIcon('Leave'), isNot(statusIcon('Medical Appointment')));
+      expect(statusIcon('Excuse'), isNot(statusIcon('Leave')));
+    });
+
+    testWidgets('an empty list says so instead of leaving a gap',
+        (tester) async {
+      await pumpTab(tester, shown: const []);
+      expect(find.text('No active statuses'), findsOneWidget);
+      expect(find.text('No past statuses'), findsOneWidget);
+      expect(find.byKey(const Key('activeStatuses')), findsNothing);
+      expect(find.byKey(const Key('addStatus')), findsOneWidget);
+    });
 
     testWidgets('active delete icon calls the use case', (tester) async {
       await pumpTab(tester);
@@ -163,7 +270,7 @@ void main() {
       expect(find.widgetWithText(ErrorView, 'Statuses down'), findsOneWidget);
     });
 
-    testWidgets('past tile slides to delete', (tester) async {
+    testWidgets('past row slides to delete', (tester) async {
       await pumpTab(tester);
       await tester.drag(
           find.byKey(const Key('pastStatus-p')), const Offset(-300, 0));
@@ -171,6 +278,40 @@ void main() {
       await tester.tap(find.byKey(const Key('deletePastStatus-p')));
       await tester.pumpAndSettle();
       verify(() => delete(past)).called(1);
+    });
+
+    testWidgets('past row slides to edit', (tester) async {
+      await pumpTab(tester);
+      await tester.drag(
+          find.byKey(const Key('pastStatus-p')), const Offset(-300, 0));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('editStatus-p')));
+      await tester.pumpAndSettle();
+      expect(find.text('UPDATE STATUS'), findsOneWidget);
+    });
+
+    testWidgets('commanders are told to slide, soldiers are not',
+        (tester) async {
+      await pumpTab(tester);
+      expect(find.text('Slide a row left to edit or delete'), findsOneWidget);
+      await pumpTab(tester, canManage: false);
+      expect(find.text('Slide a row left to edit or delete'), findsNothing);
+    });
+
+    testWidgets('long names and many cards fit without overflow',
+        (tester) async {
+      final long = buildStatus(
+          id: 'long',
+          type: 'Medical Appointment',
+          name: 'Review of the post operation recovery with the specialist',
+          end: DateTime(2023, 7, 20));
+      await pumpTab(tester, shown: [active, long, past]);
+      expect(tester.takeException(), isNull);
+      final heights = [
+        for (final id in ['a', 'long'])
+          tester.getSize(find.byKey(Key('activeStatus-$id'))).height,
+      ];
+      expect(heights.first, heights.last);
     });
 
     testWidgets('tapping an active card opens the update form', (tester) async {

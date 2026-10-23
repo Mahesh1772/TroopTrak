@@ -62,6 +62,7 @@ abstract final class AppColors {
   // One 16% white for the mockup's 15% unit pills and 16% header pills.
   static const onGradientChip = Color(0x29FFFFFF);
   static const onGradientPanel = Color(0x470A0628);
+  static const onGradientBadge = Color(0x2E000000);
   static const segmentShadow = Color(0x59000000);
   static const scrim = Color(0x9E05060C);
   static const raisedShadowDark = Color(0x99000000);
@@ -101,7 +102,9 @@ abstract final class AppColors {
   static const statusExcuse = Color(0xFFFF6F00);
   static const statusLeave = Color(0xFFF44336);
   static const statusMedical = Color(0xFF1E88E5);
-  static const pastTileDark = Color(0xFF908F8F);
+  static const statusExcuseEnd = Color(0xFFE65100);
+  static const statusLeaveEnd = Color(0xFFC62828);
+  static const statusMedicalEnd = Color(0xFF1565C0);
   static const info = Color(0xFF2196F3);
   static const bookIn = Color(0xFF43A047);
   static const calendarDuty = Color(0xFFE91E63);

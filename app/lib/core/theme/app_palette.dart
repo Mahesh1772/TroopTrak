@@ -22,7 +22,6 @@ class AppPalette extends ThemeExtension<AppPalette> {
     required this.statusExcuse,
     required this.statusLeave,
     required this.statusMedical,
-    required this.pastTile,
     required this.page,
     required this.pageLine,
     required this.navBar,
@@ -60,7 +59,6 @@ class AppPalette extends ThemeExtension<AppPalette> {
   final Color statusExcuse;
   final Color statusLeave;
   final Color statusMedical;
-  final Color pastTile;
   final Color page;
   final Color pageLine;
   final Color navBar;
@@ -101,7 +99,6 @@ class AppPalette extends ThemeExtension<AppPalette> {
     statusExcuse: AppColors.statusExcuse,
     statusLeave: AppColors.statusLeave,
     statusMedical: AppColors.statusMedical,
-    pastTile: AppColors.pastTileDark,
     page: AppColors.darkPage,
     pageLine: AppColors.darkPageLine,
     navBar: AppColors.darkPrimary,
@@ -143,7 +140,6 @@ class AppPalette extends ThemeExtension<AppPalette> {
     statusExcuse: AppColors.statusExcuse,
     statusLeave: AppColors.statusLeave,
     statusMedical: AppColors.statusMedical,
-    pastTile: AppColors.darkPrimary,
     page: AppColors.lightPage,
     pageLine: AppColors.lightPageLine,
     navBar: AppColors.white,
@@ -183,7 +179,6 @@ class AppPalette extends ThemeExtension<AppPalette> {
         statusExcuse: statusExcuse,
         statusLeave: statusLeave,
         statusMedical: statusMedical,
-        pastTile: pastTile,
         page: page,
         pageLine: pageLine,
         navBar: navBar,

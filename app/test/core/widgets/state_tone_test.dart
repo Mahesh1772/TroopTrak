@@ -40,6 +40,25 @@ void main() {
     expect(tones, isNot(contains(StateTone.accent)));
   });
 
+  test('status tones run from their fill to a darker end', () {
+    for (final palette in [AppPalette.dark, AppPalette.light]) {
+      for (final tone in [
+        StateTone.excuse,
+        StateTone.leave,
+        StateTone.medical,
+      ]) {
+        final colors = tone.gradient(palette);
+        expect(colors, hasLength(2));
+        expect(colors.first, tone.fill(palette));
+        expect(colors.last, isNot(colors.first));
+        expect(colors.last.computeLuminance(),
+            lessThan(colors.first.computeLuminance()));
+      }
+      expect(StateTone.inCamp.gradient(palette),
+          [StateTone.inCamp.fill(palette), StateTone.inCamp.fill(palette)]);
+    }
+  });
+
   test('a status takes the tone of its type', () {
     expect(buildStatus(type: StatusTypes.excuse).tone, StateTone.excuse);
     expect(buildStatus(type: StatusTypes.leave).tone, StateTone.leave);
