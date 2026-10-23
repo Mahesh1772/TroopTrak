@@ -5,13 +5,14 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/utils/date_formats.dart';
 import '../../../../core/widgets/app_snackbar.dart';
 import '../../../../core/widgets/confirm_dialog.dart';
-import '../../../../core/widgets/info_row.dart';
+import '../../../../core/widgets/definition_list.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../soldiers/domain/entities/soldier.dart';
 import '../profile_actions.dart';
 import '../profile_capabilities.dart';
 
-/// Rebuild of `basic_info_detailed_screen_tab.dart` (the source's five rows).
+/// Rebuild of `basic_info_detailed_screen_tab.dart`: the five source rows in a
+/// definition list, then EDIT and DELETE for those who may.
 class BasicInfoTab extends StatefulWidget {
   const BasicInfoTab({
     super.key,
@@ -30,9 +31,6 @@ class BasicInfoTab extends StatefulWidget {
 
 class _BasicInfoTabState extends State<BasicInfoTab> {
   bool _deleting = false;
-
-  static String _day(DateTime? date) =>
-      date == null ? '-' : formatDay(date).toUpperCase();
 
   Future<void> _delete(ProfileActions actions) async {
     final confirmed = await ConfirmDialog.show(
@@ -68,56 +66,41 @@ class _BasicInfoTabState extends State<BasicInfoTab> {
     final s = widget.soldier;
     final caps = widget.capabilities;
     final actions = widget.actions;
-    final gap = SizedBox(height: AppSpacing.xl.h);
     return ListView(
-      padding: EdgeInsets.only(bottom: AppSpacing.xxxl.h),
+      padding: EdgeInsets.fromLTRB(
+        AppSpacing.lg.w,
+        AppSpacing.lg.h,
+        AppSpacing.lg.w,
+        AppSpacing.xxxl.h,
+      ),
       children: [
-        InfoRow(
-            icon: Icons.cake_rounded,
-            title: 'Date Of Birth',
-            content: _day(s.dob)),
-        InfoRow(
-            icon: Icons.food_bank_rounded,
-            title: 'Ration Type:',
-            content: s.rationType.toUpperCase()),
-        InfoRow(
-            icon: Icons.bloodtype_rounded,
-            title: 'Blood Type:',
-            content: s.bloodGroup),
-        InfoRow(
-            icon: Icons.date_range_rounded,
-            title: 'Enlistment Date:',
-            content: _day(s.enlistment)),
-        InfoRow(
-            icon: Icons.military_tech_rounded,
-            title: 'ORD:',
-            content: _day(s.ord)),
-        SizedBox(height: 30.h),
+        DefinitionList(entries: [
+          ('Date Of Birth', formatDayCaps(s.dob)),
+          ('Ration Type', s.rationLabel),
+          ('Blood Type', s.bloodGroup),
+          ('Enlistment Date', formatDayCaps(s.enlistment)),
+          ('ORD', formatDayCaps(s.ord)),
+        ]),
         if (caps.canEdit) ...[
-          Center(
-            child: PrimaryButton(
-              key: const Key('editSoldier'),
-              label: 'EDIT SOLDIER DETAILS',
-              icon: Icons.edit_document,
-              style: PrimaryButtonStyle.primary,
-              expand: false,
-              onPressed: () => actions.edit(context, s),
-            ),
+          SizedBox(height: AppSpacing.md.h),
+          PrimaryButton(
+            key: const Key('editSoldier'),
+            label: 'EDIT SOLDIER DETAILS',
+            icon: Icons.edit_rounded,
+            onPressed: () => actions.edit(context, s),
           ),
-          gap,
         ],
-        if (caps.canDelete && actions.delete != null)
-          Center(
-            child: PrimaryButton(
-              key: const Key('deleteSoldier'),
-              label: 'DELETE SOLDIER DETAILS',
-              icon: Icons.delete,
-              style: PrimaryButtonStyle.danger,
-              expand: false,
-              loading: _deleting,
-              onPressed: () => _delete(actions),
-            ),
+        if (caps.canDelete && actions.delete != null) ...[
+          SizedBox(height: AppSpacing.md.h),
+          PrimaryButton(
+            key: const Key('deleteSoldier'),
+            label: 'DELETE SOLDIER DETAILS',
+            icon: Icons.delete_rounded,
+            style: PrimaryButtonStyle.danger,
+            loading: _deleting,
+            onPressed: () => _delete(actions),
           ),
+        ],
       ],
     );
   }

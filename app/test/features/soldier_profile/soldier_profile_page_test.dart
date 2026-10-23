@@ -7,8 +7,10 @@ import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
 import 'package:trooptrak_final_application/core/error/failures.dart';
 import 'package:trooptrak_final_application/core/theme/app_colors.dart';
+import 'package:trooptrak_final_application/core/widgets/definition_list.dart';
 import 'package:trooptrak_final_application/core/widgets/feedback_views.dart';
 import 'package:trooptrak_final_application/core/widgets/icon_tab.dart';
+import 'package:trooptrak_final_application/core/widgets/primary_button.dart';
 import 'package:trooptrak_final_application/core/widgets/rank_plate.dart';
 import 'package:trooptrak_final_application/core/widgets/tally_strip.dart';
 import 'package:trooptrak_final_application/features/attendance/domain/entities/attendance_record.dart';
@@ -272,7 +274,8 @@ void main() {
       await tester.pumpAndSettle();
     }
 
-    testWidgets('shows the five source rows', (tester) async {
+    testWidgets('lists the five source rows in order as label and value',
+        (tester) async {
       await openWith(
           tester,
           buildSoldier(
@@ -282,16 +285,55 @@ void main() {
             enlistment: DateTime(2023, 1, 1),
             ord: DateTime(2025, 1, 1),
           ));
-      for (final (title, content) in [
+      const rows = [
         ('Date Of Birth', '5 JUL 2000'),
-        ('Ration Type:', 'SD NM'),
-        ('Blood Type:', 'AB+'),
-        ('Enlistment Date:', '1 JAN 2023'),
-        ('ORD:', '1 JAN 2025'),
-      ]) {
-        expect(find.text(title), findsOneWidget);
-        expect(find.text(content), findsOneWidget);
+        ('Ration Type', 'SD NM'),
+        ('Blood Type', 'AB+'),
+        ('Enlistment Date', '1 JAN 2023'),
+        ('ORD', '1 JAN 2025'),
+      ];
+      final card = find.byType(DefinitionList);
+      expect(card, findsOneWidget);
+      var previousTop = double.negativeInfinity;
+      for (final (label, value) in rows) {
+        final labelFinder =
+            find.descendant(of: card, matching: find.text(label));
+        final valueFinder =
+            find.descendant(of: card, matching: find.text(value));
+        expect(labelFinder, findsOneWidget);
+        expect(valueFinder, findsOneWidget);
+        final top = tester.getTopLeft(labelFinder).dy;
+        expect(top, greaterThan(previousTop));
+        previousTop = top;
+        expect(tester.getTopRight(valueFinder).dx,
+            greaterThan(tester.getTopRight(labelFinder).dx));
+        expect(tester.getCenter(valueFinder).dy,
+            closeTo(tester.getCenter(labelFinder).dy, 2));
       }
+    });
+
+    testWidgets('a missing date shows a dash', (tester) async {
+      await openWith(
+          tester, const Soldier(id: 'x', name: 'Tan Ah Kow', rank: 'CPL'));
+      expect(
+          find.descendant(
+              of: find.byType(DefinitionList), matching: find.text('-')),
+          findsNWidgets(3));
+    });
+
+    testWidgets('EDIT is the filled primary pill, DELETE the red outline',
+        (tester) async {
+      await openWith(tester, buildSoldier());
+      PrimaryButton button(String key) =>
+          tester.widget<PrimaryButton>(find.byKey(Key(key)));
+      expect(button('editSoldier').style, PrimaryButtonStyle.primary);
+      expect(button('deleteSoldier').style, PrimaryButtonStyle.danger);
+      expect(button('editSoldier').expand, isTrue);
+      expect(button('deleteSoldier').expand, isTrue);
+      expect(
+          tester.getTopLeft(find.byKey(const Key('editSoldier'))).dy,
+          lessThan(
+              tester.getTopLeft(find.byKey(const Key('deleteSoldier'))).dy));
     });
 
     testWidgets('edit hands the soldier to the edit action', (tester) async {

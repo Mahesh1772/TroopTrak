@@ -103,7 +103,7 @@ void main() {
   });
 
   final infoTab = find
-      .ancestor(of: find.text('ORD:'), matching: find.byType(Scrollable))
+      .ancestor(of: find.text('ORD'), matching: find.byType(Scrollable))
       .first;
 
   testWidgets('the theme toggle switches the app theme', (tester) async {

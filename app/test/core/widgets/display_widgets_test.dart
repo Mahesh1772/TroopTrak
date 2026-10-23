@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:trooptrak_final_application/core/widgets/app_scaffold.dart';
 import 'package:trooptrak_final_application/core/widgets/app_search_field.dart';
+import 'package:trooptrak_final_application/core/widgets/definition_list.dart';
 import 'package:trooptrak_final_application/core/widgets/expandable_count_tile.dart';
 import 'package:trooptrak_final_application/core/widgets/info_row.dart';
 import 'package:trooptrak_final_application/core/widgets/person_tile.dart';
@@ -51,6 +52,17 @@ void main() {
     expect(find.byIcon(Icons.cake), findsOneWidget);
     expect(find.text('Date of Birth'), findsOneWidget);
     expect(find.text('5 Jul 2000'), findsOneWidget);
+  }, variant: themeModes);
+
+  testWidgets('DefinitionList puts a hairline between rows only',
+      (tester) async {
+    await tester.pumpThemed(
+      const DefinitionList(entries: [('Blood Type', 'O+'), ('ORD', '1 JAN')]),
+      mode: themeModes.currentValue!,
+    );
+    expect(find.text('Blood Type'), findsOneWidget);
+    expect(find.text('1 JAN'), findsOneWidget);
+    expect(find.byType(Divider), findsOneWidget);
   }, variant: themeModes);
 
   testWidgets('SectionHeader shows title and caption', (tester) async {

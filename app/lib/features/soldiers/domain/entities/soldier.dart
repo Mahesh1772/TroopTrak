@@ -40,6 +40,8 @@ class Soldier extends Equatable {
 
   bool get isWose => Ranks.isWose(rank);
 
+  String get rationLabel => rationType.toUpperCase();
+
   /// R9: points never drop below zero.
   static double pointsAfter(double current, double delta) {
     final result = current + delta;

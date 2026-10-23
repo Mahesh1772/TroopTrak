@@ -12,6 +12,11 @@ void main() {
           parseDay(formatDay(DateTime(2024, 12, 31))), DateTime(2024, 12, 31));
     });
 
+    test('capitalised form, with a dash when there is no date', () {
+      expect(formatDayCaps(sample), '5 JUL 2023');
+      expect(formatDayCaps(null), '-');
+    });
+
     test('invalid strings return null', () {
       expect(parseDay(null), isNull);
       expect(parseDay(''), isNull);

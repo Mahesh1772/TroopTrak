@@ -35,6 +35,9 @@ final _specialSpaces =
 
 String formatDay(DateTime date) => _day.format(date);
 
+String formatDayCaps(DateTime? date) =>
+    date == null ? '-' : _day.format(date).toUpperCase();
+
 DateTime? parseDay(String? value) => _parse(_day, value);
 
 String formatTime(DateTime time) => _time.format(time);
