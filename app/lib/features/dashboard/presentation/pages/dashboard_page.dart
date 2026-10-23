@@ -5,10 +5,8 @@ import 'package:provider/provider.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_layout.dart';
-import '../../../../core/theme/app_radii.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
-import '../../../../core/theme/theme_context.dart';
 import '../../../../core/widgets/app_segmented_control.dart';
 import '../../../../core/widgets/gradient_header.dart';
 import '../providers/dashboard_providers.dart';
@@ -101,7 +99,7 @@ class _DashboardPageState extends State<DashboardPage> {
               AppSpacing.lg.w,
               0,
             ),
-            child: const _CalendarHost(),
+            child: const EventCalendar(),
           ),
       ],
     );
@@ -121,20 +119,4 @@ class _StrengthCard extends StatelessWidget {
           .pushNamed(AppRoutes.soldierProfile, arguments: id),
     );
   }
-}
-
-class _CalendarHost extends StatelessWidget {
-  const _CalendarHost();
-
-  @override
-  Widget build(BuildContext context) => DecoratedBox(
-        decoration: BoxDecoration(
-          color: context.palette.card,
-          borderRadius: BorderRadius.circular(AppRadii.xl.r),
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(AppSpacing.md.r),
-          child: const EventCalendar(),
-        ),
-      );
 }

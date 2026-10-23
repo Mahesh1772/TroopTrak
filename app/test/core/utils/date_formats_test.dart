@@ -61,7 +61,6 @@ void main() {
     expect(formatWeekday(sample), 'Wednesday');
     expect(formatShortWeekday(sample), 'Wed');
     expect(formatShortMonth(sample), 'Jul');
-    expect(formatMonth(sample), 'July');
     expect(formatMonthYear(sample), 'July 2023');
   });
 

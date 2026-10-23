@@ -1,6 +1,13 @@
 import 'package:equatable/equatable.dart';
 
-enum CalendarEventKind { conduct, guardDuty }
+enum CalendarEventKind {
+  conduct('Conduct'),
+  guardDuty('Guard duty');
+
+  const CalendarEventKind(this.label);
+
+  final String label;
+}
 
 class CalendarEvent extends Equatable {
   const CalendarEvent({
@@ -16,6 +23,8 @@ class CalendarEvent extends Equatable {
   final CalendarEventKind kind;
 
   DateTime get day => DateTime(start.year, start.month, start.day);
+
+  bool get endsNextDay => DateTime(end.year, end.month, end.day).isAfter(day);
 
   /// Source calendar rule: an end not after the start runs into the next day
   /// (overnight and 24-hour duties).

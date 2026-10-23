@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:trooptrak_final_application/core/di/calendar_event_adapter.dart';
 import 'package:trooptrak_final_application/core/error/failures.dart';
 import 'package:trooptrak_final_application/core/router/app_routes.dart';
+import 'package:trooptrak_final_application/core/theme/app_colors.dart';
 import 'package:trooptrak_final_application/core/usecase/usecase.dart';
 import 'package:trooptrak_final_application/core/widgets/feedback_views.dart';
 import 'package:trooptrak_final_application/core/widgets/gradient_header.dart';
@@ -122,7 +123,9 @@ void main() {
     await Future<void>.delayed(Duration.zero);
     expect(p.month, DateTime(2023, 7));
     expect(p.on(p.selected), [run]);
-    expect(p.kindsOn(DateTime(2023, 7, 7)), {CalendarEventKind.guardDuty});
+    expect(p.kindsOn(DateTime(2023, 7, 7)), [CalendarEventKind.guardDuty]);
+    expect(p.today, DateTime(2023, 7, 5));
+    expect(p.selectedEvents, [run]);
     p
       ..shiftMonth(1)
       ..select(DateTime(2023, 8, 2, 13));
@@ -319,8 +322,121 @@ void main() {
     await tester.tap(find.byKey(const Key('day-7 Jul 2023')));
     await tester.pumpAndSettle();
     expect(find.text('July 7, 2023'), findsOneWidget);
-    expect(find.text('8:00 AM - 8:00 AM'), findsOneWidget);
+    expect(find.text('1 event'), findsOneWidget);
+    expect(find.text('8:00 AM - 8:00 AM (Next day)'), findsOneWidget);
     expect(find.text('Guard Duty'), findsOneWidget);
+    expect(find.byKey(Key('event-Guard Duty-${duty.start.toIso8601String()}')),
+        findsOneWidget);
+  });
+
+  testWidgets('a day without events says so and shows no count',
+      (tester) async {
+    await pumpDashboard(tester);
+    await tester.tap(find.byKey(const Key('showCalendar')));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.byKey(const Key('day-12 Jul 2023')));
+    await tester.tap(find.byKey(const Key('day-12 Jul 2023')));
+    await tester.pumpAndSettle();
+    expect(find.text('July 12, 2023'), findsOneWidget);
+    expect(find.text('No events'), findsOneWidget);
+    expect(find.text('0 events'), findsNothing);
+  });
+
+  group('the month card', () {
+    Future<void> openCalendar(WidgetTester tester,
+        {ThemeMode mode = ThemeMode.dark}) async {
+      await pumpDashboard(tester, mode: mode);
+      await tester.tap(find.byKey(const Key('showCalendar')));
+      await tester.pumpAndSettle();
+    }
+
+    testWidgets('has no seasonal banner', (tester) async {
+      await openCalendar(tester);
+      expect(find.byKey(const Key('monthBanner')), findsNothing);
+      expect(find.byType(Image), findsNothing);
+      expect(find.text('July 2023'), findsOneWidget);
+    });
+
+    testWidgets('month navigation moves and returns', (tester) async {
+      await openCalendar(tester);
+      await tester.tap(find.byKey(const Key('nextMonth')));
+      await tester.pumpAndSettle();
+      expect(find.text('August 2023'), findsOneWidget);
+      expect(find.byKey(const Key('day-31 Aug 2023')), findsOneWidget);
+      await tester.tap(find.byKey(const Key('prevMonth')));
+      await tester.tap(find.byKey(const Key('prevMonth')));
+      await tester.pumpAndSettle();
+      expect(find.text('June 2023'), findsOneWidget);
+      expect(find.byKey(const Key('day-30 Jun 2023')), findsOneWidget);
+    });
+
+    testWidgets('neighbouring days are shown but cannot be picked',
+        (tester) async {
+      await openCalendar(tester);
+      expect(find.text('26'), findsWidgets);
+      expect(find.byKey(const Key('day-26 Jun 2023')), findsNothing);
+      expect(find.byKey(const Key('day-1 Jul 2023')), findsOneWidget);
+    });
+
+    testWidgets('dots: amber for a conduct, pink for a duty', (tester) async {
+      await openCalendar(tester);
+      Color? dotColor(String day, String kind) {
+        final dot = find.byKey(Key('dot-$day-$kind'));
+        if (dot.evaluate().isEmpty) return null;
+        return (tester
+                .widget<DecoratedBox>(find.descendant(
+                    of: dot, matching: find.byType(DecoratedBox)))
+                .decoration as BoxDecoration)
+            .color;
+      }
+
+      expect(dotColor('5 Jul 2023', 'conduct'), AppColors.warning);
+      expect(dotColor('5 Jul 2023', 'guardDuty'), isNull);
+      expect(dotColor('7 Jul 2023', 'guardDuty'), AppColors.calendarDuty);
+      expect(dotColor('7 Jul 2023', 'conduct'), isNull);
+      expect(find.byKey(const Key('dot-12 Jul 2023-conduct')), findsNothing);
+    });
+
+    testWidgets('the legend names both kinds', (tester) async {
+      await openCalendar(tester);
+      expect(
+          find.descendant(
+              of: find.byKey(const Key('legend-conduct')),
+              matching: find.text('Conduct')),
+          findsOneWidget);
+      expect(
+          find.descendant(
+              of: find.byKey(const Key('legend-guardDuty')),
+              matching: find.text('Guard duty')),
+          findsOneWidget);
+    });
+
+    testWidgets('the picked day is filled and today is outlined',
+        (tester) async {
+      await openCalendar(tester);
+      Material cell(String day) => tester.widget<Material>(find
+          .ancestor(
+              of: find.byKey(Key('day-$day')), matching: find.byType(Material))
+          .first);
+      final selected = cell('5 Jul 2023');
+      expect(selected.color, AppColors.brandIndigo);
+      expect(cell('6 Jul 2023').color, Colors.transparent);
+
+      await tester.ensureVisible(find.byKey(const Key('day-7 Jul 2023')));
+      await tester.tap(find.byKey(const Key('day-7 Jul 2023')));
+      await tester.pumpAndSettle();
+      expect(cell('7 Jul 2023').color, AppColors.brandIndigo);
+      final today = cell('5 Jul 2023');
+      expect(today.color, Colors.transparent);
+      expect(
+          (today.shape as RoundedRectangleBorder).side.width, greaterThan(0));
+    });
+
+    testWidgets('lays out in light mode too', (tester) async {
+      await openCalendar(tester, mode: ThemeMode.light);
+      expect(tester.takeException(), isNull);
+      expect(find.byKey(const Key('day-5 Jul 2023')), findsOneWidget);
+    });
   });
 
   testWidgets('a failed strength stream shows the error', (tester) async {
@@ -342,22 +458,5 @@ void main() {
     await tester.ensureVisible(error);
     expect(error, findsOneWidget);
     expect(find.text('No events'), findsNothing);
-  });
-
-  testWidgets('the month header carries the source month banner',
-      (tester) async {
-    await pumpDashboard(tester);
-    await tester.tap(find.byKey(const Key('showCalendar')));
-    await tester.pumpAndSettle();
-    Image banner() =>
-        tester.widget<Image>(find.byKey(const Key('monthBanner')));
-    expect((banner().image as AssetImage).assetName,
-        'lib/assets/calendar-images/July.png');
-    expect(find.text('July 2023'), findsOneWidget);
-
-    await tester.tap(find.byKey(const Key('nextMonth')));
-    await tester.pumpAndSettle();
-    expect((banner().image as AssetImage).assetName,
-        'lib/assets/calendar-images/August.png');
   });
 }

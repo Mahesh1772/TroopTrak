@@ -41,4 +41,14 @@ abstract final class AppLayout {
   static const dateTile = Size(54, 72);
   static const emptyIconSize = 40.0;
   static const emptyVertical = 36.0;
+  static const calendarNavButton = 44.0;
+  static const calendarDayHeight = 46.0;
+  static const calendarRowGap = 4.0;
+  static const calendarDot = 5.0;
+  static const calendarLegendDot = 8.0;
+  static const calendarSectionTop = 22.0;
+  static const calendarEventBar = Size(4, 40);
+  static const calendarMutedOpacity = 0.5;
+  static const calendarTodayRing = 1.5;
+  static const calendarEventTime = 64.0;
 }
