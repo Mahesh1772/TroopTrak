@@ -22,6 +22,15 @@ class AttendanceRecord extends Equatable {
         timestamp: timestamp ?? this.timestamp,
       );
 
+  /// Moved to [day] at [hour]:[minute]; the id and in/out flag stay, and the
+  /// seconds are dropped.
+  AttendanceRecord rescheduled(
+    DateTime day, {
+    required int hour,
+    required int minute,
+  }) =>
+      copyWith(timestamp: DateTime(day.year, day.month, day.day, hour, minute));
+
   @override
   List<Object?> get props => [id, soldierId, isInsideCamp, timestamp];
 }

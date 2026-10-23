@@ -59,6 +59,23 @@ void main() {
     expect(moved.timestamp, DateTime(2023, 1, 1));
   });
 
+  group('rescheduled', () {
+    test('moves to the day and the clock time, dropping the seconds', () {
+      final record = buildAttendance(
+          isInsideCamp: false, timestamp: DateTime(2023, 7, 5, 8, 15, 42));
+      final moved =
+          record.rescheduled(DateTime(2023, 7, 3, 22, 10), hour: 6, minute: 5);
+      expect(moved.timestamp, DateTime(2023, 7, 3, 6, 5));
+    });
+
+    test('keeps the id, soldier and in/out flag', () {
+      final moved = old.rescheduled(DateTime(2024, 1, 2), hour: 0, minute: 0);
+      expect(moved.id, old.id);
+      expect(moved.soldierId, old.soldierId);
+      expect(moved.isInsideCamp, old.isInsideCamp);
+    });
+  });
+
   group('use cases', () {
     late _MockRepo repo;
     final clock = FixedClock(now);
