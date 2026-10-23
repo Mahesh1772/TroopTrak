@@ -40,6 +40,11 @@ void main() {
       expect(formatTime(DateTime(2023, 1, 1, 9, 5)), '9:05 AM');
     });
 
+    test('a range joins two times with an en dash', () {
+      expect(formatTimeRange(DateTime(2023, 1, 1, 7, 30), sample),
+          '7:30 AM – 5:30 PM');
+    });
+
     test('the 24-hour clock pads the hour and the minute', () {
       expect(formatClock(DateTime(2023, 1, 1, 0, 30)), '00:30');
       expect(formatClock(sample), '17:30');

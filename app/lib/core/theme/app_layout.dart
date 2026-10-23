@@ -73,4 +73,7 @@ abstract final class AppLayout {
   static const calendarMutedOpacity = 0.5;
   static const calendarTodayRing = 1.5;
   static const calendarEventTime = 64.0;
+  static const conductBadge = 48.0;
+  static const conductBadgeIcon = 26.0;
+  static const conductTick = 18.0;
 }

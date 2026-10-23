@@ -50,6 +50,9 @@ DateTime? parseDay(String? value) => _parse(_day, value);
 
 String formatTime(DateTime time) => _time.format(time);
 
+String formatTimeRange(DateTime start, DateTime end) =>
+    '${formatTime(start)} – ${formatTime(end)}';
+
 String formatClock(DateTime time) => _clock.format(time);
 
 DateTime? parseTime(String? value) => _parse(_time, value);
