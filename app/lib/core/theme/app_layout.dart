@@ -20,6 +20,8 @@ abstract final class AppLayout {
   static const tallyTall = 46.0;
   static const listRowVertical = 10.0;
   static const listDividerInset = 66.0;
+  static const listFabClearance = 96.0;
+  static const columnHeaderHeight = 38.0;
   static const dateButtonSize = 48.0;
   static const fabSize = 60.0;
   static const fabIconSize = 28.0;

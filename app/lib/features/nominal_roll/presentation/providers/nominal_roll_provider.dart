@@ -2,22 +2,23 @@ import '../../../../core/state/stream_state_notifier.dart';
 import '../../../../core/state/view_state.dart';
 import '../../../../core/usecase/usecase.dart';
 import '../../../attendance/domain/usecases/attendance_usecases.dart';
-import '../../../attendance/domain/usecases/watch_soldiers_in_camp.dart';
-import '../../../soldiers/domain/entities/soldier.dart';
+import '../../../attendance/domain/usecases/watch_parade_roster.dart';
+import '../../../statuses/domain/services/parade_roster.dart';
+import '../../domain/entities/nominal_roll.dart';
 import '../../domain/services/roster_filter.dart';
 
-class NominalRollProvider extends StreamStateNotifier<List<Soldier>> {
+class NominalRollProvider extends StreamStateNotifier<NominalRoll> {
+  /// [excludeId] is the signed-in commander's `Users` id (their display
+  /// name), hidden from the roll (R12).
   NominalRollProvider({
-    required WatchSoldiersInCamp watch,
+    required WatchParadeRoster watch,
     required BookInOut bookInOut,
-    this.excludeId,
+    String? excludeId,
   })  : _bookInOut = bookInOut,
-        super(watch(const NoParams()));
+        super(watch(const NoParams()).map((result) => result
+            .map((entries) => NominalRoll(entries, excludeId: excludeId))));
 
   final BookInOut _bookInOut;
-
-  /// The signed-in commander's `Users` id (their display name), hidden (R12).
-  final String? excludeId;
 
   String _query = '';
   SearchCategory _category = SearchCategory.name;
@@ -25,11 +26,10 @@ class NominalRollProvider extends StreamStateNotifier<List<Soldier>> {
   String get query => _query;
   SearchCategory get category => _category;
 
-  /// Null while loading or on error; see [state].
-  List<Soldier>? get visible => switch (state) {
-        ViewData(:final data) => filterRoster(data,
-            query: _query, category: _category, excludeId: excludeId),
-        _ => null,
+  /// Empty while loading or on error; see [state].
+  List<ParadeEntry> get visible => switch (state) {
+        ViewData(:final data) => data.search(_query, _category),
+        _ => const [],
       };
 
   void search(String query) {
@@ -44,7 +44,7 @@ class NominalRollProvider extends StreamStateNotifier<List<Soldier>> {
   }
 
   /// R10; returns null on success, otherwise the message to show.
-  Future<String?> setInCamp(Soldier soldier, bool isInCamp) async =>
-      (await _bookInOut(BookInOutParams(soldier.id, isInsideCamp: isInCamp)))
+  Future<String?> setInCamp(String soldierId, bool isInCamp) async =>
+      (await _bookInOut(BookInOutParams(soldierId, isInsideCamp: isInCamp)))
           .fold((f) => f.message, (_) => null);
 }

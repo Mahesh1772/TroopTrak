@@ -1,101 +1,60 @@
-import 'package:animated_toggle_switch/animated_toggle_switch.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/constants/ranks.dart';
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_radii.dart';
-import '../../../../core/theme/app_shadows.dart';
 import '../../../../core/theme/app_spacing.dart';
-import '../../../../core/theme/theme_context.dart';
+import '../../../../core/widgets/app_list_card.dart';
+import '../../../../core/widgets/rank_chip.dart';
 import '../../../../core/widgets/rank_plate.dart';
-import '../../../soldiers/domain/entities/soldier.dart';
+import '../../../../core/widgets/state_chip.dart';
+import '../../../../core/widgets/state_tone.dart';
+import '../../../statuses/domain/services/parade_roster.dart';
 
-/// Rebuild of `nominal_roll_screen/util/solider_tile.dart` (R4, R10).
+/// One row of the nominal roll: plate, name, rank chip and either the current
+/// status or the appointment, with the book in/out switch.
 class SoldierTile extends StatelessWidget {
   const SoldierTile({
     super.key,
-    required this.soldier,
+    required this.entry,
     required this.onTap,
     required this.onToggle,
   });
 
-  final Soldier soldier;
+  final ParadeEntry entry;
   final VoidCallback onTap;
-
-  /// Completes when the booking is written; the switch spins until then.
-  final Future<void> Function(bool isInCamp) onToggle;
+  final ValueChanged<bool> onToggle;
 
   @override
   Widget build(BuildContext context) {
-    final text = context.textStyles;
-    final radius = Radius.circular(AppRadii.lg.r);
-    return Padding(
-      padding: EdgeInsets.all(AppSpacing.sm.sp),
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(radius),
-          boxShadow: AppShadows.tile,
-          color: AppColors.rankTile(Ranks.groupOf(soldier.rank)),
-        ),
-        child: Material(
-          type: MaterialType.transparency,
-          child: InkWell(
-            key: Key('soldierTile-${soldier.id}'),
-            onTap: onTap,
-            borderRadius: BorderRadius.all(radius),
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: AppSpacing.xxl.w,
-                      vertical: AppSpacing.xxxl.h),
-                  child: RankPlate(soldier.rank, size: RankPlate.lg),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.sm.w),
-                  child: SizedBox(
-                    height: 40.h,
-                    child: Center(
-                      child: AutoSizeText(
-                        soldier.name,
-                        maxLines: 2,
-                        textAlign: TextAlign.center,
-                        style:
-                            text.displaySmall?.copyWith(color: AppColors.white),
-                      ),
-                    ),
+    final soldier = entry.soldier;
+    final status = entry.status;
+    return AppListRow(
+      key: Key('soldierTile-${soldier.id}'),
+      title: soldier.name,
+      leading: RankPlate(soldier.rank),
+      subtitle: Row(
+        spacing: AppSpacing.inline.w,
+        children: [
+          RankChip(soldier.rank),
+          Flexible(
+            child: status != null
+                ? StateChip(status.name, tone: status.tone)
+                : Text(
+                    soldier.appointment,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
-                SizedBox(height: 10.h),
-                Text(
-                  soldier.isInCamp ? 'IN CAMP' : 'NOT IN CAMP',
-                  style: text.bodySmall?.copyWith(color: AppColors.white),
-                ),
-                SizedBox(height: 15.h),
-                AnimatedToggleSwitch<bool>.rolling(
-                  key: Key('inCampToggle-${soldier.id}'),
-                  current: soldier.isInCamp,
-                  values: const [false, true],
-                  onChanged: onToggle,
-                  height: 40.h,
-                  spacing: 10.w,
-                  borderWidth: 3.w,
-                  iconBuilder: (value, _) => Icon(
-                      value ? Icons.check_circle : Icons.cancel,
-                      key: Key('inCamp-$value')),
-                  style: ToggleStyle(
-                    indicatorColor: context.colors.primary,
-                    backgroundColor: AppColors.warning,
-                    borderColor: Colors.transparent,
-                  ),
-                ),
-              ],
-            ),
           ),
+        ],
+      ),
+      trailing: Semantics(
+        label: 'Book ${soldier.name} ${soldier.isInCamp ? 'out' : 'in'}',
+        child: Switch(
+          key: Key('inCampToggle-${soldier.id}'),
+          value: soldier.isInCamp,
+          onChanged: onToggle,
         ),
       ),
+      onTap: onTap,
     );
   }
 }

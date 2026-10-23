@@ -18,6 +18,11 @@ abstract final class AppTextStyles {
 
   static TextStyle caption(Color color) => barlow(13, FontWeight.w400, color);
 
+  static TextStyle columnHeader(Color color) {
+    final style = barlow(13, FontWeight.w600, color);
+    return style.copyWith(letterSpacing: style.fontSize! * 0.04);
+  }
+
   static TextStyle figure(double size, FontWeight weight, Color color) {
     assert(weight.value >= 500 && weight.value <= 700,
         'Barlow Condensed is bundled at w500-w700 only');
