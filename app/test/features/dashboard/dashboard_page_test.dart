@@ -10,7 +10,7 @@ import 'package:trooptrak_final_application/core/error/failures.dart';
 import 'package:trooptrak_final_application/core/router/app_routes.dart';
 import 'package:trooptrak_final_application/core/usecase/usecase.dart';
 import 'package:trooptrak_final_application/core/widgets/feedback_views.dart';
-import 'package:trooptrak_final_application/core/widgets/soldier_card.dart';
+import 'package:trooptrak_final_application/core/widgets/gradient_header.dart';
 import 'package:trooptrak_final_application/features/conducts/domain/entities/conduct.dart';
 import 'package:trooptrak_final_application/features/conducts/domain/repositories/conduct_repository.dart';
 import 'package:trooptrak_final_application/features/dashboard/domain/entities/calendar_event.dart';
@@ -151,32 +151,166 @@ void main() {
     return recorder;
   }
 
-  testWidgets('welcome, stamp, chart count and the four tiles', (tester) async {
+  testWidgets('welcome, stamp, in-camp count and the four report rows',
+      (tester) async {
     await pumpDashboard(tester, mode: themeModes.currentValue!);
-    expect(find.text('Welcome,\nCmd Lim! 👋'), findsOneWidget);
-    expect(find.text('As of July 5, 2023 09:30'), findsOneWidget);
+    expect(find.text('Welcome, Cmd Lim'), findsOneWidget);
+    expect(find.text('As of 5 Jul 2023, 09:30'), findsOneWidget);
     expect(tester.widget<Text>(find.byKey(const Key('inCampCount'))).data, '2');
-    expect(find.text('of 3 soldiers'), findsOneWidget);
-    expect(find.text('1 / 2'), findsOneWidget);
-    expect(find.text('1 / 1'), findsOneWidget);
-    expect(find.text('1 / 3'), findsOneWidget);
-    expect(find.text('0 / 3'), findsOneWidget);
+    expect(find.text('of 3 soldiers in camp'), findsOneWidget);
+    expect(find.text('Officers'), findsOneWidget);
+    expect(find.text('1/2'), findsOneWidget);
+    expect(find.text('WOSEs'), findsOneWidget);
+    expect(find.text('1/1'), findsOneWidget);
+    for (final (title, figure) in [
+      ('Total Officers', '1 / 2'),
+      ('Total WOSEs', '1 / 1'),
+      ('On Status', '1'),
+      ('On MA', '0'),
+    ]) {
+      expect(
+          find.descendant(
+              of: find.byKey(Key('tile-$title')), matching: find.text(figure)),
+          findsOneWidget,
+          reason: title);
+    }
   }, variant: themeModes);
 
-  testWidgets('a tile expands to soldier cards that open the profile',
+  testWidgets('the legend counts every state', (tester) async {
+    await pumpDashboard(tester);
+    for (final (state, label, count) in [
+      ('inCamp', 'In camp', '1'),
+      ('excuse', 'Excuse', '1'),
+      ('leave', 'Leave', '0'),
+      ('medical', 'MA', '0'),
+      ('out', 'Out', '1'),
+    ]) {
+      final item = find.byKey(Key('legend-$state'));
+      expect(find.descendant(of: item, matching: find.text(label)),
+          findsOneWidget);
+      expect(find.descendant(of: item, matching: find.text(count)),
+          findsOneWidget);
+    }
+  });
+
+  testWidgets('one tick per soldier, officers then WOSEs', (tester) async {
+    await pumpDashboard(tester);
+    expect(find.byKey(const ValueKey('tick-0-0')), findsOneWidget);
+    expect(find.byKey(const ValueKey('tick-0-1')), findsOneWidget);
+    expect(find.byKey(const ValueKey('tick-0-2')), findsNothing);
+    expect(find.byKey(const ValueKey('tick-1-0')), findsOneWidget);
+    expect(find.byKey(const ValueKey('tick-1-1')), findsNothing);
+  });
+
+  testWidgets('a row expands to soldiers that open the profile',
       (tester) async {
     final recorder = await pumpDashboard(tester);
+    expect(find.byKey(const Key('soldier-Lt Lee')), findsNothing);
     await tester.tap(find.byKey(const Key('tile-Total Officers')));
     await tester.pumpAndSettle();
-    expect(find.widgetWithText(SoldierCard, 'Lt Lee'), findsOneWidget);
-    expect(find.widgetWithText(SoldierCard, 'Cpt Ong'), findsNothing);
-    await tester.tap(find.widgetWithText(SoldierCard, 'Lt Lee'));
+    expect(find.byKey(const Key('soldier-Lt Lee')), findsOneWidget);
+    expect(find.byKey(const Key('soldier-Cpt Ong')), findsOneWidget);
+    expect(find.byKey(const Key('soldier-Cpl Tan')), findsNothing);
+    expect(find.text('In camp'), findsNWidgets(2));
+    expect(find.text('Booked out'), findsOneWidget);
+    await tester.tap(find.byKey(const Key('soldier-Lt Lee')));
     await tester.pumpAndSettle();
     expect(recorder.names.last, AppRoutes.soldierProfile);
     expect(recorder.lastArguments, 'Lt Lee');
   });
 
-  testWidgets('Show Calendar flips to the calendar; days list their events',
+  testWidgets('On Status names the status and a second tap closes the row',
+      (tester) async {
+    await pumpDashboard(tester);
+    await tester.tap(find.byKey(const Key('tile-On Status')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('soldier-Cpl Tan')), findsOneWidget);
+    expect(find.text('Ex RMJ'), findsOneWidget);
+    await tester.tap(find.byKey(const Key('tile-On Status')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('soldier-Cpl Tan')), findsNothing);
+  });
+
+  testWidgets('an empty row says there is no personnel', (tester) async {
+    await pumpDashboard(tester);
+    await tester.tap(find.byKey(const Key('tile-On MA')));
+    await tester.pumpAndSettle();
+    expect(find.text('No personnel'), findsOneWidget);
+  });
+
+  group('the open row highlights its ticks', () {
+    double opacity(WidgetTester tester, String tick) => tester
+        .widget<AnimatedOpacity>(find.ancestor(
+            of: find.byKey(ValueKey(tick)),
+            matching: find.byType(AnimatedOpacity)))
+        .opacity;
+
+    const ticks = ['tick-0-0', 'tick-0-1', 'tick-1-0'];
+
+    testWidgets('officers: the in-camp officer stays, the rest fade',
+        (tester) async {
+      await pumpDashboard(tester);
+      for (final tick in ticks) {
+        expect(opacity(tester, tick), 1);
+      }
+      await tester.tap(find.byKey(const Key('tile-Total Officers')));
+      await tester.pumpAndSettle();
+      expect(opacity(tester, 'tick-0-0'), 1);
+      expect(opacity(tester, 'tick-0-1'), lessThan(1));
+      expect(opacity(tester, 'tick-1-0'), lessThan(1));
+    });
+
+    testWidgets('on status: the excuse tick stays in any group',
+        (tester) async {
+      await pumpDashboard(tester);
+      await tester.tap(find.byKey(const Key('tile-On Status')));
+      await tester.pumpAndSettle();
+      expect(opacity(tester, 'tick-1-0'), 1);
+      expect(opacity(tester, 'tick-0-0'), lessThan(1));
+      expect(opacity(tester, 'tick-0-1'), lessThan(1));
+    });
+
+    testWidgets('closing the row clears the highlight', (tester) async {
+      await pumpDashboard(tester);
+      await tester.tap(find.byKey(const Key('tile-On Status')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('tile-On Status')));
+      await tester.pumpAndSettle();
+      for (final tick in ticks) {
+        expect(opacity(tester, tick), 1);
+      }
+    });
+  });
+
+  testWidgets('the header holds the greeting and the switch', (tester) async {
+    await pumpDashboard(tester);
+    for (final text in ['Welcome, Cmd Lim', 'Strength', 'Calendar']) {
+      expect(
+          find.descendant(
+              of: find.byType(GradientHeader), matching: find.text(text)),
+          findsOneWidget,
+          reason: text);
+    }
+  });
+
+  testWidgets('the switch moves between strength and calendar', (tester) async {
+    await pumpDashboard(tester);
+    expect(find.byKey(const Key('inCampCount')), findsOneWidget);
+    expect(find.byKey(const Key('nextMonth')), findsNothing);
+
+    await tester.tap(find.byKey(const Key('showCalendar')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('inCampCount')), findsNothing);
+    expect(find.byKey(const Key('nextMonth')), findsOneWidget);
+    expect(find.text('Welcome, Cmd Lim'), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('showStrength')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('inCampCount')), findsOneWidget);
+    expect(find.byKey(const Key('nextMonth')), findsNothing);
+  });
+
+  testWidgets('with the calendar shown, days list their events',
       (tester) async {
     await pumpDashboard(tester);
     await tester.tap(find.byKey(const Key('showCalendar')));

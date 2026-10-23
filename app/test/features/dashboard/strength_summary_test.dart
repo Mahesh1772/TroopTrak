@@ -37,13 +37,21 @@ void main() {
   ]) =>
       StrengthSummary(entries: paradeRoster(soldiers, statuses, today));
 
+  List<Soldier> soldiersOf(Iterable<ParadeEntry> entries) =>
+      [for (final e in entries) e.soldier];
+
+  List<Soldier> inCamp(Iterable<ParadeEntry> entries) =>
+      soldiersOf(entries.where((e) => e.state.isInCamp));
+
   test('officers vs WOSEs (R4) with in-camp counts; unknown ranks in neither',
       () {
     final s = summaryOf(soldiers);
-    expect(s.officers, [lt, cpt]);
-    expect(s.woses, [cpl, sct]);
-    expect(s.officersInCamp, [lt]);
-    expect(s.wosesInCamp, [cpl]);
+    expect(soldiersOf(s.officerEntries), [lt, cpt]);
+    expect(soldiersOf(s.woseEntries), [cpl, sct]);
+    expect(inCamp(s.officerEntries), [lt]);
+    expect(inCamp(s.woseEntries), [cpl]);
+    expect(s.row(ParadeReportKind.officers).current, 1);
+    expect(s.row(ParadeReportKind.woses).current, 1);
     expect(s.total, 4);
     expect(s, summaryOf(soldiers));
     expect(s, isNot(summaryOf([lt])));
@@ -69,8 +77,8 @@ void main() {
         buildStatus(soldierId: 'Cpl Tan', name: 'Ex RMJ'),
         buildStatus(id: 's2', soldierId: 'Cpt Ong', name: 'Ex RMJ'),
       ]);
-      expect(s.wosesInCamp, [cpl]);
-      expect(s.officersInCamp, [lt]);
+      expect(inCamp(s.woseEntries), [cpl]);
+      expect(inCamp(s.officerEntries), [lt]);
       expect(s.inCampCount, 2);
       expect(s.count(ParadeState.excuse), 1);
       expect(s.count(ParadeState.out), 2);
@@ -85,8 +93,8 @@ void main() {
             type: 'Medical Appointment',
             name: 'Dental'),
       ]);
-      expect(s.officersInCamp, isEmpty);
-      expect(s.wosesInCamp, isEmpty);
+      expect(inCamp(s.officerEntries), isEmpty);
+      expect(inCamp(s.woseEntries), isEmpty);
       expect(s.inCampCount, 0);
       expect(s.count(ParadeState.leave), 1);
       expect(s.count(ParadeState.medical), 1);
@@ -123,8 +131,8 @@ void main() {
     expect(ParadeState.values.map(s.count).reduce((a, b) => a + b), s.total);
     expect(s.total, 7);
     expect(s.inCampCount, 3);
-    expect(s.officersInCamp, [lt, maj]);
-    expect(s.wosesInCamp, [cfc]);
+    expect(inCamp(s.officerEntries), [lt, maj]);
+    expect(inCamp(s.woseEntries), [cfc]);
   });
 
   test('MA vs other statuses, once per soldier, started and active (R3, K3)',
@@ -142,8 +150,8 @@ void main() {
       buildStatus(soldierId: 'Cpt Ong', name: 'LD', end: DateTime(2023, 7, 4)),
     ];
     final s = summaryOf(soldiers, statuses);
-    expect(s.onStatus, [cpl]);
-    expect(s.onMa, [lt]);
+    expect(soldiersOf(s.row(ParadeReportKind.onStatus).entries), [cpl]);
+    expect(soldiersOf(s.row(ParadeReportKind.onMa).entries), [lt]);
   });
 
   test('a soldier with an MA and other statuses is in each list once', () {
@@ -161,8 +169,8 @@ void main() {
           type: 'Medical Appointment',
           name: 'X-ray'),
     ]);
-    expect(s.onStatus, [cpl]);
-    expect(s.onMa, [cpl]);
+    expect(soldiersOf(s.row(ParadeReportKind.onStatus).entries), [cpl]);
+    expect(soldiersOf(s.row(ParadeReportKind.onMa).entries), [cpl]);
   });
 
   test('a status starting today and ending today counts', () {
@@ -172,7 +180,99 @@ void main() {
           start: DateTime(2023, 7, 5),
           end: DateTime(2023, 7, 5)),
     ]);
-    expect(s.onStatus, [cpt]);
+    expect(soldiersOf(s.row(ParadeReportKind.onStatus).entries), [cpt]);
+  });
+
+  group('parade report', () {
+    final maj = buildSoldier(name: 'Maj Goh', rank: 'MAJ');
+    final pte = buildSoldier(name: 'Pte Chua', rank: 'PTE');
+    final roster = [lt, maj, cpt, cpl, pte, sct, odd];
+    final statuses = [
+      buildStatus(soldierId: 'Maj Goh', name: 'Ex RMJ'),
+      buildStatus(id: 's2', soldierId: 'Cpt Ong', type: 'Leave', name: 'OL'),
+      buildStatus(
+          id: 's3',
+          soldierId: 'Cpl Tan',
+          type: 'Medical Appointment',
+          name: 'Dental'),
+      buildStatus(id: 's4', soldierId: 'Pte Chua', name: 'LD'),
+    ];
+
+    test('has four rows: officers, WOSEs, on status, on MA', () {
+      final s = summaryOf(roster, statuses);
+      expect(s.rows.map((r) => r.kind), ParadeReportKind.values);
+      expect(s.rows.map((r) => (r.current, r.total)), [
+        (2, 3),
+        (1, 3),
+        (3, null),
+        (1, null),
+      ]);
+    });
+
+    test('the group lists follow the tick-strip order, input order within', () {
+      final s = summaryOf(roster, statuses);
+      expect(soldiersOf(s.officersByState), [lt, maj, cpt]);
+      expect(soldiersOf(s.wosesByState), [pte, cpl, sct]);
+      expect(s.officersByState.map((e) => e.state), [
+        ParadeState.inCamp,
+        ParadeState.excuse,
+        ParadeState.leave,
+      ]);
+      expect(s.wosesByState.map((e) => e.state), [
+        ParadeState.excuse,
+        ParadeState.medical,
+        ParadeState.out,
+      ]);
+    });
+
+    test('a row stands for the states its figure counts', () {
+      final s = summaryOf(roster, statuses);
+      final inCampStates = {ParadeState.inCamp, ParadeState.excuse};
+      final officers = s.row(ParadeReportKind.officers);
+      final woses = s.row(ParadeReportKind.woses);
+      expect(officers.highlightedStates(ParadeGroup.officers), inCampStates);
+      expect(officers.highlightedStates(ParadeGroup.woses), isEmpty);
+      expect(woses.highlightedStates(ParadeGroup.woses), inCampStates);
+      expect(woses.highlightedStates(ParadeGroup.officers), isEmpty);
+      for (final group in ParadeGroup.values) {
+        expect(s.row(ParadeReportKind.onStatus).highlightedStates(group),
+            {ParadeState.excuse, ParadeState.leave});
+        expect(s.row(ParadeReportKind.onMa).highlightedStates(group),
+            {ParadeState.medical});
+      }
+    });
+
+    test('a row names the status it lists, else the state', () {
+      final both = summaryOf([
+        cpl
+      ], [
+        buildStatus(soldierId: 'Cpl Tan', name: 'Ex RMJ'),
+        buildStatus(
+            id: 's2',
+            soldierId: 'Cpl Tan',
+            type: 'Medical Appointment',
+            name: 'Dental'),
+      ]);
+      final entry = both.entries.single;
+      expect(both.row(ParadeReportKind.onStatus).labelOf(entry), 'Ex RMJ');
+      expect(both.row(ParadeReportKind.onMa).labelOf(entry), 'Dental');
+      expect(both.row(ParadeReportKind.woses).labelOf(entry), 'Dental');
+
+      final plain = summaryOf([cpl, sct]);
+      expect(plain.row(ParadeReportKind.woses).labelOf(plain.entries.first),
+          'In camp');
+      expect(plain.row(ParadeReportKind.woses).labelOf(plain.entries.last),
+          'Booked out');
+    });
+
+    test('rows compare by value and the empty report has empty rows', () {
+      expect(
+          summaryOf(roster, statuses).rows, summaryOf(roster, statuses).rows);
+      final empty = summaryOf(const []);
+      expect(
+          empty.rows.every((r) => r.entries.isEmpty && r.current == 0), isTrue);
+      expect(empty.total, 0);
+    });
   });
 
   group('WatchStrengthSummary', () {

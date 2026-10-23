@@ -1,27 +1,26 @@
-import 'package:flip_card/flip_card.dart';
-import 'package:flip_card/flip_card_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_layout.dart';
 import '../../../../core/theme/app_radii.dart';
-import '../../../../core/theme/app_shadows.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/theme/theme_context.dart';
-import '../../../../core/widgets/expandable_count_tile.dart';
-import '../../../../core/widgets/soldier_card.dart';
-import '../../../../core/widgets/state_view.dart';
-import '../../../soldiers/domain/entities/soldier.dart';
-import '../../domain/entities/strength_summary.dart';
+import '../../../../core/widgets/app_segmented_control.dart';
+import '../../../../core/widgets/gradient_header.dart';
 import '../providers/dashboard_providers.dart';
 import '../widgets/event_calendar.dart';
-import '../widgets/strength_chart.dart';
+import '../widgets/overlap_up.dart';
+import '../widgets/parade_card.dart';
 
-/// Rebuild of `CMD/screens/dashboard_screen/dashboard_screen.dart`: welcome,
-/// then a flip card with the strength breakdown on the front and the
-/// conduct / duty calendar on the back.
+enum _DashboardView { strength, calendar }
+
+/// Rebuild of `CMD/screens/dashboard_screen/dashboard_screen.dart`: a gradient
+/// header with the welcome and a Strength / Calendar switch, then the parade
+/// card or the conduct / duty calendar.
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key, required this.name});
 
@@ -32,185 +31,110 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  final _flip = FlipCardController();
+  _DashboardView _view = _DashboardView.strength;
 
   @override
   Widget build(BuildContext context) {
-    final text = context.textStyles;
+    final strength = _view == _DashboardView.strength;
     return ListView(
-      padding: EdgeInsets.only(bottom: 30.h),
+      padding: EdgeInsets.only(bottom: AppSpacing.xxl.h),
       children: [
-        SizedBox(height: AppSpacing.sm.h),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: AppSpacing.xxl.w),
-          child: Text('Welcome,\n${widget.name}! 👋',
-              style: text.displayLarge?.copyWith(fontSize: 32.sp)),
-        ),
-        SizedBox(height: AppSpacing.xl.h),
-        FlipCard(
-          controller: _flip,
-          flipOnTouch: false,
-          front: _Card(child: _StrengthFront(onFlip: _flip.toggleCard)),
-          back: _Card(
+        GradientHeader(
+          bottom:
+              strength ? AppLayout.overlapHeaderBottom : AppLayout.headerBottom,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg.w),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton.icon(
-                    key: const Key('showStrength'),
-                    onPressed: _flip.toggleCard,
-                    icon: const Icon(Icons.pie_chart_rounded),
-                    label: const Text('Show Strength'),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(
+                    AppSpacing.xs.w,
+                    0,
+                    AppSpacing.xs.w,
+                    AppSpacing.lg.h,
+                  ),
+                  child: Text(
+                    'Welcome, ${widget.name}',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTextStyles.barlow(
+                        17, FontWeight.w400, AppColors.onGradientGreeting),
                   ),
                 ),
-                const EventCalendar(),
+                AppSegmentedControl<_DashboardView>(
+                  glass: true,
+                  selected: _view,
+                  onChanged: (view) => setState(() => _view = view),
+                  segments: const [
+                    AppSegment(
+                      value: _DashboardView.strength,
+                      label: 'Strength',
+                      icon: Icons.groups_rounded,
+                      key: Key('showStrength'),
+                    ),
+                    AppSegment(
+                      value: _DashboardView.calendar,
+                      label: 'Calendar',
+                      icon: Icons.calendar_month_rounded,
+                      key: Key('showCalendar'),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
         ),
+        if (strength)
+          OverlapUp(
+            overlap: AppLayout.headerOverlap,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg.w),
+              child: const _StrengthCard(),
+            ),
+          )
+        else
+          Padding(
+            padding: EdgeInsets.fromLTRB(
+              AppSpacing.lg.w,
+              AppSpacing.lg.h,
+              AppSpacing.lg.w,
+              0,
+            ),
+            child: const _CalendarHost(),
+          ),
       ],
     );
   }
 }
 
-class _Card extends StatelessWidget {
-  const _Card({required this.child});
-
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    final radius = BorderRadius.circular(AppRadii.md.r);
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg.w),
-      child: DecoratedBox(
-        decoration:
-            BoxDecoration(boxShadow: AppShadows.tile, borderRadius: radius),
-        child: Material(
-          color: context.colors.primary,
-          borderRadius: radius,
-          child: Padding(
-            padding: EdgeInsets.all(AppSpacing.lg.sp),
-            child: child,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _StrengthFront extends StatelessWidget {
-  const _StrengthFront({required this.onFlip});
-
-  final VoidCallback onFlip;
+class _StrengthCard extends StatelessWidget {
+  const _StrengthCard();
 
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<StrengthProvider>();
-    final text = context.textStyles;
-    final muted = text.bodyMedium?.color?.withValues(alpha: 0.45);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Strength In-Camp', style: text.displayMedium),
-                  Text('As of ${provider.stamp}',
-                      style: text.titleLarge?.copyWith(color: muted)),
-                ],
-              ),
-            ),
-            InkWell(
-              key: const Key('showCalendar'),
-              onTap: onFlip,
-              child: Column(
-                children: [
-                  Icon(Icons.date_range_rounded, size: 30.sp),
-                  Text('Show Calendar', style: text.bodySmall),
-                ],
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: AppSpacing.lg.h),
-        StateView<StrengthSummary>(
-          state: provider.state,
-          builder: (context, s) => Column(
-            children: [
-              StrengthChart(summary: s),
-              SizedBox(height: AppSpacing.lg.h),
-              _BreakdownTile(
-                title: 'Total Officers',
-                icon: 'lib/assets/icons8-medals-64.png',
-                color: AppColors.chartOfficers,
-                current: s.officersInCamp,
-                total: s.officers.length,
-              ),
-              _BreakdownTile(
-                title: 'Total WOSEs',
-                icon: 'lib/assets/icons8-soldier-man-64.png',
-                color: AppColors.chartWoses,
-                current: s.wosesInCamp,
-                total: s.woses.length,
-              ),
-              _BreakdownTile(
-                title: 'On Status',
-                icon: 'lib/assets/icons8-error-64.png',
-                color: AppColors.chartStatus,
-                current: s.onStatus,
-                total: s.total,
-              ),
-              _BreakdownTile(
-                title: 'On MA',
-                icon: 'lib/assets/icons8-doctors-folder-64.png',
-                color: AppColors.chartMedical,
-                current: s.onMa,
-                total: s.total,
-              ),
-            ],
-          ),
-        ),
-      ],
+    return ParadeCard(
+      state: provider.state,
+      stamp: provider.stamp,
+      onOpenSoldier: (id) => Navigator.of(context)
+          .pushNamed(AppRoutes.soldierProfile, arguments: id),
     );
   }
 }
 
-/// Rebuild of `current_strength_breakdown_tile.dart` on the shared tile.
-class _BreakdownTile extends StatelessWidget {
-  const _BreakdownTile({
-    required this.title,
-    required this.icon,
-    required this.color,
-    required this.current,
-    required this.total,
-  });
-
-  final String title;
-  final String icon;
-  final Color color;
-  final List<Soldier> current;
-  final int total;
+class _CalendarHost extends StatelessWidget {
+  const _CalendarHost();
 
   @override
-  Widget build(BuildContext context) => ExpandableCountTile(
-        key: Key('tile-$title'),
-        title: title,
-        subtitle: '${current.length} In Camp',
-        count: '${current.length} / $total',
-        leading: Image.asset(icon,
-            color: color, errorBuilder: (_, __, ___) => const SizedBox()),
-        children: [
-          for (final s in current)
-            SoldierCard(
-              name: s.name,
-              rank: s.rank,
-              onTap: () => Navigator.of(context)
-                  .pushNamed(AppRoutes.soldierProfile, arguments: s.id),
-            ),
-        ],
+  Widget build(BuildContext context) => DecoratedBox(
+        decoration: BoxDecoration(
+          color: context.palette.card,
+          borderRadius: BorderRadius.circular(AppRadii.xl.r),
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(AppSpacing.md.r),
+          child: const EventCalendar(),
+        ),
       );
 }

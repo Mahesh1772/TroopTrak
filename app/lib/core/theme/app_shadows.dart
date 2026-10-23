@@ -29,4 +29,14 @@ abstract final class AppShadows {
           color: color.withValues(alpha: 0.9),
         ),
       ];
+
+  static List<BoxShadow> raised({required bool dark}) => [
+        BoxShadow(
+          blurRadius: dark ? 32 : 28,
+          spreadRadius: dark ? -12 : -14,
+          offset: const Offset(0, 12),
+          color:
+              dark ? AppColors.raisedShadowDark : AppColors.raisedShadowLight,
+        ),
+      ];
 }

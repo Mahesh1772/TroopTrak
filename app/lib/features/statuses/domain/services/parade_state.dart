@@ -11,6 +11,14 @@ enum ParadeState {
 
   /// D9: the "in camp" figure counts an excuse too.
   bool get isInCamp => this == inCamp || this == excuse;
+
+  String get label => switch (this) {
+        inCamp => 'In camp',
+        excuse => 'Excuse · in camp',
+        medical => 'Medical Appointment',
+        leave => 'Leave',
+        out => 'Booked out',
+      };
 }
 
 /// D9: Leave and Medical Appointment override the booked-in flag; an Excuse

@@ -45,4 +45,14 @@ void main() {
       ParadeState.out,
     ]);
   });
+
+  test('each state has the label the parade report shows', () {
+    expect(ParadeState.values.map((s) => s.label), [
+      'In camp',
+      'Excuse · in camp',
+      'Medical Appointment',
+      'Leave',
+      'Booked out',
+    ]);
+  });
 }

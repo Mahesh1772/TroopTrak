@@ -48,6 +48,7 @@ abstract final class AppColors {
   static const tooltipDetail = darkSecondaryText;
 
   static const onGradientLabel = Color(0xCCFFFFFF);
+  static const onGradientGreeting = Color(0xDBFFFFFF);
   // One 20% white for the mockup's 18% (profile card) and 22% (headers).
   static const onGradientTickOff = Color(0x33FFFFFF);
   static const onGradientTickFuture = Color(0x12FFFFFF);
@@ -59,6 +60,8 @@ abstract final class AppColors {
   static const onGradientSolidText = Color(0xFF2B1580);
   static const segmentShadow = Color(0x59000000);
   static const scrim = Color(0x9E05060C);
+  static const raisedShadowDark = Color(0x99000000);
+  static const raisedShadowLight = Color(0x59202433);
 
   static const white = Color(0xFFFFFFFF);
   static const white70 = Color(0xB3FFFFFF);
@@ -100,11 +103,7 @@ abstract final class AppColors {
   static const lightModeIcon = Color(0xFFFFA000);
   static const calendarDuty = Color(0xFFE91E63);
 
-  static const chartOfficers = Color(0xFFF44336);
   static const chartWoses = Color(0xFF2196F3);
-  static const chartStatus = Color(0xFFFFEB3B);
-  static const chartMedical = Color(0xFF40C4FF);
-  static const chartRemainder = Color(0x1A2196F3);
 
   static const rankEnlisted = Color(0xFF4E342E);
   static const rankSpecialistCadet = Color(0xFF8D6E63);

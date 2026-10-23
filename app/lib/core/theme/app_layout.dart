@@ -11,9 +11,13 @@ abstract final class AppLayout {
   static const segmentHeight = 38.0;
   static const segmentFrame = 3.0;
   static const headerBottom = 22.0;
+  static const overlapHeaderBottom = 64.0;
+  static const headerOverlap = 48.0;
   static const sectionTop = 28.0;
   static const sectionBottom = 10.0;
   static const listRowMinHeight = 62.0;
+  static const reportRowMinHeight = 48.0;
+  static const tallyTall = 46.0;
   static const listRowVertical = 10.0;
   static const listDividerInset = 66.0;
   static const dateButtonSize = 48.0;

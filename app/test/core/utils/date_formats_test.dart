@@ -57,7 +57,7 @@ void main() {
   test('display-only formats', () {
     expect(formatWeekdayDay(sample), 'Wed 5 Jul 2023');
     expect(formatLongDate(sample), 'July 5, 2023');
-    expect(formatDashboardStamp(sample), 'July 5, 2023 17:30');
+    expect(formatDashboardStamp(sample), '5 Jul 2023, 17:30');
     expect(formatWeekday(sample), 'Wednesday');
     expect(formatShortWeekday(sample), 'Wed');
     expect(formatShortMonth(sample), 'Jul');

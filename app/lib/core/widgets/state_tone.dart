@@ -1,5 +1,6 @@
 import 'dart:ui' show Color;
 
+import '../../features/statuses/domain/entities/status.dart';
 import '../../features/statuses/domain/services/parade_state.dart';
 import '../theme/app_palette.dart';
 
@@ -48,5 +49,13 @@ extension ParadeStateTone on ParadeState {
         ParadeState.medical => StateTone.medical,
         ParadeState.leave => StateTone.leave,
         ParadeState.out => StateTone.out,
+      };
+}
+
+extension StatusTone on Status {
+  StateTone get tone => switch (this) {
+        Status(isLeave: true) => StateTone.leave,
+        Status(isMedicalAppointment: true) => StateTone.medical,
+        _ => StateTone.excuse,
       };
 }

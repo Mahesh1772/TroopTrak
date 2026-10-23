@@ -1,7 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:trooptrak_final_application/core/constants/status_types.dart';
 import 'package:trooptrak_final_application/core/theme/app_palette.dart';
 import 'package:trooptrak_final_application/core/widgets/state_tone.dart';
 import 'package:trooptrak_final_application/features/statuses/domain/services/parade_state.dart';
+
+import '../../helpers/builders.dart';
 
 void main() {
   test('each tone is filled from its palette colour in both themes', () {
@@ -35,5 +38,12 @@ void main() {
     final tones = {for (final state in ParadeState.values) state.tone};
     expect(tones, hasLength(ParadeState.values.length));
     expect(tones, isNot(contains(StateTone.accent)));
+  });
+
+  test('a status takes the tone of its type', () {
+    expect(buildStatus(type: StatusTypes.excuse).tone, StateTone.excuse);
+    expect(buildStatus(type: StatusTypes.leave).tone, StateTone.leave);
+    expect(buildStatus(type: StatusTypes.medicalAppointment).tone,
+        StateTone.medical);
   });
 }

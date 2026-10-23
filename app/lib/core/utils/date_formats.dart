@@ -11,6 +11,7 @@ abstract final class DatePatterns {
   static const shortMonth = 'MMM';
   static const month = 'MMMM';
   static const monthYear = 'MMMM yyyy';
+  static const dashboardStamp = 'd MMM yyyy, HH:mm';
 }
 
 const _locale = 'en_US';
@@ -26,7 +27,7 @@ final _shortMonth = DateFormat(DatePatterns.shortMonth, _locale);
 final _month = DateFormat(DatePatterns.month, _locale);
 final _monthYear = DateFormat(DatePatterns.monthYear, _locale);
 final _longDate = DateFormat.yMMMMd(_locale);
-final _dashboardStamp = DateFormat.yMMMMd(_locale).add_Hm();
+final _dashboardStamp = DateFormat(DatePatterns.dashboardStamp, _locale);
 
 // intl >= 0.19 emits U+202F before AM/PM; source data uses a plain space.
 final _specialSpaces =
