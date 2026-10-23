@@ -7,8 +7,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
 import 'package:trooptrak_final_application/core/error/failures.dart';
-import 'package:trooptrak_final_application/core/theme/app_colors.dart';
+import 'package:trooptrak_final_application/core/theme/app_palette.dart';
+import 'package:trooptrak_final_application/core/widgets/app_list_card.dart';
 import 'package:trooptrak_final_application/core/widgets/feedback_views.dart';
+import 'package:trooptrak_final_application/core/widgets/icon_plate.dart';
+import 'package:trooptrak_final_application/core/widgets/state_tone.dart';
 import 'package:trooptrak_final_application/features/attendance/domain/entities/attendance_record.dart';
 import 'package:trooptrak_final_application/features/attendance/domain/usecases/attendance_usecases.dart';
 import 'package:trooptrak_final_application/features/soldier_profile/presentation/pages/edit_attendance_page.dart';
@@ -82,7 +85,7 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  testWidgets('tiles keep the use case order with in/out labels and colours',
+  testWidgets('rows keep the use case order with in/out labels and plates',
       (tester) async {
     await pumpTab(tester, mode: themeModes.currentValue!);
     final first = tester.getTopLeft(find.text('Wed 5 Jul 2023 08:15:00')).dy;
@@ -90,14 +93,33 @@ void main() {
     expect(first, lessThan(second));
     expect(find.text('BOOK IN'), findsOneWidget);
     expect(find.text('BOOKOUT'), findsOneWidget);
-    final colours = tester
-        .widgetList<Container>(find.descendant(
-            of: find.byType(AttendanceTile), matching: find.byType(Container)))
-        .map((c) => (c.decoration as BoxDecoration?)?.color)
-        .whereType<Color>()
-        .toList();
-    expect(colours, [AppColors.bookIn, AppColors.danger]);
+    expect(find.text('Newest first'), findsOneWidget);
+    expect(
+        find.descendant(
+            of: find.byType(AppListCard),
+            matching: find.byType(AttendanceTile)),
+        findsNWidgets(2));
+
+    IconPlate plateOf(AttendanceRecord r) =>
+        tester.widget<IconPlate>(find.descendant(
+            of: find.byKey(Key('attendance-${r.id}')),
+            matching: find.byType(IconPlate)));
+    expect(plateOf(newer).tone, StateTone.inCamp);
+    expect(plateOf(older).tone, StateTone.leave);
+    expect(plateOf(newer).icon, isNot(plateOf(older).icon));
   }, variant: themeModes);
+
+  testWidgets('labels take the tone text colour and times use tabular figures',
+      (tester) async {
+    await pumpTab(tester);
+    TextStyle styleOf(String text) =>
+        tester.widget<Text>(find.text(text)).style!;
+    expect(styleOf('BOOK IN').color, AppPalette.dark.successText);
+    expect(styleOf('BOOKOUT').color, AppPalette.dark.leaveText);
+    final time = styleOf('Wed 5 Jul 2023 08:15:00');
+    expect(time.fontFeatures, [const FontFeature.tabularFigures()]);
+    expect(time.color, AppPalette.dark.onCard);
+  });
 
   testWidgets('empty list shows the empty state', (tester) async {
     await tester.pumpApp(Scaffold(

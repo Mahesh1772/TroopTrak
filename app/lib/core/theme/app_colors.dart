@@ -106,7 +106,6 @@ abstract final class AppColors {
   static const statusLeaveEnd = Color(0xFFC62828);
   static const statusMedicalEnd = Color(0xFF1565C0);
   static const info = Color(0xFF2196F3);
-  static const bookIn = Color(0xFF43A047);
   static const calendarDuty = Color(0xFFE91E63);
 
   static const chartWoses = Color(0xFF2196F3);

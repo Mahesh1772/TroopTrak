@@ -43,6 +43,11 @@ abstract final class AppTextStyles {
     return style.copyWith(letterSpacing: style.fontSize! * 0.04);
   }
 
+  static TextStyle rowLabel(Color color) {
+    final style = barlow(15, FontWeight.w600, color);
+    return style.copyWith(letterSpacing: style.fontSize! * 0.04);
+  }
+
   static TextStyle figure(double size, FontWeight weight, Color color) {
     assert(weight.value >= 500 && weight.value <= 700,
         'Barlow Condensed is bundled at w500-w700 only');
