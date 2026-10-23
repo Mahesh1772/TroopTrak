@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/widgets/dark_section.dart';
 import '../widgets/shell_scaffold.dart';
+import '../widgets/shell_tab.dart';
 
 /// Rebuild of `P2/util/new_navbar.dart`: My Profile, Conduct Tracker and
 /// Guard Duty, always dark and without an app bar, as the source.
@@ -26,12 +27,13 @@ class SoldierShell extends StatelessWidget {
               key: 'myProfile',
               label: 'My Profile',
               title: 'My Profile',
-              icon: Icons.person,
+              icon: Icons.person_outline_rounded,
+              selectedIcon: Icons.person_rounded,
               builder: profile,
             ),
             ShellTab(
               key: 'conductTracker',
-              label: 'Conduct Tracker',
+              label: 'Conducts',
               title: 'Conduct Tracker',
               icon: Icons.track_changes_rounded,
               builder: conductTracker,
@@ -40,7 +42,8 @@ class SoldierShell extends StatelessWidget {
               key: 'guardDuty',
               label: 'Guard Duty',
               title: 'Guard Duty',
-              icon: Icons.safety_check,
+              icon: Icons.safety_check_outlined,
+              selectedIcon: Icons.safety_check_rounded,
               builder: guardDuty,
             ),
           ],

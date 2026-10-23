@@ -4,6 +4,10 @@ abstract final class AppLayout {
   static const designSize = Size(390, 844);
 
   static const navBarHeight = 84.0;
+  // The mockup's 84 includes its 22 px home-indicator inset, which SafeArea adds.
+  static const shellNavBarHeight = 62.0;
+  static const navPill = Size(60, 32);
+  static const appBarHeight = 56.0;
   static const segmentHeight = 38.0;
   static const segmentFrame = 3.0;
   static const headerBottom = 22.0;
