@@ -8,6 +8,7 @@ import 'package:trooptrak_final_application/core/error/failures.dart';
 import 'package:trooptrak_final_application/core/router/app_routes.dart';
 import 'package:trooptrak_final_application/core/router/soldier_routes.dart';
 import 'package:trooptrak_final_application/core/theme/app_colors.dart';
+import 'package:trooptrak_final_application/core/theme/theme_manager.dart';
 import 'package:trooptrak_final_application/core/usecase/usecase.dart';
 import 'package:trooptrak_final_application/features/attendance/domain/entities/attendance_record.dart';
 import 'package:trooptrak_final_application/features/attendance/domain/usecases/attendance_usecases.dart';
@@ -114,11 +115,25 @@ void main() {
     expect(find.byKey(const Key('profileBack')), findsNothing);
     expect(find.byKey(const Key('signOutIcon')), findsOneWidget);
     expect(find.byKey(const Key('signOutButton')), findsNothing);
-    expect(find.byKey(const Key('themeToggle')), findsNothing);
+    expect(find.byKey(const Key('themeToggle')), findsOneWidget);
     expect(find.text('SHOW QR CODE'), findsOneWidget);
     expect(find.byKey(const Key('editSoldier')), findsOneWidget);
     expect(find.byKey(const Key('deleteSoldier')), findsNothing);
   }, variant: themeModes);
+
+  testWidgets('the theme toggle switches the app theme (D6)', (tester) async {
+    await pumpTab(tester);
+    final toggle = find.byKey(const Key('themeToggle'));
+    final manager = tester.element(toggle).read<ThemeManager>();
+    expect(manager.isDark, isTrue);
+    expect(find.descendant(of: toggle, matching: find.text('Light')),
+        findsOneWidget);
+    await tester.tap(toggle);
+    await tester.pumpAndSettle();
+    expect(manager.isDark, isFalse);
+    expect(find.descendant(of: toggle, matching: find.text('Dark')),
+        findsOneWidget);
+  });
 
   testWidgets('SHOW QR CODE is the solid white pill and keeps its Hero',
       (tester) async {

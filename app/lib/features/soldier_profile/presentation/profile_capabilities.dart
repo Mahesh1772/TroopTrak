@@ -36,10 +36,12 @@ class ProfileCapabilities {
   );
 
   /// Source soldier profile: read-only tabs, own edit, QR and sign out; no
-  /// delete (the source never wired its delete code to a button).
+  /// delete (the source never wired its delete code to a button). The theme
+  /// toggle is new (D6).
   static const soldierSelf = ProfileCapabilities(
     canEdit: true,
     showQr: true,
     showSignOut: true,
+    showThemeToggle: true,
   );
 }

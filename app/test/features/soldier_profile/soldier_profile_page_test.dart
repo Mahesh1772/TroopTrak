@@ -225,6 +225,29 @@ void main() {
     expect(find.text('SIGN OUT'), findsOneWidget);
   });
 
+  group('theme toggle', () {
+    Future<void> show(WidgetTester tester, ProfileCapabilities c) async {
+      await pumpProfile(tester, capabilities: c);
+      soldier.add(Right(buildSoldier()));
+      await tester.pumpAndSettle();
+    }
+
+    testWidgets('soldier and commander own profiles show it', (tester) async {
+      for (final c in [
+        ProfileCapabilities.soldierSelf,
+        ProfileCapabilities.commanderSelf,
+      ]) {
+        await show(tester, c);
+        expect(find.byKey(const Key('themeToggle')), findsOneWidget);
+      }
+    });
+
+    testWidgets('a commander viewing a soldier does not', (tester) async {
+      await show(tester, ProfileCapabilities.commanderViewingSoldier);
+      expect(find.byKey(const Key('themeToggle')), findsNothing);
+    });
+  });
+
   testWidgets('a missing soldier shows the error', (tester) async {
     await pumpProfile(tester);
     soldier.add(const Left(NotFoundFailure('Soldier X was not found.')));
