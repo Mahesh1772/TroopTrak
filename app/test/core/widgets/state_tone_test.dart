@@ -15,6 +15,7 @@ void main() {
       expect(StateTone.medical.fill(palette), palette.statusMedical);
       expect(StateTone.out.fill(palette), palette.tickOff);
       expect(StateTone.accent.fill(palette), palette.accent);
+      expect(StateTone.duty.fill(palette), palette.duty);
     }
   });
 
@@ -32,6 +33,14 @@ void main() {
     expect(ParadeState.leave.tone, StateTone.leave);
     expect(ParadeState.out.tone, StateTone.out);
     expect(ParadeState.values.length, 5);
+  });
+
+  test('duty is a guard-duty tone, not a parade state', () {
+    final tones = {for (final state in ParadeState.values) state.tone};
+    expect(tones, isNot(contains(StateTone.duty)));
+    for (final palette in [AppPalette.dark, AppPalette.light]) {
+      expect(StateTone.duty.text(palette), palette.duty);
+    }
   });
 
   test('accent is a participation tone, not a parade state', () {

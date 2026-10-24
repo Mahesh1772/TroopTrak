@@ -6,6 +6,7 @@ import 'package:trooptrak_final_application/core/usecase/usecase.dart';
 import 'package:trooptrak_final_application/features/guard_duty/domain/entities/duty.dart';
 import 'package:trooptrak_final_application/features/guard_duty/domain/repositories/duty_repository.dart';
 import 'package:trooptrak_final_application/features/guard_duty/domain/services/duty_points.dart';
+import 'package:trooptrak_final_application/features/guard_duty/domain/services/self_name.dart';
 import 'package:trooptrak_final_application/features/guard_duty/domain/usecases/duty_usecases.dart';
 import 'package:trooptrak_final_application/features/soldiers/domain/repositories/soldier_repository.dart';
 import 'package:trooptrak_final_application/features/statuses/domain/repositories/status_repository.dart';
@@ -36,6 +37,72 @@ void main() {
         expect(buildDuty(start: start, end: end).endsNextDay, nextDay);
       });
     }
+  });
+
+  group('Duty slots (R10a)', () {
+    Duty withPeople(int count) => buildDuty(participants: {
+          for (var i = 0; i < count; i++) 'Soldier $i': 'PTE',
+        });
+
+    test('there are ten, filled from the first', () {
+      expect(withPeople(0).slots, List.filled(10, false));
+      expect(withPeople(6).slots,
+          [...List.filled(6, true), ...List.filled(4, false)]);
+      expect(withPeople(10).slots, List.filled(10, true));
+    });
+
+    test('more than ten participants still fill only ten', () {
+      expect(withPeople(12).filledSlots, 10);
+      expect(withPeople(12).slots, List.filled(10, true));
+    });
+
+    test('filledSlots counts the participants', () {
+      expect([
+        for (final n in [0, 1, 6, 10]) withPeople(n).filledSlots
+      ], [
+        0,
+        1,
+        6,
+        10
+      ]);
+    });
+  });
+
+  group('Duty.dayLabel (D11)', () {
+    for (final (stored, shown) in [
+      ('Weekday Duty 🫣', 'Weekday Duty'),
+      ('Weekday (Friday) Duty 😖', 'Weekday (Friday) Duty'),
+      ('Weekend (Saturday) Duty 😵‍💫', 'Weekend (Saturday) Duty'),
+      ('Weekend (Sunday) Duty 🤧', 'Weekend (Sunday) Duty'),
+      ('Weekend Duty', 'Weekend Duty'),
+      ('', ''),
+    ]) {
+      test('"$stored" reads "$shown"', () {
+        expect(buildDuty(dayType: stored).dayLabel, shown);
+      });
+    }
+
+    test('every label DutyPoints produces loses only its emoji', () {
+      for (var offset = 0; offset < 7; offset++) {
+        final stored =
+            DutyPoints.forDate(DateTime(2023, 7, 3 + offset)).dayType;
+        final shown = Duty.plainLabel(stored);
+        expect(stored.startsWith(shown), isTrue);
+        expect(shown, endsWith('Duty'));
+      }
+    });
+  });
+
+  group('SelfName.matches', () {
+    test('matches the signed-in soldier by name', () {
+      expect(SelfName.matches('Tan Ah Kow', 'Tan Ah Kow'), isTrue);
+      expect(SelfName.matches('Lee Wei', 'Tan Ah Kow'), isFalse);
+    });
+
+    test('a commander has no name, so nothing is theirs', () {
+      expect(SelfName.matches('Tan Ah Kow', null), isFalse);
+      expect(SelfName.matches('', ''), isFalse);
+    });
   });
 
   group('DutyPoints.forDate (R7)', () {

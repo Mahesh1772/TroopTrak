@@ -14,7 +14,8 @@ enum StateTone {
   leave,
   medical,
   out,
-  accent;
+  accent,
+  duty;
 
   Color fill(AppPalette palette) => switch (this) {
         inCamp => palette.success,
@@ -23,6 +24,7 @@ enum StateTone {
         medical => palette.statusMedical,
         out => palette.tickOff,
         accent => palette.accent,
+        duty => palette.duty,
       };
 
   /// Card gradient from [fill] to a darker end; tones without one stay flat.
@@ -41,6 +43,7 @@ enum StateTone {
         medical => palette.medicalText,
         out => palette.secondaryText,
         accent => palette.accentText,
+        duty => palette.duty,
       };
 
   /// Soft background that sits behind [text].

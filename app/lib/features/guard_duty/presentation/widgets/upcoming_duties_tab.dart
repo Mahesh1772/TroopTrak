@@ -3,12 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/router/app_routes.dart';
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_layout.dart';
 import '../../../../core/theme/app_spacing.dart';
-import '../../../../core/theme/theme_context.dart';
-import '../../../../core/utils/date_formats.dart';
 import '../../../../core/widgets/app_snackbar.dart';
 import '../../../../core/widgets/confirm_dialog.dart';
+import '../../../../core/widgets/date_header.dart';
 import '../../../../core/widgets/feedback_views.dart';
 import '../../../../core/widgets/section_header.dart';
 import '../../../../core/widgets/state_view.dart';
@@ -48,78 +47,87 @@ class UpcomingDutiesTab extends StatelessWidget {
     AppSnackbar.outcome(context, error, success: 'Duty deleted');
   }
 
-  List<Widget> _tiles(BuildContext context, UpcomingDutiesProvider provider,
-      List<Duty> duties, String emptyMessage) {
-    if (duties.isEmpty) return [EmptyState(message: emptyMessage)];
-    return [
-      for (final duty in duties)
-        DutyTile(
-          duty: duty,
-          participating: provider.isParticipating(duty),
-          onEdit: canManage
-              ? () => Navigator.of(context)
-                  .pushNamed(AppRoutes.editDuty, arguments: duty)
+  Widget _section(
+    BuildContext context,
+    UpcomingDutiesProvider provider, {
+    required String title,
+    required List<Duty> duties,
+    required String emptyMessage,
+    bool first = false,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        SectionHeader(
+          title,
+          caption: '${duties.length}',
+          padding: first
+              ? EdgeInsets.fromLTRB(
+                  AppSpacing.xl.w,
+                  0,
+                  AppSpacing.xl.w,
+                  AppLayout.sectionBottom.h,
+                )
               : null,
-          onDelete: canManage ? () => _delete(context, duty) : null,
         ),
-    ];
+        if (duties.isEmpty)
+          EmptyState(message: emptyMessage)
+        else
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg.w),
+            child: Column(
+              spacing: AppSpacing.md.h,
+              children: [
+                for (final duty in duties)
+                  DutyTile(
+                    duty: duty,
+                    participating: provider.isParticipating(duty),
+                    isSelf: provider.isSelf,
+                    onEdit: canManage
+                        ? () => Navigator.of(context)
+                            .pushNamed(AppRoutes.editDuty, arguments: duty)
+                        : null,
+                    onDelete: canManage ? () => _delete(context, duty) : null,
+                  ),
+              ],
+            ),
+          ),
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<UpcomingDutiesProvider>();
-    final text = context.textStyles;
-    final muted = text.bodyMedium?.color?.withValues(alpha: 0.54);
-    final selected = provider.selected;
     return StateView<List<Duty>>(
       state: provider.state,
       builder: (context, _) => ListView(
-        padding: EdgeInsets.only(top: 50.h, bottom: 50.h),
+        padding: EdgeInsets.only(
+          top: AppSpacing.lg.h,
+          bottom: AppLayout.listFabClearance.h,
+        ),
         children: [
-          const SectionHeader("Today's Duties"),
-          Container(
-            margin: EdgeInsets.all(AppSpacing.lg.sp),
-            padding: EdgeInsets.all(AppSpacing.lg.sp),
-            decoration: BoxDecoration(
-              border: Border.all(
-                  width: 2.w,
-                  color: AppColors.brandIndigo.withValues(alpha: 0.35)),
-              borderRadius: BorderRadius.circular(AppSpacing.lg.r),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  key: const Key('pickDutyDay'),
-                  iconSize: 45.sp,
-                  onPressed: () => _pick(context),
-                  icon: const Icon(Icons.date_range_rounded),
-                ),
-                SizedBox(width: 30.w),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(formatLongDate(selected),
-                        style: text.displayLarge?.copyWith(
-                            color: muted, fontWeight: FontWeight.w400)),
-                    Text(
-                      isSameDay(selected, provider.today)
-                          ? 'Today'
-                          : formatWeekday(selected),
-                      style: text.displayLarge?.copyWith(
-                          fontSize: 32.sp, fontWeight: FontWeight.w500),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+          DateHeader(
+            date: provider.selected,
+            today: provider.today,
+            pickerKey: const Key('pickDutyDay'),
+            onPickDate: () => _pick(context),
           ),
-          ..._tiles(context, provider, provider.onSelectedDay,
-              'NO DUTIES FOR TODAY!'),
-          SizedBox(height: 50.h),
-          const SectionHeader('Upcoming Duties'),
-          ..._tiles(
-              context, provider, provider.upcoming, 'NO UPCOMING DUTIES!'),
+          _section(
+            context,
+            provider,
+            title: "Today's Duties",
+            duties: provider.onSelectedDay,
+            emptyMessage: 'NO DUTIES FOR TODAY!',
+            first: true,
+          ),
+          _section(
+            context,
+            provider,
+            title: 'Upcoming Duties',
+            duties: provider.upcoming,
+            emptyMessage: 'NO UPCOMING DUTIES!',
+          ),
         ],
       ),
     );

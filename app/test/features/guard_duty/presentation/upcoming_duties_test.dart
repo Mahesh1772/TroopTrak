@@ -7,12 +7,13 @@ import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
 import 'package:trooptrak_final_application/core/error/failures.dart';
 import 'package:trooptrak_final_application/core/router/app_routes.dart';
+import 'package:trooptrak_final_application/core/theme/app_layout.dart';
 import 'package:trooptrak_final_application/core/usecase/usecase.dart';
 import 'package:trooptrak_final_application/core/widgets/feedback_views.dart';
-import 'package:trooptrak_final_application/core/widgets/soldier_card.dart';
 import 'package:trooptrak_final_application/features/guard_duty/domain/entities/duty.dart';
 import 'package:trooptrak_final_application/features/guard_duty/domain/usecases/duty_usecases.dart';
 import 'package:trooptrak_final_application/features/guard_duty/presentation/providers/upcoming_duties_provider.dart';
+import 'package:trooptrak_final_application/features/guard_duty/presentation/widgets/duty_participant_row.dart';
 import 'package:trooptrak_final_application/features/guard_duty/presentation/widgets/upcoming_duties_tab.dart';
 
 import '../../../helpers/builders.dart';
@@ -76,6 +77,18 @@ void main() {
       soldier.dispose();
     });
 
+    test('You is the signed-in soldier, never a commander', () {
+      final commander = provider();
+      expect(commander.isSelf('Lee Wei'), isFalse);
+      commander.dispose();
+
+      final soldier = UpcomingDutiesProvider(
+          watch: watch, delete: delete, clock: clock, participant: 'Lee Wei');
+      expect(soldier.isSelf('Lee Wei'), isTrue);
+      expect(soldier.isSelf('Tan Ah Kow'), isFalse);
+      soldier.dispose();
+    });
+
     test('delete reports failures', () async {
       final p = provider();
       expect(await p.delete(today), isNull);
@@ -110,22 +123,55 @@ void main() {
   }
 
   group('UpcomingDutiesTab', () {
-    testWidgets('sections, today label and duty tiles', (tester) async {
+    testWidgets('a date header, then the sections with their counts',
+        (tester) async {
       await pumpTab(tester, mode: themeModes.currentValue!);
-      expect(find.text("Today's Duties"), findsOneWidget);
+      expect(find.byKey(const Key('pickDutyDay')), findsOneWidget);
       expect(find.text('July 5, 2023'), findsOneWidget);
       expect(find.text('Today'), findsOneWidget);
+      expect(find.text("Today's Duties"), findsOneWidget);
+      expect(find.text('Upcoming Duties'), findsOneWidget);
       expect(find.byKey(const Key('duty-t')), findsOneWidget);
       expect(find.byKey(const Key('duty-s')), findsOneWidget);
+      expect(find.byKey(const Key('duty-l')), findsOneWidget);
       expect(find.byKey(const Key('duty-y')), findsNothing);
+      expect(find.text('1'), findsOneWidget);
+      expect(find.text('2'), findsOneWidget);
       expect(find.text('1.5'), findsWidgets);
     }, variant: themeModes);
 
-    testWidgets('expanding shows the participant cards', (tester) async {
+    testWidgets('picking another day moves the date header and the sections',
+        (tester) async {
       await pumpTab(tester);
+      await tester.tap(find.byKey(const Key('pickDutyDay')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('6'));
+      await tester.tap(find.text('OK'));
+      await tester.pumpAndSettle();
+      expect(find.text('July 6, 2023'), findsOneWidget);
+      expect(find.text('Thursday'), findsOneWidget);
+      expect(find.text('Today'), findsNothing);
+      expect(find.byKey(const Key('duty-s')), findsOneWidget);
+      expect(find.byKey(const Key('duty-t')), findsNothing);
+    });
+
+    testWidgets('the list leaves room under the last card for the FAB',
+        (tester) async {
+      await pumpTab(tester);
+      final list = tester.widget<ListView>(find.byType(ListView));
+      expect((list.padding! as EdgeInsets).bottom,
+          closeTo(AppLayout.listFabClearance, 0.01));
+    });
+
+    testWidgets('tapping a duty opens a row per participant, again closes',
+        (tester) async {
+      await pumpTab(tester);
+      expect(find.byType(DutyParticipantRow), findsNothing);
       await expand(tester, 't');
-      expect(find.byType(SoldierCard), findsNWidgets(2));
+      expect(find.byType(DutyParticipantRow), findsNWidgets(2));
       expect(find.text('Lee Wei'), findsOneWidget);
+      await expand(tester, 't');
+      expect(find.byType(DutyParticipantRow), findsNothing);
     });
 
     testWidgets('delete asks, then deletes once', (tester) async {

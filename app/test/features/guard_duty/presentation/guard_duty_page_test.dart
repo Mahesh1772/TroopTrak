@@ -13,6 +13,7 @@ import 'package:trooptrak_final_application/core/widgets/icon_tab.dart';
 import 'package:trooptrak_final_application/features/guard_duty/domain/entities/duty.dart';
 import 'package:trooptrak_final_application/features/guard_duty/domain/usecases/duty_usecases.dart';
 import 'package:trooptrak_final_application/features/guard_duty/presentation/guard_duty_routes.dart';
+import 'package:trooptrak_final_application/features/guard_duty/presentation/widgets/duty_participant_row.dart';
 import 'package:trooptrak_final_application/features/soldiers/domain/entities/soldier.dart';
 import 'package:trooptrak_final_application/features/soldiers/domain/usecases/soldier_usecases.dart';
 
@@ -174,7 +175,8 @@ void main() {
 
       await tester.tap(find.byKey(const Key('duty-d1')));
       await tester.pumpAndSettle();
-      expect(find.text('Participants'), findsOneWidget);
+      expect(find.byType(DutyParticipantRow), findsOneWidget);
+      expect(find.text('You'), findsOneWidget);
       expect(find.byKey(const Key('editDuty-d1')), findsNothing);
       expect(find.byKey(const Key('deleteDuty-d1')), findsNothing);
     });

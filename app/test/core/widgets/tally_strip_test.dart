@@ -294,6 +294,26 @@ void main() {
       expect(_span(tester, 0, 150).right, moreOrLessEquals(390));
     });
 
+    testWidgets('maxGap sets the widest gap between ticks, 2 px by default',
+        (tester) async {
+      double gap(WidgetTester tester) =>
+          tester.getTopLeft(_tick(0, 1)).dx -
+          tester.getTopRight(_tick(0, 0)).dx;
+
+      await _pumpStrip(
+        tester,
+        TallyStrip(groups: [TallyGroup(ticks: _ticks(10))]),
+      );
+      expect(gap(tester), moreOrLessEquals(2));
+
+      await _pumpStrip(
+        tester,
+        TallyStrip(maxGap: 4, groups: [TallyGroup(ticks: _ticks(10))]),
+      );
+      expect(gap(tester), moreOrLessEquals(4));
+      expect(_span(tester, 0, 10).right, lessThanOrEqualTo(390.001));
+    });
+
     testWidgets('every tick is keyed by its group and index', (tester) async {
       await _pumpStrip(
         tester,
@@ -486,6 +506,7 @@ void main() {
       expect(_target(tester, 0, 3).color, const Color(0xFF1E88E5));
       expect(_target(tester, 0, 4).color, const Color(0x21FFFFFF));
       expect(_target(tester, 0, 5).color, const Color(0xFF8147E6));
+      expect(_target(tester, 0, 6).color, const Color(0xFFE91E63));
     });
 
     testWidgets('a future tick is faint with a 1 px line border',
@@ -564,7 +585,7 @@ void main() {
       );
 
       expect(
-        [for (var i = 0; i < 8; i++) _target(tester, 0, i).color],
+        [for (var i = 0; i < 9; i++) _target(tester, 0, i).color],
         const [
           Color(0xFF7EE07F),
           Color(0xFFFFA84D),
@@ -572,13 +593,14 @@ void main() {
           Color(0xFF82C4FF),
           Color(0x33FFFFFF),
           Color(0xFFFFFFFF),
+          Color(0xFFE91E63),
           Color(0xFF7EE07F),
           Color(0x12FFFFFF),
         ],
       );
-      expect(_target(tester, 0, 7).border, isNull);
+      expect(_target(tester, 0, 8).border, isNull);
 
-      final ring = _decorationOf(_ring(0, 6), tester);
+      final ring = _decorationOf(_ring(0, 7), tester);
       expect((ring.border! as Border).top.color, AppColors.white);
 
       final label = tester.widget<Text>(find.text('October in camp')).style!;

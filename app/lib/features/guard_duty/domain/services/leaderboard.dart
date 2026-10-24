@@ -1,4 +1,5 @@
 import '../../../soldiers/domain/entities/soldier.dart';
+import 'self_name.dart';
 
 abstract final class Leaderboard {
   static double topPoints(Iterable<Soldier> soldiers) => soldiers.fold(
@@ -11,5 +12,5 @@ abstract final class Leaderboard {
       top <= 0 ? 0 : (points / top).clamp(0.0, 1.0);
 
   static bool isSelf(Soldier soldier, String? selfName) =>
-      selfName != null && selfName.isNotEmpty && soldier.name == selfName;
+      SelfName.matches(soldier.name, selfName);
 }

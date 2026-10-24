@@ -3,6 +3,7 @@ import '../../../../core/state/stream_state_notifier.dart';
 import '../../../../core/usecase/usecase.dart';
 import '../../../../core/utils/date_formats.dart';
 import '../../domain/entities/duty.dart';
+import '../../domain/services/self_name.dart';
 import '../../domain/usecases/duty_usecases.dart';
 
 /// R14a: duties on the selected day, and those from the next day on.
@@ -46,6 +47,8 @@ class UpcomingDutiesProvider extends StreamStateNotifier<List<Duty>> {
     final name = _participant;
     return name == null ? null : duty.includes(name);
   }
+
+  bool isSelf(String name) => SelfName.matches(name, _participant);
 
   /// R9; returns null on success, otherwise the message to show.
   Future<String?> delete(Duty duty) async =>

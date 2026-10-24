@@ -63,12 +63,16 @@ class TallyStrip extends StatelessWidget {
     required this.groups,
     this.tickHeight = 36,
     this.onGradient = false,
+    this.maxGap = AppSpacing.xxs,
     this.highlight,
   });
 
   final List<TallyGroup> groups;
   final double tickHeight;
   final bool onGradient;
+
+  /// The widest gap between ticks, in design px; crowded groups close it up.
+  final double maxGap;
 
   /// Ticks it accepts grow and the others fade; `null` leaves every tick as is.
   final bool Function(int group, TallyTick tick)? highlight;
@@ -154,7 +158,7 @@ class _Group extends StatelessWidget {
     final gap = ticks.length < 2
         ? 0.0
         : ((width - ticks.length * _tickMinWidth.w) / (ticks.length - 1))
-            .clamp(0.0, AppSpacing.xxs.w);
+            .clamp(0.0, strip.maxGap.w);
 
     Widget slots(Widget Function(int i) slot) => Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -400,5 +404,6 @@ Color _fill(StateTone? tone, AppPalette palette, bool onGradient) {
     StateTone.medical => AppColors.onGradientMedical,
     StateTone.out => AppColors.onGradientTickOff,
     StateTone.accent => AppColors.white,
+    StateTone.duty => tone.fill(palette),
   };
 }

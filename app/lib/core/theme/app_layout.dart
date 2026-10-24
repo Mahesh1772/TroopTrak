@@ -85,4 +85,7 @@ abstract final class AppLayout {
   static const conductDetailsTick = 28.0;
   static const conductDetailsStripTop = 18.0;
   static const conductFormTick = 22.0;
+  static const dutyPointsChip = 26.0;
+  static const dutySlotBar = 10.0;
+  static const dutyParticipantVertical = 7.0;
 }
