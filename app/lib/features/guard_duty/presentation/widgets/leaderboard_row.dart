@@ -7,6 +7,7 @@ import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/theme/theme_context.dart';
 import '../../../../core/utils/number_formats.dart';
 import '../../../../core/widgets/app_list_card.dart';
+import '../../../../core/widgets/fraction_bar.dart';
 import '../../../../core/widgets/rank_plate.dart';
 import '../../../../core/widgets/state_tone.dart';
 import '../../../soldiers/domain/entities/soldier.dart';
@@ -44,7 +45,13 @@ class LeaderboardRow extends StatelessWidget {
         child: Row(
           spacing: AppSpacing.sm.w,
           children: [
-            Expanded(child: _PointsBar(id: soldier.id, fraction: fraction)),
+            Expanded(
+              child: FractionBar(
+                fillKey: Key('bar-${soldier.id}'),
+                fraction: fraction,
+                height: AppLayout.leaderboardBar,
+              ),
+            ),
             SizedBox(
               width: AppLayout.leaderboardFigure.w,
               child: FittedBox(
@@ -72,36 +79,5 @@ class LeaderboardRow extends StatelessWidget {
             child: row,
           )
         : row;
-  }
-}
-
-class _PointsBar extends StatelessWidget {
-  const _PointsBar({required this.id, required this.fraction});
-
-  final String id;
-  final double fraction;
-
-  @override
-  Widget build(BuildContext context) {
-    final palette = context.palette;
-    final radius = BorderRadius.circular(AppLayout.leaderboardBar.r / 2);
-    return DecoratedBox(
-      decoration: BoxDecoration(color: palette.tickOff, borderRadius: radius),
-      child: SizedBox(
-        height: AppLayout.leaderboardBar.h,
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: FractionallySizedBox(
-            key: Key('bar-$id'),
-            widthFactor: fraction,
-            heightFactor: 1,
-            child: DecoratedBox(
-              decoration:
-                  BoxDecoration(color: palette.accent, borderRadius: radius),
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }

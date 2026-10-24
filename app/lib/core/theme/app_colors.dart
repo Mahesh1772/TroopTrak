@@ -65,6 +65,7 @@ abstract final class AppColors {
   static const onGradientBadge = Color(0x2E000000);
   static const segmentShadow = Color(0x59000000);
   static const scrim = Color(0x9E05060C);
+  static const qrInk = darkSurface;
   static const raisedShadowDark = Color(0x99000000);
   static const raisedShadowLight = Color(0x59202433);
 

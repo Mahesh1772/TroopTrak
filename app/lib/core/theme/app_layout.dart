@@ -57,6 +57,12 @@ abstract final class AppLayout {
   static const sheetHandleGap = 14.0;
   static const sheetBottom = 34.0;
   static const sheetMaxHeightFraction = 0.9;
+  static const sheetCloseButton = 44.0;
+  static const qrTile = 248.0;
+  static const qrTilePadding = 18.0;
+  static const qrHelpBottom = 18.0;
+  static const qrCountdownFigure = 26.0;
+  static const qrDrainBar = 4.0;
   static const buttonHeight = 50.0;
   static const buttonTonalHeight = 40.0;
   static const buttonCompactHeight = 36.0;

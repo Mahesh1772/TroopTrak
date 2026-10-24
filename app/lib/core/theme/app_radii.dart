@@ -1,3 +1,5 @@
+import 'package:flutter/painting.dart';
+
 abstract final class AppRadii {
   static const double xs = 5;
   static const double sm = 8;
@@ -9,4 +11,6 @@ abstract final class AppRadii {
   static const double xl = 20;
   static const double sheet = 28;
   static const double pill = 30;
+  static const sheetCorners =
+      BorderRadius.vertical(top: Radius.circular(sheet));
 }

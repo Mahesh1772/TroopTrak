@@ -213,11 +213,7 @@ BottomSheetThemeData _bottomSheetTheme(AppPalette palette) =>
     BottomSheetThemeData(
       backgroundColor: palette.sheet,
       modalBarrierColor: AppColors.scrim,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(AppRadii.sheet),
-        ),
-      ),
+      shape: const RoundedRectangleBorder(borderRadius: AppRadii.sheetCorners),
       showDragHandle: true,
       dragHandleColor: palette.tickOff,
       dragHandleSize: AppLayout.sheetHandle,

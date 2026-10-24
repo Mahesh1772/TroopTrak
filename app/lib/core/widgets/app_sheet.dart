@@ -22,11 +22,14 @@ Future<T?> showAppSheet<T>({
         maxHeight: MediaQuery.sizeOf(context).height *
             AppLayout.sheetMaxHeightFraction,
       ),
-      builder: (context) => _SheetFrame(child: builder(context)),
+      builder: (context) => AppSheetFrame(child: builder(context)),
     );
 
-class _SheetFrame extends StatelessWidget {
-  const _SheetFrame({required this.child});
+/// The inside of a sheet: the grab handle, 20 px side padding and a bottom
+/// that clears the home indicator. [showAppSheet] and any sheet-shaped route
+/// share it.
+class AppSheetFrame extends StatelessWidget {
+  const AppSheetFrame({super.key, required this.child});
 
   final Widget child;
 

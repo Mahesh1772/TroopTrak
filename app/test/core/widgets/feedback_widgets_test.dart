@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:trooptrak_final_application/core/error/failures.dart';
 import 'package:trooptrak_final_application/core/state/view_state.dart';
+import 'package:trooptrak_final_application/core/theme/app_colors.dart';
 import 'package:trooptrak_final_application/core/theme/app_palette.dart';
 import 'package:trooptrak_final_application/core/widgets/app_snackbar.dart';
 import 'package:trooptrak_final_application/core/widgets/confirm_dialog.dart';
@@ -208,6 +209,8 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('popup'), findsOneWidget);
     expect(find.text('open'), findsOneWidget);
+    expect(ModalRoute.of(tester.element(find.text('popup')))!.barrierColor,
+        AppColors.scrim);
 
     await tester.tapAt(const Offset(5, 5));
     await tester.pumpAndSettle();

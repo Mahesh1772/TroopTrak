@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 import '../theme/app_colors.dart';
 
+/// A transparent route over the current page, dimmed by the sheet scrim, for a
+/// page that flies in from a [Hero] (see [HeroSheet]).
 class HeroDialogRoute<T> extends PageRoute<T> {
   HeroDialogRoute({required WidgetBuilder builder, super.settings})
       : _builder = builder,
@@ -24,7 +26,7 @@ class HeroDialogRoute<T> extends PageRoute<T> {
   bool get maintainState => true;
 
   @override
-  Color get barrierColor => AppColors.black54;
+  Color get barrierColor => AppColors.scrim;
 
   @override
   String get barrierLabel => 'Popup dialog open';
