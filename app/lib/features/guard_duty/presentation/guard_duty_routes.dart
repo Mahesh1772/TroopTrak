@@ -23,8 +23,10 @@ Widget soldierGuardDutyTab(BuildContext context, String participant) =>
 Widget _guardDuty(BuildContext context, {String? participant}) => MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) =>
-              LeaderboardProvider(context.read<WatchSoldiers>()),
+          create: (context) => LeaderboardProvider(
+            context.read<WatchSoldiers>(),
+            selfName: participant,
+          ),
         ),
         ChangeNotifierProvider(
           create: (context) => UpcomingDutiesProvider(

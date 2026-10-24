@@ -42,6 +42,11 @@ abstract final class AppLayout {
   static const slideActionExtent = 0.18;
   static const definitionInset = 18.0;
   static const columnHeaderHeight = 38.0;
+  static const leaderboardRankColumn = 44.0;
+  static const leaderboardPointsColumn = 92.0;
+  static const leaderboardFigure = 30.0;
+  static const leaderboardBar = 6.0;
+  static const sortArrow = 18.0;
   static const dateButtonSize = 48.0;
   static const fabSize = 60.0;
   static const fabIconSize = 28.0;
