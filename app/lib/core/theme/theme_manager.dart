@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 class ThemeManager extends ChangeNotifier {
-  ThemeManager({ThemeMode initialMode = ThemeMode.dark})
+  ThemeManager({ThemeMode initialMode = ThemeMode.dark, this.onChanged})
       : _themeMode = initialMode;
+
+  final ValueChanged<ThemeMode>? onChanged;
 
   ThemeMode _themeMode;
 
@@ -17,5 +19,6 @@ class ThemeManager extends ChangeNotifier {
     if (mode == _themeMode) return;
     _themeMode = mode;
     notifyListeners();
+    onChanged?.call(mode);
   }
 }

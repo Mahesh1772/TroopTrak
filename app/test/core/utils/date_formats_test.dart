@@ -12,6 +12,19 @@ void main() {
           parseDay(formatDay(DateTime(2024, 12, 31))), DateTime(2024, 12, 31));
     });
 
+    test('capitalised form, with a dash when there is no date', () {
+      expect(formatDayCaps(sample), '5 JUL 2023');
+      expect(formatDayCaps(null), '-');
+    });
+
+    test('days left reads singular, plural and zero', () {
+      expect(formatDaysLeft(4), '4 days left');
+      expect(formatDaysLeft(2), '2 days left');
+      expect(formatDaysLeft(1), '1 day left');
+      expect(formatDaysLeft(0), 'Ends today');
+      expect(formatDaysLeft(-3), 'Ends today');
+    });
+
     test('invalid strings return null', () {
       expect(parseDay(null), isNull);
       expect(parseDay(''), isNull);
@@ -25,6 +38,16 @@ void main() {
     test('uses a plain space before AM/PM like the source data', () {
       expect(formatTime(sample), '5:30 PM');
       expect(formatTime(DateTime(2023, 1, 1, 9, 5)), '9:05 AM');
+    });
+
+    test('a range joins two times with an en dash', () {
+      expect(formatTimeRange(DateTime(2023, 1, 1, 7, 30), sample),
+          '7:30 AM – 5:30 PM');
+    });
+
+    test('the 24-hour clock pads the hour and the minute', () {
+      expect(formatClock(DateTime(2023, 1, 1, 0, 30)), '00:30');
+      expect(formatClock(sample), '17:30');
     });
 
     test('parses plain and narrow no-break space variants', () {
@@ -57,12 +80,12 @@ void main() {
   test('display-only formats', () {
     expect(formatWeekdayDay(sample), 'Wed 5 Jul 2023');
     expect(formatLongDate(sample), 'July 5, 2023');
-    expect(formatDashboardStamp(sample), 'July 5, 2023 17:30');
+    expect(formatDashboardStamp(sample), '5 Jul 2023, 17:30');
     expect(formatWeekday(sample), 'Wednesday');
     expect(formatShortWeekday(sample), 'Wed');
     expect(formatShortMonth(sample), 'Jul');
-    expect(formatMonth(sample), 'July');
     expect(formatMonthYear(sample), 'July 2023');
+    expect(formatMonthName(sample), 'July');
   });
 
   group('dayDifference', () {

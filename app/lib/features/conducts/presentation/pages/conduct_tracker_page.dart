@@ -4,17 +4,17 @@ import 'package:provider/provider.dart';
 
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/theme/app_spacing.dart';
-import '../../../../core/theme/theme_context.dart';
-import '../../../../core/utils/date_formats.dart';
+import '../../../../core/widgets/app_list_card.dart';
+import '../../../../core/widgets/date_header.dart';
 import '../../../../core/widgets/feedback_views.dart';
 import '../../../../core/widgets/horizontal_date_strip.dart';
+import '../../../../core/widgets/page_title.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/section_header.dart';
 import '../../../../core/widgets/state_view.dart';
 import '../../domain/entities/conduct.dart';
 import '../providers/conduct_tracker_provider.dart';
 import '../widgets/conduct_tile.dart';
-import '../widgets/participation_chart.dart';
 
 /// Rebuild of `CMD/.../conduct_tracker_screen.dart` and, read-only, of
 /// `P2/screens/conduct_tracker_screen/conduct_tracker_screen.dart`.
@@ -44,97 +44,70 @@ class ConductTrackerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<ConductTrackerProvider>();
-    final text = context.textStyles;
-    final muted = text.bodyMedium?.color?.withValues(alpha: 0.54);
-    final horizontal = EdgeInsets.symmetric(horizontal: AppSpacing.xl.w);
     return ListView(
-      padding: EdgeInsets.only(bottom: 30.h),
       children: [
-        SizedBox(height: AppSpacing.xl.h),
-        if (showTitle)
-          Padding(
-            padding: EdgeInsets.only(bottom: AppSpacing.lg.h),
-            child: Text('Conduct Tracker',
-                textAlign: TextAlign.center,
-                style: text.displayLarge
-                    ?.copyWith(fontSize: 32.sp, fontWeight: FontWeight.w500)),
-          ),
-        Padding(
-          padding: horizontal,
-          child: Row(
-            children: [
-              IconButton(
-                key: const Key('pickConductDay'),
-                iconSize: 45.sp,
-                onPressed: () => _pickDay(context),
-                icon: const Icon(Icons.date_range_rounded),
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(formatLongDate(provider.today),
-                        style: text.displaySmall?.copyWith(
-                            color: muted, fontWeight: FontWeight.w400)),
-                    Text('Today',
-                        style: text.displayLarge
-                            ?.copyWith(fontWeight: FontWeight.w500)),
-                  ],
-                ),
-              ),
-              if (canManage)
-                PrimaryButton(
+        if (showTitle) const PageTitle('Conduct Tracker'),
+        DateHeader(
+          date: provider.day,
+          today: provider.today,
+          pickerKey: const Key('pickConductDay'),
+          onPickDate: () => _pickDay(context),
+          action: canManage
+              ? PrimaryButton(
                   key: const Key('addConduct'),
                   label: 'Add Conduct',
                   icon: Icons.add,
-                  style: PrimaryButtonStyle.brand,
-                  expand: false,
+                  style: PrimaryButtonStyle.tonal,
                   onPressed: () =>
                       Navigator.of(context).pushNamed(AppRoutes.addConduct),
-                ),
-            ],
-          ),
+                )
+              : null,
         ),
-        SizedBox(height: 30.h),
-        Padding(
-          padding: EdgeInsets.only(left: AppSpacing.xl.w),
-          child: HorizontalDateStrip(
-            firstDate: provider.firstDay,
-            lastDate: provider.lastDay,
-            selectedDate: provider.day,
-            onDateSelected: provider.selectDay,
-          ),
+        HorizontalDateStrip(
+          firstDate: provider.firstDay,
+          lastDate: provider.lastDay,
+          selectedDate: provider.day,
+          onDateSelected: provider.selectDay,
         ),
-        SizedBox(height: 30.h),
         StateView<List<Conduct>>(
           state: provider.conducts,
           isEmpty: (c) => c.isEmpty,
-          empty: const EmptyState(message: 'NO CONDUCTS FOR TODAY!'),
+          empty: const EmptyState(
+            message: 'NO CONDUCTS FOR TODAY!',
+            icon: Icons.event_busy_rounded,
+          ),
           builder: (context, conducts) => Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SectionHeader('Participation Strength', padding: horizontal),
-              SizedBox(height: AppSpacing.xl.h),
-              Container(
-                height: 450.h,
-                padding: EdgeInsets.all(AppSpacing.lg.sp),
-                child: ParticipationChart(
-                    bars: provider.bars, maxY: provider.chartMax),
+              SectionHeader(
+                'Conducts Completed / Ongoing',
+                caption: '${conducts.length} today',
               ),
-              SizedBox(height: AppSpacing.xl.h),
-              SectionHeader('Conducts Completed / Ongoing',
-                  padding: horizontal),
-              for (var i = 0; i < conducts.length; i++)
-                ConductTile(
-                  conduct: conducts[i],
-                  number: i + 1,
-                  participating: provider.isParticipating(conducts[i]),
-                  onTap: () => Navigator.of(context).pushNamed(
-                      canManage
-                          ? AppRoutes.conductDetails
-                          : AppRoutes.conductDetailsReadOnly,
-                      arguments: conducts[i].id),
+              Padding(
+                padding: EdgeInsets.fromLTRB(
+                  AppSpacing.lg.w,
+                  0,
+                  AppSpacing.lg.w,
+                  AppSpacing.xxl.h,
                 ),
+                child: AppListCard(
+                  dividerInset: 0,
+                  children: [
+                    for (final conduct in conducts)
+                      ConductTile(
+                        conduct: conduct,
+                        ticks: provider.ticksFor(conduct),
+                        participating: provider.isParticipating(conduct),
+                        onTap: () => Navigator.of(context).pushNamed(
+                          canManage
+                              ? AppRoutes.conductDetails
+                              : AppRoutes.conductDetailsReadOnly,
+                          arguments: conduct.id,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),

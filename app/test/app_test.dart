@@ -11,6 +11,8 @@ import 'package:trooptrak_final_application/core/services/preferences_service.da
 import 'package:trooptrak_final_application/core/services/tick_source.dart';
 import 'package:trooptrak_final_application/core/theme/theme_manager.dart';
 import 'package:trooptrak_final_application/features/attendance/domain/usecases/attendance_usecases.dart';
+import 'package:trooptrak_final_application/features/attendance/domain/usecases/watch_month_presence.dart';
+import 'package:trooptrak_final_application/features/attendance/domain/usecases/watch_parade_roster.dart';
 import 'package:trooptrak_final_application/features/attendance/domain/usecases/watch_soldiers_in_camp.dart';
 import 'package:trooptrak_final_application/features/auth/domain/usecases/auth_usecases.dart';
 import 'package:trooptrak_final_application/features/auth/domain/usecases/complete_soldier_profile.dart';
@@ -111,6 +113,8 @@ void main() {
       () => context.read<DeleteAttendance>(),
       () => context.read<BookInOut>(),
       () => context.read<WatchSoldiersInCamp>(),
+      () => context.read<WatchParadeRoster>(),
+      () => context.read<WatchMonthPresence>(),
       () => context.read<FindRegistrationByQr>(),
       () => context.read<WatchOwnRegistration>(),
       () => context.read<PublishEnlistmentQr>(),

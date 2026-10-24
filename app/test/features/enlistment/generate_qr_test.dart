@@ -10,7 +10,11 @@ import 'package:trooptrak_final_application/core/router/app_router.dart';
 import 'package:trooptrak_final_application/core/router/app_routes.dart';
 import 'package:trooptrak_final_application/core/services/id_generator.dart';
 import 'package:trooptrak_final_application/core/services/tick_source.dart';
+import 'package:trooptrak_final_application/core/theme/app_colors.dart';
+import 'package:trooptrak_final_application/core/theme/app_layout.dart';
+import 'package:trooptrak_final_application/core/theme/app_palette.dart';
 import 'package:trooptrak_final_application/core/widgets/hero_dialog_route.dart';
+import 'package:trooptrak_final_application/core/widgets/hero_sheet.dart';
 import 'package:trooptrak_final_application/features/enlistment/domain/repositories/men_repository.dart';
 import 'package:trooptrak_final_application/features/enlistment/domain/usecases/men_usecases.dart';
 import 'package:trooptrak_final_application/features/enlistment/presentation/pages/generate_qr_page.dart';
@@ -137,6 +141,40 @@ void main() {
       qr.dispose();
     });
 
+    test('fraction is the share of the two minutes still left', () async {
+      final qr = provider();
+      expect(qr.fraction, 1);
+      await qr.start();
+      expect(qr.fraction, 1);
+      ticks.tick(30);
+      expect(qr.fraction, 0.75);
+      ticks.tick(30);
+      expect(qr.fraction, 0.5);
+      ticks.tick(60);
+      expect(qr.fraction, 0);
+      qr.dispose();
+    });
+
+    test('fraction never leaves 0 to 1, whatever the lifetime', () async {
+      final late = provider();
+      await late.start();
+      clock.advance(const Duration(seconds: 30));
+      ticks.tick();
+      expect(late.fraction, closeTo(89 / 120, 1e-9));
+      late.dispose();
+
+      final instant = EnlistmentQrProvider(
+        uid: 'uid-1',
+        publish: publish,
+        clear: clear,
+        clock: clock,
+        ticks: ticks,
+        lifetime: Duration.zero,
+      );
+      expect(instant.fraction, 0);
+      instant.dispose();
+    });
+
     test('dispose before expiry withdraws the code once', () async {
       final qr = provider();
       await qr.start();
@@ -210,7 +248,139 @@ void main() {
       expect(find.text('01:59'), findsOneWidget);
     }, variant: themeModes);
 
-    testWidgets('close pops the dialog and withdraws the code', (tester) async {
+    testWidgets('is a bottom sheet: sheet colour, 28 px top corners, handle',
+        (tester) async {
+      final mode = themeModes.currentValue!;
+      await pumpDialog(tester, mode: mode);
+      final palette =
+          mode == ThemeMode.dark ? AppPalette.dark : AppPalette.light;
+      final sheet = find
+          .descendant(
+              of: find.byType(HeroSheet), matching: find.byType(Material))
+          .first;
+      final material = tester.widget<Material>(sheet);
+      expect(material.color, palette.sheet);
+      expect(
+        material.shape,
+        const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+        ),
+      );
+      expect(tester.getBottomLeft(sheet).dy, 844);
+      expect(tester.getSize(sheet).width, 390);
+      expect(tester.getTopLeft(sheet).dy, greaterThan(0));
+      expect(find.byKey(const Key('sheetHandle')), findsOneWidget);
+      expect(find.byType(Dialog), findsNothing);
+      expect(
+        find
+            .descendant(of: find.byType(HeroSheet), matching: find.byType(Hero))
+            .evaluate()
+            .single
+            .widget,
+        isA<Hero>().having((h) => h.tag, 'tag', GenerateQrPage.heroTag),
+      );
+    }, variant: themeModes);
+
+    testWidgets('the sheet flies in from the SHOW QR CODE pill',
+        (tester) async {
+      await tester.pumpApp(
+        Builder(
+          builder: (context) => Scaffold(
+            body: Hero(
+              tag: GenerateQrPage.heroTag,
+              child: TextButton(
+                onPressed: () =>
+                    Navigator.of(context).push(HeroDialogRoute<void>(
+                  builder: (_) => ChangeNotifierProvider(
+                    create: (_) => provider()..start(),
+                    child: const GenerateQrPage(),
+                  ),
+                )),
+                child: const Text('open'),
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.tap(find.text('open'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 150));
+      expect(tester.takeException(), isNull);
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('qrImage')), findsOneWidget);
+      await tester.tap(find.byKey(const Key('closeQr')));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 150));
+      expect(tester.takeException(), isNull);
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('qrImage')), findsNothing);
+    });
+
+    testWidgets('the route dims the page with the sheet scrim', (tester) async {
+      final recorder = await pumpDialog(tester);
+      final route = recorder.pushed.last as HeroDialogRoute<void>;
+      expect(route.barrierColor, AppColors.scrim);
+      expect(route.opaque, isFalse);
+      expect(route.barrierDismissible, isTrue);
+    });
+
+    testWidgets('the code sits on a white tile of its own size',
+        (tester) async {
+      await pumpDialog(tester, mode: themeModes.currentValue!);
+      final tile = find
+          .ancestor(
+              of: find.byKey(const Key('qrImage')),
+              matching: find.byType(DecoratedBox))
+          .first;
+      expect(
+          (tester.widget<DecoratedBox>(tile).decoration as BoxDecoration).color,
+          AppColors.white);
+      expect(tester.getSize(tile), const Size.square(AppLayout.qrTile));
+      expect(tester.getCenter(tile).dx, 195);
+    }, variant: themeModes);
+
+    testWidgets('the countdown is a tabular accent figure', (tester) async {
+      final mode = themeModes.currentValue!;
+      await pumpDialog(tester, mode: mode);
+      final palette =
+          mode == ThemeMode.dark ? AppPalette.dark : AppPalette.light;
+      final style =
+          tester.widget<Text>(find.byKey(const Key('qrCountdown'))).style!;
+      expect(style.color, palette.accentText);
+      expect(style.fontSize, AppLayout.qrCountdownFigure);
+      expect(style.fontFeatures, contains(const FontFeature.tabularFigures()));
+    }, variant: themeModes);
+
+    testWidgets('the bar drains as the seconds go', (tester) async {
+      await pumpDialog(tester, mode: themeModes.currentValue!);
+      double factor() => tester
+          .widget<AnimatedFractionallySizedBox>(
+              find.byKey(const Key('qrDrain')))
+          .widthFactor!;
+      expect(factor(), 1);
+      expect(tester.getSize(find.byKey(const Key('qrDrain'))).height,
+          AppLayout.qrDrainBar);
+
+      ticks.tick(30);
+      await tester.pump();
+      expect(find.text('01:30'), findsOneWidget);
+      expect(factor(), 0.75);
+
+      ticks.tick(60);
+      await tester.pump();
+      expect(find.text('00:30'), findsOneWidget);
+      expect(factor(), 0.25);
+      await tester.pump(const Duration(seconds: 1));
+      final track = tester.getSize(find
+          .ancestor(
+              of: find.byKey(const Key('qrDrain')),
+              matching: find.byType(DecoratedBox))
+          .first);
+      expect(tester.getSize(find.byKey(const Key('qrDrain'))).width,
+          closeTo(track.width * 0.25, 0.01));
+    }, variant: themeModes);
+
+    testWidgets('close pops the sheet and withdraws the code', (tester) async {
       await pumpDialog(tester);
       await tester.tap(find.byKey(const Key('closeQr')));
       await tester.pumpAndSettle();
@@ -227,7 +397,7 @@ void main() {
       verify(() => clear('uid-1')).called(1);
     });
 
-    testWidgets('expiry closes the dialog', (tester) async {
+    testWidgets('expiry closes the sheet', (tester) async {
       await pumpDialog(tester);
       ticks.tick(121);
       await tester.pumpAndSettle();

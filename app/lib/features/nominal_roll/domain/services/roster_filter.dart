@@ -1,4 +1,5 @@
 import '../../../soldiers/domain/entities/soldier.dart';
+import '../../../statuses/domain/services/parade_roster.dart';
 
 /// R12 search chips, in source order, with the Users field each one reads.
 enum SearchCategory {
@@ -27,19 +28,17 @@ enum SearchCategory {
       };
 }
 
-/// R12: case-insensitive contains on the chosen field; the signed-in
-/// commander ([excludeId], their `Users` doc id) is never listed.
-List<Soldier> filterRoster(
-  Iterable<Soldier> soldiers, {
+/// R12: case-insensitive contains on the chosen field.
+List<ParadeEntry> filterRoster(
+  Iterable<ParadeEntry> entries, {
   required String query,
   required SearchCategory category,
-  String? excludeId,
 }) {
   final q = query.toLowerCase();
   return [
-    for (final s in soldiers)
-      if (s.id != excludeId &&
-          (q.isEmpty || category.valueOf(s).toLowerCase().contains(q)))
-        s,
+    for (final entry in entries)
+      if (q.isEmpty ||
+          category.valueOf(entry.soldier).toLowerCase().contains(q))
+        entry,
   ];
 }

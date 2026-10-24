@@ -1,48 +1,57 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../theme/app_colors.dart';
-import '../theme/app_radii.dart';
+import '../theme/app_layout.dart';
+import '../theme/app_spacing.dart';
+import '../theme/app_theme_builder.dart';
 import '../theme/theme_context.dart';
+import 'field_chrome.dart';
 
+const _verticalPadding =
+    (AppLayout.searchHeight - AppLayout.fieldLineHeight) / 2;
+
+/// A 46 px pill with a leading magnifier, styled by the shared input theme.
+/// [fill] replaces the fill colour where the field sits on a card of its own.
 class AppSearchField extends StatelessWidget {
   const AppSearchField({
     super.key,
     required this.onChanged,
     this.controller,
     this.hintText = 'Search...',
+    this.fill,
   });
 
   final ValueChanged<String> onChanged;
   final TextEditingController? controller;
   final String hintText;
+  final Color? fill;
 
   @override
   Widget build(BuildContext context) {
-    final style =
-        context.textStyles.bodyMedium?.copyWith(color: AppColors.white);
-    return TextField(
-      controller: controller,
-      onChanged: onChanged,
-      style: style,
-      cursorColor: AppColors.white,
-      decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: style,
-        prefixIcon: const Icon(Icons.search_sharp, color: AppColors.white),
-        fillColor: AppColors.brandIndigo,
-        filled: true,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppRadii.md.r),
-          borderSide: BorderSide.none,
+    final theme = context.theme;
+    return Theme(
+      data: theme.copyWith(
+        inputDecorationTheme: buildInputDecorationTheme(
+          context.palette,
+          radius: AppLayout.searchHeight / 2,
+          fill: fill,
         ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppRadii.md.r),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppRadii.md.r),
-          borderSide: BorderSide.none,
+      ),
+      child: TextField(
+        controller: controller,
+        onChanged: onChanged,
+        textInputAction: TextInputAction.search,
+        decoration: InputDecoration(
+          hintText: hintText,
+          isDense: true,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.control,
+            vertical: _verticalPadding,
+          ),
+          prefixIcon: const FieldIcon(
+            Icons.search_rounded,
+            size: AppLayout.searchIconSize,
+          ),
+          prefixIconConstraints: fieldPrefixConstraints,
         ),
       ),
     );

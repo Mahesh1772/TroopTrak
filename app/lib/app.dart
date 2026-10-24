@@ -5,6 +5,7 @@ import 'package:provider/single_child_widget.dart';
 
 import 'core/router/app_router.dart';
 import 'core/router/app_routes.dart';
+import 'core/theme/app_layout.dart';
 import 'core/theme/dark_theme.dart';
 import 'core/theme/light_theme.dart';
 import 'core/theme/theme_manager.dart';
@@ -24,7 +25,7 @@ class App extends StatelessWidget {
     return MultiProvider(
       providers: providers,
       child: ScreenUtilInit(
-        designSize: const Size(450, 1000),
+        designSize: AppLayout.designSize,
         builder: (_, __) {
           final light = buildLightTheme();
           final dark = buildDarkTheme();

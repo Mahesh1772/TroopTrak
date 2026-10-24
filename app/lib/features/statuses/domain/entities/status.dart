@@ -32,8 +32,17 @@ class Status extends Equatable {
   bool get isLeave => type == StatusTypes.leave;
   bool get isMedicalAppointment => type == StatusTypes.medicalAppointment;
 
+  /// R21: only these two types book the soldier out.
+  bool get booksOut => isLeave || isMedicalAppointment;
+
   /// R2: active up to and including the end day; the start day is not checked.
   bool isActiveOn(DateTime day) => dayDifference(day, end) <= 0;
+
+  /// Calendar days from [today] to the end day: 0 on it and once it has passed.
+  int daysLeft(DateTime today) {
+    final days = dayDifference(end, today);
+    return days < 0 ? 0 : days;
+  }
 
   /// R3: dashboard also requires the status to have started.
   bool isCurrentOnDashboard(DateTime day) =>

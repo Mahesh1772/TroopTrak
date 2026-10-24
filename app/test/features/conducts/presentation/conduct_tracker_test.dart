@@ -1,15 +1,16 @@
 import 'dart:async';
 
 import 'package:dartz/dartz.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
 import 'package:trooptrak_final_application/core/error/failures.dart';
 import 'package:trooptrak_final_application/core/router/app_routes.dart';
+import 'package:trooptrak_final_application/core/theme/app_palette.dart';
 import 'package:trooptrak_final_application/core/usecase/usecase.dart';
 import 'package:trooptrak_final_application/core/widgets/feedback_views.dart';
+import 'package:trooptrak_final_application/core/widgets/state_tone.dart';
 import 'package:trooptrak_final_application/features/conducts/domain/entities/conduct.dart';
 import 'package:trooptrak_final_application/features/conducts/domain/usecases/conduct_usecases.dart';
 import 'package:trooptrak_final_application/features/conducts/presentation/conducts_routes.dart';
@@ -30,8 +31,12 @@ void main() {
   final clock = FixedClock(DateTime(2023, 7, 5, 9));
   final run = buildConduct(
       id: 'run', name: 'Morning Run', participants: ['A', 'B', 'C']);
-  final ippt =
-      buildConduct(id: 'ippt', name: 'IPPT', type: 'IPPT', participants: ['A']);
+  final ippt = buildConduct(
+      id: 'ippt',
+      name: 'IPPT',
+      type: 'IPPT',
+      participants: ['A'],
+      soldierReason: {'B': 'Ex Boots'});
   final tomorrow = buildConduct(
       id: 'rm',
       name: 'Route March',
@@ -62,9 +67,16 @@ void main() {
               : <Conduct>[];
       return Stream.value(Right<Failure, List<Conduct>>(list));
     });
-    when(() => soldiers(any())).thenAnswer((_) => Stream.value(
-        Right<Failure, List<Soldier>>(
-            [for (var i = 0; i < 10; i++) buildSoldier(name: 'S$i')])));
+    when(() => soldiers(any()))
+        .thenAnswer((_) => Stream.value(Right<Failure, List<Soldier>>([
+              for (final name in [
+                'A',
+                'B',
+                'C',
+                for (var i = 3; i < 10; i++) 'S$i'
+              ])
+                buildSoldier(name: name),
+            ])));
   });
 
   ConductTrackerProvider provider({String? participant}) =>
@@ -92,26 +104,6 @@ void main() {
       p.dispose();
     });
 
-    test('bars count participants; max is unit strength (K20)', () async {
-      final p = provider();
-      await Future<void>.delayed(Duration.zero);
-      expect(p.bars, [
-        (label: 'Morning Run', participants: 3),
-        (label: 'IPPT', participants: 1),
-      ]);
-      expect(p.chartMax, 10);
-      p.dispose();
-    });
-
-    test('max never drops below the tallest bar', () async {
-      when(() => soldiers(any())).thenAnswer(
-          (_) => Stream.value(const Right<Failure, List<Soldier>>([])));
-      final p = provider();
-      await Future<void>.delayed(Duration.zero);
-      expect(p.chartMax, 3);
-      p.dispose();
-    });
-
     test('participation is tracked only for a named soldier (R13)', () {
       final commander = provider();
       expect(commander.isParticipating(run), isNull);
@@ -128,6 +120,82 @@ void main() {
       expect(p.firstDay, DateTime(2022));
       expect(p.lastDay, DateTime(2024, 7, 5));
       p.dispose();
+    });
+
+    group('tick data', () {
+      final roster = [
+        for (final n in ['A', 'B', 'C', 'D']) buildSoldier(name: n)
+      ];
+
+      void rosterIs(List<Soldier> list) => when(() => soldiers(any()))
+          .thenAnswer((_) => Stream.value(Right<Failure, List<Soldier>>(list)));
+
+      test('keeps the roster in the order it arrives', () async {
+        rosterIs(roster);
+        final p = provider();
+        expect(p.roster, isEmpty);
+        await Future<void>.delayed(Duration.zero);
+        expect(p.roster, roster);
+        p.dispose();
+      });
+
+      test('a failed roster stream keeps the last good roster', () async {
+        final controller = StreamController<Either<Failure, List<Soldier>>>();
+        when(() => soldiers(any())).thenAnswer((_) => controller.stream);
+        final p = provider();
+        controller.add(Right(roster));
+        await Future<void>.delayed(Duration.zero);
+        controller.add(const Left(ServerFailure('Roster down')));
+        await Future<void>.delayed(Duration.zero);
+        expect(p.roster, roster);
+        p.dispose();
+        await controller.close();
+      });
+
+      test('ticksFor marks who took part, one tick per rostered soldier',
+          () async {
+        rosterIs(roster);
+        final p = provider();
+        await Future<void>.delayed(Duration.zero);
+
+        final ticks = p.ticksFor(run);
+        expect(ticks.ticks.map((t) => t.soldier), roster);
+        expect(ticks.ticks.map((t) => t.tookPart), [true, true, true, false]);
+        expect(ticks.participating, 3);
+        expect(ticks.total, 4);
+        expect(ticks.self, isNull);
+        p.dispose();
+      });
+
+      test('ticksFor marks the signed-in soldier, who took part or not',
+          () async {
+        rosterIs(roster);
+        final p = provider(participant: 'B');
+        await Future<void>.delayed(Duration.zero);
+
+        expect(p.ticksFor(run).self?.soldier.name, 'B');
+        expect(p.ticksFor(run).self?.tookPart, isTrue);
+        expect(p.ticksFor(ippt).self?.soldier.name, 'B');
+        expect(p.ticksFor(ippt).self?.tookPart, isFalse);
+        p.dispose();
+      });
+
+      test('ticksFor is empty until the roster arrives', () {
+        rosterIs(roster);
+        final p = provider();
+        expect(p.ticksFor(run).ticks, isEmpty);
+        p.dispose();
+      });
+
+      test('listeners are told when the roster arrives', () async {
+        rosterIs(roster);
+        final p = provider();
+        var notified = 0;
+        p.addListener(() => notified++);
+        await Future<void>.delayed(Duration.zero);
+        expect(notified, greaterThan(0));
+        p.dispose();
+      });
     });
   });
 
@@ -157,17 +225,122 @@ void main() {
     return recorder;
   }
 
+  Finder inCard(String id, Finder finder) =>
+      find.descendant(of: find.byKey(Key('conduct-$id')), matching: finder);
+
+  bool isSelfRing(Widget w) =>
+      w.key is ValueKey<String> &&
+      (w.key! as ValueKey<String>).value.endsWith('-self');
+
+  Finder ticksIn(String id) => inCard(
+      id,
+      find.byWidgetPredicate((w) =>
+          w.key is ValueKey<String> &&
+          RegExp(r'^tick-0-\d+$')
+              .hasMatch((w.key! as ValueKey<String>).value)));
+
+  Color tickColor(WidgetTester tester, String id, int index) => (tester
+          .widget<AnimatedContainer>(
+              inCard(id, find.byKey(ValueKey('tick-0-$index'))))
+          .decoration! as BoxDecoration)
+      .color!;
+
+  Future<void> longPressTick(WidgetTester tester, String id, int index) async {
+    await tester.longPress(inCard(id, find.byKey(ValueKey('tick-0-$index'))));
+    await tester.pump(const Duration(milliseconds: 200));
+  }
+
+  Future<void> letTooltipGo(WidgetTester tester) async {
+    await tester.pump(const Duration(seconds: 2));
+    await tester.pumpAndSettle();
+  }
+
   group('ConductTrackerPage', () {
-    testWidgets('shows the chart and numbered tiles for the day',
+    testWidgets('heads the day with the date, Today and the date strip',
         (tester) async {
       await pumpTracker(tester, mode: themeModes.currentValue!);
       expect(find.text('July 5, 2023'), findsOneWidget);
-      expect(find.text('Participation Strength'), findsOneWidget);
-      expect(find.byType(BarChart), findsOneWidget);
-      expect(find.byKey(const Key('conduct-run')), findsOneWidget);
-      expect(find.text('1'), findsOneWidget);
-      expect(find.text('2'), findsOneWidget);
+      expect(find.text('Today'), findsOneWidget);
+      expect(find.byKey(const Key('pickConductDay')), findsOneWidget);
+      expect(
+          find.byKey(const ValueKey('date-strip-5 Jul 2023')), findsOneWidget);
+      expect(find.text('Conduct Tracker'), findsNothing);
     }, variant: themeModes);
+
+    testWidgets('lists a card per conduct under the section header',
+        (tester) async {
+      await pumpTracker(tester, mode: themeModes.currentValue!);
+      expect(find.text('Conducts Completed / Ongoing'), findsOneWidget);
+      expect(find.text('2 today'), findsOneWidget);
+      expect(find.text('Participation Strength'), findsNothing);
+      expect(find.byKey(const Key('conduct-run')), findsOneWidget);
+      expect(find.byKey(const Key('conduct-ippt')), findsOneWidget);
+    }, variant: themeModes);
+
+    testWidgets('a card shows type, name, time, count badge and caption',
+        (tester) async {
+      await pumpTracker(tester, mode: themeModes.currentValue!);
+      expect(inCard('run', find.text('RUN')), findsOneWidget);
+      expect(inCard('run', find.text('Morning Run')), findsOneWidget);
+      expect(inCard('run', find.text('7:00 AM – 8:00 AM')), findsOneWidget);
+      expect(
+          find.descendant(
+              of: find.byKey(const Key('count-run')), matching: find.text('3')),
+          findsOneWidget);
+      expect(
+          inCard('run', find.text('Participation strength')), findsOneWidget);
+      expect(inCard('run', find.textContaining('3 / 10')), findsOneWidget);
+
+      expect(
+          find.descendant(
+              of: find.byKey(const Key('count-ippt')),
+              matching: find.text('1')),
+          findsOneWidget);
+      expect(inCard('ippt', find.textContaining('1 / 10')), findsOneWidget);
+    }, variant: themeModes);
+
+    testWidgets('the commander side has no tick or cross marks',
+        (tester) async {
+      await pumpTracker(tester);
+      expect(find.byKey(const Key('participating-run')), findsNothing);
+      expect(find.byKey(const Key('notParticipating-run')), findsNothing);
+    });
+
+    testWidgets('a strip tick per soldier: accent for took part, grey if not',
+        (tester) async {
+      final mode = themeModes.currentValue!;
+      await pumpTracker(tester, mode: mode);
+      final palette =
+          mode == ThemeMode.dark ? AppPalette.dark : AppPalette.light;
+      expect(ticksIn('run'), findsNWidgets(10));
+      expect(ticksIn('ippt'), findsNWidgets(10));
+
+      for (final index in [0, 1, 2]) {
+        expect(tickColor(tester, 'run', index), StateTone.accent.fill(palette));
+      }
+      for (final index in [3, 9]) {
+        expect(tickColor(tester, 'run', index), StateTone.out.fill(palette));
+      }
+      expect(tickColor(tester, 'ippt', 0), StateTone.accent.fill(palette));
+      expect(tickColor(tester, 'ippt', 1), StateTone.out.fill(palette));
+    }, variant: themeModes);
+
+    testWidgets('the commander strip has no self ring', (tester) async {
+      await pumpTracker(tester);
+      expect(find.byWidgetPredicate(isSelfRing), findsNothing);
+    });
+
+    testWidgets('a long press on a tick names the soldier and their part',
+        (tester) async {
+      await pumpTracker(tester);
+      await longPressTick(tester, 'run', 0);
+      expect(find.text('CPL A · participating'), findsOneWidget);
+      await letTooltipGo(tester);
+
+      await longPressTick(tester, 'run', 3);
+      expect(find.text('CPL S3 · not participating'), findsOneWidget);
+      await letTooltipGo(tester);
+    });
 
     testWidgets('tapping another day on the strip updates the list',
         (tester) async {
@@ -178,18 +351,13 @@ void main() {
       expect(find.byKey(const Key('conduct-run')), findsNothing);
     });
 
-    testWidgets('a day without conducts shows the empty image and text',
+    testWidgets('a day without conducts shows the empty icon and text',
         (tester) async {
       await pumpTracker(tester);
       await tester.tap(find.byKey(const ValueKey('date-strip-7 Jul 2023')));
       await tester.pumpAndSettle();
       expect(find.text('NO CONDUCTS FOR TODAY!'), findsOneWidget);
-      expect(
-          find.byWidgetPredicate((w) =>
-              w is Image &&
-              (w.image as AssetImage).assetName ==
-                  'lib/assets/noConductspng.png'),
-          findsOneWidget);
+      expect(find.byIcon(Icons.event_busy_rounded), findsOneWidget);
     });
 
     testWidgets('a failed conduct stream shows the error', (tester) async {
@@ -197,12 +365,15 @@ void main() {
           const Left<Failure, List<Conduct>>(ServerFailure('Conducts down'))));
       await pumpTracker(tester);
       expect(find.widgetWithText(ErrorView, 'Conducts down'), findsOneWidget);
-      expect(find.byType(BarChart), findsNothing);
+      expect(find.byKey(const Key('conduct-run')), findsNothing);
     });
 
     testWidgets('tiles open the conduct details by id', (tester) async {
       final recorder = await pumpTracker(tester);
-      await tester.tap(find.byKey(const Key('conduct-ippt')));
+      final tile = find.byKey(const Key('conduct-ippt'));
+      await tester.ensureVisible(tile);
+      await tester.pumpAndSettle();
+      await tester.tap(tile);
       await tester.pumpAndSettle();
       expect(recorder.names.last, AppRoutes.conductDetails);
       expect(recorder.lastArguments, 'ippt');
@@ -236,12 +407,68 @@ void main() {
       expect(find.byKey(const Key('participating-run')), findsOneWidget);
       expect(find.byKey(const Key('notParticipating-run')), findsNothing);
       expect(find.byKey(const Key('notParticipating-ippt')), findsOneWidget);
-      expect(find.text('1'), findsNothing);
+      expect(find.byKey(const Key('participating-ippt')), findsNothing);
+      expect(find.byKey(const Key('count-run')), findsNothing);
+      expect(find.byKey(const Key('count-ippt')), findsNothing);
     }, variant: themeModes);
+
+    testWidgets('the badge is a tick when taking part and a cross when not',
+        (tester) async {
+      await pumpSoldier(tester);
+      expect(
+          find.descendant(
+              of: find.byKey(const Key('participating-run')),
+              matching: find.byIcon(Icons.check_rounded)),
+          findsOneWidget);
+      expect(
+          find.descendant(
+              of: find.byKey(const Key('notParticipating-ippt')),
+              matching: find.byIcon(Icons.close_rounded)),
+          findsOneWidget);
+    });
+
+    testWidgets('the caption says you take part, or why you do not',
+        (tester) async {
+      await pumpSoldier(tester);
+      expect(inCard('run', find.text('You are participating')), findsOneWidget);
+      expect(inCard('run', find.textContaining('3 / 10')), findsOneWidget);
+      expect(inCard('ippt', find.text('Not participating · Ex Boots')),
+          findsOneWidget);
+      expect(inCard('ippt', find.textContaining('1 / 10')), findsOneWidget);
+    });
+
+    testWidgets('without a recorded reason the caption says removed',
+        (tester) async {
+      await pumpSoldier(tester);
+      await tester.tap(find.byKey(const ValueKey('date-strip-6 Jul 2023')));
+      await tester.pumpAndSettle();
+      expect(
+          inCard(
+              'rm', find.text('Not participating · ${Conduct.removedReason}')),
+          findsOneWidget);
+    });
+
+    testWidgets('only your own tick is ringed, taking part or not',
+        (tester) async {
+      await pumpSoldier(tester, mode: ThemeMode.light);
+      for (final id in ['run', 'ippt']) {
+        expect(inCard(id, find.byKey(const ValueKey('tick-0-1-self'))),
+            findsOneWidget);
+        expect(inCard(id, find.byWidgetPredicate(isSelfRing)), findsOneWidget);
+        expect(ticksIn(id), findsNWidgets(10));
+      }
+      expect(
+          tickColor(tester, 'run', 1), StateTone.accent.fill(AppPalette.light));
+      expect(
+          tickColor(tester, 'ippt', 1), StateTone.out.fill(AppPalette.light));
+    });
 
     testWidgets('tiles open the read-only details', (tester) async {
       final recorder = await pumpSoldier(tester);
-      await tester.tap(find.byKey(const Key('conduct-run')));
+      final tile = find.byKey(const Key('conduct-run'));
+      await tester.ensureVisible(tile);
+      await tester.pumpAndSettle();
+      await tester.tap(tile);
       await tester.pumpAndSettle();
       expect(recorder.names.last, AppRoutes.conductDetailsReadOnly);
       expect(recorder.lastArguments, 'run');
@@ -253,7 +480,7 @@ void main() {
       expect(find.text('Conduct Tracker'), findsNothing);
       expect(find.byKey(const Key('addConduct')), findsOneWidget);
       expect(find.byKey(const Key('participating-run')), findsNothing);
-      expect(find.text('1'), findsOneWidget);
+      expect(find.byKey(const Key('count-run')), findsOneWidget);
     });
   });
 }

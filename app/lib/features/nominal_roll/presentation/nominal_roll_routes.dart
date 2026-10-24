@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../core/router/app_routes.dart';
 import '../../../core/router/route_builder.dart';
 import '../../attendance/domain/usecases/attendance_usecases.dart';
-import '../../attendance/domain/usecases/watch_soldiers_in_camp.dart';
+import '../../attendance/domain/usecases/watch_parade_roster.dart';
 import '../../soldiers/domain/entities/soldier.dart';
 import 'pages/nominal_roll_page.dart';
 import 'pages/soldier_form_page.dart';
@@ -14,7 +14,7 @@ import 'providers/nominal_roll_provider.dart';
 Widget nominalRollTab(BuildContext context, {String? currentUserId}) =>
     ChangeNotifierProvider(
       create: (context) => NominalRollProvider(
-        watch: context.read<WatchSoldiersInCamp>(),
+        watch: context.read<WatchParadeRoster>(),
         bookInOut: context.read<BookInOut>(),
         excludeId: currentUserId,
       ),

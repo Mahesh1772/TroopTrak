@@ -8,6 +8,7 @@ import '../../features/dashboard/presentation/dashboard_routes.dart';
 import '../../features/guard_duty/presentation/guard_duty_routes.dart';
 import '../../features/nominal_roll/presentation/nominal_roll_routes.dart';
 import '../../features/shell/presentation/pages/commander_shell.dart';
+import '../../features/shell/presentation/providers/commander_rank_provider.dart';
 import '../../features/soldier_profile/presentation/pages/soldier_profile_page.dart';
 import '../../features/soldier_profile/presentation/profile_actions.dart';
 import '../../features/soldier_profile/presentation/profile_capabilities.dart';
@@ -23,11 +24,15 @@ class CommanderHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final me = context.read<WatchAuthState>().current?.displayName;
-    return CommanderShell(
-      home: (context) => dashboardTab(context, name: me ?? ''),
-      nominalRoll: (context) => nominalRollTab(context, currentUserId: me),
-      conductTracker: conductTrackerTab,
-      guardDuty: guardDutyTab,
+    return ChangeNotifierProvider(
+      create: (context) =>
+          CommanderRankProvider(context.read<WatchSoldier>(), me),
+      child: CommanderShell(
+        home: (context) => dashboardTab(context, name: me ?? ''),
+        nominalRoll: (context) => nominalRollTab(context, currentUserId: me),
+        conductTracker: conductTrackerTab,
+        guardDuty: guardDutyTab,
+      ),
     );
   }
 }

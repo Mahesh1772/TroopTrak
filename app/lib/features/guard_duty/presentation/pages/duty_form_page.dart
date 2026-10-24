@@ -3,15 +3,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/services/clock.dart';
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_radii.dart';
 import '../../../../core/theme/app_spacing.dart';
-import '../../../../core/theme/theme_context.dart';
 import '../../../../core/widgets/app_snackbar.dart';
+import '../../../../core/widgets/form_page_scaffold.dart';
 import '../../../../core/widgets/picker_fields.dart';
 import '../../../../core/widgets/primary_button.dart';
+import '../../domain/validators/duty_date_limits.dart';
+import '../../domain/validators/duty_validators.dart';
 import '../providers/duty_form_provider.dart';
+import '../widgets/duty_points_card.dart';
+import '../widgets/duty_slot_count.dart';
 import '../widgets/duty_slots.dart';
+
+const _defaultTime = TimeOfDay(hour: 8, minute: 0);
 
 /// Rebuild of `add_new_duty_screen.dart` and `update_duty_screen.dart`.
 class DutyFormPage extends StatefulWidget {
@@ -47,115 +51,77 @@ class _DutyFormPageState extends State<DutyFormPage> {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<DutyFormProvider>();
-    final text = context.textStyles;
     final today = context.read<Clock>().now();
-    final gap = SizedBox(height: 30.h);
-    final pricing = provider.pricing;
-    return Scaffold(
-      appBar: AppBar(),
-      body: SafeArea(
-        child: Form(
-          key: _formKey,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: AppSpacing.md.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                    provider.isUpdate
-                        ? 'Edit an existing duty.'
-                        : 'Who is performing this duty?',
-                    style: text.displayLarge?.copyWith(fontSize: 26.sp)),
-                Text(
-                    provider.isUpdate
-                        ? 'Fill in the details of the guard duty.'
-                        : 'Add details of the guard duty.',
-                    style: text.bodyMedium),
-                SizedBox(height: 40.h),
-                const DutySlots(),
-                SizedBox(height: 40.h),
-                Container(
-                  padding: EdgeInsets.all(AppSpacing.lg.sp),
-                  decoration: BoxDecoration(
-                    gradient:
-                        LinearGradient(colors: context.palette.headerGradient),
-                    borderRadius: BorderRadius.circular(AppRadii.lg.r),
-                  ),
-                  child: Column(
-                    children: [
-                      Text('EXPECTED POINTS PER PERSON',
-                          style: text.headlineMedium
-                              ?.copyWith(color: AppColors.white)),
-                      Text('${pricing.points}',
-                          key: const Key('expectedPoints'),
-                          style: text.displayLarge
-                              ?.copyWith(color: AppColors.white)),
-                      Text(pricing.dayType,
-                          key: const Key('dayType'),
-                          style: text.titleMedium
-                              ?.copyWith(color: AppColors.white)),
-                    ],
-                  ),
-                ),
-                gap,
-                DatePickerField(
-                  key: const Key('dutyDate'),
-                  hintText: 'Date of Duty:',
-                  value: provider.date,
-                  initialDate: today,
-                  icon: Icons.date_range_rounded,
-                  firstDate: DateTime(2020),
-                  lastDate: DateTime(today.year + 1, 12, 31),
-                  validator: (d) => d == null ? 'Select a duty date' : null,
-                  onChanged: provider.setDate,
-                ),
-                gap,
-                Row(
-                  children: [
-                    Expanded(
-                      child: TimePickerField(
-                        key: const Key('dutyStart'),
-                        hintText: 'Start Time:',
-                        value: provider.start,
-                        initialTime: const TimeOfDay(hour: 8, minute: 0),
-                        icon: Icons.access_time_filled_rounded,
-                        validator: (t) =>
-                            t == null ? 'Select a start time' : null,
-                        onChanged: provider.setStart,
-                      ),
-                    ),
-                    SizedBox(width: AppSpacing.xl.w),
-                    Expanded(
-                      child: TimePickerField(
-                        key: const Key('dutyEnd'),
-                        hintText: 'End Time:',
-                        value: provider.end,
-                        initialTime: const TimeOfDay(hour: 8, minute: 0),
-                        icon: Icons.access_time_filled_rounded,
-                        validator: (t) =>
-                            t == null ? 'Select an end time' : null,
-                        onChanged: provider.setEnd,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 40.h),
-                PrimaryButton(
-                  key: const Key('saveDuty'),
-                  label: provider.isUpdate
-                      ? 'UPDATE GUARD DUTY'
-                      : 'ADD GUARD DUTY',
-                  icon: Icons.add_to_photos_rounded,
-                  loading: provider.saving,
-                  onPressed: _submit,
-                ),
-                gap,
-              ],
-            ),
+    return FormPageScaffold(
+      formKey: _formKey,
+      title: provider.isUpdate
+          ? 'Edit an existing duty.'
+          : 'Who is performing this duty?',
+      subtitle: provider.isUpdate
+          ? 'Fill in the details of the guard duty.'
+          : 'Add details of the guard duty.',
+      cta: PrimaryButton(
+        key: const Key('saveDuty'),
+        label: provider.isUpdate ? 'UPDATE GUARD DUTY' : 'ADD GUARD DUTY',
+        icon: provider.isUpdate ? Icons.edit_rounded : Icons.add_rounded,
+        loading: provider.saving,
+        onPressed: _submit,
+      ),
+      children: [
+        const DutySlots(),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.xs.w),
+          child: DutySlotCount(
+            label: 'Slots filled',
+            filled: provider.participants.length,
           ),
         ),
-      ),
+        DutyPointsCard(
+            points: provider.pricing.points, dayType: provider.dayLabel),
+        DatePickerField(
+          key: const Key('dutyDate'),
+          label: 'Date of Duty:',
+          hintText: 'Date of Duty:',
+          value: provider.date,
+          initialDate: today,
+          icon: Icons.event_rounded,
+          firstDate: DutyDateLimits.earliest,
+          lastDate: DutyDateLimits.latest(today),
+          validator: DutyValidators.date,
+          onChanged: provider.setDate,
+        ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          spacing: AppSpacing.md.w,
+          children: [
+            Expanded(
+              child: TimePickerField(
+                key: const Key('dutyStart'),
+                label: 'Start Time:',
+                hintText: 'Start Time:',
+                value: provider.start,
+                initialTime: _defaultTime,
+                icon: Icons.schedule_rounded,
+                validator: DutyValidators.startTime,
+                onChanged: provider.setStart,
+              ),
+            ),
+            Expanded(
+              child: TimePickerField(
+                key: const Key('dutyEnd'),
+                label: 'End Time:',
+                hintText: 'End Time:',
+                value: provider.end,
+                initialTime: _defaultTime,
+                icon: Icons.schedule_rounded,
+                note: provider.endsNextDay ? 'next day' : null,
+                validator: DutyValidators.endTime,
+                onChanged: provider.setEnd,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

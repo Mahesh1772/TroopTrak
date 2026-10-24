@@ -6,9 +6,9 @@ import '../../../../core/error/failures.dart';
 import '../../../../core/error/result.dart';
 import '../../../../core/services/clock.dart';
 import '../../../../core/usecase/usecase.dart';
-import '../../../../core/utils/date_formats.dart';
 import '../entities/status.dart';
 import '../repositories/status_repository.dart';
+import '../validators/status_validators.dart';
 
 class WatchSoldierStatuses implements StreamUseCase<List<Status>, String> {
   const WatchSoldierStatuses(this._repository);
@@ -54,14 +54,9 @@ ValidationFailure? _validate(Status status) {
   if (status.name.trim().isEmpty) {
     return const ValidationFailure('Enter a status name.');
   }
-  if (dayDifference(status.end, status.start) < 0) {
-    return const ValidationFailure(endBeforeStart);
-  }
-  return null;
+  final period = StatusValidators.period(status.start, status.end);
+  return period == null ? null : ValidationFailure(period);
 }
-
-/// K18 fix: the source accepted an end date before the start date.
-const endBeforeStart = 'End date cannot be before the start date.';
 
 class AddStatus implements UseCase<Unit, Status> {
   const AddStatus(this._repository);

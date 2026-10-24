@@ -7,8 +7,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
 import 'package:trooptrak_final_application/core/error/failures.dart';
-import 'package:trooptrak_final_application/core/theme/app_colors.dart';
+import 'package:trooptrak_final_application/core/theme/app_palette.dart';
+import 'package:trooptrak_final_application/core/widgets/app_list_card.dart';
 import 'package:trooptrak_final_application/core/widgets/feedback_views.dart';
+import 'package:trooptrak_final_application/core/widgets/icon_plate.dart';
+import 'package:trooptrak_final_application/core/widgets/state_tone.dart';
+import 'package:trooptrak_final_application/core/widgets/sticky_cta_bar.dart';
 import 'package:trooptrak_final_application/features/attendance/domain/entities/attendance_record.dart';
 import 'package:trooptrak_final_application/features/attendance/domain/usecases/attendance_usecases.dart';
 import 'package:trooptrak_final_application/features/soldier_profile/presentation/pages/edit_attendance_page.dart';
@@ -82,7 +86,7 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  testWidgets('tiles keep the use case order with in/out labels and colours',
+  testWidgets('rows keep the use case order with in/out labels and plates',
       (tester) async {
     await pumpTab(tester, mode: themeModes.currentValue!);
     final first = tester.getTopLeft(find.text('Wed 5 Jul 2023 08:15:00')).dy;
@@ -90,14 +94,33 @@ void main() {
     expect(first, lessThan(second));
     expect(find.text('BOOK IN'), findsOneWidget);
     expect(find.text('BOOKOUT'), findsOneWidget);
-    final colours = tester
-        .widgetList<Container>(find.descendant(
-            of: find.byType(AttendanceTile), matching: find.byType(Container)))
-        .map((c) => (c.decoration as BoxDecoration?)?.color)
-        .whereType<Color>()
-        .toList();
-    expect(colours, [AppColors.bookIn, AppColors.danger]);
+    expect(find.text('Newest first'), findsOneWidget);
+    expect(
+        find.descendant(
+            of: find.byType(AppListCard),
+            matching: find.byType(AttendanceTile)),
+        findsNWidgets(2));
+
+    IconPlate plateOf(AttendanceRecord r) =>
+        tester.widget<IconPlate>(find.descendant(
+            of: find.byKey(Key('attendance-${r.id}')),
+            matching: find.byType(IconPlate)));
+    expect(plateOf(newer).tone, StateTone.inCamp);
+    expect(plateOf(older).tone, StateTone.leave);
+    expect(plateOf(newer).icon, isNot(plateOf(older).icon));
   }, variant: themeModes);
+
+  testWidgets('labels take the tone text colour and times use tabular figures',
+      (tester) async {
+    await pumpTab(tester);
+    TextStyle styleOf(String text) =>
+        tester.widget<Text>(find.text(text)).style!;
+    expect(styleOf('BOOK IN').color, AppPalette.dark.successText);
+    expect(styleOf('BOOKOUT').color, AppPalette.dark.leaveText);
+    final time = styleOf('Wed 5 Jul 2023 08:15:00');
+    expect(time.fontFeatures, [const FontFeature.tabularFigures()]);
+    expect(time.color, AppPalette.dark.onCard);
+  });
 
   testWidgets('empty list shows the empty state', (tester) async {
     await tester.pumpApp(Scaffold(
@@ -174,6 +197,92 @@ void main() {
     expect(saved.timestamp, DateTime(2023, 7, 3, 8, 15));
     expect(find.byType(EditAttendancePage), findsNothing);
     expect(find.text('Attendance updated'), findsOneWidget);
+  });
+
+  group('EditAttendancePage', () {
+    Future<void> pumpEdit(WidgetTester tester,
+        {ThemeMode mode = ThemeMode.dark}) async {
+      await tester.pumpApp(
+        EditAttendancePage(record: newer),
+        mode: mode,
+        providers: [Provider<UpdateAttendance>.value(value: update)],
+      );
+    }
+
+    Finder label(String text) => find.byWidgetPredicate(
+        (w) => w is Text && w.data == text && w.style?.fontSize == 13.5);
+
+    testWidgets('has a title, a subtitle and the current date and time',
+        (tester) async {
+      await pumpEdit(tester, mode: themeModes.currentValue!);
+      expect(find.text('Edit Attendance'), findsOneWidget);
+      expect(find.text('Fill in book in / book out time.'), findsOneWidget);
+      expect(find.text('5 Jul 2023'), findsOneWidget);
+      expect(find.text('8:15 AM'), findsOneWidget);
+    }, variant: themeModes);
+
+    testWidgets('Date and Time labels sit above their fields', (tester) async {
+      await pumpEdit(tester);
+      for (final (text, key) in [
+        ('Date', 'attendanceDate'),
+        ('Time', 'attendanceTime'),
+      ]) {
+        expect(label(text), findsOneWidget);
+        final box = tester.getRect(find.descendant(
+            of: find.byKey(Key(key)), matching: find.byType(InputDecorator)));
+        expect(tester.getRect(label(text)).bottom, lessThanOrEqualTo(box.top));
+      }
+      expect(tester.getRect(label('Date')).bottom,
+          lessThan(tester.getRect(label('Time')).top));
+    });
+
+    testWidgets('EDIT ATTENDANCE is pinned below the scrolling form',
+        (tester) async {
+      await pumpEdit(tester);
+      final button = find.byKey(const Key('saveAttendance'));
+      expect(find.text('EDIT ATTENDANCE'), findsOneWidget);
+      expect(
+          find.descendant(
+              of: find.byType(SingleChildScrollView), matching: button),
+          findsNothing);
+      expect(find.descendant(of: find.byType(StickyCtaBar), matching: button),
+          findsOneWidget);
+      expect(tester.getRect(button).bottom,
+          lessThanOrEqualTo(tester.view.physicalSize.height));
+    });
+
+    testWidgets('saving a new time keeps the date and drops the seconds',
+        (tester) async {
+      await pumpEdit(tester);
+      await tester.tap(find.byKey(const Key('attendanceTime')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(Icons.keyboard_outlined));
+      await tester.pumpAndSettle();
+      final inputs = find.byType(EditableText);
+      await tester.enterText(inputs.at(0), '6');
+      await tester.enterText(inputs.at(1), '45');
+      await tester.tap(find.text('OK'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('saveAttendance')));
+      await tester.pumpAndSettle();
+
+      final saved = verify(() => update(captureAny())).captured.single
+          as AttendanceRecord;
+      expect(saved.id, newer.id);
+      expect(saved.timestamp, DateTime(2023, 7, 5, 6, 45));
+    });
+
+    testWidgets('a failed save shows its message and keeps the page',
+        (tester) async {
+      when(() => update(any()))
+          .thenAnswer((_) async => const Left(ServerFailure('No network')));
+      await pumpEdit(tester);
+      await tester.tap(find.byKey(const Key('saveAttendance')));
+      await tester.pumpAndSettle();
+      expect(find.text('No network'), findsOneWidget);
+      expect(find.byType(EditAttendancePage), findsOneWidget);
+      expect(find.text('Attendance updated'), findsNothing);
+    });
   });
 
   testWidgets('read-only tiles cannot slide', (tester) async {

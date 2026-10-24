@@ -21,6 +21,31 @@ void main() {
     expect(notified, 2);
   });
 
+  test('onChanged is called once per real change and not for a no-op', () {
+    final changes = <ThemeMode>[];
+    final manager = ThemeManager(onChanged: changes.add);
+
+    manager.setDark(true);
+    expect(changes, isEmpty);
+    manager.setDark(false);
+    manager.setDark(false);
+    manager.toggle();
+    expect(changes, [ThemeMode.light, ThemeMode.dark]);
+  });
+
+  test('starts from the initial mode without calling onChanged', () {
+    final changes = <ThemeMode>[];
+    final manager =
+        ThemeManager(initialMode: ThemeMode.light, onChanged: changes.add);
+    expect(manager.isDark, isFalse);
+    expect(changes, isEmpty);
+  });
+
+  test('works with no callback', () {
+    final manager = ThemeManager()..toggle();
+    expect(manager.themeMode, ThemeMode.light);
+  });
+
   test('setDark only notifies on change', () {
     final manager = ThemeManager();
     var notified = 0;

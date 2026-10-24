@@ -5,12 +5,20 @@ import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
 import 'package:trooptrak_final_application/core/error/failures.dart';
 import 'package:trooptrak_final_application/core/router/app_routes.dart';
+import 'package:trooptrak_final_application/core/theme/app_palette.dart';
+import 'package:trooptrak_final_application/core/widgets/inline_error.dart';
 import 'package:trooptrak_final_application/features/auth/domain/usecases/complete_soldier_profile.dart';
 import 'package:trooptrak_final_application/features/auth/presentation/pages/profile_capture_page.dart';
 import 'package:trooptrak_final_application/features/soldiers/domain/entities/soldier.dart';
 
 import '../../../helpers/builders.dart';
 import '../../../helpers/pump_app.dart';
+
+Finder _input(String key) => find.descendant(
+    of: find.byKey(Key(key)), matching: find.byType(InputDecorator));
+
+AppPalette _paletteOf(ThemeMode mode) =>
+    mode == ThemeMode.dark ? AppPalette.dark : AppPalette.light;
 
 class _MockComplete extends Mock implements CompleteSoldierProfile {}
 
@@ -87,11 +95,63 @@ void main() {
   testWidgets('renders the source heading and the dates start empty',
       (tester) async {
     await pumpPage(tester, mode: themeModes.currentValue!);
-    expect(find.text("Let's get things set up  ✍️"), findsOneWidget);
-    expect(find.text('Date of Birth'), findsOneWidget);
-    expect(find.text('Enlistment Date'), findsOneWidget);
-    expect(find.text('ORD'), findsOneWidget);
+    expect(find.text("Let's get things set up"), findsOneWidget);
+    expect(find.text('Date of Birth:'), findsOneWidget);
+    expect(find.text('Enlistment Date:'), findsOneWidget);
+    expect(find.text('ORD:'), findsOneWidget);
+    expect(find.text('Pick a date'), findsNWidgets(3));
     expect(find.text('5 Jul 2023'), findsNothing);
+  }, variant: themeModes);
+
+  testWidgets('labels sit above their fields and the button stays pinned',
+      (tester) async {
+    await pumpPage(tester, mode: themeModes.currentValue!);
+    final button = find.byKey(const Key('captureButton'));
+
+    for (final (label, key) in [
+      ('Enter Name (as in NRIC):', 'profile-name'),
+      ('Appointment (in unit):', 'profile-appointment'),
+      ('Ration type:', 'profile-ration'),
+      ('Blood type:', 'profile-blood'),
+      ('Date of Birth:', 'profile-dob'),
+    ]) {
+      expect(tester.getRect(find.text(label)).bottom,
+          lessThan(tester.getRect(_input(key)).top),
+          reason: label);
+    }
+
+    final before = tester.getRect(button);
+    await tester.drag(
+        find.byType(SingleChildScrollView), const Offset(0, -600));
+    await tester.pumpAndSettle();
+    expect(tester.getRect(button), before);
+    expect(before.bottom, lessThanOrEqualTo(tester.view.physicalSize.height));
+  }, variant: themeModes);
+
+  testWidgets('follows the theme instead of forcing dark', (tester) async {
+    final mode = themeModes.currentValue!;
+    await pumpPage(tester, mode: mode);
+    final theme = Theme.of(tester.element(find.byType(Scaffold)));
+    expect(theme.brightness,
+        mode == ThemeMode.dark ? Brightness.dark : Brightness.light);
+    expect(
+        tester.widget<Text>(find.text('Enter Name (as in NRIC):')).style!.color,
+        _paletteOf(mode).secondaryText);
+  }, variant: themeModes);
+
+  testWidgets('validation errors are inline, in the legible red',
+      (tester) async {
+    final mode = themeModes.currentValue!;
+    await pumpPage(tester, mode: mode);
+    await tester.enterText(find.byKey(const Key('profile-name')), '12345');
+    await tester.pumpAndSettle();
+    expect(
+        find.descendant(
+            of: find.byType(InlineError),
+            matching: find.text('Name got number meh')),
+        findsOneWidget);
+    expect(tester.widget<Text>(find.text('Name got number meh')).style!.color,
+        _paletteOf(mode).leaveText);
   }, variant: themeModes);
 
   testWidgets('empty submit shows every validator and no save', (tester) async {

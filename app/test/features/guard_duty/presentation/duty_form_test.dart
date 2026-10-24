@@ -4,8 +4,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
 import 'package:trooptrak_final_application/core/error/failures.dart';
+import 'package:trooptrak_final_application/core/theme/app_palette.dart';
 import 'package:trooptrak_final_application/core/usecase/usecase.dart';
 import 'package:trooptrak_final_application/core/widgets/feedback_views.dart';
+import 'package:trooptrak_final_application/core/widgets/rank_plate.dart';
 import 'package:trooptrak_final_application/features/guard_duty/data/datasources/duty_remote_data_source.dart';
 import 'package:trooptrak_final_application/features/guard_duty/data/repositories/duty_repository_impl.dart';
 import 'package:trooptrak_final_application/features/guard_duty/domain/entities/duty.dart';
@@ -66,6 +68,43 @@ void main() {
       p.setDate(DateTime(2023, 7, 8));
       expect(
           p.pricing, (points: 2.5, dayType: 'Weekend (Saturday) Duty 😵‍💫'));
+      p.dispose();
+    });
+
+    test('the day label drops the emoji (D11)', () {
+      final p = provider();
+      expect(p.dayLabel, 'Select a duty date!');
+      p.setDate(DateTime(2023, 7, 8));
+      expect(p.dayLabel, 'Weekend (Saturday) Duty');
+      p.setDate(DateTime(2023, 7, 5));
+      expect(p.dayLabel, 'Weekday Duty');
+      p.dispose();
+    });
+
+    test('an end time not after the start runs into the next day (D10)', () {
+      final p = provider();
+      expect(p.endsNextDay, isFalse);
+      p.setStart(const TimeOfDay(hour: 8, minute: 0));
+      expect(p.endsNextDay, isFalse);
+      p.setEnd(const TimeOfDay(hour: 8, minute: 0));
+      expect(p.endsNextDay, isTrue);
+      p.setEnd(const TimeOfDay(hour: 8, minute: 1));
+      expect(p.endsNextDay, isFalse);
+      p.setStart(const TimeOfDay(hour: 20, minute: 0));
+      expect(p.endsNextDay, isTrue);
+      p.dispose();
+    });
+
+    test('an ineligible soldier carries the status that rules them out',
+        () async {
+      when(() => roster(any())).thenAnswer((_) async => Right(DutyRoster(
+          soldiers: [tan, lee],
+          ineligible: const {'Lee Wei'},
+          reasons: const {'Lee Wei': 'OL'})));
+      final p = provider();
+      await settle();
+      expect(p.reasonFor(lee), 'OL');
+      expect(p.reasonFor(tan), isNull);
       p.dispose();
     });
 
@@ -175,16 +214,47 @@ void main() {
         (tester) async {
       await pumpForm(tester, mode: themeModes.currentValue!);
       expect(find.text('Who is performing this duty?'), findsOneWidget);
+      expect(find.text('Add details of the guard duty.'), findsOneWidget);
       for (var i = 0; i < 10; i++) {
         expect(find.byKey(Key('slot-$i')), findsOneWidget);
       }
-      expect(find.text('Select a duty date! 😄'), findsOneWidget);
+      expect(find.text('Add soldier'), findsNWidgets(2));
+      expect(find.text('Slots filled'), findsOneWidget);
+      expect(find.text('0 / 10'), findsOneWidget);
+      expect(find.text('Select a duty date!'), findsOneWidget);
+      expect(find.textContaining('😄'), findsNothing);
+      expect(find.text('EXPECTED POINTS PER PERSON'), findsOneWidget);
+      for (final label in ['Date of Duty:', 'Start Time:', 'End Time:']) {
+        expect(find.text(label), findsNWidgets(2), reason: 'label and hint');
+      }
       await tapKey(tester, 'saveDuty');
       expect(find.text('Select a duty date'), findsOneWidget);
       expect(find.text('Select a start time'), findsOneWidget);
+      expect(find.text('Select an end time'), findsOneWidget);
       expect(find.text('Details missing'), findsOneWidget);
       verifyNever(() => add(any()));
     }, variant: themeModes);
+
+    testWidgets('the slots sit in rows of 2, 4 and 4', (tester) async {
+      await pumpForm(tester);
+      Offset at(int i) => tester.getTopLeft(find.byKey(Key('slot-$i')));
+      double width(int i) => tester.getSize(find.byKey(Key('slot-$i'))).width;
+
+      expect({at(0).dy, at(1).dy}, hasLength(1));
+      expect({for (var i = 2; i < 6; i++) at(i).dy}, hasLength(1));
+      expect({for (var i = 6; i < 10; i++) at(i).dy}, hasLength(1));
+      expect(at(0).dy, lessThan(at(2).dy));
+      expect(at(2).dy, lessThan(at(6).dy));
+      expect(at(0).dx, at(2).dx);
+      expect(at(0).dx, at(6).dx);
+      expect(at(1).dx, greaterThan(at(0).dx));
+      expect(width(0), greaterThan(width(2)));
+      expect({width(2), width(3), width(4), width(5)}, hasLength(1));
+      expect(width(0) + width(1) + 10, closeTo(4 * width(2) + 30, 0.01));
+      for (var i = 0; i < 10; i++) {
+        expect(tester.getSize(find.byKey(Key('slot-$i'))).height, 86);
+      }
+    });
 
     testWidgets('a failed roster load shows the error in the picker',
         (tester) async {
@@ -195,32 +265,194 @@ void main() {
       expect(find.widgetWithText(ErrorView, 'Roster down'), findsOneWidget);
     });
 
-    testWidgets('picker greys out ineligible soldiers and fills slots',
+    group('the picker sheet', () {
+      testWidgets('is a bottom sheet, not a dialog', (tester) async {
+        await pumpForm(tester);
+        await tapKey(tester, 'slot-3');
+        expect(find.byType(BottomSheet), findsOneWidget);
+        expect(find.byKey(const Key('sheetHandle')), findsOneWidget);
+        expect(find.byType(Dialog), findsNothing);
+        expect(find.text('ADD A NEW SOLDIER'), findsOneWidget);
+        expect(find.text('0 of 10 selected'), findsOneWidget);
+        expect(find.byKey(const Key('pickerSearch')), findsOneWidget);
+        expect(find.byKey(const Key('pickerDone')), findsOneWidget);
+        expect(
+            find.descendant(
+                of: find.byType(BottomSheet), matching: find.byType(RankPlate)),
+            findsNWidgets(3));
+      });
+
+      testWidgets('uses the sheet colour in both themes', (tester) async {
+        final mode = themeModes.currentValue!;
+        await pumpForm(tester, mode: mode);
+        await tapKey(tester, 'slot-0');
+        final material = tester.widget<Material>(find
+            .descendant(
+                of: find.byType(BottomSheet), matching: find.byType(Material))
+            .first);
+        final palette =
+            mode == ThemeMode.dark ? AppPalette.dark : AppPalette.light;
+        expect(material.color, palette.sheet);
+      }, variant: themeModes);
+
+      testWidgets('greys out ineligible soldiers and fills slots',
+          (tester) async {
+        await pumpForm(tester);
+        await tapKey(tester, 'slot-3');
+        expect(find.text('Ineligible'), findsOneWidget);
+        expect(find.byIcon(Icons.radio_button_unchecked_rounded),
+            findsNWidgets(2));
+        await tester.tap(find.byKey(const Key('pick-Tan Ah Kow')));
+        await tester.pumpAndSettle();
+        expect(find.byIcon(Icons.check_circle_rounded), findsOneWidget);
+        expect(find.text('1 of 10 selected'), findsOneWidget);
+        await tester.tap(find.byKey(const Key('pick-Lee Wei')));
+        await tester.pumpAndSettle();
+        expect(
+            find.text('Lee Wei is ineligible for guard duty.'), findsOneWidget);
+        expect(find.text('1 of 10 selected'), findsOneWidget);
+        await tester.tap(find.byKey(const Key('pickerDone')));
+        await tester.pumpAndSettle();
+        expect(find.byType(BottomSheet), findsNothing);
+        expect(
+            find.descendant(
+                of: find.byKey(const Key('slot-0')),
+                matching: find.text('Tan Ah Kow')),
+            findsOneWidget);
+        expect(
+            find.descendant(
+                of: find.byKey(const Key('slot-0')),
+                matching: find.byType(RankPlate)),
+            findsOneWidget);
+        expect(find.text('1 / 10'), findsOneWidget);
+      });
+
+      testWidgets('an ineligible soldier names the status', (tester) async {
+        when(() => roster(any())).thenAnswer((_) async => Right(DutyRoster(
+            soldiers: [tan, lee, lim],
+            ineligible: const {'Lee Wei'},
+            reasons: const {'Lee Wei': 'OL'})));
+        await pumpForm(tester);
+        await tapKey(tester, 'slot-0');
+        expect(find.text('Ineligible · OL'), findsOneWidget);
+      });
+
+      testWidgets('tapping a picked soldier again takes them off',
+          (tester) async {
+        await pumpForm(tester);
+        await tapKey(tester, 'slot-0');
+        await tester.tap(find.byKey(const Key('pick-Tan Ah Kow')));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(const Key('pick-Tan Ah Kow')));
+        await tester.pumpAndSettle();
+        expect(find.byIcon(Icons.check_circle_rounded), findsNothing);
+        expect(find.text('0 of 10 selected'), findsOneWidget);
+        await tester.tap(find.byKey(const Key('pickerDone')));
+        await tester.pumpAndSettle();
+        expect(find.text('Add soldier'), findsNWidgets(2));
+      });
+
+      testWidgets('the search narrows the list and starts empty each time',
+          (tester) async {
+        await pumpForm(tester);
+        await tapKey(tester, 'slot-0');
+        await tester.enterText(find.byKey(const Key('pickerSearch')), 'lim');
+        await tester.pumpAndSettle();
+        expect(find.byKey(const Key('pick-Lim Bah')), findsOneWidget);
+        expect(find.byKey(const Key('pick-Tan Ah Kow')), findsNothing);
+
+        await tester.enterText(find.byKey(const Key('pickerSearch')), 'zzz');
+        await tester.pumpAndSettle();
+        expect(find.text('No results Found!'), findsOneWidget);
+
+        await tester.tap(find.byKey(const Key('pickerDone')));
+        await tester.pumpAndSettle();
+        await tapKey(tester, 'slot-0');
+        expect(find.byKey(const Key('pick-Tan Ah Kow')), findsOneWidget);
+        expect(find.text('No results Found!'), findsNothing);
+      });
+
+      testWidgets('an eleventh soldier is refused with the slot message',
+          (tester) async {
+        when(() => roster(any())).thenAnswer((_) async => Right(DutyRoster(
+            soldiers: [for (var i = 0; i < 11; i++) buildSoldier(name: 'S$i')],
+            ineligible: const {})));
+        await pumpForm(tester);
+        await tapKey(tester, 'slot-0');
+        Future<void> pick(int i) async {
+          await tester.ensureVisible(find.byKey(Key('pick-S$i')));
+          await tester.tap(find.byKey(Key('pick-S$i')));
+          await tester.pumpAndSettle();
+        }
+
+        for (var i = 0; i < 10; i++) {
+          await pick(i);
+        }
+        expect(find.text('10 of 10 selected'), findsOneWidget);
+        await pick(10);
+        expect(find.text(tooManySlots), findsOneWidget);
+        expect(find.text('10 of 10 selected'), findsOneWidget);
+      });
+    });
+
+    testWidgets(
+        'ten picked soldiers fill every slot; narrow slots show a surname',
         (tester) async {
+      when(() => roster(any()))
+          .thenAnswer((_) async => Right(DutyRoster(soldiers: [
+                for (var i = 0; i < 10; i++)
+                  buildSoldier(name: 'Given Surname$i', rank: 'PTE'),
+              ], ineligible: const {})));
       await pumpForm(tester);
-      await tapKey(tester, 'slot-3');
-      expect(find.text('ADD A NEW SOLDIER'), findsOneWidget);
-      expect(find.text('Ineligible'), findsOneWidget);
-      await tester.tap(find.byKey(const Key('pick-Tan Ah Kow')));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(const Key('pick-Lee Wei')));
-      await tester.pumpAndSettle();
-      expect(
-          find.text('Lee Wei is ineligible for guard duty.'), findsOneWidget);
+      await tapKey(tester, 'slot-0');
+      for (var i = 0; i < 10; i++) {
+        await tester.ensureVisible(find.byKey(Key('pick-Given Surname$i')));
+        await tester.tap(find.byKey(Key('pick-Given Surname$i')));
+        await tester.pumpAndSettle();
+      }
       await tester.tap(find.byKey(const Key('pickerDone')));
       await tester.pumpAndSettle();
       expect(
           find.descendant(
               of: find.byKey(const Key('slot-0')),
-              matching: find.text('Tan Ah Kow')),
+              matching: find.text('Given Surname0')),
           findsOneWidget);
+      expect(
+          find.descendant(
+              of: find.byKey(const Key('slot-5')),
+              matching: find.text('Surname5')),
+          findsOneWidget);
+      expect(find.text('Add soldier'), findsNothing);
+      expect(find.text('10 / 10'), findsOneWidget);
     });
 
     testWidgets('picking a Friday prices the duty at 1.5', (tester) async {
       await pumpForm(tester);
       await fillDateAndTimes(tester);
-      expect(find.text('1.5'), findsOneWidget);
-      expect(find.text('Weekday (Friday) Duty 😖'), findsOneWidget);
+      expect(tester.widget<Text>(find.byKey(const Key('expectedPoints'))).data,
+          '1.5');
+      expect(tester.widget<Text>(find.byKey(const Key('dayType'))).data,
+          'Weekday (Friday) Duty');
+      expect(find.textContaining('😖'), findsNothing);
+    });
+
+    testWidgets('an end time equal to the start says next day (D10)',
+        (tester) async {
+      await pumpForm(tester);
+      expect(find.text('next day'), findsNothing);
+      await fillDateAndTimes(tester);
+      expect(find.text('next day'), findsOneWidget);
+    });
+
+    testWidgets('the save button stays pinned while the form scrolls',
+        (tester) async {
+      await pumpForm(tester);
+      final button = tester.getRect(find.byKey(const Key('saveDuty')));
+      expect(button.bottom, greaterThan(tester.view.physicalSize.height - 100));
+      await tester.drag(
+          find.byType(SingleChildScrollView), const Offset(0, -400));
+      await tester.pumpAndSettle();
+      expect(tester.getRect(find.byKey(const Key('saveDuty'))), button);
     });
 
     testWidgets('adding writes the duty and credits points (fake Firestore)',

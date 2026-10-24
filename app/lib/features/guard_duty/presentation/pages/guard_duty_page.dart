@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/router/app_routes.dart';
-import '../../../../core/theme/app_spacing.dart';
-import '../../../../core/theme/theme_context.dart';
+import '../../../../core/widgets/icon_tab.dart';
+import '../../../../core/widgets/page_title.dart';
 import '../widgets/leaderboard_tab.dart';
 import '../widgets/upcoming_duties_tab.dart';
 
@@ -23,8 +22,6 @@ class GuardDutyPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = context.textStyles.titleSmall
-        ?.copyWith(fontSize: 15.sp, letterSpacing: 1.5);
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -32,6 +29,7 @@ class GuardDutyPage extends StatelessWidget {
             ? FloatingActionButton(
                 key: const Key('addDuty'),
                 heroTag: null,
+                tooltip: 'Add guard duty',
                 onPressed: () =>
                     Navigator.of(context).pushNamed(AppRoutes.addDuty),
                 child: const Icon(Icons.add),
@@ -40,23 +38,14 @@ class GuardDutyPage extends StatelessWidget {
         body: SafeArea(
           child: Column(
             children: [
-              if (showTitle)
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: AppSpacing.xl.h),
-                  child: Text('Guard Duty',
-                      style: context.textStyles.displayLarge?.copyWith(
-                          fontSize: 32.sp, fontWeight: FontWeight.w500)),
-                ),
-              TabBar(
-                labelStyle: style,
-                unselectedLabelStyle: style,
-                tabs: const [
-                  Tab(
-                      text: 'POINTS LEADERBOARD',
-                      icon: Icon(Icons.leaderboard_rounded)),
-                  Tab(
-                      text: 'UPCOMING DUTIES',
-                      icon: Icon(Icons.more_time_rounded)),
+              if (showTitle) const PageTitle('Guard Duty'),
+              const TabBar(
+                tabs: [
+                  IconTab(
+                    icon: Icons.leaderboard_rounded,
+                    label: 'LEADERBOARD',
+                  ),
+                  IconTab(icon: Icons.more_time_rounded, label: 'UPCOMING'),
                 ],
               ),
               Expanded(

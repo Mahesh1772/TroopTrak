@@ -3,14 +3,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/router/app_routes.dart';
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_layout.dart';
 import '../../../../core/theme/app_spacing.dart';
-import '../../../../core/theme/theme_context.dart';
 import '../../../../core/widgets/app_snackbar.dart';
+import '../../../../core/widgets/app_text_field.dart';
+import '../../../../core/widgets/brand_plate.dart';
 import '../../../../core/widgets/primary_button.dart';
+import '../../../../core/widgets/sticky_cta_page.dart';
 import '../../domain/validators/auth_validators.dart';
 import '../providers/commander_auth_provider.dart';
 import '../widgets/auth_header.dart';
+import '../widgets/link_prompt.dart';
 
 class CommanderSignInPage extends StatefulWidget {
   const CommanderSignInPage({super.key});
@@ -48,74 +51,69 @@ class _CommanderSignInPageState extends State<CommanderSignInPage> {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<CommanderAuthProvider>();
-    final gap = SizedBox(height: AppSpacing.xl.h);
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 25.w),
-          child: Form(
-            key: _formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            child: Column(
-              children: [
-                SizedBox(height: 60.h),
-                const AuthHeader(
-                    title: 'Welcome to camp!', subtitle: 'Time to get back!'),
-                SizedBox(height: 50.h),
-                TextFormField(
-                  key: const Key('email'),
-                  controller: _email,
-                  keyboardType: TextInputType.emailAddress,
-                  validator: AuthValidators.email,
-                  decoration: const InputDecoration(
-                    labelText: 'Email ID',
-                    hintText: 'Email@example.com',
-                    prefixIcon: Icon(Icons.email_outlined),
-                  ),
-                ),
-                gap,
-                TextFormField(
-                  key: const Key('password'),
-                  controller: _password,
-                  obscureText: true,
-                  validator: AuthValidators.password,
-                  decoration: const InputDecoration(
-                    labelText: 'Password',
-                    hintText: 'Enter Password',
-                    prefixIcon: Icon(Icons.lock_open),
-                  ),
-                ),
-                SizedBox(height: AppSpacing.sm.h),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: GestureDetector(
-                    key: const Key('forgotPasswordButton'),
-                    onTap: () => Navigator.of(context)
-                        .pushNamed(AppRoutes.forgotPassword),
-                    child: Text('Forgot Password? Aiyahhh',
-                        style: context.textStyles.titleSmall
-                            ?.copyWith(color: AppColors.authAccent)),
-                  ),
-                ),
-                gap,
-                PrimaryButton(
-                  key: const Key('signInButton'),
-                  label: 'Sign In',
-                  loading: provider.loading,
-                  onPressed: _submit,
-                ),
-                gap,
-                AuthSwitchPrompt(
-                  prompt: 'No account?',
-                  action: 'Create one here!',
-                  actionKey: const Key('registerPageButton'),
-                  onTap: provider.toggleMode,
-                ),
-              ],
-            ),
+    return StickyCtaPage(
+      formKey: _formKey,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      cta: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          PrimaryButton(
+            key: const Key('signInButton'),
+            label: 'Sign In',
+            loading: provider.loading,
+            onPressed: _submit,
           ),
-        ),
+          LinkPrompt(
+            prompt: 'No account?',
+            action: 'Create one here!',
+            actionKey: const Key('registerPageButton'),
+            alignment: WrapAlignment.center,
+            onTap: provider.toggleMode,
+          ),
+        ],
       ),
+      children: [
+        const AuthHeader(
+          leading: BrandPlate(Icons.military_tech_rounded),
+          title: 'Welcome to camp!',
+          subtitle: 'Time to get back!',
+        ),
+        SizedBox(height: AppLayout.onboardingGap.h),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          spacing: AppSpacing.md.h,
+          children: [
+            AppTextField(
+              key: const Key('email'),
+              controller: _email,
+              label: 'Email ID',
+              hintText: 'Email@example.com',
+              icon: Icons.mail_outline_rounded,
+              keyboardType: TextInputType.emailAddress,
+              validator: AuthValidators.email,
+            ),
+            AppTextField(
+              key: const Key('password'),
+              controller: _password,
+              label: 'Password',
+              hintText: 'Enter Password',
+              icon: Icons.lock_outline_rounded,
+              obscureText: true,
+              validator: AuthValidators.password,
+            ),
+            Align(
+              alignment: AlignmentDirectional.centerEnd,
+              child: LinkButton(
+                key: const Key('forgotPasswordButton'),
+                label: 'Forgot Password? Aiyahhh',
+                onTap: () =>
+                    Navigator.of(context).pushNamed(AppRoutes.forgotPassword),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

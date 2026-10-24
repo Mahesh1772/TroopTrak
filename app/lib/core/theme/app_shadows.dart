@@ -11,4 +11,41 @@ abstract final class AppShadows {
       color: AppColors.black54,
     ),
   ];
+
+  static const segment = [
+    BoxShadow(
+      blurRadius: 6,
+      spreadRadius: -2,
+      offset: Offset(0, 2),
+      color: AppColors.segmentShadow,
+    ),
+  ];
+
+  static List<BoxShadow> button(Color color) => [
+        BoxShadow(
+          blurRadius: 18,
+          spreadRadius: -10,
+          offset: const Offset(0, 8),
+          color: color.withValues(alpha: 0.9),
+        ),
+      ];
+
+  static List<BoxShadow> scanLine(Color color) => [
+        BoxShadow(
+          blurRadius: 14,
+          spreadRadius: 2,
+          offset: const Offset(0, 4),
+          color: color.withValues(alpha: 0.45),
+        ),
+      ];
+
+  static List<BoxShadow> raised({required bool dark}) => [
+        BoxShadow(
+          blurRadius: dark ? 32 : 28,
+          spreadRadius: dark ? -12 : -14,
+          offset: const Offset(0, 12),
+          color:
+              dark ? AppColors.raisedShadowDark : AppColors.raisedShadowLight,
+        ),
+      ];
 }

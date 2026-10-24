@@ -83,6 +83,17 @@ void main() {
     }), isEmpty);
   });
 
+  test('core imports feature code only through shared domains', () {
+    expect(violations((file, import) {
+      final to = featureOf(import);
+      return file.startsWith('lib/core/') &&
+          !file.startsWith('lib/core/di/') &&
+          !file.startsWith('lib/core/router/') &&
+          to != null &&
+          (layerOf(import) != 'domain' || !sharedDomains.contains(to));
+    }), isEmpty);
+  });
+
   test('domain is pure Dart and points nowhere outward', () {
     expect(
         violations((file, import) =>

@@ -11,12 +11,7 @@ abstract final class RankAssets {
   static String personIcon(String rank) =>
       Ranks.groupOf(rank) == RankGroup.enlisted ? menIcon : soldierIcon;
 
-  /// Dark insignia images that the source tints white on coloured tiles.
-  static bool tintInsignia(String rank) => switch (Ranks.groupOf(rank)) {
-        RankGroup.enlisted ||
-        RankGroup.specialist ||
-        RankGroup.warrantOfficer =>
-          true,
-        _ => false,
-      };
+  /// Warrant officer insignia are pale line art, so they sit on a dark plate.
+  static bool paleInsignia(String rank) =>
+      Ranks.groupOf(rank) == RankGroup.warrantOfficer;
 }

@@ -4,13 +4,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:trooptrak_final_application/core/services/clock.dart';
+import 'package:trooptrak_final_application/core/theme/app_layout.dart';
 import 'package:trooptrak_final_application/core/theme/dark_theme.dart';
 import 'package:trooptrak_final_application/core/theme/light_theme.dart';
 import 'package:trooptrak_final_application/core/theme/theme_manager.dart';
 
 import 'fake_clock.dart';
 
-const designSize = Size(450, 1000);
+const designSize = AppLayout.designSize;
 
 final themeModes = ValueVariant<ThemeMode>({ThemeMode.light, ThemeMode.dark});
 

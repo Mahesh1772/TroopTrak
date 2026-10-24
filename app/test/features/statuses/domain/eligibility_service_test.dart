@@ -130,5 +130,15 @@ void main() {
       ], today);
       expect(result, {'A', 'B', 'C'});
     });
+
+    test('guardDutyReasons names the status; the last match wins', () {
+      final result = EligibilityService.guardDutyReasons([
+        buildStatus(id: '1', soldierId: 'A', name: 'Ex Uniform'),
+        buildStatus(id: '2', soldierId: 'A', type: 'Leave', name: 'OL'),
+        buildStatus(id: '3', soldierId: 'B', name: 'Ex Boots'),
+        buildStatus(id: '4', soldierId: 'C', name: 'LD'),
+      ], today);
+      expect(result, {'A': 'OL', 'B': 'Ex Boots'});
+    });
   });
 }

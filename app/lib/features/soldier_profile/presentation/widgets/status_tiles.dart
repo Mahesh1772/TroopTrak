@@ -1,87 +1,142 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../../../core/constants/status_types.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_palette.dart';
+import '../../../../core/theme/app_layout.dart';
 import '../../../../core/theme/app_radii.dart';
-import '../../../../core/theme/app_shadows.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/theme/theme_context.dart';
 import '../../../../core/utils/date_formats.dart';
+import '../../../../core/widgets/app_list_card.dart';
+import '../../../../core/widgets/icon_plate.dart';
+import '../../../../core/widgets/slidable_row.dart';
+import '../../../../core/widgets/state_tone.dart';
 import '../../../statuses/domain/entities/status.dart';
 
 IconData statusIcon(String type) => switch (type) {
-      StatusTypes.leave => Icons.medical_services_rounded,
-      StatusTypes.medicalAppointment => Icons.date_range_rounded,
-      _ => Icons.personal_injury_rounded,
-    };
-
-Color statusColor(AppPalette palette, String type) => switch (type) {
-      StatusTypes.leave => palette.statusLeave,
-      StatusTypes.medicalAppointment => palette.statusMedical,
-      _ => palette.statusExcuse,
+      StatusTypes.leave => Icons.flight_takeoff_rounded,
+      StatusTypes.medicalAppointment => Icons.medical_services_rounded,
+      _ => Icons.assignment_late_rounded,
     };
 
 String statusPeriod(Status s) => '${formatDay(s.start)} - ${formatDay(s.end)}';
 
-/// Rebuild of `current_status_detailed_screen_tile.dart`.
+/// A running status: a gradient by type, with [daysLeft] as a badge.
 class ActiveStatusCard extends StatelessWidget {
   const ActiveStatusCard({
     super.key,
     required this.status,
+    required this.daysLeft,
     this.onTap,
     this.onDelete,
   });
 
   final Status status;
+  final String daysLeft;
   final VoidCallback? onTap;
   final VoidCallback? onDelete;
 
   @override
   Widget build(BuildContext context) {
-    final text = context.textStyles;
-    final white = text.titleSmall?.copyWith(color: AppColors.white);
-    return Padding(
-      padding: EdgeInsets.all(15.sp),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(AppRadii.lg.r),
-        child: Container(
-          width: 230.w,
-          padding: EdgeInsets.all(AppSpacing.md.sp),
-          decoration: BoxDecoration(
-            color: statusColor(context.palette, status.type),
-            borderRadius: BorderRadius.circular(AppRadii.lg.r),
-            boxShadow: AppShadows.tile,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    final palette = context.palette;
+    final onDelete = this.onDelete;
+    return SizedBox(
+      width: AppLayout.statusCardWidth.w,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(AppRadii.xl.r),
+        child: Material(
+          type: MaterialType.transparency,
+          child: Ink(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: status.tone.gradient(palette),
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+            child: InkWell(
+              onTap: onTap,
+              child: Stack(
                 children: [
-                  Icon(statusIcon(status.type),
-                      color: AppColors.white, size: 60.sp),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(
+                      AppSpacing.lg.w,
+                      AppSpacing.control.h,
+                      AppSpacing.lg.w,
+                      AppSpacing.lg.h,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          statusIcon(status.type),
+                          color: AppColors.white,
+                          size: AppLayout.statusCardIcon.r,
+                        ),
+                        SizedBox(height: AppLayout.statusCardNameTop.h),
+                        Text(
+                          status.name,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppTextStyles.cardTitle(AppColors.white),
+                        ),
+                        Text(
+                          status.type.toUpperCase(),
+                          style: AppTextStyles.overline(
+                              AppColors.onGradientSubtitle),
+                        ),
+                        SizedBox(height: AppSpacing.xxs.h),
+                        Text(
+                          statusPeriod(status),
+                          style: AppTextStyles.figure(
+                            15,
+                            FontWeight.w500,
+                            AppColors.onGradientSubtitle,
+                          ),
+                        ),
+                        SizedBox(height: AppSpacing.md.h),
+                        DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: AppColors.onGradientBadge,
+                            borderRadius: BorderRadius.circular(AppRadii.md.r),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: AppSpacing.sm.w,
+                              vertical: AppLayout.badgeVertical.h,
+                            ),
+                            child: Text(
+                              daysLeft,
+                              style: AppTextStyles.badge(AppColors.white),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   if (onDelete != null)
-                    IconButton(
-                      key: Key('deleteStatus-${status.id}'),
-                      onPressed: onDelete,
-                      icon: Icon(Icons.delete_rounded,
-                          color: AppColors.white, size: 30.sp),
+                    Positioned(
+                      top: AppLayout.statusCardDeleteInset.h,
+                      right: AppLayout.statusCardDeleteInset.w,
+                      child: IconButton(
+                        key: Key('deleteStatus-${status.id}'),
+                        onPressed: onDelete,
+                        style: IconButton.styleFrom(
+                          fixedSize: Size.square(AppLayout.statusCardDelete.r),
+                        ),
+                        icon: Icon(
+                          Icons.delete_rounded,
+                          color: AppColors.white,
+                          size: AppLayout.statusCardIcon.r,
+                        ),
+                      ),
                     ),
                 ],
               ),
-              SizedBox(height: AppSpacing.xs.h),
-              AutoSizeText(status.name,
-                  maxLines: 2,
-                  style: text.displaySmall?.copyWith(color: AppColors.white)),
-              Text(status.type.toUpperCase(), style: white),
-              Text(statusPeriod(status),
-                  style: white?.copyWith(fontWeight: FontWeight.bold)),
-            ],
+            ),
           ),
         ),
       ),
@@ -89,9 +144,10 @@ class ActiveStatusCard extends StatelessWidget {
   }
 }
 
-/// Rebuild of `past_status_detailed_screen_tile.dart`; slide for edit/delete.
-class PastStatusTile extends StatelessWidget {
-  const PastStatusTile({
+/// A finished status: a type-icon plate, the name and "TYPE · period". Slides
+/// for edit and delete when the callbacks are given.
+class PastStatusRow extends StatelessWidget {
+  const PastStatusRow({
     super.key,
     required this.status,
     this.onEdit,
@@ -104,64 +160,33 @@ class PastStatusTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final text = context.textStyles;
-    final radius = Radius.circular(AppRadii.lg.r);
+    final palette = context.palette;
     final manageable = onEdit != null || onDelete != null;
-    final tile = Container(
-      decoration: BoxDecoration(
-        color: context.palette.pastTile,
-        borderRadius: manageable
-            ? BorderRadius.horizontal(left: radius)
-            : BorderRadius.all(radius),
-      ),
-      padding: EdgeInsets.all(AppSpacing.lg.sp),
-      child: Row(
-        children: [
-          Icon(statusIcon(status.type), color: AppColors.white, size: 30.sp),
-          SizedBox(width: AppSpacing.md.w),
-          Expanded(
-            child: AutoSizeText(status.name,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: text.headlineMedium?.copyWith(color: AppColors.white)),
+    return SlidableRow(
+      key: Key('pastStatus-${status.id}'),
+      onEdit: onEdit,
+      onDelete: onDelete,
+      editKey: Key('editStatus-${status.id}'),
+      deleteKey: Key('deletePastStatus-${status.id}'),
+      child: AppListRow(
+        title: status.name,
+        leading: IconPlate(statusIcon(status.type), tone: status.tone),
+        subtitle: Text(
+          '${status.type.toUpperCase()} · ${statusPeriod(status)}',
+          style: AppTextStyles.figure(
+            14.5,
+            FontWeight.w500,
+            palette.secondaryText,
           ),
-          SizedBox(width: AppSpacing.sm.w),
-          AutoSizeText(statusPeriod(status),
-              maxLines: 1,
-              style: text.headlineSmall?.copyWith(color: AppColors.white)),
-        ],
+        ),
+        trailing: manageable
+            ? Icon(
+                Icons.chevron_left_rounded,
+                size: AppLayout.iconPlateIcon.r,
+                color: palette.mutedText,
+              )
+            : null,
       ),
-    );
-    return Padding(
-      padding: EdgeInsets.only(bottom: AppSpacing.sm.h),
-      child: !manageable
-          ? tile
-          : Slidable(
-              key: Key('pastStatus-${status.id}'),
-              endActionPane: ActionPane(
-                motion: const StretchMotion(),
-                children: [
-                  if (onEdit != null)
-                    SlidableAction(
-                      key: Key('editStatus-${status.id}'),
-                      onPressed: (_) => onEdit!(),
-                      icon: Icons.info_rounded,
-                      backgroundColor: AppColors.info,
-                      foregroundColor: AppColors.white,
-                    ),
-                  if (onDelete != null)
-                    SlidableAction(
-                      key: Key('deletePastStatus-${status.id}'),
-                      onPressed: (_) => onDelete!(),
-                      icon: Icons.delete_forever_rounded,
-                      backgroundColor: AppColors.danger,
-                      foregroundColor: AppColors.white,
-                      borderRadius: BorderRadius.horizontal(right: radius),
-                    ),
-                ],
-              ),
-              child: tile,
-            ),
     );
   }
 }

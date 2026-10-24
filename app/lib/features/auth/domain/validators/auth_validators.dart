@@ -1,4 +1,5 @@
 import '../../../soldiers/domain/validators/soldier_validators.dart';
+import 'password_rules.dart';
 
 /// R20 validators. Messages are the source's own texts.
 abstract final class AuthValidators {
@@ -26,7 +27,27 @@ abstract final class AuthValidators {
           ? null
           : 'Passwords do not match';
 
+  static String? newPassword(String? value) =>
+      password(value) ??
+      (PasswordRule.isStrong(value!.trim())
+          ? null
+          : 'Password needs to be stronger');
+
+  static String? repeatedPassword(String? value, String password) =>
+      (value?.trim() ?? '') == password.trim()
+          ? null
+          : 'Make sure both Passwords match';
+
   static String? soldierName(String? value) => SoldierValidators.name(value);
+
+  static String? commanderName(String? value) {
+    final v = value?.trim() ?? '';
+    if (v.isEmpty) return 'You must have a name right';
+    if (soldierName(v) == 'Name got number meh') {
+      return 'Your name got number meh';
+    }
+    return null;
+  }
 
   static String? phoneNumber(String? value) {
     final digits = value?.replaceAll(RegExp(r'\s'), '') ?? '';
@@ -37,6 +58,12 @@ abstract final class AuthValidators {
     return null;
   }
 
+  static const otpLength = 6;
+
+  static final _otp = RegExp('^[0-9]{$otpLength}\$');
+
   static String? otp(String? value) =>
-      RegExp(r'^[0-9]{6}$').hasMatch(value ?? '') ? null : 'Enter 6 digit code';
+      _otp.hasMatch(value ?? '') ? null : 'Enter 6 digit code';
+
+  static bool isOtpComplete(String? value) => otp(value) == null;
 }

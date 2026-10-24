@@ -13,6 +13,16 @@ class Duty extends Equatable {
   /// R10a: a duty has at most ten participant slots.
   static const maxSlots = 10;
 
+  static final _pictographs =
+      RegExp(r'[\u{1F000}-\u{1FAFF}\u2600-\u27BF\u200D\uFE0F]', unicode: true);
+
+  /// D11: a day type without the emoji the source stored after it.
+  static String plainLabel(String dayType) =>
+      dayType.replaceAll(_pictographs, '').trim();
+
+  /// D10: an end not after the start runs into the next day.
+  static bool isOvernight(DateTime start, DateTime end) => !end.isAfter(start);
+
   final String id;
 
   /// Duty day and start time (`dutyDate` + `startTime`).
@@ -27,6 +37,15 @@ class Duty extends Equatable {
   final Map<String, String> participants;
 
   DateTime get day => DateTime(start.year, start.month, start.day);
+
+  bool get endsNextDay => isOvernight(start, end);
+
+  int get filledSlots => participants.length.clamp(0, maxSlots);
+
+  /// One flag per slot, in slot order; true where a participant fills it.
+  List<bool> get slots => [for (var i = 0; i < maxSlots; i++) i < filledSlots];
+
+  String get dayLabel => plainLabel(dayType);
 
   bool includes(String soldierName) => participants.containsKey(soldierName);
 

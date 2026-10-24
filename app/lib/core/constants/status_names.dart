@@ -1,4 +1,17 @@
 abstract final class StatusNames {
+  /// The quick picks shown before anything is typed (from the approved mockup).
+  static const common = [
+    'LD',
+    'RIB (Rest in Bunk)',
+    'Ex RMJ',
+    'Ex Heavy Loads',
+    'Ex Upper Limb',
+    'Ex Lower Limb',
+    'Ex Boots',
+    'Ex Physical Training',
+    'Ex Outfield',
+  ];
+
   /// Autocomplete suggestions, verbatim from the source (names are trimmed on save).
   static const suggestions = [
     'LD',

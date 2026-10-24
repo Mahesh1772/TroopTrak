@@ -15,6 +15,9 @@ import '../../helpers/builders.dart';
 import '../../helpers/fake_clock.dart';
 import '../../helpers/pump_app.dart';
 
+Finder _input(String key) => find.descendant(
+    of: find.byKey(Key(key)), matching: find.byType(InputDecorator));
+
 class _MockAdd extends Mock implements AddSoldier {}
 
 class _MockUpdate extends Mock implements UpdateSoldier {}
@@ -71,7 +74,7 @@ void main() {
       (tester) async {
     await pumpForm(tester, SoldierFormMode.add,
         theme: themeModes.currentValue!);
-    expect(find.text("Let's get things set up  ✍️"), findsOneWidget);
+    expect(find.text("Let's get things set up"), findsOneWidget);
     expect(find.text('5 Jul 2023'), findsNWidgets(3));
     await save(tester);
     for (final message in [
@@ -87,6 +90,48 @@ void main() {
     expect(find.text('Details missing'), findsOneWidget);
     verifyNever(() => add(any()));
   }, variant: themeModes);
+
+  testWidgets('labels sit above their fields and the save button is pinned',
+      (tester) async {
+    await pumpForm(tester, SoldierFormMode.add,
+        theme: themeModes.currentValue!);
+    final save = find.byKey(const Key('saveSoldier'));
+
+    for (final (label, key) in [
+      ('Enter Name (as in NRIC):', 'profile-name'),
+      ('Rank:', 'profile-rank'),
+      ('Ration type:', 'profile-ration'),
+      ('Blood type:', 'profile-blood'),
+      ('Date of Birth:', 'profile-dob'),
+    ]) {
+      expect(tester.getRect(find.text(label)).bottom,
+          lessThan(tester.getRect(_input(key)).top),
+          reason: label);
+    }
+
+    final before = tester.getRect(save);
+    await tester.drag(
+        find.byType(SingleChildScrollView), const Offset(0, -600));
+    await tester.pumpAndSettle();
+    expect(tester.getRect(save), before);
+    expect(before.bottom, lessThanOrEqualTo(tester.view.physicalSize.height));
+    expect(tester.getRect(_input('profile-name')).bottom, lessThan(0));
+  }, variant: themeModes);
+
+  testWidgets('the save button rides above the keyboard', (tester) async {
+    await pumpForm(tester, SoldierFormMode.add);
+    final save = find.byKey(const Key('saveSoldier'));
+    final resting = tester.getRect(save);
+
+    tester.view.viewInsets = const FakeViewPadding(bottom: 300);
+    addTearDown(tester.view.resetViewInsets);
+    await tester.pumpAndSettle();
+
+    expect(tester.getRect(save).bottom,
+        lessThanOrEqualTo(tester.view.physicalSize.height - 300));
+    expect(tester.getRect(save).size, resting.size);
+    expect(find.byType(SoldierFormPage), findsOneWidget);
+  });
 
   testWidgets('rank list is the commander list', (tester) async {
     await pumpForm(tester, SoldierFormMode.add);
@@ -129,7 +174,7 @@ void main() {
     final existing =
         buildSoldier(name: 'Tan Ah Kow', points: 4.5, isInCamp: false);
     await pumpForm(tester, SoldierFormMode.edit, initial: existing);
-    expect(find.text('Change details  ✍️'), findsOneWidget);
+    expect(find.text('Change details'), findsOneWidget);
     await tester.enterText(
         find.byKey(const Key('profile-name')), 'Tan Renamed');
     await save(tester);

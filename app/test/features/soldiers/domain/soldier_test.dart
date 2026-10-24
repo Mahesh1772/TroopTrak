@@ -25,6 +25,11 @@ void main() {
     expect(moved.copyWith(isInCamp: true, points: 0), soldier);
   });
 
+  test('rationLabel shows the ration type in capitals', () {
+    expect(buildSoldier(rationType: 'sd nm').rationLabel, 'SD NM');
+    expect(buildSoldier(rationType: '').rationLabel, '');
+  });
+
   test('rank group helpers follow R4', () {
     expect(buildSoldier(rank: 'CPT').isOfficer, isTrue);
     expect(buildSoldier(rank: 'CPT').isWose, isFalse);

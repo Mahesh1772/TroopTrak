@@ -8,6 +8,8 @@ import 'package:trooptrak_final_application/features/conducts/domain/repositorie
 import 'package:trooptrak_final_application/features/conducts/domain/usecases/build_conduct_roster.dart';
 import 'package:trooptrak_final_application/features/conducts/domain/usecases/conduct_usecases.dart';
 import 'package:trooptrak_final_application/features/conducts/domain/usecases/watch_conduct_breakdown.dart';
+import 'package:trooptrak_final_application/features/conducts/domain/validators/conduct_date_limits.dart';
+import 'package:trooptrak_final_application/features/conducts/domain/validators/conduct_validators.dart';
 import 'package:trooptrak_final_application/features/soldiers/domain/repositories/soldier_repository.dart';
 import 'package:trooptrak_final_application/features/statuses/domain/repositories/status_repository.dart';
 
@@ -39,6 +41,37 @@ void main() {
         name: 'LD',
         end: DateTime(2023, 7, 4)),
   ];
+
+  group('ConductValidators', () {
+    test('type needs a choice', () {
+      expect(ConductValidators.type(null), 'Bruh select!');
+      expect(ConductValidators.type(ConductTypes.run), isNull);
+    });
+
+    test('name needs something other than spaces', () {
+      const message = 'Oi can add conduct please?';
+      expect(ConductValidators.name(null), message);
+      expect(ConductValidators.name('   '), message);
+      expect(ConductValidators.name(' 5km '), isNull);
+    });
+
+    test('date and both times need a pick', () {
+      expect(ConductValidators.date(null), 'Select a date');
+      expect(ConductValidators.date(today), isNull);
+      expect(ConductValidators.startTime(null), 'Select a start time');
+      expect(ConductValidators.startTime(today), isNull);
+      expect(ConductValidators.endTime(null), 'Select an end time');
+      expect(ConductValidators.endTime(today), isNull);
+    });
+  });
+
+  group('ConductDateLimits', () {
+    test('the date picker runs from 2022 to a year after today', () {
+      expect(ConductDateLimits.earliest, DateTime(2022));
+      expect(ConductDateLimits.latest(DateTime(2023, 7, 5, 9)),
+          DateTime(2024, 7, 5));
+    });
+  });
 
   group('rosterFor (R5)', () {
     test('Run excludes the RMJ excuse and the leave, never the MA', () {
@@ -169,9 +202,51 @@ void main() {
     final soldier = buildSoldier();
     ConductBreakdown of(List<String> names) => ConductBreakdown(
         conduct: run,
-        participants: [for (final n in names) soldier.copyWith(name: n)],
-        nonParticipants: const []);
+        roster: [for (final n in names) soldier.copyWith(name: n)]);
     expect(of(['A']), of(['A']));
     expect(of(['A']), isNot(of(['B'])));
+  });
+
+  group('ConductBreakdown', () {
+    final staff = buildSoldier(
+        name: 'Tan Ah Kow', rank: 'CPL', appointment: 'Section IC');
+    final out = buildSoldier(name: 'Lee Wei', rank: '2LT');
+    final removed = buildSoldier(name: 'Lim Bah', rank: 'PTE');
+    final run = buildConduct(
+        participants: ['Tan Ah Kow'], soldierReason: {'Lee Wei': 'OL'});
+    final breakdown = breakdownOf(run, [out, staff, removed]);
+
+    test('members picks the group and keeps roster order', () {
+      expect(breakdown.members(ConductGroup.participants), [staff]);
+      expect(breakdown.members(ConductGroup.nonParticipants), [out, removed]);
+    });
+
+    test('noteFor is the appointment, the status reason or the fallback', () {
+      expect(breakdown.noteFor(staff), 'Section IC');
+      expect(breakdown.noteFor(out), 'OL');
+      expect(breakdown.noteFor(removed), Conduct.removedReason);
+    });
+
+    test('ticks run over the whole roster in order', () {
+      final ticks = breakdown.ticks;
+      expect(ticks.ticks.map((t) => t.soldier), [out, staff, removed]);
+      expect(ticks.ticks.map((t) => t.tookPart), [false, true, false]);
+      expect(ticks.participating, 1);
+      expect(ticks.total, 3);
+    });
+
+    test('search narrows the roster, so ticks and groups follow it', () {
+      final found = breakdown.search('LEE');
+      expect(found.roster, [out]);
+      expect(found.members(ConductGroup.participants), isEmpty);
+      expect(found.members(ConductGroup.nonParticipants), [out]);
+      expect(breakdown.search('').roster, breakdown.roster);
+    });
+
+    test('isEmpty is true only for an empty roster', () {
+      expect(breakdown.isEmpty, isFalse);
+      expect(breakdown.search('zzz').isEmpty, isTrue);
+      expect(breakdownOf(run, const []).isEmpty, isTrue);
+    });
   });
 }

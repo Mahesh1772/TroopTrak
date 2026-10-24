@@ -35,6 +35,31 @@ void main() {
       expect(AuthValidators.confirmPassword(' abc ', 'abc'), isNull);
     });
 
+    test('new password: the length rule first, then strength', () {
+      expect(AuthValidators.newPassword(''), 'Password can not be empty');
+      expect(AuthValidators.newPassword('1234567'),
+          'Password should be at least 8 characters long');
+      expect(AuthValidators.newPassword('password1'),
+          'Password needs to be stronger');
+      expect(AuthValidators.newPassword(' Trooper1! '), isNull);
+    });
+
+    test('repeated password', () {
+      expect(AuthValidators.repeatedPassword('abc', 'abd'),
+          'Make sure both Passwords match');
+      expect(AuthValidators.repeatedPassword(null, 'abd'),
+          'Make sure both Passwords match');
+      expect(AuthValidators.repeatedPassword(' abc ', 'abc'), isNull);
+    });
+
+    test('commander name', () {
+      expect(AuthValidators.commanderName('  '), 'You must have a name right');
+      expect(AuthValidators.commanderName(null), 'You must have a name right');
+      expect(AuthValidators.commanderName('12345'), 'Your name got number meh');
+      expect(AuthValidators.commanderName(' Lim '), isNull);
+      expect(AuthValidators.commanderName(' Tan Ah Kow '), isNull);
+    });
+
     test('soldier name: empty, all-numeric, shorter than 5', () {
       expect(AuthValidators.soldierName(''), 'Must have a name right');
       expect(AuthValidators.soldierName('12345'), 'Name got number meh');
@@ -51,6 +76,17 @@ void main() {
       expect(AuthValidators.otp('12345'), 'Enter 6 digit code');
       expect(AuthValidators.otp('12345a'), 'Enter 6 digit code');
       expect(AuthValidators.otp('123456'), isNull);
+    });
+
+    test('the OTP is complete only at exactly six digits', () {
+      expect(AuthValidators.otpLength, 6);
+      expect(AuthValidators.isOtpComplete(null), isFalse);
+      expect(AuthValidators.isOtpComplete(''), isFalse);
+      expect(AuthValidators.isOtpComplete('12345'), isFalse);
+      expect(AuthValidators.isOtpComplete('1234567'), isFalse);
+      expect(AuthValidators.isOtpComplete('12345a'), isFalse);
+      expect(AuthValidators.isOtpComplete('12345 '), isFalse);
+      expect(AuthValidators.isOtpComplete('123456'), isTrue);
     });
   });
 

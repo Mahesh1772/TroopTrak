@@ -8,7 +8,7 @@ import '../../domain/usecases/men_usecases.dart';
 
 /// The soldier's enlistment QR (R15): publishes a code, counts down
 /// [lifetime] from the injected clock and withdraws the code on expiry or
-/// dispose, however the dialog was closed.
+/// dispose, however the sheet was closed.
 class EnlistmentQrProvider extends ChangeNotifier {
   EnlistmentQrProvider({
     required String uid,
@@ -51,6 +51,13 @@ class EnlistmentQrProvider extends ChangeNotifier {
     String two(int n) => n.toString().padLeft(2, '0');
     final seconds = (_remaining.inMilliseconds + 999) ~/ 1000;
     return '${two(seconds ~/ 60)}:${two(seconds % 60)}';
+  }
+
+  /// How much of [lifetime] is left, from 1 down to 0.
+  double get fraction {
+    final total = lifetime.inMilliseconds;
+    if (total <= 0) return 0;
+    return (_remaining.inMilliseconds / total).clamp(0.0, 1.0);
   }
 
   Future<void> start() async {

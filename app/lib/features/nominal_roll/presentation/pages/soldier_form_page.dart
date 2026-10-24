@@ -1,14 +1,12 @@
 import 'package:dartz/dartz.dart' show Unit;
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/ranks.dart';
 import '../../../../core/error/result.dart';
 import '../../../../core/services/clock.dart';
-import '../../../../core/theme/app_spacing.dart';
-import '../../../../core/theme/theme_context.dart';
 import '../../../../core/widgets/app_snackbar.dart';
+import '../../../../core/widgets/form_page_scaffold.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/profile_form_fields.dart';
 import '../../../soldiers/domain/entities/soldier.dart';
@@ -131,51 +129,27 @@ class _SoldierFormPageState extends State<SoldierFormPage> {
 
   @override
   Widget build(BuildContext context) {
-    final text = context.textStyles;
-    return Scaffold(
-      appBar: AppBar(),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: AppSpacing.md.w),
-          child: Form(
-            key: _formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  _isAdd ? "Let's get things set up  ✍️" : 'Change details  ✍️',
-                  style: text.displayLarge?.copyWith(fontSize: 30.sp),
-                ),
-                Text(
-                  _isAdd
-                      ? 'Fill in the details of the new soldier you wish to add'
-                      : 'Update the details of an existing soldier.',
-                  style: text.bodySmall?.copyWith(fontWeight: FontWeight.w300),
-                ),
-                SizedBox(height: AppSpacing.lg.h),
-                ProfileFormFields(
-                  controller: _profile,
-                  ranks: widget.ranks,
-                  nameValidator: (v) => SoldierValidators.name(v?.trim()),
-                  today: _today,
-                ),
-                SizedBox(height: AppSpacing.xxl.h),
-                PrimaryButton(
-                  key: const Key('saveSoldier'),
-                  label: _isAdd ? 'ADD NEW SOLDIER' : 'UPDATE DETAILS',
-                  icon: _isAdd
-                      ? Icons.group_add_rounded
-                      : Icons.edit_note_rounded,
-                  loading: _saving,
-                  onPressed: _submit,
-                ),
-                SizedBox(height: AppSpacing.xxl.h),
-              ],
-            ),
-          ),
-        ),
+    return FormPageScaffold(
+      formKey: _formKey,
+      title: _isAdd ? "Let's get things set up" : 'Change details',
+      subtitle: _isAdd
+          ? 'Fill in the details of the new soldier you wish to add'
+          : 'Update the details of an existing soldier.',
+      cta: PrimaryButton(
+        key: const Key('saveSoldier'),
+        label: _isAdd ? 'ADD NEW SOLDIER' : 'UPDATE DETAILS',
+        icon: _isAdd ? Icons.group_add_rounded : Icons.edit_note_rounded,
+        loading: _saving,
+        onPressed: _submit,
       ),
+      children: [
+        ProfileFormFields(
+          controller: _profile,
+          ranks: widget.ranks,
+          nameValidator: (v) => SoldierValidators.name(v?.trim()),
+          today: _today,
+        ),
+      ],
     );
   }
 }

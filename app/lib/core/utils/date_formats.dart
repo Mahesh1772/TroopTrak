@@ -3,30 +3,33 @@ import 'package:intl/intl.dart';
 abstract final class DatePatterns {
   static const day = 'd MMM yyyy';
   static const time = 'h:mm a';
+  static const clock = 'HH:mm';
   static const weekdayDay = 'E d MMM yyyy';
   static const attendanceDisplay = 'E d MMM yyyy HH:mm:ss';
   static const attendanceDocId = 'yyyy-MM-dd HH:mm:ss';
   static const weekday = 'EEEE';
   static const shortWeekday = 'E';
   static const shortMonth = 'MMM';
-  static const month = 'MMMM';
   static const monthYear = 'MMMM yyyy';
+  static const monthName = 'MMMM';
+  static const dashboardStamp = 'd MMM yyyy, HH:mm';
 }
 
 const _locale = 'en_US';
 
 final _day = DateFormat(DatePatterns.day, _locale);
 final _time = DateFormat(DatePatterns.time, _locale);
+final _clock = DateFormat(DatePatterns.clock, _locale);
 final _weekdayDay = DateFormat(DatePatterns.weekdayDay, _locale);
 final _attendanceDisplay = DateFormat(DatePatterns.attendanceDisplay, _locale);
 final _attendanceDocId = DateFormat(DatePatterns.attendanceDocId, _locale);
 final _weekday = DateFormat(DatePatterns.weekday, _locale);
 final _shortWeekday = DateFormat(DatePatterns.shortWeekday, _locale);
 final _shortMonth = DateFormat(DatePatterns.shortMonth, _locale);
-final _month = DateFormat(DatePatterns.month, _locale);
 final _monthYear = DateFormat(DatePatterns.monthYear, _locale);
+final _monthName = DateFormat(DatePatterns.monthName, _locale);
 final _longDate = DateFormat.yMMMMd(_locale);
-final _dashboardStamp = DateFormat.yMMMMd(_locale).add_Hm();
+final _dashboardStamp = DateFormat(DatePatterns.dashboardStamp, _locale);
 
 // intl >= 0.19 emits U+202F before AM/PM; source data uses a plain space.
 final _specialSpaces =
@@ -34,9 +37,23 @@ final _specialSpaces =
 
 String formatDay(DateTime date) => _day.format(date);
 
+String formatDayCaps(DateTime? date) =>
+    date == null ? '-' : _day.format(date).toUpperCase();
+
+String formatDaysLeft(int days) => switch (days) {
+      <= 0 => 'Ends today',
+      1 => '1 day left',
+      _ => '$days days left',
+    };
+
 DateTime? parseDay(String? value) => _parse(_day, value);
 
 String formatTime(DateTime time) => _time.format(time);
+
+String formatTimeRange(DateTime start, DateTime end) =>
+    '${formatTime(start)} – ${formatTime(end)}';
+
+String formatClock(DateTime time) => _clock.format(time);
 
 DateTime? parseTime(String? value) => _parse(_time, value);
 
@@ -65,9 +82,9 @@ String formatShortWeekday(DateTime date) => _shortWeekday.format(date);
 
 String formatShortMonth(DateTime date) => _shortMonth.format(date);
 
-String formatMonth(DateTime date) => _month.format(date);
-
 String formatMonthYear(DateTime date) => _monthYear.format(date);
+
+String formatMonthName(DateTime date) => _monthName.format(date);
 
 DateTime dateOnly(DateTime date) => DateTime(date.year, date.month, date.day);
 

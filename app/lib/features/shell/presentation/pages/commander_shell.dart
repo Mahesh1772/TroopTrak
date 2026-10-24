@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../core/router/app_routes.dart';
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_spacing.dart';
-import '../../../../core/theme/theme_context.dart';
+import '../providers/commander_rank_provider.dart';
+import '../widgets/commander_avatar.dart';
 import '../widgets/shell_scaffold.dart';
+import '../widgets/shell_tab.dart';
 
 /// Rebuild of `CMD/util/new_navbar.dart`. Tab content comes from the router so
-/// the shell never imports another feature's pages.
+/// the shell never imports another feature's pages. Needs a
+/// [CommanderRankProvider] above it for the app bar avatar.
 class CommanderShell extends StatelessWidget {
   const CommanderShell({
     super.key,
@@ -32,18 +33,20 @@ class CommanderShell extends StatelessWidget {
           label: 'Home',
           title: 'Dashboard',
           icon: Icons.home_outlined,
+          selectedIcon: Icons.home_rounded,
           builder: home,
         ),
         ShellTab(
           key: 'nominalRoll',
           label: 'Nominal Roll',
           title: 'Nominal Roll',
-          icon: Icons.perm_contact_calendar_rounded,
+          icon: Icons.perm_contact_calendar_outlined,
+          selectedIcon: Icons.perm_contact_calendar_rounded,
           builder: nominalRoll,
         ),
         ShellTab(
           key: 'conductTracker',
-          label: 'Conduct Tracker',
+          label: 'Conducts',
           title: 'Conduct Tracker',
           icon: Icons.track_changes_rounded,
           builder: conductTracker,
@@ -52,22 +55,19 @@ class CommanderShell extends StatelessWidget {
           key: 'guardDuty',
           label: 'Guard Duty',
           title: 'Guard Duty',
-          icon: Icons.safety_check,
+          icon: Icons.safety_check_outlined,
+          selectedIcon: Icons.safety_check_rounded,
           builder: guardDuty,
         ),
       ],
       actions: [
-        InkWell(
-          key: const Key('userProfileIcon'),
-          onTap: () =>
-              Navigator.of(context).pushNamed(AppRoutes.commanderProfile),
-          child: Padding(
-            padding: EdgeInsets.all(AppSpacing.md.sp),
-            child: Image.asset(
-              'lib/assets/icons8-user-96.png',
-              width: 50.w,
-              color: context.isDark ? AppColors.white : null,
-            ),
+        Selector<CommanderRankProvider, String?>(
+          selector: (_, provider) => provider.rank,
+          builder: (context, rank, _) => CommanderAvatar(
+            key: const Key('userProfileIcon'),
+            rank: rank ?? '',
+            onTap: () =>
+                Navigator.of(context).pushNamed(AppRoutes.commanderProfile),
           ),
         ),
       ],

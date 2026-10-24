@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart' show ThemeMode;
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -7,6 +8,8 @@ import '../../features/attendance/data/datasources/attendance_remote_data_source
 import '../../features/attendance/data/repositories/attendance_repository_impl.dart';
 import '../../features/attendance/domain/repositories/attendance_repository.dart';
 import '../../features/attendance/domain/usecases/attendance_usecases.dart';
+import '../../features/attendance/domain/usecases/watch_month_presence.dart';
+import '../../features/attendance/domain/usecases/watch_parade_roster.dart';
 import '../../features/attendance/domain/usecases/watch_soldiers_in_camp.dart';
 import '../../features/auth/data/datasources/firebase_auth_data_source.dart';
 import '../../features/auth/data/repositories/auth_repository_impl.dart';
@@ -43,6 +46,7 @@ import '../../features/statuses/data/datasources/status_remote_data_source.dart'
 import '../../features/statuses/data/repositories/status_repository_impl.dart';
 import '../../features/statuses/domain/repositories/status_repository.dart';
 import '../../features/statuses/domain/usecases/status_usecases.dart';
+import '../error/exceptions.dart';
 import '../services/clock.dart';
 import '../services/id_generator.dart';
 import '../services/preferences_service.dart';
@@ -91,13 +95,27 @@ class AppDependencies {
   late final DutyRepository duties =
       DutyRepositoryImpl(DutyRemoteDataSource(firestore));
 
+  ThemeManager createThemeManager() => ThemeManager(
+        initialMode:
+            preferences.isDarkTheme == false ? ThemeMode.light : ThemeMode.dark,
+        onChanged: _saveTheme,
+      );
+
+  Future<void> _saveTheme(ThemeMode mode) async {
+    try {
+      await preferences.setDarkTheme(mode == ThemeMode.dark);
+    } on CacheException {
+      // The choice still applies for this run.
+    }
+  }
+
   List<SingleChildWidget> get providers {
     final roles = RoleRepositoryImpl(preferences);
     return [
       Provider<Clock>.value(value: clock),
       Provider<TickSource>.value(value: ticks),
       Provider<PreferencesService>.value(value: preferences),
-      ChangeNotifierProvider<ThemeManager>(create: (_) => ThemeManager()),
+      ChangeNotifierProvider<ThemeManager>(create: (_) => createThemeManager()),
       Provider(create: (_) => GetRole(roles)),
       Provider(create: (_) => SetRole(roles)),
       ..._soldierProviders(),
@@ -138,11 +156,15 @@ class AppDependencies {
         Provider(
             create: (_) => WatchSoldiersInCamp(soldiers, attendance, clock)),
         Provider(
-          create: (_) => WatchStrengthSummary(
-              WatchSoldiersInCamp(soldiers, attendance, clock),
-              statuses,
-              clock),
+          create: (context) => WatchParadeRoster(
+              context.read<WatchSoldiersInCamp>(), statuses, clock),
         ),
+        Provider(
+          create: (context) =>
+              WatchStrengthSummary(context.read<WatchParadeRoster>()),
+        ),
+        Provider(
+            create: (_) => WatchMonthPresence(attendance, statuses, clock)),
       ];
 
   List<SingleChildWidget> _statusProviders() => [

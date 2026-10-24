@@ -93,17 +93,26 @@ class DeleteDuty implements UseCase<Unit, Duty> {
 }
 
 class DutyRoster extends Equatable {
-  const DutyRoster({required this.soldiers, required this.ineligible});
+  const DutyRoster({
+    required this.soldiers,
+    required this.ineligible,
+    this.reasons = const {},
+  });
 
   final List<Soldier> soldiers;
 
   /// Ids of soldiers who cannot be rostered (R6).
   final Set<String> ineligible;
 
+  /// Soldier id → the status that rules them out.
+  final Map<String, String> reasons;
+
   bool canServe(Soldier s) => !ineligible.contains(s.id);
 
+  String? reasonFor(Soldier s) => reasons[s.id];
+
   @override
-  List<Object?> get props => [soldiers, ineligible];
+  List<Object?> get props => [soldiers, ineligible, reasons];
 }
 
 /// R6: every soldier, with those excluded by statuses active today (K2).
@@ -122,9 +131,13 @@ class GetDutyRoster implements UseCase<DutyRoster, NoParams> {
           .map((_) => const DutyRoster(soldiers: [], ineligible: {}));
     }
     final statuses = await _statuses.getAll();
-    return statuses.map((all) => DutyRoster(
-          soldiers: soldiers.getOrElse(() => const []),
-          ineligible: EligibilityService.guardDutyExclusions(all, _clock.now()),
-        ));
+    return statuses.map((all) {
+      final reasons = EligibilityService.guardDutyReasons(all, _clock.now());
+      return DutyRoster(
+        soldiers: soldiers.getOrElse(() => const []),
+        ineligible: reasons.keys.toSet(),
+        reasons: reasons,
+      );
+    });
   }
 }
