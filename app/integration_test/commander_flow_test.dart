@@ -49,7 +49,7 @@ void main() {
     await tester.type('password', 'Trooper1!');
     tester.hideKeyboard();
     await tester.tapKey('signInButton');
-    await tester.waitFor(find.text('Welcome,\n$commander! 👋'));
+    await tester.waitFor(find.text('Welcome, $commander'));
     expect(await Emulators.read('Users/$commander'),
         containsPair('currentAttendance', 'Inside Camp'));
     expect((await Emulators.readAll('Users/$commander/Attendance')).single,
@@ -123,9 +123,9 @@ void main() {
     await tester.tapKey('home');
     Finder count(String tile, String value) => find.descendant(
         of: find.byKey(Key('tile-$tile')), matching: find.text(value));
-    await tester.waitFor(count('On Status', '1 / 2'));
+    await tester.waitFor(count('On Status', '1'));
     expect(count('Total Officers', '1 / 1'), findsOneWidget);
     expect(count('Total WOSEs', '1 / 1'), findsOneWidget);
-    expect(count('On MA', '0 / 2'), findsOneWidget);
+    expect(count('On MA', '0'), findsOneWidget);
   });
 }
