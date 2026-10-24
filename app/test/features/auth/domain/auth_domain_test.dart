@@ -77,6 +77,17 @@ void main() {
       expect(AuthValidators.otp('12345a'), 'Enter 6 digit code');
       expect(AuthValidators.otp('123456'), isNull);
     });
+
+    test('the OTP is complete only at exactly six digits', () {
+      expect(AuthValidators.otpLength, 6);
+      expect(AuthValidators.isOtpComplete(null), isFalse);
+      expect(AuthValidators.isOtpComplete(''), isFalse);
+      expect(AuthValidators.isOtpComplete('12345'), isFalse);
+      expect(AuthValidators.isOtpComplete('1234567'), isFalse);
+      expect(AuthValidators.isOtpComplete('12345a'), isFalse);
+      expect(AuthValidators.isOtpComplete('12345 '), isFalse);
+      expect(AuthValidators.isOtpComplete('123456'), isTrue);
+    });
   });
 
   group('use cases', () {

@@ -26,6 +26,7 @@ class PhoneAuthProvider extends ChangeNotifier {
 
   StreamSubscription<PhoneAuthEvent>? _subscription;
   String? _phoneNumber;
+  String? _displayNumber;
   String? _verificationId;
   int? _resendToken;
   bool _busy = false;
@@ -34,6 +35,9 @@ class PhoneAuthProvider extends ChangeNotifier {
 
   String? get verificationId => _verificationId;
   String? get phoneNumber => _phoneNumber;
+
+  /// The number as the user typed it, for showing back to them.
+  String? get displayNumber => _displayNumber;
   bool get busy => _busy;
   String? get error => _error;
 
@@ -48,6 +52,8 @@ class PhoneAuthProvider extends ChangeNotifier {
     final invalid = AuthValidators.phoneNumber(localNumber);
     if (invalid != null) return Future.value(_fail(invalid));
     _phoneNumber = '+$dialCode${localNumber.replaceAll(RegExp(r'\s'), '')}';
+    _displayNumber =
+        '+$dialCode ${localNumber.trim().replaceAll(RegExp(r'\s+'), ' ')}';
     return _start(resendToken: null);
   }
 

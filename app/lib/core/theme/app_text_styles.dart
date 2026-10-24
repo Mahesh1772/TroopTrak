@@ -31,11 +31,20 @@ abstract final class AppTextStyles {
   static TextStyle optionTitle(Color color) =>
       barlow(20, FontWeight.w700, color);
 
+  static TextStyle phoneNumber(Color color) {
+    final style = figure(21, FontWeight.w500, color);
+    return style.copyWith(letterSpacing: style.fontSize! * 0.06);
+  }
+
+  static TextStyle otpDigit(Color color) => figure(28, FontWeight.w600, color);
+
   static TextStyle compactTitle(Color color) =>
       barlow(20, FontWeight.w600, color);
 
   static TextStyle subtitle(Color color) =>
       barlow(14.5, FontWeight.w400, color);
+
+  static TextStyle link(Color color) => barlow(14.5, FontWeight.w600, color);
 
   static TextStyle h2(Color color) => barlow(18, FontWeight.w600, color);
 

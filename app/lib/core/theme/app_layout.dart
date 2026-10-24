@@ -91,6 +91,15 @@ abstract final class AppLayout {
   static const roleCardBorderSelected = 2.0;
   static const roleRadio = 24.0;
   static const roleRadioDot = 12.0;
+  static const mascotHeight = 132.0;
+  static const pageBackButton = 44.0;
+  static const phoneFieldHeight = 58.0;
+  static const countryChipHeight = 44.0;
+  static const countryChipIcon = 18.0;
+  static const otpBoxHeight = 60.0;
+  static const otpBorder = 1.0;
+  static const otpBorderActive = 2.0;
+  static const otpCursor = Size(2, 22);
   static const buttonHeight = 50.0;
   static const buttonTonalHeight = 40.0;
   static const buttonCompactHeight = 36.0;

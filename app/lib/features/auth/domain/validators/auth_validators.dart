@@ -58,6 +58,12 @@ abstract final class AuthValidators {
     return null;
   }
 
+  static const otpLength = 6;
+
+  static final _otp = RegExp('^[0-9]{$otpLength}\$');
+
   static String? otp(String? value) =>
-      RegExp(r'^[0-9]{6}$').hasMatch(value ?? '') ? null : 'Enter 6 digit code';
+      _otp.hasMatch(value ?? '') ? null : 'Enter 6 digit code';
+
+  static bool isOtpComplete(String? value) => otp(value) == null;
 }

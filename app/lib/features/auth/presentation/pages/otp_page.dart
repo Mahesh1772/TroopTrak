@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_radii.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/theme/theme_context.dart';
 import '../../../../core/widgets/app_snackbar.dart';
-import '../../../../core/widgets/dark_section.dart';
+import '../../../../core/widgets/page_back_button.dart';
 import '../../../../core/widgets/primary_button.dart';
+import '../../../../core/widgets/sticky_cta_bar.dart';
 import '../../domain/validators/auth_validators.dart';
 import '../providers/phone_auth_provider.dart';
+import '../widgets/link_prompt.dart';
+import '../widgets/otp_input.dart';
 import 'phone_entry_page.dart';
 
 class OtpPage extends StatefulWidget {
@@ -24,6 +25,7 @@ class OtpPage extends StatefulWidget {
 class _OtpPageState extends State<OtpPage> {
   final _code = TextEditingController();
   late final PhoneAuthProvider _provider = context.read<PhoneAuthProvider>();
+  bool _rejected = false;
 
   @override
   void initState() {
@@ -46,86 +48,110 @@ class _OtpPageState extends State<OtpPage> {
   }
 
   Future<void> _verify() async {
-    final invalid = AuthValidators.otp(_code.text);
-    if (invalid != null) {
-      AppSnackbar.error(context, invalid);
-      return;
-    }
     final outcome = await _provider.submitOtp(_code.text);
-    if (mounted) await handlePhoneOutcome(context, outcome, _provider);
+    if (!mounted) return;
+    setState(() => _rejected = outcome == PhoneOutcome.failed);
+    await handlePhoneOutcome(context, outcome, _provider);
   }
 
   Future<void> _resend() async {
     final outcome = await _provider.resend();
     if (!mounted) return;
-    outcome == PhoneOutcome.failed
-        ? AppSnackbar.error(context, _provider.error ?? 'Could not resend OTP.')
-        : AppSnackbar.info(context, 'A new OTP has been sent.');
+    if (outcome == PhoneOutcome.failed) {
+      AppSnackbar.error(context, _provider.error ?? 'Could not resend OTP.');
+      return;
+    }
+    setState(() => _rejected = false);
+    AppSnackbar.info(context, 'A new OTP has been sent.');
   }
 
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<PhoneAuthProvider>();
-    final text = context.textStyles;
-    final pinTheme = PinTheme(
-      width: 56.w,
-      height: 56.h,
-      textStyle: text.displaySmall,
-      decoration: BoxDecoration(
-        color: context.palette.card,
-        borderRadius: BorderRadius.circular(AppRadii.md.r),
-        border: Border.all(color: AppColors.authIcon),
-      ),
-    );
-    return DarkSection(
-      child: Scaffold(
-        appBar: AppBar(),
-        body: SafeArea(
-          child: provider.busy
-              ? const Center(child: CircularProgressIndicator())
-              : SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(horizontal: 30.w),
-                  child: Column(
-                    children: [
-                      Image.asset(
-                        'lib/assets/phone_auth/troopTrak_mascot.png',
-                        height: 220.h,
-                        color: AppColors.authIcon,
-                        errorBuilder: (_, __, ___) => const SizedBox.shrink(),
-                      ),
-                      Text('User Verification',
-                          style: text.displayMedium
-                              ?.copyWith(color: AppColors.authLink)),
-                      SizedBox(height: AppSpacing.sm.h),
-                      Text('Enter OTP Recieved',
-                          style: text.titleMedium
-                              ?.copyWith(color: AppColors.authHint)),
-                      SizedBox(height: AppSpacing.xxl.h),
-                      Pinput(
-                        key: const Key('otp'),
-                        length: 6,
-                        controller: _code,
-                        defaultPinTheme: pinTheme,
-                        onCompleted: (_) => _verify(),
-                      ),
-                      SizedBox(height: AppSpacing.xxxl.h),
-                      PrimaryButton(
-                        key: const Key('verify'),
-                        label: 'Verify',
-                        onPressed: _verify,
-                      ),
-                      SizedBox(height: AppSpacing.xl.h),
-                      Text('Did not recieve OTP?',
-                          style: text.titleSmall
-                              ?.copyWith(color: AppColors.authLink)),
-                      TextButton(
-                        key: const Key('resend'),
-                        onPressed: _resend,
-                        child: const Text('Resend New OTP'),
-                      ),
-                    ],
-                  ),
+    final palette = context.palette;
+    final number = provider.displayNumber;
+    return Scaffold(
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
+                padding: EdgeInsets.fromLTRB(
+                  AppSpacing.xxl.w,
+                  AppSpacing.md.h,
+                  AppSpacing.xxl.w,
+                  AppSpacing.lg.h,
                 ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const PageBackButton(),
+                    SizedBox(height: AppSpacing.lg.h),
+                    Text(
+                      'User Verification',
+                      style:
+                          AppTextStyles.screenTitle(context.colors.onSurface),
+                    ),
+                    SizedBox(height: AppSpacing.sm.h),
+                    Text.rich(
+                      TextSpan(
+                        text: 'Enter OTP Received.',
+                        children: [
+                          if (number != null) ...[
+                            const TextSpan(text: ' We sent a 6-digit code to '),
+                            TextSpan(
+                              text: number,
+                              style: AppTextStyles.figure(
+                                17,
+                                FontWeight.w700,
+                                palette.onCard,
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                      style: AppTextStyles.screenSubtitle(
+                        palette.secondaryText,
+                      ),
+                    ),
+                    SizedBox(height: AppSpacing.xxxl.h),
+                    OtpInput(
+                      controller: _code,
+                      invalid: _rejected,
+                      enabled: !provider.busy,
+                      onChanged: (_) {
+                        if (_rejected) setState(() => _rejected = false);
+                      },
+                      onCompleted: (_) => _verify(),
+                    ),
+                    SizedBox(height: AppSpacing.sm.h),
+                    LinkPrompt(
+                      prompt: 'Did not receive OTP?',
+                      action: 'Resend New OTP',
+                      actionKey: const Key('resend'),
+                      onTap: _resend,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            StickyCtaBar(
+              horizontal: AppSpacing.xxl,
+              child: ValueListenableBuilder<TextEditingValue>(
+                valueListenable: _code,
+                builder: (_, value, __) => PrimaryButton(
+                  key: const Key('verify'),
+                  label: 'Verify',
+                  loading: provider.busy,
+                  onPressed:
+                      AuthValidators.isOtpComplete(value.text) ? _verify : null,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
