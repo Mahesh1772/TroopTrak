@@ -8,6 +8,8 @@ import 'package:trooptrak_final_application/features/conducts/domain/repositorie
 import 'package:trooptrak_final_application/features/conducts/domain/usecases/build_conduct_roster.dart';
 import 'package:trooptrak_final_application/features/conducts/domain/usecases/conduct_usecases.dart';
 import 'package:trooptrak_final_application/features/conducts/domain/usecases/watch_conduct_breakdown.dart';
+import 'package:trooptrak_final_application/features/conducts/domain/validators/conduct_date_limits.dart';
+import 'package:trooptrak_final_application/features/conducts/domain/validators/conduct_validators.dart';
 import 'package:trooptrak_final_application/features/soldiers/domain/repositories/soldier_repository.dart';
 import 'package:trooptrak_final_application/features/statuses/domain/repositories/status_repository.dart';
 
@@ -39,6 +41,37 @@ void main() {
         name: 'LD',
         end: DateTime(2023, 7, 4)),
   ];
+
+  group('ConductValidators', () {
+    test('type needs a choice', () {
+      expect(ConductValidators.type(null), 'Bruh select!');
+      expect(ConductValidators.type(ConductTypes.run), isNull);
+    });
+
+    test('name needs something other than spaces', () {
+      const message = 'Oi can add conduct please?';
+      expect(ConductValidators.name(null), message);
+      expect(ConductValidators.name('   '), message);
+      expect(ConductValidators.name(' 5km '), isNull);
+    });
+
+    test('date and both times need a pick', () {
+      expect(ConductValidators.date(null), 'Select a date');
+      expect(ConductValidators.date(today), isNull);
+      expect(ConductValidators.startTime(null), 'Select a start time');
+      expect(ConductValidators.startTime(today), isNull);
+      expect(ConductValidators.endTime(null), 'Select an end time');
+      expect(ConductValidators.endTime(today), isNull);
+    });
+  });
+
+  group('ConductDateLimits', () {
+    test('the date picker runs from 2022 to a year after today', () {
+      expect(ConductDateLimits.earliest, DateTime(2022));
+      expect(ConductDateLimits.latest(DateTime(2023, 7, 5, 9)),
+          DateTime(2024, 7, 5));
+    });
+  });
 
   group('rosterFor (R5)', () {
     test('Run excludes the RMJ excuse and the leave, never the MA', () {

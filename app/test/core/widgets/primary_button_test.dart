@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:trooptrak_final_application/core/theme/app_colors.dart';
 import 'package:trooptrak_final_application/core/theme/app_palette.dart';
 import 'package:trooptrak_final_application/core/widgets/primary_button.dart';
+import 'package:trooptrak_final_application/core/widgets/state_tone.dart';
 
 import '../../helpers/pump_app.dart';
 
@@ -17,6 +18,7 @@ Future<void> _pump(
   bool compact = false,
   bool expand = true,
   bool loading = false,
+  StateTone? tone,
   ThemeMode mode = ThemeMode.dark,
 }) =>
     tester.pumpThemed(
@@ -30,6 +32,7 @@ Future<void> _pump(
           compact: compact,
           expand: expand,
           loading: loading,
+          tone: tone,
           onPressed: onPressed,
         ),
       ),
@@ -164,6 +167,41 @@ void main() {
       await _pump(tester, style: PrimaryButtonStyle.tonal, onPressed: () {});
       final box = tester.getRect(find.byKey(const Key('button')));
       expect(tester.getTopLeft(find.text('Save')).dx - box.left, 16);
+    });
+
+    testWidgets('a tone swaps the accent for its own tint and text',
+        (tester) async {
+      final mode = themeModes.currentValue!;
+      final palette = _paletteOf(mode);
+      for (final tone in [StateTone.inCamp, StateTone.leave]) {
+        await _pump(tester,
+            style: PrimaryButtonStyle.tonal,
+            tone: tone,
+            onPressed: () {},
+            mode: mode);
+        expect(_decoration(tester).color, tone.tint(palette));
+        expect(_labelStyle(tester).color, tone.text(palette));
+      }
+    }, variant: themeModes);
+
+    testWidgets('compact is a 32 px pill with a 13 px label and 14 px sides',
+        (tester) async {
+      await _pump(tester,
+          style: PrimaryButtonStyle.tonal, compact: true, onPressed: () {});
+      final box = tester.getRect(find.byKey(const Key('button')));
+      expect(box.height, 32);
+      expect(box.width, lessThan(200));
+      expect(_labelStyle(tester).fontSize, 13);
+      expect(tester.getTopLeft(find.text('Save')).dx - box.left, 14);
+      expect(box.right - tester.getTopRight(find.text('Save')).dx, 14);
+    });
+
+    testWidgets('a tone changes nothing for the other styles', (tester) async {
+      final palette = _paletteOf(ThemeMode.dark);
+      await _pump(tester,
+          tone: StateTone.leave, onPressed: () {}, mode: ThemeMode.dark);
+      expect(_decoration(tester).gradient, isNotNull);
+      expect(_labelStyle(tester).color, isNot(StateTone.leave.text(palette)));
     });
   });
 

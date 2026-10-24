@@ -80,4 +80,40 @@ void main() {
     expect(ticks.total, 3);
     expect(ticks.participating, 1);
   });
+
+  group('participationTicksOf', () {
+    test('ticks follow the roster; a name in the list is a tick that took part',
+        () {
+      final ticks = participationTicksOf(
+        roster: roster,
+        participants: ['Lim', 'Tan'],
+      );
+      expect(ticks.ticks.map((t) => t.soldier), [tan, lee, lim]);
+      expect(ticks.ticks.map((t) => t.tookPart), [true, false, true]);
+      expect(ticks.participating, 2);
+      expect(ticks.total, 3);
+    });
+
+    test('names off the roster are ignored; no participants is all out', () {
+      expect(
+        participationTicksOf(roster: roster, participants: ['Ghost'])
+            .participating,
+        0,
+      );
+      expect(participationTicksOf(roster: roster, participants: []).total, 3);
+    });
+
+    test('an empty roster has no ticks even with participants', () {
+      final ticks =
+          participationTicksOf(roster: const [], participants: ['Tan']);
+      expect([ticks.total, ticks.participating], [0, 0]);
+    });
+
+    test('agrees with participationTicks for a conduct', () {
+      expect(
+        participationTicksOf(roster: roster, participants: ['Tan', 'Lee']),
+        ticksOf(['Tan', 'Lee']),
+      );
+    });
+  });
 }

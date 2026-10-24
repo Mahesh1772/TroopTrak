@@ -9,13 +9,18 @@ import '../../../../core/widgets/rank_plate.dart';
 import '../../../soldiers/domain/entities/soldier.dart';
 
 /// A soldier on a conduct list: plate, name, rank chip and a [note], keyed
-/// `person-<name>`.
+/// `person-<name>`, with an optional [trailing] action.
 class ConductPersonRow extends StatelessWidget {
-  const ConductPersonRow(
-      {super.key, required this.soldier, required this.note});
+  const ConductPersonRow({
+    super.key,
+    required this.soldier,
+    required this.note,
+    this.trailing,
+  });
 
   final Soldier soldier;
   final String note;
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +37,7 @@ class ConductPersonRow extends StatelessWidget {
           ),
         ],
       ),
+      trailing: trailing,
     );
   }
 }

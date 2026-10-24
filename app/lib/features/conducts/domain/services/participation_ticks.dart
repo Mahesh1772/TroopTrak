@@ -36,6 +36,23 @@ class ParticipationTicks extends Equatable {
   List<Object?> get props => [ticks];
 }
 
+/// One tick per rostered soldier whose name is in [participants].
+ParticipationTicks participationTicksOf({
+  required Iterable<Soldier> roster,
+  required Iterable<String> participants,
+  String? selfName,
+}) {
+  final names = participants.toSet();
+  return ParticipationTicks([
+    for (final soldier in roster)
+      ParticipationTick(
+        soldier: soldier,
+        tookPart: names.contains(soldier.name),
+        isSelf: soldier.name == selfName,
+      ),
+  ]);
+}
+
 /// R13 links soldiers to a conduct by name. Participants who are no longer on
 /// the roster are not counted.
 ParticipationTicks participationTicks({
@@ -43,11 +60,8 @@ ParticipationTicks participationTicks({
   required Conduct conduct,
   String? selfName,
 }) =>
-    ParticipationTicks([
-      for (final soldier in roster)
-        ParticipationTick(
-          soldier: soldier,
-          tookPart: conduct.includes(soldier.name),
-          isSelf: soldier.name == selfName,
-        ),
-    ]);
+    participationTicksOf(
+      roster: roster,
+      participants: conduct.participants,
+      selfName: selfName,
+    );

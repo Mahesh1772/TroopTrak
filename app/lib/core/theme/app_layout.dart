@@ -55,6 +55,7 @@ abstract final class AppLayout {
   static const buttonHeight = 50.0;
   static const buttonTonalHeight = 40.0;
   static const buttonCompactHeight = 36.0;
+  static const buttonTonalCompactHeight = 32.0;
   static const buttonIconSize = 20.0;
   static const searchHeight = 46.0;
   static const searchIconSize = 24.0;
@@ -78,4 +79,5 @@ abstract final class AppLayout {
   static const conductTick = 18.0;
   static const conductDetailsTick = 28.0;
   static const conductDetailsStripTop = 18.0;
+  static const conductFormTick = 22.0;
 }

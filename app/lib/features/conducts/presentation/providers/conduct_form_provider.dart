@@ -8,6 +8,7 @@ import '../../../../core/utils/date_formats.dart';
 import '../../../soldiers/domain/entities/soldier.dart';
 import '../../../soldiers/domain/usecases/soldier_usecases.dart';
 import '../../domain/entities/conduct.dart';
+import '../../domain/services/participation_ticks.dart';
 import '../../domain/usecases/build_conduct_roster.dart';
 import '../../domain/usecases/conduct_usecases.dart';
 
@@ -80,6 +81,16 @@ class ConductFormProvider extends ChangeNotifier {
   }
 
   bool isParticipating(String name) => _participants.contains(name);
+
+  /// One tick per rostered soldier, added or not; empty until the roster loads.
+  ParticipationTicks get ticks => participationTicksOf(
+        roster: _soldiers.dataOrNull ?? const <Soldier>[],
+        participants: _participants,
+      );
+
+  /// The appointment of an added soldier, the reason a left-out one is out.
+  String noteFor(Soldier soldier) =>
+      reasonFor(soldier.name) ?? soldier.appointment;
 
   /// Why a soldier is out: their status (R5) or "Removed from conduct".
   String? reasonFor(String name) =>

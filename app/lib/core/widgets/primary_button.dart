@@ -8,6 +8,7 @@ import '../theme/app_shadows.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_text_styles.dart';
 import '../theme/theme_context.dart';
+import 'state_tone.dart';
 
 const _disabledOpacity = 0.4;
 const _outlineWidth = 1.5;
@@ -22,7 +23,9 @@ const _spinnerStroke = 2.0;
 enum PrimaryButtonStyle { primary, ghost, danger, tonal }
 
 /// A pill button. [expand] fills the available width; a tonal button always
-/// wraps its content. [compact] is the 36 px size for buttons side by side.
+/// wraps its content. [compact] is the 36 px size for buttons side by side
+/// (32 px when tonal). A tonal button takes its colours from [tone], the
+/// accent when it is null.
 class PrimaryButton extends StatelessWidget {
   const PrimaryButton({
     super.key,
@@ -33,6 +36,7 @@ class PrimaryButton extends StatelessWidget {
     this.style = PrimaryButtonStyle.primary,
     this.expand = true,
     this.compact = false,
+    this.tone,
   });
 
   final String label;
@@ -42,14 +46,15 @@ class PrimaryButton extends StatelessWidget {
   final PrimaryButtonStyle style;
   final bool expand;
   final bool compact;
+  final StateTone? tone;
 
   @override
   Widget build(BuildContext context) {
-    final look = _Look.of(style, context.palette);
+    final look = _Look.of(style, context.palette, tone);
     final tonal = style == PrimaryButtonStyle.tonal;
     final enabled = onPressed != null && !loading;
     final size = tonal
-        ? _Size.tonal
+        ? (compact ? _Size.tonalCompact : _Size.tonal)
         : compact
             ? _Size.compact
             : _Size.regular;
@@ -131,7 +136,9 @@ class PrimaryButton extends StatelessWidget {
 enum _Size {
   regular(AppLayout.buttonHeight, 15, 0.04, AppSpacing.lg),
   compact(AppLayout.buttonCompactHeight, 13, 0.04, AppSpacing.control),
-  tonal(AppLayout.buttonTonalHeight, 14.5, 0.02, AppSpacing.lg);
+  tonal(AppLayout.buttonTonalHeight, 14.5, 0.02, AppSpacing.lg),
+  tonalCompact(
+      AppLayout.buttonTonalCompactHeight, 13, 0.04, AppSpacing.control);
 
   const _Size(this.height, this.fontSize, this.tracking, this.horizontal);
 
@@ -150,7 +157,11 @@ class _Look {
     this.shadows,
   });
 
-  factory _Look.of(PrimaryButtonStyle style, AppPalette palette) =>
+  factory _Look.of(
+    PrimaryButtonStyle style,
+    AppPalette palette,
+    StateTone? tone,
+  ) =>
       switch (style) {
         PrimaryButtonStyle.primary => _Look(
             text: AppColors.white,
@@ -177,6 +188,10 @@ class _Look {
               color: palette.danger.withValues(alpha: _dangerAlpha),
               width: _outlineWidth,
             ),
+          ),
+        PrimaryButtonStyle.tonal when tone != null => _Look(
+            text: tone.text(palette),
+            fill: tone.tint(palette),
           ),
         PrimaryButtonStyle.tonal => _Look(
             text: palette.accentText,
