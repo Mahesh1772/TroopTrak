@@ -4,14 +4,17 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_layout.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/theme/theme_context.dart';
 import '../../../../core/widgets/app_snackbar.dart';
-import '../../../../core/widgets/primary_button.dart';
 import 'qr_scanner_overlay.dart';
+import 'scanner_footer.dart';
 
-/// Live camera scanner with torch, start/stop, camera switch and a gallery
-/// fallback, as in the source scanner sheet. Reports each code once.
+/// Full-bleed live camera with the reticle, torch, camera switch and start /
+/// stop at the top right, and a gallery fallback under the frame. Reports each
+/// code once.
 class CameraScannerView extends StatefulWidget {
   const CameraScannerView({super.key, required this.onCode});
 
@@ -61,80 +64,97 @@ class _CameraScannerViewState extends State<CameraScannerView> {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.colors;
-    return Column(
+    final accent = context.palette.accentText;
+    return Stack(
+      fit: StackFit.expand,
       children: [
-        SizedBox(
-          height: 400.h,
-          child: Stack(
-            children: [
-              MobileScanner(
-                controller: _controller,
-                fit: BoxFit.contain,
-                onDetect: _report,
-                errorBuilder: (context, error) =>
-                    ScannerErrorView(error: error),
-              ),
-              QrScannerOverlay(overlayColor: colors.primary),
-            ],
-          ),
+        MobileScanner(
+          controller: _controller,
+          onDetect: _report,
+          errorBuilder: (context, error) => ScannerErrorView(error: error),
         ),
-        Padding(
-          padding: EdgeInsets.all(AppSpacing.lg.sp),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ValueListenableBuilder(
-                valueListenable: _controller,
-                builder: (context, state, _) => IconButton(
-                  iconSize: 30.sp,
-                  onPressed: _controller.toggleTorch,
-                  icon: state.torchState == TorchState.on
-                      ? const Icon(Icons.flash_on, color: AppColors.brandIndigo)
-                      : Icon(Icons.flash_off, color: context.palette.muted),
-                ),
+        const QrScannerOverlay(),
+        Positioned.fill(
+          child: LayoutBuilder(
+            builder: (context, constraints) => Padding(
+              padding: EdgeInsets.only(
+                top: QrScannerOverlay.reticleIn(constraints.biggest).bottom +
+                    AppLayout.scanFooterGap.h,
               ),
-              IconButton(
-                iconSize: 30.sp,
-                onPressed: _startOrStop,
-                icon: Icon(_running ? Icons.stop : Icons.play_arrow),
-              ),
-              ValueListenableBuilder(
-                valueListenable: _controller,
-                builder: (context, state, _) => IconButton(
-                  iconSize: 30.sp,
-                  onPressed: _controller.switchCamera,
-                  icon: Icon(state.cameraDirection == CameraFacing.front
-                      ? Icons.camera_front
-                      : Icons.camera_rear),
-                ),
-              ),
-            ],
-          ),
-        ),
-        Stack(
-          alignment: Alignment.center,
-          children: [
-            Divider(color: colors.tertiary),
-            ColoredBox(
-              color: colors.surface,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg.w),
-                child: Text('OR', style: context.textStyles.displaySmall),
+              child: SingleChildScrollView(
+                child: ScannerFooter(onGallery: _pickFromGallery),
               ),
             ),
-          ],
+          ),
         ),
-        SizedBox(height: 30.h),
-        PrimaryButton(
-          label: 'SELECT FROM GALLERY',
-          icon: Icons.image,
-          style: PrimaryButtonStyle.ghost,
-          onPressed: _pickFromGallery,
+        Positioned(
+          top: 0,
+          right: AppSpacing.sm.w,
+          child: SafeArea(
+            child: SizedBox(
+              height: AppLayout.appBarHeight.h,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ValueListenableBuilder(
+                    valueListenable: _controller,
+                    builder: (context, state, _) => _ScanControl(
+                      tooltip: 'Torch',
+                      onPressed: _controller.toggleTorch,
+                      icon: state.torchState == TorchState.on
+                          ? Icons.flashlight_on_rounded
+                          : Icons.flashlight_off_rounded,
+                      color: state.torchState == TorchState.on
+                          ? accent
+                          : AppColors.white,
+                    ),
+                  ),
+                  ValueListenableBuilder(
+                    valueListenable: _controller,
+                    builder: (context, state, _) => _ScanControl(
+                      onPressed: _controller.switchCamera,
+                      icon: state.cameraDirection == CameraFacing.front
+                          ? Icons.camera_front_rounded
+                          : Icons.camera_rear_rounded,
+                    ),
+                  ),
+                  _ScanControl(
+                    onPressed: _startOrStop,
+                    icon: _running
+                        ? Icons.stop_rounded
+                        : Icons.play_arrow_rounded,
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
       ],
     );
   }
+}
+
+class _ScanControl extends StatelessWidget {
+  const _ScanControl({
+    required this.icon,
+    required this.onPressed,
+    this.tooltip,
+    this.color = AppColors.white,
+  });
+
+  final IconData icon;
+  final VoidCallback onPressed;
+  final String? tooltip;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) => IconButton(
+        tooltip: tooltip,
+        onPressed: onPressed,
+        iconSize: AppLayout.scanControlIcon.r,
+        constraints: BoxConstraints.tight(Size.square(AppLayout.scanControl.r)),
+        icon: Icon(icon, color: color),
+      );
 }
 
 class ScannerErrorView extends StatelessWidget {
@@ -149,16 +169,15 @@ class ScannerErrorView extends StatelessWidget {
       MobileScannerErrorCode.permissionDenied => 'Permission denied',
       _ => 'Generic Error',
     };
-    final style =
-        context.textStyles.bodySmall?.copyWith(color: AppColors.white);
+    final style = AppTextStyles.caption(AppColors.white);
     return ColoredBox(
       color: AppColors.black,
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          spacing: AppSpacing.sm.h,
           children: [
-            const Icon(Icons.error, color: AppColors.white),
-            SizedBox(height: AppSpacing.lg.h),
+            const Icon(Icons.error_rounded, color: AppColors.white),
             Text(message, style: style),
             Text(error.errorDetails?.message ?? '', style: style),
           ],

@@ -30,6 +30,15 @@ abstract final class AppShadows {
         ),
       ];
 
+  static List<BoxShadow> scanLine(Color color) => [
+        BoxShadow(
+          blurRadius: 14,
+          spreadRadius: 2,
+          offset: const Offset(0, 4),
+          color: color.withValues(alpha: 0.45),
+        ),
+      ];
+
   static List<BoxShadow> raised({required bool dark}) => [
         BoxShadow(
           blurRadius: dark ? 32 : 28,
