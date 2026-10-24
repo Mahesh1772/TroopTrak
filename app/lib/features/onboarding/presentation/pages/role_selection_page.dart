@@ -9,7 +9,7 @@ import '../../../../core/theme/theme_context.dart';
 import '../../../../core/widgets/app_snackbar.dart';
 import '../../../../core/widgets/brand_logo.dart';
 import '../../../../core/widgets/primary_button.dart';
-import '../../../../core/widgets/sticky_cta_bar.dart';
+import '../../../../core/widgets/sticky_cta_page.dart';
 import '../../domain/entities/app_role.dart';
 import '../providers/role_selection_provider.dart';
 import '../widgets/role_card.dart';
@@ -56,71 +56,44 @@ class RoleSelectionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<RoleSelectionProvider>();
-    return Scaffold(
-      body: SafeArea(
-        bottom: false,
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.fromLTRB(
-                  AppSpacing.xxl.w,
-                  AppLayout.onboardingGap.h,
-                  AppSpacing.xxl.w,
-                  AppSpacing.lg.h,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Transform.translate(
-                      offset: Offset(-AppLayout.onboardingLogoShift.w, 0),
-                      child: const BrandLogo(width: AppLayout.onboardingLogo),
-                    ),
-                    SizedBox(height: AppLayout.onboardingGap.h),
-                    Text(
-                      'Please pick your role.',
-                      style: AppTextStyles.screenTitle(
-                        context.colors.onSurface,
-                      ),
-                    ),
-                    SizedBox(height: AppSpacing.tight.h),
-                    Text(
-                      'If you are rank 3SG or higher, select commanders. '
-                      'If your rank is CFC or lower, select men.',
-                      style: AppTextStyles.screenSubtitle(
-                        context.palette.secondaryText,
-                      ),
-                    ),
-                    SizedBox(height: AppLayout.onboardingGap.h),
-                    for (final option in _options) ...[
-                      RoleCard(
-                        key: Key(option.key),
-                        rank: option.rank,
-                        title: option.title,
-                        subtitle: option.subtitle,
-                        selected: provider.selected == option.role,
-                        onTap: () => provider.toggle(option.role),
-                      ),
-                      if (option != _options.last)
-                        SizedBox(height: AppSpacing.md.h),
-                    ],
-                  ],
-                ),
-              ),
-            ),
-            StickyCtaBar(
-              horizontal: AppSpacing.xxl,
-              child: PrimaryButton(
-                key: const Key('role-confirm'),
-                label: 'CONTINUE',
-                icon: Icons.arrow_forward_rounded,
-                iconAtEnd: true,
-                onPressed: provider.saving ? null : () => _confirm(context),
-              ),
-            ),
-          ],
-        ),
+    return StickyCtaPage(
+      top: AppLayout.onboardingGap,
+      cta: PrimaryButton(
+        key: const Key('role-confirm'),
+        label: 'CONTINUE',
+        icon: Icons.arrow_forward_rounded,
+        iconAtEnd: true,
+        onPressed: provider.saving ? null : () => _confirm(context),
       ),
+      children: [
+        Transform.translate(
+          offset: Offset(-AppLayout.onboardingLogoShift.w, 0),
+          child: const BrandLogo(width: AppLayout.onboardingLogo),
+        ),
+        SizedBox(height: AppLayout.onboardingGap.h),
+        Text(
+          'Please pick your role.',
+          style: AppTextStyles.screenTitle(context.colors.onSurface),
+        ),
+        SizedBox(height: AppSpacing.tight.h),
+        Text(
+          'If you are rank 3SG or higher, select commanders. '
+          'If your rank is CFC or lower, select men.',
+          style: AppTextStyles.screenSubtitle(context.palette.secondaryText),
+        ),
+        SizedBox(height: AppLayout.onboardingGap.h),
+        for (final option in _options) ...[
+          RoleCard(
+            key: Key(option.key),
+            rank: option.rank,
+            title: option.title,
+            subtitle: option.subtitle,
+            selected: provider.selected == option.role,
+            onTap: () => provider.toggle(option.role),
+          ),
+          if (option != _options.last) SizedBox(height: AppSpacing.md.h),
+        ],
+      ],
     );
   }
 }

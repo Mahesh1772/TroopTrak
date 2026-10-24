@@ -88,13 +88,7 @@ abstract final class AppColors {
   static const personTile = Color(0xFF353B4F);
   static const personTileMuted = Color(0xFF1D202B);
   static const tileBorder = Color(0x402196F3);
-  static const authField = Color(0xFF2D3C44);
   static const white60 = Color(0x99FFFFFF);
-  static const authAccent = Color(0xFF64FFDA);
-  static const authLink = Color(0xFFBA68C8);
-  static const authSubtitle = Color(0xFFAB47BC);
-  static const authHint = Color(0xFFE1BEE7);
-  static const authIcon = Color(0xFF7C4DFF);
   static const navActiveEnd = Color(0xFF5E35B1);
   static const navPillGradient = [brandIndigo, navActiveEnd];
 

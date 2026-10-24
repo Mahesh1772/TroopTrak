@@ -187,9 +187,11 @@ class _PickerShell extends StatelessWidget {
             prefixIcon: FieldIcon(icon),
             prefixIconConstraints: fieldPrefixConstraints,
             hintText: hintText,
-            errorText: errorText,
-            error:
-                invalid && errorText == null ? const SizedBox.shrink() : null,
+            error: errorText != null
+                ? FieldError(errorText!)
+                : invalid
+                    ? const SizedBox.shrink()
+                    : null,
           ),
           child: text == null
               ? null

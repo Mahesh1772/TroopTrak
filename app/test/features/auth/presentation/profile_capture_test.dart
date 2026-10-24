@@ -5,6 +5,8 @@ import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
 import 'package:trooptrak_final_application/core/error/failures.dart';
 import 'package:trooptrak_final_application/core/router/app_routes.dart';
+import 'package:trooptrak_final_application/core/theme/app_palette.dart';
+import 'package:trooptrak_final_application/core/widgets/inline_error.dart';
 import 'package:trooptrak_final_application/features/auth/domain/usecases/complete_soldier_profile.dart';
 import 'package:trooptrak_final_application/features/auth/presentation/pages/profile_capture_page.dart';
 import 'package:trooptrak_final_application/features/soldiers/domain/entities/soldier.dart';
@@ -14,6 +16,9 @@ import '../../../helpers/pump_app.dart';
 
 Finder _input(String key) => find.descendant(
     of: find.byKey(Key(key)), matching: find.byType(InputDecorator));
+
+AppPalette _paletteOf(ThemeMode mode) =>
+    mode == ThemeMode.dark ? AppPalette.dark : AppPalette.light;
 
 class _MockComplete extends Mock implements CompleteSoldierProfile {}
 
@@ -121,6 +126,32 @@ void main() {
     await tester.pumpAndSettle();
     expect(tester.getRect(button), before);
     expect(before.bottom, lessThanOrEqualTo(tester.view.physicalSize.height));
+  }, variant: themeModes);
+
+  testWidgets('follows the theme instead of forcing dark', (tester) async {
+    final mode = themeModes.currentValue!;
+    await pumpPage(tester, mode: mode);
+    final theme = Theme.of(tester.element(find.byType(Scaffold)));
+    expect(theme.brightness,
+        mode == ThemeMode.dark ? Brightness.dark : Brightness.light);
+    expect(
+        tester.widget<Text>(find.text('Enter Name (as in NRIC):')).style!.color,
+        _paletteOf(mode).secondaryText);
+  }, variant: themeModes);
+
+  testWidgets('validation errors are inline, in the legible red',
+      (tester) async {
+    final mode = themeModes.currentValue!;
+    await pumpPage(tester, mode: mode);
+    await tester.enterText(find.byKey(const Key('profile-name')), '12345');
+    await tester.pumpAndSettle();
+    expect(
+        find.descendant(
+            of: find.byType(InlineError),
+            matching: find.text('Name got number meh')),
+        findsOneWidget);
+    expect(tester.widget<Text>(find.text('Name got number meh')).style!.color,
+        _paletteOf(mode).leaveText);
   }, variant: themeModes);
 
   testWidgets('empty submit shows every validator and no save', (tester) async {

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:trooptrak_final_application/core/theme/app_colors.dart';
 import 'package:trooptrak_final_application/core/theme/app_palette.dart';
 import 'package:trooptrak_final_application/core/widgets/brand_mascot.dart';
+import 'package:trooptrak_final_application/core/widgets/brand_plate.dart';
 import 'package:trooptrak_final_application/core/widgets/page_back_button.dart';
 
 import '../../helpers/pump_app.dart';
@@ -17,6 +19,29 @@ void main() {
           mode == ThemeMode.dark ? AppPalette.dark : AppPalette.light;
       expect(image.color, palette.accentText);
       expect(tester.getSize(find.byType(BrandMascot)).height, 132);
+    }, variant: themeModes);
+  });
+
+  group('BrandPlate', () {
+    testWidgets('is a 64 px plate on the header gradient with a white icon',
+        (tester) async {
+      final mode = themeModes.currentValue!;
+      await tester.pumpThemed(const BrandPlate(Icons.military_tech_rounded),
+          mode: mode);
+      final palette =
+          mode == ThemeMode.dark ? AppPalette.dark : AppPalette.light;
+      expect(tester.getSize(find.byType(BrandPlate)), const Size.square(64));
+      final decoration = tester
+          .widget<DecoratedBox>(find.descendant(
+              of: find.byType(BrandPlate), matching: find.byType(DecoratedBox)))
+          .decoration as BoxDecoration;
+      expect((decoration.gradient as LinearGradient).colors,
+          palette.headerGradient);
+      expect(decoration.borderRadius, BorderRadius.circular(16));
+      final icon =
+          tester.widget<Icon>(find.byIcon(Icons.military_tech_rounded));
+      expect(icon.size, 36);
+      expect(icon.color, AppColors.white);
     }, variant: themeModes);
   });
 

@@ -178,12 +178,58 @@ void main() {
           providers: [Provider<ResolveSoldierEntry>.value(value: resolve)],
           observers: [recorder],
         );
-        expect(find.text('Time to book in 😄'), findsOneWidget);
+        expect(find.text('Time to book in'), findsOneWidget);
         await tester.tap(find.byKey(const Key('getStarted')));
         await tester.pumpAndSettle();
         expect(recorder.names.last, route);
       });
     }
+
+    group('welcome layout', () {
+      Future<void> pumpWelcome(WidgetTester tester,
+          {ThemeMode mode = ThemeMode.dark}) {
+        final resolve = _MockResolve();
+        when(() => resolve(any()))
+            .thenAnswer((_) async => const Right(SoldierEntry.home));
+        return tester.pumpApp(
+          const SoldierWelcomePage(),
+          mode: mode,
+          providers: [Provider<ResolveSoldierEntry>.value(value: resolve)],
+        );
+      }
+
+      testWidgets('shows the logo, the heading and no emoji', (tester) async {
+        await pumpWelcome(tester);
+        expect(find.bySemanticsLabel('TroopTrak'), findsOneWidget);
+        expect(find.text('Welcome!'), findsOneWidget);
+        expect(find.text('Time to book in'), findsOneWidget);
+        expect(find.textContaining('😄'), findsNothing);
+      });
+
+      testWidgets('follows the theme instead of forcing dark', (tester) async {
+        final mode = themeModes.currentValue!;
+        await pumpWelcome(tester, mode: mode);
+        final theme = Theme.of(tester.element(find.byType(Scaffold)));
+        expect(theme.brightness,
+            mode == ThemeMode.dark ? Brightness.dark : Brightness.light);
+        expect(tester.widget<Text>(find.text('Welcome!')).style!.color,
+            theme.colorScheme.onSurface);
+      }, variant: themeModes);
+
+      testWidgets('GET STARTED is pinned at the bottom with a 24 px inset',
+          (tester) async {
+        await pumpWelcome(tester);
+        final button = tester.getRect(find.byKey(const Key('getStarted')));
+        expect(button.left, 24);
+        expect(button.right, 366);
+        expect(button.bottom, greaterThan(750));
+        expect(
+            find.descendant(
+                of: find.byType(StickyCtaBar),
+                matching: find.byKey(const Key('getStarted'))),
+            findsOneWidget);
+      });
+    });
 
     Future<RouteRecorder> pumpPhone(WidgetTester tester, PhoneAuthProvider p,
         {ThemeMode mode = ThemeMode.dark}) async {

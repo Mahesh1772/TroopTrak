@@ -92,6 +92,9 @@ abstract final class AppLayout {
   static const roleRadio = 24.0;
   static const roleRadioDot = 12.0;
   static const mascotHeight = 132.0;
+  static const brandPlate = 64.0;
+  static const brandPlateIcon = 36.0;
+  static const checklistIcon = 18.0;
   static const pageBackButton = 44.0;
   static const phoneFieldHeight = 58.0;
   static const countryChipHeight = 44.0;

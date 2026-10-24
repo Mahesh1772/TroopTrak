@@ -1,71 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/theme/theme_context.dart';
 
+/// The top of an auth page: an optional [leading] mark, the [title] and a
+/// [subtitle] under it.
 class AuthHeader extends StatelessWidget {
   const AuthHeader({
     super.key,
     required this.title,
     required this.subtitle,
-    this.icon = Icons.military_tech_outlined,
+    this.leading,
   });
 
   final String title;
   final String subtitle;
-  final IconData icon;
+  final Widget? leading;
 
   @override
   Widget build(BuildContext context) {
-    final text = context.textStyles;
+    final leading = this.leading;
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, size: 150.sp, color: AppColors.authIcon),
-        SizedBox(height: AppSpacing.xxl.h),
-        Text(title,
-            textAlign: TextAlign.center,
-            style: text.displayLarge
-                ?.copyWith(fontSize: 35.sp, color: AppColors.authLink)),
+        if (leading != null) ...[
+          leading,
+          SizedBox(height: AppSpacing.xxl.h),
+        ],
+        Text(title, style: AppTextStyles.screenTitle(context.colors.onSurface)),
         SizedBox(height: AppSpacing.sm.h),
-        Text(subtitle,
-            textAlign: TextAlign.center,
-            style: text.displaySmall?.copyWith(color: AppColors.authSubtitle)),
-      ],
-    );
-  }
-}
-
-class AuthSwitchPrompt extends StatelessWidget {
-  const AuthSwitchPrompt({
-    super.key,
-    required this.prompt,
-    required this.action,
-    required this.onTap,
-    this.actionKey,
-  });
-
-  final String prompt;
-  final String action;
-  final VoidCallback onTap;
-  final Key? actionKey;
-
-  @override
-  Widget build(BuildContext context) {
-    final style = context.textStyles.titleSmall;
-    return Wrap(
-      alignment: WrapAlignment.center,
-      crossAxisAlignment: WrapCrossAlignment.center,
-      spacing: 6,
-      children: [
-        Text(prompt, style: style?.copyWith(color: AppColors.white)),
-        GestureDetector(
-          key: actionKey,
-          onTap: onTap,
-          child: Text(action,
-              style: style?.copyWith(
-                  color: AppColors.authAccent, fontWeight: FontWeight.bold)),
+        Text(
+          subtitle,
+          style: AppTextStyles.screenSubtitle(context.palette.secondaryText),
         ),
       ],
     );

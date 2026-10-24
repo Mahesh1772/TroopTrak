@@ -5,6 +5,7 @@ import '../theme/app_layout.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_text_styles.dart';
 import '../theme/theme_context.dart';
+import 'inline_error.dart';
 
 const _labelSize = 13.5;
 const _valueSize = 17.0;
@@ -64,6 +65,23 @@ class FieldIcon extends StatelessWidget {
 }
 
 const fieldPrefixConstraints = BoxConstraints();
+
+/// Material starts a field's error 18 px in from the edge (14 of padding and a
+/// 4 px gap); the mockup starts it 4 px in, under the label.
+const _errorInset = 18.0;
+
+/// The error line of a field: an [InlineError] pulled back under the label.
+class FieldError extends StatelessWidget {
+  const FieldError(this.message, {super.key});
+
+  final String message;
+
+  @override
+  Widget build(BuildContext context) => Transform.translate(
+        offset: Offset(-_errorInset.w, 0),
+        child: InlineError(message),
+      );
+}
 
 /// Tabular figures for a picked date or time. The line is as tall as the
 /// 16 px body text it replaces, so the field stays 52 high.

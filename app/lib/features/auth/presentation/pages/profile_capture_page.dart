@@ -5,7 +5,6 @@ import '../../../../core/constants/ranks.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/services/clock.dart';
 import '../../../../core/widgets/app_snackbar.dart';
-import '../../../../core/widgets/dark_section.dart';
 import '../../../../core/widgets/form_page_scaffold.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/profile_form_fields.dart';
@@ -68,27 +67,25 @@ class _ProfileCapturePageState extends State<ProfileCapturePage> {
 
   @override
   Widget build(BuildContext context) {
-    return DarkSection(
-      child: FormPageScaffold(
-        formKey: _formKey,
-        title: "Let's get things set up",
-        subtitle: 'Fill in the details of the new soldier you wish to add',
-        cta: PrimaryButton(
-          key: const Key('captureButton'),
-          label: 'ADD NEW SOLDIER',
-          icon: Icons.group_add_rounded,
-          loading: _saving,
-          onPressed: _submit,
-        ),
-        children: [
-          ProfileFormFields(
-            controller: _profile,
-            ranks: Ranks.soldierRegistration,
-            nameValidator: (v) => AuthValidators.soldierName(v?.trim()),
-            today: _today,
-          ),
-        ],
+    return FormPageScaffold(
+      formKey: _formKey,
+      title: "Let's get things set up",
+      subtitle: 'Fill in the details of the new soldier you wish to add',
+      cta: PrimaryButton(
+        key: const Key('captureButton'),
+        label: 'ADD NEW SOLDIER',
+        icon: Icons.group_add_rounded,
+        loading: _saving,
+        onPressed: _submit,
       ),
+      children: [
+        ProfileFormFields(
+          controller: _profile,
+          ranks: Ranks.soldierRegistration,
+          nameValidator: (v) => AuthValidators.soldierName(v?.trim()),
+          today: _today,
+        ),
+      ],
     );
   }
 }

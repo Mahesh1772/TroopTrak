@@ -7,6 +7,7 @@ import '../../../../core/services/clock.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/app_snackbar.dart';
 import '../../../../core/widgets/app_text_field.dart';
+import '../../../../core/widgets/brand_plate.dart';
 import '../../../../core/widgets/form_page_scaffold.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/profile_form_fields.dart';
@@ -15,6 +16,7 @@ import '../../domain/usecases/register_commander.dart';
 import '../../domain/validators/auth_validators.dart';
 import '../providers/commander_auth_provider.dart';
 import '../widgets/auth_header.dart';
+import '../widgets/link_prompt.dart';
 import '../widgets/password_checklist.dart';
 
 class CommanderRegisterPage extends StatefulWidget {
@@ -85,12 +87,16 @@ class _CommanderRegisterPageState extends State<CommanderRegisterPage> {
         onPressed: _submit,
       ),
       children: [
-        SizedBox(height: AppSpacing.xxl.h),
-        const AuthHeader(
-          title: 'Sign Up!',
-          subtitle: 'Make your life easier, Register',
+        SizedBox(height: AppSpacing.xl.h),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.xs.w),
+          child: const AuthHeader(
+            leading: BrandPlate(Icons.military_tech_rounded),
+            title: 'Sign Up!',
+            subtitle: 'Make your life easier, Register',
+          ),
         ),
-        SizedBox(height: AppSpacing.xxl.h),
+        SizedBox(height: AppSpacing.md.h),
         ProfileFormFields(
           controller: _profile,
           ranks: Ranks.commanderRegistration,
@@ -123,10 +129,11 @@ class _CommanderRegisterPageState extends State<CommanderRegisterPage> {
           obscureText: true,
           validator: (v) => AuthValidators.repeatedPassword(v, _password.text),
         ),
-        AuthSwitchPrompt(
+        LinkPrompt(
           prompt: 'Alr have an account?',
           action: 'Login here',
           actionKey: const Key('signInPageButton'),
+          alignment: WrapAlignment.center,
           onTap: provider.toggleMode,
         ),
       ],

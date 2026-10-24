@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../core/widgets/dark_section.dart';
 import '../../domain/entities/auth_user.dart';
 import '../../domain/usecases/auth_usecases.dart';
 import '../providers/commander_auth_provider.dart';
@@ -23,13 +22,11 @@ class CommanderAuthGate extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.data != null) return signedIn(context);
         final mode = context.watch<CommanderAuthProvider>().mode;
-        return DarkSection(
-          child: PopScope(
-            canPop: false,
-            child: mode == CommanderAuthMode.signIn
-                ? const CommanderSignInPage()
-                : const CommanderRegisterPage(),
-          ),
+        return PopScope(
+          canPop: false,
+          child: mode == CommanderAuthMode.signIn
+              ? const CommanderSignInPage()
+              : const CommanderRegisterPage(),
         );
       },
     );

@@ -6,13 +6,12 @@ import 'package:provider/provider.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/theme/app_layout.dart';
 import '../../../../core/theme/app_spacing.dart';
-import '../../../../core/theme/app_text_styles.dart';
-import '../../../../core/theme/theme_context.dart';
 import '../../../../core/widgets/app_snackbar.dart';
 import '../../../../core/widgets/brand_mascot.dart';
 import '../../../../core/widgets/primary_button.dart';
-import '../../../../core/widgets/sticky_cta_bar.dart';
+import '../../../../core/widgets/sticky_cta_page.dart';
 import '../providers/phone_auth_provider.dart';
+import '../widgets/auth_header.dart';
 import '../widgets/phone_number_field.dart';
 import 'otp_page.dart';
 
@@ -48,60 +47,26 @@ class _PhoneEntryPageState extends State<PhoneEntryPage> {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<PhoneAuthProvider>();
-    return Scaffold(
-      body: SafeArea(
-        bottom: false,
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                keyboardDismissBehavior:
-                    ScrollViewKeyboardDismissBehavior.onDrag,
-                padding: EdgeInsets.fromLTRB(
-                  AppSpacing.xxl.w,
-                  AppSpacing.xl.h,
-                  AppSpacing.xxl.w,
-                  AppSpacing.lg.h,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const BrandMascot(height: AppLayout.mascotHeight),
-                    SizedBox(height: AppSpacing.xxl.h),
-                    Text(
-                      'Enter Phone Number',
-                      style:
-                          AppTextStyles.screenTitle(context.colors.onSurface),
-                    ),
-                    SizedBox(height: AppSpacing.sm.h),
-                    Text(
-                      'For Registration and login',
-                      style: AppTextStyles.screenSubtitle(
-                        context.palette.secondaryText,
-                      ),
-                    ),
-                    SizedBox(height: AppSpacing.xxxl.h),
-                    PhoneNumberField(
-                      controller: _phone,
-                      country: _country,
-                      onCountryTap: _pickCountry,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            StickyCtaBar(
-              horizontal: AppSpacing.xxl,
-              child: PrimaryButton(
-                key: const Key('sendCode'),
-                label: 'Login',
-                loading: provider.busy,
-                onPressed: _send,
-              ),
-            ),
-          ],
-        ),
+    return StickyCtaPage(
+      cta: PrimaryButton(
+        key: const Key('sendCode'),
+        label: 'Login',
+        loading: provider.busy,
+        onPressed: _send,
       ),
+      children: [
+        const AuthHeader(
+          leading: BrandMascot(height: AppLayout.mascotHeight),
+          title: 'Enter Phone Number',
+          subtitle: 'For Registration and login',
+        ),
+        SizedBox(height: AppSpacing.xxxl.h),
+        PhoneNumberField(
+          controller: _phone,
+          country: _country,
+          onCountryTap: _pickCountry,
+        ),
+      ],
     );
   }
 }

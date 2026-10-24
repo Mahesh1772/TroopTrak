@@ -52,6 +52,7 @@ class AppDropdownField<T> extends StatelessWidget {
           prefixIconConstraints: fieldPrefixConstraints,
         ),
         validator: validator,
+        errorBuilder: (_, message) => FieldError(message),
         onChanged: onChanged,
         items: [
           for (final item in items)

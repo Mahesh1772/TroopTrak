@@ -5,7 +5,7 @@ import '../theme/app_layout.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_text_styles.dart';
 import '../theme/theme_context.dart';
-import 'sticky_cta_bar.dart';
+import 'sticky_cta_page.dart';
 
 /// A form page: an optional [title] bar, a [subtitle], the scrolling
 /// [children], and the [cta] pinned under them. Without a [title] the page has
@@ -30,7 +30,12 @@ class FormPageScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     final title = this.title;
     final subtitle = this.subtitle;
-    return Scaffold(
+    return StickyCtaPage(
+      formKey: formKey,
+      horizontal: AppSpacing.lg,
+      top: 0,
+      spacing: AppSpacing.md,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       appBar: title == null
           ? null
           : AppBar(
@@ -44,49 +49,18 @@ class FormPageScaffold extends StatelessWidget {
                 style: AppTextStyles.compactTitle(context.colors.onSurface),
               ),
             ),
-      body: SafeArea(
-        bottom: false,
-        child: Column(
-          children: [
-            Expanded(
-              child: Form(
-                key: formKey,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                child: SingleChildScrollView(
-                  keyboardDismissBehavior:
-                      ScrollViewKeyboardDismissBehavior.onDrag,
-                  padding: EdgeInsets.fromLTRB(
-                    AppSpacing.lg.w,
-                    0,
-                    AppSpacing.lg.w,
-                    AppSpacing.lg.h,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    spacing: AppSpacing.md.h,
-                    children: [
-                      if (subtitle != null)
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: AppSpacing.xs.w,
-                          ),
-                          child: Text(
-                            subtitle,
-                            style: AppTextStyles.subtitle(
-                              context.palette.secondaryText,
-                            ),
-                          ),
-                        ),
-                      ...children,
-                    ],
-                  ),
-                ),
-              ),
+      cta: cta,
+      children: [
+        if (subtitle != null)
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: AppSpacing.xs.w),
+            child: Text(
+              subtitle,
+              style: AppTextStyles.subtitle(context.palette.secondaryText),
             ),
-            StickyCtaBar(child: cta),
-          ],
-        ),
-      ),
+          ),
+        ...children,
+      ],
     );
   }
 }

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:trooptrak_final_application/core/theme/app_palette.dart';
 import 'package:trooptrak_final_application/core/widgets/app_text_field.dart';
 import 'package:trooptrak_final_application/core/widgets/form_page_scaffold.dart';
+import 'package:trooptrak_final_application/core/widgets/inline_error.dart';
 import 'package:trooptrak_final_application/core/widgets/primary_button.dart';
 import 'package:trooptrak_final_application/core/widgets/sticky_cta_bar.dart';
+import 'package:trooptrak_final_application/core/widgets/sticky_cta_page.dart';
 
 import '../../helpers/pump_app.dart';
 
@@ -168,6 +171,112 @@ void main() {
           .pumpThemed(AppTextField(controller: controller, obscureText: true));
       expect(tester.widget<EditableText>(find.byType(EditableText)).obscureText,
           isTrue);
+    });
+
+    testWidgets('the eye shows and hides what was typed', (tester) async {
+      bool hidden() =>
+          tester.widget<EditableText>(find.byType(EditableText)).obscureText;
+      await tester
+          .pumpThemed(AppTextField(controller: controller, obscureText: true));
+      await tester.tap(find.byTooltip('Show password'));
+      await tester.pump();
+      expect(hidden(), isFalse);
+      await tester.tap(find.byTooltip('Hide password'));
+      await tester.pump();
+      expect(hidden(), isTrue);
+    });
+
+    testWidgets('a plain field has no eye and the eye keeps it 52 high',
+        (tester) async {
+      await tester.pumpThemed(AppTextField(controller: controller));
+      expect(find.byType(IconButton), findsNothing);
+      await tester
+          .pumpThemed(AppTextField(controller: controller, obscureText: true));
+      expect(tester.getSize(find.byType(InputDecorator)).height, 52);
+    });
+
+    testWidgets('an error is an inline error in the legible red',
+        (tester) async {
+      final mode = themeModes.currentValue!;
+      await pumpForm(tester, fields: 1, mode: mode);
+      expect(find.byType(InlineError), findsNothing);
+      formKey.currentState!.validate();
+      await tester.pumpAndSettle();
+      expect(
+          find.descendant(
+              of: find.byType(InlineError), matching: find.text('Missing 0')),
+          findsOneWidget);
+      final palette =
+          mode == ThemeMode.dark ? AppPalette.dark : AppPalette.light;
+      expect(tester.widget<Text>(find.text('Missing 0')).style!.color,
+          palette.leaveText);
+      final field = tester.getRect(find.byType(InputDecorator));
+      expect(tester.getRect(find.text('Missing 0')).top,
+          greaterThanOrEqualTo(field.top + 52));
+      expect(
+          tester.getTopLeft(find.byIcon(Icons.error_rounded)).dx - field.left,
+          4);
+    }, variant: themeModes);
+  });
+
+  group('StickyCtaPage', () {
+    final pageKey = GlobalKey<FormState>();
+
+    Future<void> pumpPage(
+      WidgetTester tester, {
+      GlobalKey<FormState>? key,
+      int rows = 3,
+    }) =>
+        tester.pumpApp(
+          StickyCtaPage(
+            formKey: key,
+            cta: PrimaryButton(
+                label: 'GO', key: const Key('cta'), onPressed: () {}),
+            children: [
+              for (var i = 0; i < rows; i++)
+                SizedBox(key: Key('row-$i'), height: 120, width: 100),
+            ],
+          ),
+        );
+
+    testWidgets('insets the rows and the button 24 px a side', (tester) async {
+      await pumpPage(tester);
+      expect(tester.getRect(find.byKey(const Key('row-0'))).left, 24);
+      expect(tester.getRect(find.byKey(const Key('row-0'))).top, 20);
+      final button = tester.getRect(cta);
+      expect(button.left, 24);
+      expect(button.right, 366);
+    });
+
+    testWidgets('has no app bar and pins the button while the rows scroll',
+        (tester) async {
+      await pumpPage(tester, rows: 12);
+      expect(find.byType(AppBar), findsNothing);
+      final before = tester.getRect(cta);
+      await tester.drag(
+          find.byType(SingleChildScrollView), const Offset(0, -400));
+      await tester.pumpAndSettle();
+      expect(tester.getRect(cta), before);
+      expect(tester.getRect(find.byKey(const Key('row-0'))).bottom,
+          lessThan(before.top));
+    });
+
+    testWidgets('the button rides above the keyboard', (tester) async {
+      await pumpPage(tester);
+      tester.view.viewInsets = const FakeViewPadding(bottom: 300);
+      addTearDown(tester.view.resetViewInsets);
+      await tester.pumpAndSettle();
+      expect(tester.getRect(cta).bottom,
+          lessThanOrEqualTo(tester.view.physicalSize.height - 300));
+    });
+
+    testWidgets('a form key adds a validating Form, none adds none',
+        (tester) async {
+      await pumpPage(tester);
+      expect(find.byType(Form), findsNothing);
+      await pumpPage(tester, key: pageKey);
+      expect(find.byType(Form), findsOneWidget);
+      expect(pageKey.currentState!.validate(), isTrue);
     });
   });
 }

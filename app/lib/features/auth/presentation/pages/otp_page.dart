@@ -8,7 +8,7 @@ import '../../../../core/theme/theme_context.dart';
 import '../../../../core/widgets/app_snackbar.dart';
 import '../../../../core/widgets/page_back_button.dart';
 import '../../../../core/widgets/primary_button.dart';
-import '../../../../core/widgets/sticky_cta_bar.dart';
+import '../../../../core/widgets/sticky_cta_page.dart';
 import '../../domain/validators/auth_validators.dart';
 import '../providers/phone_auth_provider.dart';
 import '../widgets/link_prompt.dart';
@@ -70,90 +70,62 @@ class _OtpPageState extends State<OtpPage> {
     final provider = context.watch<PhoneAuthProvider>();
     final palette = context.palette;
     final number = provider.displayNumber;
-    return Scaffold(
-      body: SafeArea(
-        bottom: false,
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                keyboardDismissBehavior:
-                    ScrollViewKeyboardDismissBehavior.onDrag,
-                padding: EdgeInsets.fromLTRB(
-                  AppSpacing.xxl.w,
-                  AppSpacing.md.h,
-                  AppSpacing.xxl.w,
-                  AppSpacing.lg.h,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const PageBackButton(),
-                    SizedBox(height: AppSpacing.lg.h),
-                    Text(
-                      'User Verification',
-                      style:
-                          AppTextStyles.screenTitle(context.colors.onSurface),
-                    ),
-                    SizedBox(height: AppSpacing.sm.h),
-                    Text.rich(
-                      TextSpan(
-                        text: 'Enter OTP Received.',
-                        children: [
-                          if (number != null) ...[
-                            const TextSpan(text: ' We sent a 6-digit code to '),
-                            TextSpan(
-                              text: number,
-                              style: AppTextStyles.figure(
-                                17,
-                                FontWeight.w700,
-                                palette.onCard,
-                              ),
-                            ),
-                          ],
-                        ],
-                      ),
-                      style: AppTextStyles.screenSubtitle(
-                        palette.secondaryText,
-                      ),
-                    ),
-                    SizedBox(height: AppSpacing.xxxl.h),
-                    OtpInput(
-                      controller: _code,
-                      invalid: _rejected,
-                      enabled: !provider.busy,
-                      onChanged: (_) {
-                        if (_rejected) setState(() => _rejected = false);
-                      },
-                      onCompleted: (_) => _verify(),
-                    ),
-                    SizedBox(height: AppSpacing.sm.h),
-                    LinkPrompt(
-                      prompt: 'Did not receive OTP?',
-                      action: 'Resend New OTP',
-                      actionKey: const Key('resend'),
-                      onTap: _resend,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            StickyCtaBar(
-              horizontal: AppSpacing.xxl,
-              child: ValueListenableBuilder<TextEditingValue>(
-                valueListenable: _code,
-                builder: (_, value, __) => PrimaryButton(
-                  key: const Key('verify'),
-                  label: 'Verify',
-                  loading: provider.busy,
-                  onPressed:
-                      AuthValidators.isOtpComplete(value.text) ? _verify : null,
-                ),
-              ),
-            ),
-          ],
+    return StickyCtaPage(
+      top: AppSpacing.md,
+      cta: ValueListenableBuilder<TextEditingValue>(
+        valueListenable: _code,
+        builder: (_, value, __) => PrimaryButton(
+          key: const Key('verify'),
+          label: 'Verify',
+          loading: provider.busy,
+          onPressed: AuthValidators.isOtpComplete(value.text) ? _verify : null,
         ),
       ),
+      children: [
+        const PageBackButton(),
+        SizedBox(height: AppSpacing.lg.h),
+        Text(
+          'User Verification',
+          style: AppTextStyles.screenTitle(context.colors.onSurface),
+        ),
+        SizedBox(height: AppSpacing.sm.h),
+        Text.rich(
+          TextSpan(
+            text: 'Enter OTP Received.',
+            children: [
+              if (number != null) ...[
+                const TextSpan(text: ' We sent a 6-digit code to '),
+                TextSpan(
+                  text: number,
+                  style: AppTextStyles.figure(
+                    17,
+                    FontWeight.w700,
+                    palette.onCard,
+                  ),
+                ),
+              ],
+            ],
+          ),
+          style: AppTextStyles.screenSubtitle(palette.secondaryText),
+        ),
+        SizedBox(height: AppSpacing.xxxl.h),
+        OtpInput(
+          controller: _code,
+          invalid: _rejected,
+          enabled: !provider.busy,
+          onChanged: (_) {
+            if (_rejected) setState(() => _rejected = false);
+          },
+          onCompleted: (_) => _verify(),
+        ),
+        SizedBox(height: AppSpacing.sm.h),
+        LinkPrompt(
+          prompt: 'Did not receive OTP?',
+          action: 'Resend New OTP',
+          actionKey: const Key('resend'),
+          onTap: _resend,
+        ),
+      ],
     );
   }
 }

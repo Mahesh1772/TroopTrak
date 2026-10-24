@@ -3,14 +3,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/router/app_routes.dart';
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_spacing.dart';
-import '../../../../core/theme/theme_context.dart';
+import '../../../../core/theme/app_layout.dart';
 import '../../../../core/usecase/usecase.dart';
 import '../../../../core/widgets/app_snackbar.dart';
-import '../../../../core/widgets/dark_section.dart';
+import '../../../../core/widgets/brand_logo.dart';
 import '../../../../core/widgets/primary_button.dart';
+import '../../../../core/widgets/sticky_cta_page.dart';
 import '../../domain/usecases/soldier_entry.dart';
+import '../widgets/auth_header.dart';
 
 String routeForSoldierEntry(SoldierEntry entry) => switch (entry) {
       SoldierEntry.home => AppRoutes.soldierHome,
@@ -42,46 +42,21 @@ class _SoldierWelcomePageState extends State<SoldierWelcomePage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final text = context.textStyles;
-    return DarkSection(
-      child: Scaffold(
-        body: SafeArea(
-          child: Center(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 35.w, vertical: 25.h),
-              child: Column(
-                children: [
-                  Image.asset(
-                    'lib/assets/phone_auth/troopTrak_mascot.png',
-                    height: 300.h,
-                    color: AppColors.authIcon,
-                    errorBuilder: (_, __, ___) => const SizedBox.shrink(),
-                  ),
-                  Text('TroopTrak',
-                      style: text.displayLarge?.copyWith(fontSize: 46.sp)),
-                  SizedBox(height: 70.h),
-                  Text('Welcome!',
-                      style: text.displayLarge?.copyWith(
-                          fontSize: 32.sp, color: AppColors.authLink)),
-                  SizedBox(height: AppSpacing.xxxl.h),
-                  Text('Time to book in 😄',
-                      style: text.displayMedium?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.authHint)),
-                  SizedBox(height: 50.h),
-                  PrimaryButton(
-                    key: const Key('getStarted'),
-                    label: 'GET STARTED',
-                    loading: _loading,
-                    onPressed: _start,
-                  ),
-                ],
-              ),
-            ),
-          ),
+  Widget build(BuildContext context) => StickyCtaPage(
+        top: AppLayout.onboardingGap,
+        cta: PrimaryButton(
+          key: const Key('getStarted'),
+          label: 'GET STARTED',
+          loading: _loading,
+          onPressed: _start,
         ),
-      ),
-    );
-  }
+        children: [
+          Transform.translate(
+            offset: Offset(-AppLayout.onboardingLogoShift.w, 0),
+            child: const BrandLogo(width: AppLayout.onboardingLogo),
+          ),
+          SizedBox(height: AppLayout.onboardingGap.h),
+          const AuthHeader(title: 'Welcome!', subtitle: 'Time to book in'),
+        ],
+      );
 }
