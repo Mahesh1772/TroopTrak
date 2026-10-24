@@ -10,7 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  animated_toggle_switch: ^0.8.7
   auto_size_text: ^3.0.0
   cloud_firestore: ^6.10.0
   country_picker: ^2.0.20
@@ -18,12 +17,9 @@ dependencies:
   equatable: ^2.0.5
   firebase_auth: ^6.0.0
   firebase_core: ^4.15.0
-  fl_chart: ^1.2.0
-  flip_card: ^0.7.0
   flutter_screenutil: ^5.9.3
   flutter_slidable: ^4.0.3
   google_fonts: ^9.0.0
-  google_nav_bar: ^5.0.7
   image_picker: ^1.1.2
   intl: ^0.20.1
   mobile_scanner: ^7.4.2
