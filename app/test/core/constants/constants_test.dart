@@ -146,5 +146,6 @@ void main() {
     expect(MenFields.qrId, 'QRid');
     expect(PrefKeys.onBoard, 'onBoard');
     expect(PrefKeys.isSignedIn, 'is_signedin');
+    expect(PrefKeys.themeDark, 'theme_dark');
   });
 }

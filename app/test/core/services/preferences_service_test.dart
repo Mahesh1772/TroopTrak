@@ -43,12 +43,39 @@ void main() {
     });
   });
 
+  group('isDarkTheme', () {
+    test('is null when nothing is saved', () async {
+      expect((await serviceWith({})).isDarkTheme, isNull);
+    });
+
+    test('round trips dark and light', () async {
+      final service = await serviceWith({});
+      await service.setDarkTheme(false);
+      expect(service.isDarkTheme, isFalse);
+      await service.setDarkTheme(true);
+      expect(service.isDarkTheme, isTrue);
+    });
+
+    test('survives a new instance over the same store', () async {
+      final service = await serviceWith({});
+      await service.setDarkTheme(false);
+      expect((await PreferencesService.create()).isDarkTheme, isFalse);
+      expect(
+          (await SharedPreferences.getInstance()).getBool('theme_dark'), false);
+    });
+  });
+
   test('clearAll removes every key', () async {
-    final service =
-        await serviceWith({'onBoard': 1, 'is_signedin': true, 'other': 'x'});
+    final service = await serviceWith({
+      'onBoard': 1,
+      'is_signedin': true,
+      'theme_dark': false,
+      'other': 'x',
+    });
     await service.clearAll();
     expect(service.onBoard, isNull);
     expect(service.isSignedIn, isFalse);
+    expect(service.isDarkTheme, isNull);
     expect((await SharedPreferences.getInstance()).getKeys(), isEmpty);
   });
 }

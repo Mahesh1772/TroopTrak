@@ -21,6 +21,11 @@ class PreferencesService {
   Future<void> setSignedIn(bool value) =>
       _write(_prefs.setBool(PrefKeys.isSignedIn, value));
 
+  bool? get isDarkTheme => _prefs.getBool(PrefKeys.themeDark);
+
+  Future<void> setDarkTheme(bool value) =>
+      _write(_prefs.setBool(PrefKeys.themeDark, value));
+
   Future<void> clearAll() => _write(_prefs.clear());
 
   Future<void> _write(Future<bool> operation) async {
