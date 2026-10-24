@@ -20,6 +20,17 @@ abstract final class AppTextStyles {
   static TextStyle headerTitle(Color color) =>
       barlow(28, FontWeight.w700, color).copyWith(height: 1.1);
 
+  static TextStyle screenTitle(Color color) =>
+      barlow(32, FontWeight.w700, color).copyWith(height: 1.1);
+
+  static TextStyle screenSubtitle(Color color) =>
+      barlow(16, FontWeight.w400, color);
+
+  static TextStyle tagline(Color color) => barlow(17, FontWeight.w400, color);
+
+  static TextStyle optionTitle(Color color) =>
+      barlow(20, FontWeight.w700, color);
+
   static TextStyle compactTitle(Color color) =>
       barlow(20, FontWeight.w600, color);
 

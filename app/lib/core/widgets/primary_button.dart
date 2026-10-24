@@ -25,7 +25,7 @@ enum PrimaryButtonStyle { primary, ghost, danger, tonal }
 /// A pill button. [expand] fills the available width; a tonal button always
 /// wraps its content. [compact] is the 36 px size for buttons side by side
 /// (32 px when tonal). A tonal button takes its colours from [tone], the
-/// accent when it is null.
+/// accent when it is null. [iconAtEnd] puts the icon after the label.
 class PrimaryButton extends StatelessWidget {
   const PrimaryButton({
     super.key,
@@ -37,6 +37,7 @@ class PrimaryButton extends StatelessWidget {
     this.expand = true,
     this.compact = false,
     this.tone,
+    this.iconAtEnd = false,
   });
 
   final String label;
@@ -47,12 +48,15 @@ class PrimaryButton extends StatelessWidget {
   final bool expand;
   final bool compact;
   final StateTone? tone;
+  final bool iconAtEnd;
 
   @override
   Widget build(BuildContext context) {
     final look = _Look.of(style, context.palette, tone);
     final tonal = style == PrimaryButtonStyle.tonal;
     final enabled = onPressed != null && !loading;
+    final leadingIcon = icon != null && !iconAtEnd;
+    final trailingIcon = icon != null && iconAtEnd;
     final size = tonal
         ? (compact ? _Size.tonalCompact : _Size.tonal)
         : compact
@@ -63,6 +67,12 @@ class PrimaryButton extends StatelessWidget {
       FontWeight.w600,
       look.text,
     ).copyWith(letterSpacing: size.fontSize.sp * size.tracking);
+
+    final glyph = Icon(
+      icon,
+      size: AppLayout.buttonIconSize.r,
+      color: look.text,
+    );
 
     return Opacity(
       opacity: enabled || loading ? 1 : _disabledOpacity,
@@ -85,11 +95,13 @@ class PrimaryButton extends StatelessWidget {
                 height: size.height.h,
                 child: Padding(
                   padding: EdgeInsetsDirectional.only(
-                    start: (tonal && icon != null
+                    start:
+                        (tonal && leadingIcon ? AppSpacing.md : size.horizontal)
+                            .w,
+                    end: (tonal && trailingIcon
                             ? AppSpacing.md
                             : size.horizontal)
                         .w,
-                    end: size.horizontal.w,
                   ),
                   child: Row(
                     mainAxisSize:
@@ -106,12 +118,7 @@ class PrimaryButton extends StatelessWidget {
                           ),
                         )
                       else ...[
-                        if (icon != null)
-                          Icon(
-                            icon,
-                            size: AppLayout.buttonIconSize.r,
-                            color: look.text,
-                          ),
+                        if (leadingIcon) glyph,
                         Flexible(
                           child: Text(
                             label,
@@ -120,6 +127,7 @@ class PrimaryButton extends StatelessWidget {
                             style: labelStyle,
                           ),
                         ),
+                        if (trailingIcon) glyph,
                       ],
                     ],
                   ),

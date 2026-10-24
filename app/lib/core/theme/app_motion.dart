@@ -5,5 +5,6 @@ abstract final class AppMotion {
   static const standard = Duration(milliseconds: 250);
   static const second = Duration(seconds: 1);
   static const scanSweep = Duration(milliseconds: 2400);
+  static const loaderSweep = Duration(milliseconds: 1400);
   static const ease = Cubic(0.16, 1, 0.3, 1);
 }

@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:trooptrak_final_application/core/widgets/app_text_field.dart';
 import 'package:trooptrak_final_application/core/widgets/form_page_scaffold.dart';
 import 'package:trooptrak_final_application/core/widgets/primary_button.dart';
+import 'package:trooptrak_final_application/core/widgets/sticky_cta_bar.dart';
 
 import '../../helpers/pump_app.dart';
 
@@ -109,6 +110,40 @@ void main() {
       await tester.pump();
       expect(find.text('Missing 0'), findsOneWidget);
       expect(find.text('Missing 1'), findsOneWidget);
+    });
+  });
+
+  group('StickyCtaBar', () {
+    testWidgets('insets its child 16 px a side, or by horizontal',
+        (tester) async {
+      await tester.pumpThemed(
+        const Align(
+          alignment: Alignment.bottomCenter,
+          child: SizedBox(
+            width: double.infinity,
+            child: StickyCtaBar(
+              child: SizedBox(key: Key('inner'), height: 50),
+            ),
+          ),
+        ),
+      );
+      expect(tester.getRect(find.byKey(const Key('inner'))).left, 16);
+      expect(tester.getSize(find.byKey(const Key('inner'))).width, 358);
+
+      await tester.pumpThemed(
+        const Align(
+          alignment: Alignment.bottomCenter,
+          child: SizedBox(
+            width: double.infinity,
+            child: StickyCtaBar(
+              horizontal: 24,
+              child: SizedBox(key: Key('inner'), height: 50),
+            ),
+          ),
+        ),
+      );
+      expect(tester.getRect(find.byKey(const Key('inner'))).left, 24);
+      expect(tester.getSize(find.byKey(const Key('inner'))).width, 342);
     });
   });
 

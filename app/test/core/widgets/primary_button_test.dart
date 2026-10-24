@@ -16,6 +16,7 @@ Future<void> _pump(
   VoidCallback? onPressed,
   IconData? icon,
   bool compact = false,
+  bool iconAtEnd = false,
   bool expand = true,
   bool loading = false,
   StateTone? tone,
@@ -30,6 +31,7 @@ Future<void> _pump(
           icon: icon,
           style: style,
           compact: compact,
+          iconAtEnd: iconAtEnd,
           expand: expand,
           loading: loading,
           tone: tone,
@@ -93,6 +95,33 @@ void main() {
         tester.getTopLeft(find.text('Save')).dx - tester.getTopRight(icon).dx,
         8,
       );
+    });
+  });
+
+  group('iconAtEnd', () {
+    testWidgets('puts the icon 8 px after the label', (tester) async {
+      await _pump(tester,
+          onPressed: () {}, icon: Icons.arrow_forward_rounded, iconAtEnd: true);
+      final icon = find.byIcon(Icons.arrow_forward_rounded);
+      expect(
+        tester.getTopLeft(icon).dx - tester.getTopRight(find.text('Save')).dx,
+        8,
+      );
+    });
+
+    testWidgets('a tonal button pads 12 after the icon and 16 before the label',
+        (tester) async {
+      await _pump(tester,
+          style: PrimaryButtonStyle.tonal,
+          icon: Icons.arrow_forward_rounded,
+          iconAtEnd: true,
+          onPressed: () {});
+      final box = tester.getRect(find.byKey(const Key('button')));
+      expect(tester.getTopLeft(find.text('Save')).dx - box.left, 16);
+      expect(
+          box.right -
+              tester.getTopRight(find.byIcon(Icons.arrow_forward_rounded)).dx,
+          12);
     });
   });
 

@@ -1,74 +1,121 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_layout.dart';
+import '../../../../core/theme/app_motion.dart';
+import '../../../../core/theme/app_radii.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/theme/theme_context.dart';
+import '../../../../core/widgets/rank_plate.dart';
 
+const _selectedTint = 0.16;
+const _radioStroke = 2.0;
+
+/// One choice of a radio group: a large insignia plate, a title with a line
+/// of guidance, and a radio mark. The selected card gets an accent border.
 class RoleCard extends StatelessWidget {
   const RoleCard({
     super.key,
-    required this.icon,
+    required this.rank,
     required this.title,
     required this.subtitle,
-    required this.pressed,
+    required this.selected,
     required this.onTap,
   });
 
-  final String icon;
+  final String rank;
   final String title;
   final String subtitle;
-  final bool pressed;
+  final bool selected;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    final radius = BorderRadius.circular(30.r);
-    final offset = pressed ? 5.0 : 10.0;
-    final blur = pressed ? 5.0 : 20.0;
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 500),
-        width: 170.w,
-        height: 280.h,
-        decoration: BoxDecoration(
-          color: AppColors.roleCard,
-          borderRadius: radius,
-          gradient: pressed
-              ? const LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [AppColors.roleShadowDark, AppColors.roleCard],
-                )
-              : null,
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.roleShadowLight,
-              offset: Offset(-offset.w, -offset.h),
-              blurRadius: blur.r,
+    final palette = context.palette;
+    final radius = BorderRadius.circular(AppRadii.xl.r);
+    final fill = selected
+        ? Color.alphaBlend(
+            palette.accent.withValues(alpha: _selectedTint),
+            palette.card,
+          )
+        : palette.card;
+    return Semantics(
+      inMutuallyExclusiveGroup: true,
+      checked: selected,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onTap,
+        child: AnimatedContainer(
+          key: const Key('roleCardBody'),
+          duration: AppMotion.quick,
+          padding: EdgeInsets.all(AppLayout.roleCardPadding.r),
+          decoration: BoxDecoration(color: fill, borderRadius: radius),
+          foregroundDecoration: BoxDecoration(
+            borderRadius: radius,
+            border: Border.all(
+              color: selected ? palette.accent : palette.line,
+              width: (selected
+                      ? AppLayout.roleCardBorderSelected
+                      : AppLayout.roleCardBorder)
+                  .r,
             ),
-            BoxShadow(
-              color: AppColors.roleShadowDark,
-              offset: Offset(offset.w, offset.h),
-              blurRadius: blur.r,
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(icon, width: 50.w, color: AppColors.white),
-            SizedBox(height: AppSpacing.xl.h),
-            Text(title,
-                style: context.textStyles.titleLarge
-                    ?.copyWith(color: AppColors.white)),
-            Text(subtitle,
-                style: context.textStyles.bodyMedium
-                    ?.copyWith(color: AppColors.white60)),
-          ],
+          ),
+          child: Row(
+            spacing: AppSpacing.lg.w,
+            children: [
+              RankPlate(rank, size: RankPlate.lg),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style:
+                          AppTextStyles.optionTitle(context.colors.onSurface),
+                    ),
+                    Text(
+                      subtitle,
+                      style: AppTextStyles.subtitle(palette.secondaryText),
+                    ),
+                  ],
+                ),
+              ),
+              _RadioMark(selected: selected),
+            ],
+          ),
         ),
       ),
+    );
+  }
+}
+
+class _RadioMark extends StatelessWidget {
+  const _RadioMark({required this.selected});
+
+  final bool selected;
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.palette;
+    final color = selected ? palette.accentText : palette.secondaryText;
+    return Container(
+      key: const Key('roleRadio'),
+      width: AppLayout.roleRadio.r,
+      height: AppLayout.roleRadio.r,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(color: color, width: _radioStroke.r),
+      ),
+      child: selected
+          ? Container(
+              key: const Key('roleRadioDot'),
+              width: AppLayout.roleRadioDot.r,
+              height: AppLayout.roleRadioDot.r,
+              decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+            )
+          : null,
     );
   }
 }

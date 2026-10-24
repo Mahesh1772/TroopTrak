@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_layout.dart';
+import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/theme/theme_context.dart';
 import '../../../../core/usecase/usecase.dart';
+import '../../../../core/widgets/brand_logo.dart';
+import '../../../../core/widgets/linear_loader.dart';
 import '../../domain/usecases/role_usecases.dart';
 import '../providers/role_selection_provider.dart';
 
@@ -32,12 +37,22 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.darkSurface,
       body: Center(
-        child: Image.asset(
-          'lib/assets/phone_auth/troopTrak_logo.png',
-          width: 220.w,
-          errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const BrandLogo(width: AppLayout.splashLogo),
+            Transform.translate(
+              offset: Offset(0, -AppSpacing.inline.h),
+              child: Text(
+                'Command centre in your pocket',
+                textAlign: TextAlign.center,
+                style: AppTextStyles.tagline(context.palette.secondaryText),
+              ),
+            ),
+            SizedBox(height: AppLayout.splashLoaderTop.h),
+            const LinearLoader(),
+          ],
         ),
       ),
     );
