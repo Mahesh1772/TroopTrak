@@ -3,14 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/router/app_routes.dart';
-import '../../../../core/theme/app_layout.dart';
 import '../../../../core/theme/app_spacing.dart';
-import '../../../../core/theme/app_text_styles.dart';
-import '../../../../core/theme/theme_context.dart';
 import '../../../../core/widgets/app_list_card.dart';
 import '../../../../core/widgets/date_header.dart';
 import '../../../../core/widgets/feedback_views.dart';
 import '../../../../core/widgets/horizontal_date_strip.dart';
+import '../../../../core/widgets/page_title.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/section_header.dart';
 import '../../../../core/widgets/state_view.dart';
@@ -48,16 +46,7 @@ class ConductTrackerPage extends StatelessWidget {
     final provider = context.watch<ConductTrackerProvider>();
     return ListView(
       children: [
-        if (showTitle)
-          Container(
-            height: AppLayout.appBarHeight.h,
-            alignment: AlignmentDirectional.centerStart,
-            padding: EdgeInsets.symmetric(horizontal: AppSpacing.xl.w),
-            child: Text(
-              'Conduct Tracker',
-              style: AppTextStyles.pageTitle(context.colors.onSurface),
-            ),
-          ),
+        if (showTitle) const PageTitle('Conduct Tracker'),
         DateHeader(
           date: provider.day,
           today: provider.today,

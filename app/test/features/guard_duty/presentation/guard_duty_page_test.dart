@@ -5,7 +5,11 @@ import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
 import 'package:trooptrak_final_application/core/error/failures.dart';
 import 'package:trooptrak_final_application/core/router/app_routes.dart';
+import 'package:trooptrak_final_application/core/theme/app_layout.dart';
+import 'package:trooptrak_final_application/core/theme/app_radii.dart';
+import 'package:trooptrak_final_application/core/theme/theme_context.dart';
 import 'package:trooptrak_final_application/core/usecase/usecase.dart';
+import 'package:trooptrak_final_application/core/widgets/icon_tab.dart';
 import 'package:trooptrak_final_application/features/guard_duty/domain/entities/duty.dart';
 import 'package:trooptrak_final_application/features/guard_duty/domain/usecases/duty_usecases.dart';
 import 'package:trooptrak_final_application/features/guard_duty/presentation/guard_duty_routes.dart';
@@ -66,16 +70,53 @@ void main() {
     return recorder;
   }
 
-  testWidgets('two tabs: leaderboard first, upcoming duties second',
-      (tester) async {
+  testWidgets('two tabs: LEADERBOARD first, UPCOMING second', (tester) async {
     await pumpPage(tester, mode: themeModes.currentValue!);
-    expect(find.text('POINTS LEADERBOARD'), findsOneWidget);
-    expect(find.text('UPCOMING DUTIES'), findsOneWidget);
+    expect(find.text('LEADERBOARD'), findsOneWidget);
+    expect(find.text('UPCOMING'), findsOneWidget);
+    expect(find.text('POINTS LEADERBOARD'), findsNothing);
+    expect(find.text('UPCOMING DUTIES'), findsNothing);
     expect(find.text('Points Leaderboard'), findsOneWidget);
-    await tester.tap(find.text('UPCOMING DUTIES'));
+    await tester.tap(find.text('UPCOMING'));
     await tester.pumpAndSettle();
     expect(find.text("Today's Duties"), findsOneWidget);
     expect(find.byKey(const Key('duty-d1')), findsOneWidget);
+  }, variant: themeModes);
+
+  testWidgets('the tab bar is two icon tabs on one line, 50 high',
+      (tester) async {
+    await pumpPage(tester, mode: themeModes.currentValue!);
+    final tabs = tester.widgetList<IconTab>(find.byType(IconTab)).toList();
+    expect([for (final tab in tabs) tab.label], ['LEADERBOARD', 'UPCOMING']);
+    expect([for (final tab in tabs) tab.icon],
+        [Icons.leaderboard_rounded, Icons.more_time_rounded]);
+    expect(tester.getSize(find.byType(TabBar)).height, 50);
+    final tabWidth = tester.getSize(find.byType(TabBar)).width / 2;
+    for (final label in ['LEADERBOARD', 'UPCOMING']) {
+      expect(tester.getSize(find.text(label)).width, lessThan(tabWidth));
+    }
+  }, variant: themeModes);
+
+  testWidgets('the tab bar is under the page, with the bodies below it',
+      (tester) async {
+    await pumpPage(tester);
+    final bar = tester.getRect(find.byType(TabBar));
+    expect(tester.getRect(find.byType(TabBarView)).top, bar.bottom);
+  });
+
+  testWidgets('the add-duty button is a themed 20 px rounded square',
+      (tester) async {
+    await pumpPage(tester, mode: themeModes.currentValue!);
+    final fab = find.byKey(const Key('addDuty'));
+    final material = tester.widget<Material>(
+        find.descendant(of: fab, matching: find.byType(Material)).first);
+    expect(
+        material.shape,
+        RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppRadii.xl)));
+    final size = tester.getSize(fab);
+    expect([size.width, size.height], [AppLayout.fabSize, AppLayout.fabSize]);
+    expect(tester.widget<FloatingActionButton>(fab).heroTag, isNull);
   }, variant: themeModes);
 
   testWidgets('commanders get the add-duty button', (tester) async {
@@ -89,7 +130,7 @@ void main() {
       (tester) async {
     await pumpPage(tester);
     expect(find.text('Guard Duty'), findsNothing);
-    await tester.tap(find.text('UPCOMING DUTIES'));
+    await tester.tap(find.text('UPCOMING'));
     await tester.pumpAndSettle();
     expect(find.byKey(const Key('onDuty-d1')), findsNothing);
     await tester.tap(find.byKey(const Key('duty-d1')));
@@ -104,13 +145,29 @@ void main() {
       await pumpPage(tester, canManage: false, mode: themeModes.currentValue!);
       expect(find.text('Guard Duty'), findsOneWidget);
       expect(find.byKey(const Key('addDuty')), findsNothing);
+      expect(find.text('LEADERBOARD'), findsOneWidget);
+      expect(find.text('UPCOMING'), findsOneWidget);
       expect(find.text('Points Leaderboard'), findsOneWidget);
+    }, variant: themeModes);
+
+    testWidgets('the title is the 24 w600 page title in the theme colour',
+        (tester) async {
+      await pumpPage(tester, canManage: false, mode: themeModes.currentValue!);
+      final title = tester.widget<Text>(find.text('Guard Duty'));
+      final colors = tester.element(find.byType(TabBar)).colors;
+      expect(title.style!.fontSize, 24);
+      expect(title.style!.fontWeight, FontWeight.w600);
+      expect(title.style!.color, colors.onSurface);
+      expect(tester.getSize(find.text('Guard Duty')).height,
+          lessThan(AppLayout.appBarHeight));
+      expect(tester.getRect(find.text('Guard Duty')).bottom,
+          lessThan(tester.getRect(find.byType(TabBar)).top));
     }, variant: themeModes);
 
     testWidgets('duties are read-only and mark the soldier\'s own',
         (tester) async {
       await pumpPage(tester, canManage: false);
-      await tester.tap(find.text('UPCOMING DUTIES'));
+      await tester.tap(find.text('UPCOMING'));
       await tester.pumpAndSettle();
       expect(find.byKey(const Key('onDuty-d1')), findsOneWidget);
       expect(find.byKey(const Key('offDuty-d2')), findsOneWidget);

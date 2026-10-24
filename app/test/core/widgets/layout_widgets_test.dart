@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:trooptrak_final_application/core/theme/app_layout.dart';
 import 'package:trooptrak_final_application/core/theme/app_palette.dart';
+import 'package:trooptrak_final_application/core/theme/theme_context.dart';
 import 'package:trooptrak_final_application/core/widgets/app_list_card.dart';
 import 'package:trooptrak_final_application/core/widgets/date_header.dart';
 import 'package:trooptrak_final_application/core/widgets/gradient_header.dart';
+import 'package:trooptrak_final_application/core/widgets/page_title.dart';
 import 'package:trooptrak_final_application/core/widgets/section_header.dart';
 
 import '../../helpers/pump_app.dart';
@@ -473,6 +476,32 @@ void main() {
               child: SectionHeader('Conducts Completed / Ongoing',
                   caption: '3 today')));
       expect(tester.takeException(), isNull);
+    });
+  });
+
+  group('PageTitle', () {
+    for (final mode in ThemeMode.values.where((m) => m != ThemeMode.system)) {
+      testWidgets('is a 24 w600 app bar row in the ${mode.name} theme',
+          (tester) async {
+        await _pumpUnder(tester, const PageTitle('Guard Duty'), mode: mode);
+        final style = tester.widget<Text>(find.text('Guard Duty')).style!;
+        expect([style.fontSize, style.fontWeight], [24, FontWeight.w600]);
+        expect(style.color,
+            tester.element(find.byType(PageTitle)).colors.onSurface);
+        expect(tester.getSize(find.byType(PageTitle)).height,
+            AppLayout.appBarHeight);
+        expect(tester.getTopLeft(find.text('Guard Duty')).dx, 20);
+      });
+    }
+
+    testWidgets('a long title stays on one line', (tester) async {
+      await _pumpUnder(
+          tester,
+          const SizedBox(
+              width: 120, child: PageTitle('A very long page title here')));
+      expect(tester.takeException(), isNull);
+      expect(tester.getSize(find.byType(PageTitle)).height,
+          AppLayout.appBarHeight);
     });
   });
 }
