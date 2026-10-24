@@ -16,11 +16,11 @@ import '../../../../core/widgets/tally_strip.dart';
 import '../../domain/entities/duty.dart';
 import 'duty_participant_row.dart';
 import 'duty_points_chip.dart';
+import 'duty_slot_count.dart';
 
 const _timeSize = 24.0;
 const _nextDaySize = 16.0;
 const _dateSize = 14.0;
-const _countSize = 15.0;
 const _timeLineHeight = 1.1;
 
 /// A duty card: points, day type, time (with "(Next day)" for an overnight
@@ -174,36 +174,7 @@ class _Summary extends StatelessWidget {
           ),
         ),
         SizedBox(height: AppSpacing.sm.h),
-        Row(
-          children: [
-            Expanded(
-              child: Text(
-                'Participants',
-                style: AppTextStyles.caption(palette.secondaryText),
-              ),
-            ),
-            Text.rich(
-              TextSpan(
-                text: '${duty.filledSlots}',
-                children: [
-                  TextSpan(
-                    text: ' / ${Duty.maxSlots}',
-                    style: AppTextStyles.figure(
-                      _countSize,
-                      FontWeight.w500,
-                      palette.secondaryText,
-                    ),
-                  ),
-                ],
-              ),
-              style: AppTextStyles.figure(
-                _countSize,
-                FontWeight.w600,
-                palette.onCard,
-              ),
-            ),
-          ],
-        ),
+        DutySlotCount(label: 'Participants', filled: duty.filledSlots),
       ],
     );
   }

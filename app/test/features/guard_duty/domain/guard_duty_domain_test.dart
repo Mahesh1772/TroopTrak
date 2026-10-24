@@ -8,6 +8,8 @@ import 'package:trooptrak_final_application/features/guard_duty/domain/repositor
 import 'package:trooptrak_final_application/features/guard_duty/domain/services/duty_points.dart';
 import 'package:trooptrak_final_application/features/guard_duty/domain/services/self_name.dart';
 import 'package:trooptrak_final_application/features/guard_duty/domain/usecases/duty_usecases.dart';
+import 'package:trooptrak_final_application/features/guard_duty/domain/validators/duty_date_limits.dart';
+import 'package:trooptrak_final_application/features/guard_duty/domain/validators/duty_validators.dart';
 import 'package:trooptrak_final_application/features/soldiers/domain/repositories/soldier_repository.dart';
 import 'package:trooptrak_final_application/features/statuses/domain/repositories/status_repository.dart';
 
@@ -37,6 +39,40 @@ void main() {
         expect(buildDuty(start: start, end: end).endsNextDay, nextDay);
       });
     }
+  });
+
+  group('Duty.isOvernight', () {
+    final eight = DateTime(2023, 7, 7, 8);
+
+    test('an end at or before the start is overnight', () {
+      expect(Duty.isOvernight(eight, eight), isTrue);
+      expect(Duty.isOvernight(eight, DateTime(2023, 7, 7, 7, 59)), isTrue);
+      expect(Duty.isOvernight(eight, DateTime(2023, 7, 7, 8, 1)), isFalse);
+    });
+  });
+
+  group('DutyValidators', () {
+    test('the messages are the source texts', () {
+      expect(DutyValidators.date<DateTime>(null), 'Select a duty date');
+      expect(DutyValidators.startTime<int>(null), 'Select a start time');
+      expect(DutyValidators.endTime<int>(null), 'Select an end time');
+    });
+
+    test('a value passes', () {
+      expect(DutyValidators.date(DateTime(2023, 7, 7)), isNull);
+      expect(DutyValidators.startTime(8), isNull);
+      expect(DutyValidators.endTime(8), isNull);
+    });
+  });
+
+  group('DutyDateLimits', () {
+    test('from 2020 to the end of next year', () {
+      expect(DutyDateLimits.earliest, DateTime(2020));
+      expect(
+          DutyDateLimits.latest(DateTime(2023, 7, 5)), DateTime(2024, 12, 31));
+      expect(
+          DutyDateLimits.latest(DateTime(2025, 1, 1)), DateTime(2026, 12, 31));
+    });
   });
 
   group('Duty slots (R10a)', () {
@@ -279,6 +315,9 @@ void main() {
         .getOrElse(() => throw 'x');
     expect(roster.soldiers, all);
     expect(roster.ineligible, {'Tan Ah Kow', 'Lee Wei'});
+    expect(roster.reasons, {'Tan Ah Kow': 'Ex Boots', 'Lee Wei': 'OL'});
+    expect(roster.reasonFor(all[1]), 'OL');
+    expect(roster.reasonFor(all[2]), isNull);
     expect(roster.canServe(all[2]), isTrue);
 
     when(() => soldiers.getAll())

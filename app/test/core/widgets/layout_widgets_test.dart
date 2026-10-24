@@ -291,6 +291,53 @@ void main() {
       await _pumpUnder(tester, card());
       expect(find.byType(Opacity), findsNothing);
     });
+
+    testWidgets('a dimmed row fades like a disabled one but takes taps',
+        (tester) async {
+      var taps = 0;
+      await _pumpUnder(
+          tester,
+          card(rows: [
+            AppListRow(
+              key: const Key('a'),
+              title: 'Ineligible',
+              dimmed: true,
+              onTap: () => taps++,
+              leading: const SizedBox.square(dimension: 40),
+              trailing: const Icon(Icons.check_circle_rounded),
+            ),
+          ]));
+      await tester.tap(find.byKey(const Key('a')));
+      expect(taps, 1);
+      final faded = tester.widgetList<Opacity>(find.descendant(
+          of: find.byKey(const Key('a')), matching: find.byType(Opacity)));
+      expect(faded.map((o) => o.opacity), [0.45, 0.45]);
+    });
+
+    testWidgets('the card colour can be replaced', (tester) async {
+      final mode = themeModes.currentValue!;
+      await _pumpUnder(
+        tester,
+        const SizedBox(
+          width: 358,
+          child: AppListCard(color: Color(0xFF123456), children: [
+            AppListRow(title: 'Marcus Lee'),
+          ]),
+        ),
+        mode: mode,
+      );
+      final material = tester.widget<Material>(find
+          .descendant(
+              of: find.byType(AppListCard), matching: find.byType(Material))
+          .first);
+      expect(material.color, const Color(0xFF123456));
+      await _pumpUnder(tester, card(), mode: mode);
+      final plain = tester.widget<Material>(find
+          .descendant(
+              of: find.byType(AppListCard), matching: find.byType(Material))
+          .first);
+      expect(plain.color, _paletteOf(mode).card);
+    }, variant: themeModes);
   });
 
   group('DateHeader', () {

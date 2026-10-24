@@ -88,4 +88,8 @@ abstract final class AppLayout {
   static const dutyPointsChip = 26.0;
   static const dutySlotBar = 10.0;
   static const dutyParticipantVertical = 7.0;
+  static const dutySlotHeight = 86.0;
+  static const dutySlotPlate = 34.0;
+  static const dutySlotAddIcon = 24.0;
+  static const dutyPickerHeight = 578.0;
 }

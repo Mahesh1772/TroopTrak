@@ -255,6 +255,7 @@ TabBarThemeData _tabBarTheme(ColorScheme scheme, AppPalette palette) {
 InputDecorationThemeData buildInputDecorationTheme(
   AppPalette palette, {
   double radius = AppRadii.lg,
+  Color? fill,
 }) {
   OutlineInputBorder outline(Color color, double width) => OutlineInputBorder(
         borderRadius: BorderRadius.circular(radius),
@@ -265,7 +266,7 @@ InputDecorationThemeData buildInputDecorationTheme(
   final muted = TextStyle(color: palette.mutedText);
   return InputDecorationThemeData(
     filled: true,
-    fillColor: palette.cardElevated,
+    fillColor: fill ?? palette.cardElevated,
     contentPadding: const EdgeInsets.all(AppSpacing.control),
     hintStyle: muted,
     labelStyle: muted,

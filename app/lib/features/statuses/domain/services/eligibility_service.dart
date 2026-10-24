@@ -86,11 +86,19 @@ abstract final class EligibilityService {
     Iterable<Status> statuses,
     DateTime today,
   ) =>
+      guardDutyReasons(statuses, today).keys.toSet();
+
+  /// R6: soldierId → reason (status name) for those soldiers. When several
+  /// statuses match, the last one wins.
+  static Map<String, String> guardDutyReasons(
+    Iterable<Status> statuses,
+    DateTime today,
+  ) =>
       {
         for (final status in statuses)
           if (status.isActiveOn(today) &&
               (status.isLeave ||
                   (status.isExcuse && guardDutyExcuses.contains(status.name))))
-            status.soldierId,
+            status.soldierId: status.name,
       };
 }

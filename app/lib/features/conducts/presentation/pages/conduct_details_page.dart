@@ -10,12 +10,12 @@ import '../../../../core/widgets/app_segmented_control.dart';
 import '../../../../core/widgets/app_snackbar.dart';
 import '../../../../core/widgets/confirm_dialog.dart';
 import '../../../../core/widgets/feedback_views.dart';
+import '../../../../core/widgets/soldier_row.dart';
 import '../../../../core/widgets/state_view.dart';
 import '../../domain/entities/conduct.dart';
 import '../../domain/usecases/watch_conduct_breakdown.dart';
 import '../providers/conduct_details_provider.dart';
 import '../widgets/conduct_details_header.dart';
-import '../widgets/conduct_person_row.dart';
 
 /// Rebuild of `CMD/.../conduct_details_screen.dart`. Edit and delete only
 /// when [canManage]; the source deleted without asking.
@@ -101,7 +101,7 @@ class ConductDetailsPage extends StatelessWidget {
                       AppListCard(
                         children: [
                           for (final s in provider.rows)
-                            ConductPersonRow(
+                            SoldierRow(
                               soldier: s,
                               note: visible.noteFor(s),
                             ),

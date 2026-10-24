@@ -20,6 +20,9 @@ class Duty extends Equatable {
   static String plainLabel(String dayType) =>
       dayType.replaceAll(_pictographs, '').trim();
 
+  /// D10: an end not after the start runs into the next day.
+  static bool isOvernight(DateTime start, DateTime end) => !end.isAfter(start);
+
   final String id;
 
   /// Duty day and start time (`dutyDate` + `startTime`).
@@ -35,8 +38,7 @@ class Duty extends Equatable {
 
   DateTime get day => DateTime(start.year, start.month, start.day);
 
-  /// D10: an end not after the start runs into the next day.
-  bool get endsNextDay => !end.isAfter(start);
+  bool get endsNextDay => isOvernight(start, end);
 
   int get filledSlots => participants.length.clamp(0, maxSlots);
 

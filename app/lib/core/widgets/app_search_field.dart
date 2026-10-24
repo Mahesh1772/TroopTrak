@@ -10,17 +10,20 @@ const _verticalPadding =
     (AppLayout.searchHeight - AppLayout.fieldLineHeight) / 2;
 
 /// A 46 px pill with a leading magnifier, styled by the shared input theme.
+/// [fill] replaces the fill colour where the field sits on a card of its own.
 class AppSearchField extends StatelessWidget {
   const AppSearchField({
     super.key,
     required this.onChanged,
     this.controller,
     this.hintText = 'Search...',
+    this.fill,
   });
 
   final ValueChanged<String> onChanged;
   final TextEditingController? controller;
   final String hintText;
+  final Color? fill;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +33,7 @@ class AppSearchField extends StatelessWidget {
         inputDecorationTheme: buildInputDecorationTheme(
           context.palette,
           radius: AppLayout.searchHeight / 2,
+          fill: fill,
         ),
       ),
       child: TextField(

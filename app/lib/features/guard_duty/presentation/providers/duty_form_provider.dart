@@ -54,6 +54,16 @@ class DutyFormProvider extends ChangeNotifier {
 
   DayPoints get pricing => DutyPoints.forDate(_date);
 
+  String get dayLabel => Duty.plainLabel(pricing.dayType);
+
+  bool get endsNextDay {
+    final start = _start;
+    final end = _end;
+    if (start == null || end == null) return false;
+    final day = DateTime(2000);
+    return Duty.isOvernight(_at(start, day), _at(end, day));
+  }
+
   List<Soldier> get searchResults {
     final all = _roster.dataOrNull?.soldiers ?? const <Soldier>[];
     final q = _query.toLowerCase();
@@ -63,7 +73,12 @@ class DutyFormProvider extends ChangeNotifier {
     ];
   }
 
+  static DateTime _at(TimeOfDay time, DateTime day) =>
+      DateTime(day.year, day.month, day.day, time.hour, time.minute);
+
   bool canServe(Soldier s) => _roster.dataOrNull?.canServe(s) ?? false;
+
+  String? reasonFor(Soldier s) => _roster.dataOrNull?.reasonFor(s);
 
   bool isOnDuty(Soldier s) => _participants.containsKey(s.name);
 
@@ -98,12 +113,10 @@ class DutyFormProvider extends ChangeNotifier {
   /// Returns null on success, otherwise the message to show. The form checks
   /// that the date and both times are set first.
   Future<String?> submit() async {
-    DateTime at(TimeOfDay t) =>
-        DateTime(_date!.year, _date!.month, _date!.day, t.hour, t.minute);
     final duty = Duty(
       id: initial?.id ?? '',
-      start: at(_start!),
-      end: at(_end!),
+      start: _at(_start!, _date!),
+      end: _at(_end!, _date!),
       dayType: pricing.dayType,
       points: pricing.points,
       participants: {..._participants},

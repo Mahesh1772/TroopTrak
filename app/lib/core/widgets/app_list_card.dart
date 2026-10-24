@@ -12,24 +12,28 @@ const _dimmedOpacity = 0.45;
 
 /// A rounded card of stacked rows. A hairline sits between neighbouring
 /// children, inset by [dividerInset] design px so it clears a leading plate.
-/// The optional [header] sits above the first row without a divider.
+/// The optional [header] sits above the first row without a divider. [color]
+/// replaces the card colour where the card sits on a surface of its own, such
+/// as a sheet.
 class AppListCard extends StatelessWidget {
   const AppListCard({
     super.key,
     required this.children,
     this.header,
     this.dividerInset = AppLayout.listDividerInset,
+    this.color,
   });
 
   final List<Widget> children;
   final Widget? header;
   final double dividerInset;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
     return Material(
-      color: palette.card,
+      color: color ?? palette.card,
       borderRadius: BorderRadius.circular(AppRadii.xl.r),
       clipBehavior: Clip.antiAlias,
       child: Column(
@@ -66,6 +70,7 @@ class AppListRow extends StatelessWidget {
     this.onTap,
     this.titleStyle,
     this.enabled = true,
+    this.dimmed = false,
   });
 
   final String title;
@@ -79,10 +84,14 @@ class AppListRow extends StatelessWidget {
   /// trailing widget stays as it is.
   final bool enabled;
 
+  /// Fades the leading and text like a disabled row but still takes taps.
+  final bool dimmed;
+
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
     final meta = subtitle;
+    final faded = !enabled || dimmed;
     return Material(
       type: MaterialType.transparency,
       child: InkWell(
@@ -98,10 +107,10 @@ class AppListRow extends StatelessWidget {
             child: Row(
               spacing: AppSpacing.md.w,
               children: [
-                if (leading != null) _Fade(faded: !enabled, child: leading!),
+                if (leading != null) _Fade(faded: faded, child: leading!),
                 Expanded(
                   child: _Fade(
-                    faded: !enabled,
+                    faded: faded,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,

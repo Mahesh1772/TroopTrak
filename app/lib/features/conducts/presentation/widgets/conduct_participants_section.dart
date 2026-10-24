@@ -11,12 +11,12 @@ import '../../../../core/widgets/feedback_views.dart';
 import '../../../../core/widgets/inline_error.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/section_header.dart';
+import '../../../../core/widgets/soldier_row.dart';
 import '../../../../core/widgets/state_tone.dart';
 import '../../../../core/widgets/state_view.dart';
 import '../../../../core/widgets/tally_strip.dart';
 import '../../../soldiers/domain/entities/soldier.dart';
 import '../providers/conduct_form_provider.dart';
-import 'conduct_person_row.dart';
 import 'participation_tally.dart';
 
 /// The "Add Participants" half of the conduct form: the live "Added x / y"
@@ -105,7 +105,7 @@ class _ParticipantList extends StatelessWidget {
     return AppListCard(
       children: [
         for (final s in soldiers)
-          ConductPersonRow(
+          SoldierRow(
             key: Key('participant-${s.name}'),
             soldier: s,
             note: provider.noteFor(s),

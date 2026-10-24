@@ -83,6 +83,24 @@ void main() {
       expect(tester.getSize(find.byType(InputDecorator)).height, 52);
     });
 
+    testWidgets('a time field shows its note after the time, only once picked',
+        (tester) async {
+      Widget field(TimeOfDay? value) => TimePickerField(
+            hintText: 'End',
+            note: 'next day',
+            value: value,
+            onChanged: (_) {},
+          );
+      await tester.pumpThemed(field(null));
+      expect(find.text('next day'), findsNothing);
+
+      await tester.pumpThemed(field(const TimeOfDay(hour: 8, minute: 0)));
+      final time = tester.getTopRight(find.text('8:00 AM'));
+      final note = tester.getTopLeft(find.text('next day'));
+      expect(note.dx - time.dx, 6);
+      expect(tester.getSize(find.byType(InputDecorator)).height, 52);
+    });
+
     testWidgets('the leading icon is 20 px, 14 px from the edge, 10 from text',
         (tester) async {
       await tester.pumpThemed(TimePickerField(
@@ -180,6 +198,13 @@ void main() {
       expect(
           decoration.focusedBorder!.borderSide.color, _paletteOf(mode).accent);
     }, variant: themeModes);
+
+    testWidgets('takes another fill when it sits on a card', (tester) async {
+      await tester.pumpThemed(
+          AppSearchField(fill: const Color(0xFF123456), onChanged: (_) {}));
+      final theme = Theme.of(tester.element(find.byType(TextField)));
+      expect(theme.inputDecorationTheme.fillColor, const Color(0xFF123456));
+    });
 
     testWidgets('keeps its height while focused', (tester) async {
       await tester.pumpThemed(AppSearchField(onChanged: (_) {}));

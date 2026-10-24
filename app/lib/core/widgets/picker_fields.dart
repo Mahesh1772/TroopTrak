@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../theme/app_spacing.dart';
+import '../theme/app_text_styles.dart';
 import '../theme/theme_context.dart';
 import '../utils/date_formats.dart';
 import 'field_chrome.dart';
@@ -91,7 +94,7 @@ class DatePickerField extends StatelessWidget {
 }
 
 /// A tappable field that opens the time picker, laid out like
-/// [DatePickerField].
+/// [DatePickerField]. A [note] sits after the picked time.
 class TimePickerField extends StatelessWidget {
   const TimePickerField({
     super.key,
@@ -103,11 +106,13 @@ class TimePickerField extends StatelessWidget {
     this.icon = Icons.access_time_rounded,
     this.errorText,
     this.validator,
+    this.note,
   });
 
   final ValueChanged<TimeOfDay> onChanged;
   final String hintText;
   final String? label;
+  final String? note;
   final TimeOfDay? value;
   final TimeOfDay initialTime;
   final IconData icon;
@@ -138,6 +143,7 @@ class TimePickerField extends StatelessWidget {
         text: time == null
             ? null
             : formatTime(DateTime(2000, 1, 1, time.hour, time.minute)),
+        note: time == null ? null : note,
         errorText: error,
         onTap: () => _pick(context, report),
       ),
@@ -154,6 +160,7 @@ class _PickerShell extends StatelessWidget {
     required this.errorText,
     required this.onTap,
     this.invalid = false,
+    this.note,
   });
 
   final IconData icon;
@@ -162,11 +169,13 @@ class _PickerShell extends StatelessWidget {
   final String? text;
   final String? errorText;
   final bool invalid;
+  final String? note;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final text = this.text;
+    final note = this.note;
     return LabeledField(
       label: label,
       child: InkWell(
@@ -184,7 +193,26 @@ class _PickerShell extends StatelessWidget {
           ),
           child: text == null
               ? null
-              : Text(text, maxLines: 1, style: fieldValueStyle(context)),
+              : note == null
+                  ? Text(text, maxLines: 1, style: fieldValueStyle(context))
+                  : Row(
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
+                      spacing: AppSpacing.inline.w,
+                      children: [
+                        Text(text,
+                            maxLines: 1, style: fieldValueStyle(context)),
+                        Flexible(
+                          child: Text(
+                            note,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: AppTextStyles.caption(
+                                context.palette.secondaryText),
+                          ),
+                        ),
+                      ],
+                    ),
         ),
       ),
     );
